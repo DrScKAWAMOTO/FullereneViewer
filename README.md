@@ -96,4 +96,4 @@
 * システム・アーキテクト
 * 理学博士(数学)
 * ジャズ・ピアニスト
-* フリーウェア作品：シャープの X68000 で、dedit, TwentyOne, TeX previewer その他色々。
+* フリーウェア作品：Prolog-TK over LISP/TwentyOne/DEDIT/TeX previewer/fontman/WiZ バックアップツール/nm.x/sort.x/hounds/アセンブラ・ディスアセンブラ/TCP/IP over ITRON
