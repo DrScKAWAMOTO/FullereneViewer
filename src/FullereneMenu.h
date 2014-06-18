@@ -532,8 +532,8 @@ MenuEntry entry14[] = {
 };
 
 MenuEntry entry15[] = {
-  { "Carbon-Nano-Tube (NoA=XXX)", "T" },
-  { "Fullerene-Y (NoA=XXX)", "T-Y" },
+  { "Carbon Nano Tube", "T" },
+  { "Fullerene Y", "T-Y" },
 };
 
 /* Local Variables:	*/

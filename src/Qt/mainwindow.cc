@@ -63,16 +63,25 @@ static void make_file_name(char *file_name)
 {
   char* dst = file_name;
   const char* src = OpenGLUtil::fullerene->get_fullerene_name();
+  int succeeded = 0;
   while (*src)
     {
-      if (*src == ' ')
-        ;
-      else if ((*src == '(') || (*src == ')') || (*src == '='))
-        *dst++ = '-';
+      if ((*src == ' ') || (*src == '-') ||
+          (*src == '(') || (*src == ')') || (*src == '='))
+        {
+          if (succeeded == 0)
+            *dst++ = '-';
+          succeeded = 1;
+        }
       else
-        *dst++ = *src;
+        {
+          *dst++ = *src;
+          succeeded = 0;
+        }
       ++src;
     }
+  if ((dst > file_name) && (dst[-1] != '-'))
+    *dst++ = '-';
   strcpy(dst, OpenGLUtil::fullerene->get_generator_label());
 }
 

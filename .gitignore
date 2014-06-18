@@ -19,3 +19,23 @@
 *.exe
 *.out
 *.app
+
+# Project Specific Executables
+src/Qt/fl-guruguru
+src/ca-char
+src/ca-cmp
+src/ca-generator
+src/ca-modeling
+src/ca-sort
+src/ca-test
+src/ca-uniq
+
+# Project Specific temporary source files
+src/Qt/Makefile
+src/Qt/moc_fl-guruguru.cpp
+src/Qt/moc_mainwindow.cpp
+src/Qt/ui_mainwindow.h
+
+# Project Specific extra files
+archive.name
+archive.list

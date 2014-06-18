@@ -1,3 +1,13 @@
+ca-generator.o: ca-generator.cc /usr/include/stdio.h \
+  /usr/include/sys/cdefs.h /usr/include/sys/_null.h \
+  /usr/include/sys/_types.h /usr/include/machine/_types.h \
+  /usr/include/stdlib.h /usr/include/string.h /usr/include/strings.h \
+  /usr/include/xlocale/_string.h Version.h Fullerenes.h List.h \
+  DebugMemory.h Fullerene.h Object.h Random.h /usr/include/c++/4.2/new \
+  /usr/include/c++/4.2/cstddef /usr/include/c++/4.2/bits/c++config.h \
+  /usr/include/c++/4.2/bits/os_defines.h \
+  /usr/include/c++/4.2/bits/cpu_defines.h /usr/include/stddef.h \
+  /usr/include/c++/4.2/exception
 ca-modeling.o: ca-modeling.cc /usr/include/stdio.h \
   /usr/include/sys/cdefs.h /usr/include/sys/_null.h \
   /usr/include/sys/_types.h /usr/include/machine/_types.h \
@@ -56,16 +66,6 @@ ca-sort.o: ca-sort.cc /usr/include/stdio.h /usr/include/sys/cdefs.h \
   /usr/include/xlocale/_string.h /usr/include/assert.h Version.h \
   GeneratorLine.h Object.h DistanceSummaryLine.h SortedList.h List.h \
   DebugMemory.h
-ca-generator.o: ca-generator.cc /usr/include/stdio.h \
-  /usr/include/sys/cdefs.h /usr/include/sys/_null.h \
-  /usr/include/sys/_types.h /usr/include/machine/_types.h \
-  /usr/include/stdlib.h /usr/include/string.h /usr/include/strings.h \
-  /usr/include/xlocale/_string.h Version.h Fullerenes.h List.h \
-  DebugMemory.h Fullerene.h Object.h Random.h /usr/include/c++/4.2/new \
-  /usr/include/c++/4.2/cstddef /usr/include/c++/4.2/bits/c++config.h \
-  /usr/include/c++/4.2/bits/os_defines.h \
-  /usr/include/c++/4.2/bits/cpu_defines.h /usr/include/stddef.h \
-  /usr/include/c++/4.2/exception
 OpenGLUtil.o: OpenGLUtil.cc /usr/include/assert.h \
   /usr/include/sys/cdefs.h /usr/include/string.h /usr/include/sys/_null.h \
   /usr/include/sys/_types.h /usr/include/machine/_types.h \
