@@ -1787,7 +1787,10 @@ void CarbonAllotrope::execute_POVRay(const char* pov_name)
   sprintf(command_line, "\"C:\\Program Files\\POV-Ray\\v3.7\\bin\\"
           "pvengine32-sse2.exe\" /RENDER +FN +UA %s /EXIT", pov_name);
 #endif
-#if defined(__unix) || defined(__APPLE__)
+#if defined(__APPLE__)
+  sprintf(command_line, "povray -W1600 -H1200 +FN +UA %s", pov_name);
+#endif
+#if defined(__unix)
   sprintf(command_line, "povray37 -W1600 -H1200 +FN +UA %s", pov_name);
 #endif
   printf("%s\n", command_line);
