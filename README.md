@@ -19,7 +19,7 @@
 ### 3) 感謝とお願い
 　皆様のご協力なくてはフラーレンビューアの開発は出来ませんでした。皆様に改めてお礼申し上げます。ありがとうございます。 [FullereneViewer/doc/Thanks-ja.md](https://github.com/DrScKAWAMOTO/FullereneViewer/blob/master/doc/Thanks-ja.md) には、家族をはじめとする協力頂いた方々への感謝の言葉を書きました。
 
-　[FullereneViewer/doc/ActionItems-ja.md](https://github.com/DrScKAWAMOTO/FullereneViewer/blob/master/doc/ActionItems-ja.md) や [Issue](https://github.com/DrScKAWAMOTO/FullereneViewer/issues) にあるとおり、フラーレンビューア作者である川本琢二（Ｅｘｔ）にはやりたいことが沢山あります。しかし、私に与えられた時間には限りがあって私一人では到底やりきれません。
+　[Issue](https://github.com/DrScKAWAMOTO/FullereneViewer/issues) にあるとおり、フラーレンビューア作者である川本琢二（Ｅｘｔ）にはやりたいことが沢山あります。しかし、私に与えられた時間には限りがあって私一人では到底やりきれません。
 
 　そこで、 [FullereneViewer/doc/RequestToYou-ja.md](https://github.com/DrScKAWAMOTO/FullereneViewer/blob/master/doc/RequestToYou-ja.md) に、私から皆様へのお願いを書きました。  
 　フラーレンには、化学者・数学者・芸術家・ゲーム関係者・工学技術者など、様々な分野の人々を惹きつける独特な魅力があると思います。  
