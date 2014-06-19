@@ -22,8 +22,7 @@
 #### [FullereneViewer/doc/HowToCompile-ja.md](https://github.com/DrScKAWAMOTO/FullereneViewer/blob/master/doc/HowToCompile-ja.md) にあるお願い事項
 　[Issue](https://github.com/DrScKAWAMOTO/FullereneViewer/issues) をオープンしてご協力お願いします。詳しくは [FullereneViewer/doc/HowToCompile-ja.md](https://github.com/DrScKAWAMOTO/FullereneViewer/blob/master/doc/HowToCompile-ja.md) をご覧下さい。
 
-#### [FullereneViewer/doc/ActionItems-ja.md](https://github.com/DrScKAWAMOTO/FullereneViewer/blob/master/doc/ActionItems-ja.md) にある項目を手伝って頂ける方
-　[Issue](https://github.com/DrScKAWAMOTO/FullereneViewer/issues) をオープンして名乗りをあげてください。詳しくは [FullereneViewer/doc/ActionItems-ja.md](https://github.com/DrScKAWAMOTO/FullereneViewer/blob/master/doc/ActionItems-ja.md) をご覧下さい。
+#### [FullereneViewer/doc/ActionItems-ja.md](https://github.com/DrScKAWAMOTO/FullereneViewer/blob/master/doc/ActionItems-ja.md) や [Issue](https://github.com/DrScKAWAMOTO/FullereneViewer/issues) にある項目を手伝って頂ける方、名乗りをあげてください。詳しくは [FullereneViewer/doc/ActionItems-ja.md](https://github.com/DrScKAWAMOTO/FullereneViewer/blob/master/doc/ActionItems-ja.md) や [Issue](https://github.com/DrScKAWAMOTO/FullereneViewer/issues) をご覧下さい。
 
 #### [FullereneViewer/README.md](https://github.com/DrScKAWAMOTO/FullereneViewer/blob/master/README.md) に書かれた二つの実験について
 　化学的もしくは数学的な情報・アイディアがあれば [Issue](https://github.com/DrScKAWAMOTO/FullereneViewer/issues) をオープンして情報共有お願いします。
