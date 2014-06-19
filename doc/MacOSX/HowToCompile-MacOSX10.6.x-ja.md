@@ -19,7 +19,7 @@
     src> make Qt
     src> 
 
-　ファインダから `FullereneViewer/src/Qt/fl-guruguru.xcodeproj` をダブルクリック「ビルドと実行」を選択する。
+　ファインダから `src/Qt/fl-guruguru.xcodeproj` をダブルクリック「ビルドと実行」を選択する。
 
 ##### 5-2) フラーレンジェネレータ(ca-*)
     FullereneViewer> cd src
@@ -31,7 +31,7 @@
 　POVRay が現在インストール出来ないため、[出力] の [展開図] [スナップショット図] が実行できないが、それらを除いて動作します。  
 　POVRay for Mac の Unofficial 版(GUI & CUI) をインストールしてみましたが、使い方が良くわからないです。自動レンダリングが出来ていません。
 
-#### 7) `FullereneViewer/scripts/unix` に起動スクリプト `fl-guruguru.sh` を用意しました。
+#### 7) `scripts/unix` に起動スクリプト `fl-guruguru.sh` を用意しました。
 　なお、 `fl-guruguru` を起動したフォルダには展開図やスナップショット図が出力されます。
 
 #### 8) お願い

@@ -9,7 +9,7 @@
 * 七員環を６個使ったY-分岐フラーレン
 
 ### 2) コンパイル方法
-　[FullereneViewer/doc/HowToCompile-ja.md](https://github.com/DrScKAWAMOTO/FullereneViewer/blob/master/doc/HowToCompile-ja.md) を見てコンパイルしてください。  
+　[doc/HowToCompile-ja.md](https://github.com/DrScKAWAMOTO/FullereneViewer/blob/master/doc/HowToCompile-ja.md) を見てコンパイルしてください。  
 　以下のOSで動作します。
 * FreeBSD
 * Windows
@@ -17,16 +17,16 @@
 * Linux
 
 ### 3) 感謝とお願い
-　皆様のご協力なくてはフラーレンビューアの開発は出来ませんでした。皆様に改めてお礼申し上げます。ありがとうございます。 [FullereneViewer/doc/Thanks-ja.md](https://github.com/DrScKAWAMOTO/FullereneViewer/blob/master/doc/Thanks-ja.md) には、家族をはじめとする協力頂いた方々への感謝の言葉を書きました。
+　皆様のご協力なくてはフラーレンビューアの開発は出来ませんでした。皆様に改めてお礼申し上げます。ありがとうございます。 [doc/Thanks-ja.md](https://github.com/DrScKAWAMOTO/FullereneViewer/blob/master/doc/Thanks-ja.md) には、家族をはじめとする協力頂いた方々への感謝の言葉を書きました。
 
 　[Issue](https://github.com/DrScKAWAMOTO/FullereneViewer/issues) にあるとおり、フラーレンビューア作者である川本琢二（Ｅｘｔ）にはやりたいことが沢山あります。しかし、私に与えられた時間には限りがあって私一人では到底やりきれません。
 
-　そこで、 [FullereneViewer/doc/RequestToYou-ja.md](https://github.com/DrScKAWAMOTO/FullereneViewer/blob/master/doc/RequestToYou-ja.md) に、私から皆様へのお願いを書きました。  
+　そこで、 [doc/RequestToYou-ja.md](https://github.com/DrScKAWAMOTO/FullereneViewer/blob/master/doc/RequestToYou-ja.md) に、私から皆様へのお願いを書きました。  
 　フラーレンには、化学者・数学者・芸術家・ゲーム関係者・工学技術者など、様々な分野の人々を惹きつける独特な魅力があると思います。  
 　興味のある方は是非ご参加ください。皆様とともに、もっともっと良いソフトに仕上げていけたら良いと思っています。参加頂ける方は、 [Issue](https://github.com/DrScKAWAMOTO/FullereneViewer/issues) をオープンして下さい。
 
 ### 4) 使い方
-　FullereneViewer/src/Qt/fl-guruguru がフラーレンビューア本体です。フラーレンビューアを実行すると、フラーレン(C60) を表示します。  
+　src/Qt/fl-guruguru がフラーレンビューア本体です。フラーレンビューアを実行すると、フラーレン(C60) を表示します。  
 　フラーレンを球形に表示するために、力学モデルを使ってシミュレーションしています。形が丸くなるまでしばらくお待ち下さい。  
 　ときどき炭素の一つがとんでもない位置に飛んだりすることがありますが、これは気にしなくて良いです。形が丸くなればそのようなことはもう起きません。これは塊を形成しないように初期条件をランダムに指定しているからです。
 
@@ -61,13 +61,13 @@
 　フラーレンビューアでは、化学的な構成可能性についてはひとまずおいといて、数学的構成可能性について検証しています。
 
 　フラーレンをコンビナトリアルに総当りで全て求め、コンビナトリアルな同型を全て取り除くソフトを開発しました。  
-　このプログラムで対称性の高いフラーレンを炭素数1000個まで求めてリストアップしたものが、FullereneViewer/samples/symmetric=1000.log です。
+　このプログラムで対称性の高いフラーレンを炭素数1000個まで求めてリストアップしたものが、samples/symmetric=1000.log です。
 
-　対称性の有無とは無関係にコンビナトリアルに全て探すととてつもなく時間がかかり、炭素数100までしか求めることが出来ませんでした。それが FullereneViewer/samples/ordinary=100.log です。
+　対称性の有無とは無関係にコンビナトリアルに全て探すととてつもなく時間がかかり、炭素数100までしか求めることが出来ませんでした。それが samples/ordinary=100.log です。
 
 　ca-char ca-cmp ca-generator ca-uniq ca-sort などのツールを開発して駆使しました。
 
-　数学関係の他の話題は [FullereneViewer/doc/Mathematics-ja.md](https://github.com/DrScKAWAMOTO/FullereneViewer/blob/master/doc/Mathematics-ja.md) を見て下さい。
+　数学関係の他の話題は [doc/Mathematics-ja.md](https://github.com/DrScKAWAMOTO/FullereneViewer/blob/master/doc/Mathematics-ja.md) を見て下さい。
 
 　数学的な話題で興味のある方、 [Issue](https://github.com/DrScKAWAMOTO/FullereneViewer/issues) で情報交換しましょう。
 
@@ -87,7 +87,7 @@
 　Apache License に基づき公開します。
 
 ### 9) リリースノート
-　[FullereneViewer/doc/ReleaseNote-ja.md](https://github.com/DrScKAWAMOTO/FullereneViewer/blob/master/doc/ReleaseNote-ja.md) を参照して下さい。  
+　[doc/ReleaseNote-ja.md](https://github.com/DrScKAWAMOTO/FullereneViewer/blob/master/doc/ReleaseNote-ja.md) を参照して下さい。  
 　ご報告・ご指摘・ご感想は [Issue](https://github.com/DrScKAWAMOTO/FullereneViewer/issues) でお願いします。
 
 ### 10) 作者

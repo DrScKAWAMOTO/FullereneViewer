@@ -60,14 +60,14 @@
 とします。
 
 ##### 4-4) 参考
-　graphics/povray37 のかわりに graphics/povray36 をインストールした方は、4-1) の直前に `FullereneViewer/src/CarbonAllotrope.cc` を編集して、以下のように変更してください。
+　graphics/povray37 のかわりに graphics/povray36 をインストールした方は、4-1) の直前に `src/CarbonAllotrope.cc` を編集して、以下のように変更してください。
 
     #if defined(__unix) || defined(__APPLE__)
       sprintf(command_line, "povray36 -W1600 -H1200 %s", pov_name);
     #endif
 
 ##### 4-5) 参考
-　６面展開図、スナップショット図のサイズの変更は、4-1) の直前に `FullereneViewer/src/CarbonAllotrope.cc` の以下の `-W1600 -H1200` の部分を編集してください。
+　６面展開図、スナップショット図のサイズの変更は、4-1) の直前に `src/CarbonAllotrope.cc` の以下の `-W1600 -H1200` の部分を編集してください。
 
     #if defined(__unix) || defined(__APPLE__)
       sprintf(command_line, "povray37 -W1600 -H1200 %s", pov_name);
@@ -108,7 +108,7 @@
 
 　遅いが、動作します。
 
-#### 6) `FullereneViewer/scripts/unix` に起動スクリプト `fl-guruguru.sh` を用意しました。
+#### 6) `scripts/unix` に起動スクリプト `fl-guruguru.sh` を用意しました。
 　なお、 `fl-guruguru` を起動したフォルダには展開図やスナップショット図が出力されます。
 
 #### 7) お願い
