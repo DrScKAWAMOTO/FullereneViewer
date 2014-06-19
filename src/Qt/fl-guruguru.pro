@@ -11,8 +11,8 @@ TARGET = fl-guruguru
 DEPENDPATH += . ..
 INCLUDEPATH += . ..
 macx {
-    DEPENDPATH += /Developer/SDKs/MacOSX10.6.sdk/usr/X11/include
-    INCLUDEPATH += /Developer/SDKs/MacOSX10.6.sdk/usr/X11/include
+    DEPENDPATH += /usr/X11/include
+    INCLUDEPATH += /usr/X11/include
     LIBS += -framework glut
     ICON = icons/fl-guruguru.icns
 }
