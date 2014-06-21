@@ -2,7 +2,7 @@
 ## フラーレンビューア
 ### コンパイル方法
 #### FreeBSD
-##### FreeBSD 9.1 [doc/FreeBSD/HowToCompile-FreeBSD9.1-ja.md](https://github.com/DrScKAWAMOTO/FullereneViewer/blob/master/doc/FreeBSD/HowToCompile-FreeBSD-9.1-ja.md)
+##### FreeBSD 9.1 [doc/FreeBSD/HowToCompile-FreeBSD-9.1-ja.md](https://github.com/DrScKAWAMOTO/FullereneViewer/blob/master/doc/FreeBSD/HowToCompile-FreeBSD-9.1-ja.md)
 #### Linux
 ##### ubuntu/VirtualBox [doc/Linux/HowToCompile-ubuntu-virtualbox-ja.md](https://github.com/DrScKAWAMOTO/FullereneViewer/blob/master/doc/Linux/HowToCompile-ubuntu-virtualbox-ja.md)
 #### Mac OS X

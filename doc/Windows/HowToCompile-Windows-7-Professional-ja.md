@@ -1,8 +1,6 @@
 # FullereneViewer
 ## フラーレンビューア
-### コンパイル方法 (Windows 7 編)
-　Windows 7 Professional で確認しました。
-
+### コンパイル方法 (Windows 7 Professional 編)
 #### 1) Visual Studio Express 2012 for Windows Desktop をダウンロードする。
 　<http://www.microsoft.com/ja-jp/download/details.aspx?id=34673> のダウンロードボタンを押し、 `wdexpress_full.exe` をダウンロードする。
 
