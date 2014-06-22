@@ -1,6 +1,8 @@
 # FullereneViewer
 ## フラーレンビューア
 
+![アイコン](src/Qt/icons/fl-guruguru.png)
+
 ### 1) はじめに (Introduction)
 　フラーレンビューアは、フラーレン分子模型を3D表示してぐるぐる回して見るツールです。フラーレンの応用などは [ネットで検索](http://websearch.rakuten.co.jp/Web?toolid=1&ref=ie_box&set=tb&qt=%E3%83%95%E3%83%A9%E3%83%BC%E3%83%AC%E3%83%B3&col=OW) してみてください。  
 　C60 から C200 まで数学的に構成可能な全てのフラーレンを見ることができます。従って、化学的には実在しないものも含まれます。  
