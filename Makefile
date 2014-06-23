@@ -62,9 +62,3 @@ Qtclean:
 distclean: clean
 	touch src/Depend.mk
 	cd src; $(MAKE) distclean
-
-spike: dist
-	scp ../`cat archive.name` spike:`cat archive.name`
-
-jerry: dist
-	scp ../`cat archive.name` j-rdesk:`cat archive.name`
