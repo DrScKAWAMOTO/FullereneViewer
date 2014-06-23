@@ -20,6 +20,7 @@
 ![アイコン](media/screenshot-4.png)
 ![アイコン](media/screenshot-5.png)
 ![アイコン](media/screenshot-6.png)
+![アイコン](media/screenshot-7.png)
 
 ### 3) コンパイル方法 (How To Compile)
 　[doc/HowToCompile-ja.md](https://github.com/DrScKAWAMOTO/FullereneViewer/blob/master/doc/HowToCompile-ja.md) を見てコンパイルしてください。  
