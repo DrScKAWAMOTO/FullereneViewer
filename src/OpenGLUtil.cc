@@ -87,9 +87,10 @@ static void usage(char* argv0)
   exit(1);
 }
 
-void OpenGLUtil::initialize_pre(int argc, char *argv[])
+void OpenGLUtil::initialize_pre(int argc, char *argv[], bool call_glutInit)
 {
-  glutInit(&argc, argv);
+  if (call_glutInit)
+    glutInit(&argc, argv);
   if (argc == 1)
     {
       strcpy(fullerene_name, "C60 (NoA=120)");

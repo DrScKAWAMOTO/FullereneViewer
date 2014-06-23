@@ -48,7 +48,7 @@ private:
 
   // OpenGL initialize
 public:
-  static void initialize_pre(int argc, char *argv[]);
+  static void initialize_pre(int argc, char *argv[], bool call_glutInit);
   static void initialize_post();
 
   // OpenGL reshape
