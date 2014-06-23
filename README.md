@@ -1,7 +1,7 @@
 # FullereneViewer
 ## フラーレンビューア
 
-![アイコン](src/Qt/icons/fl-guruguru.png)
+![アイコン](media/fl-guruguru.png)
 
 ### 1) はじめに (Introduction)
 　フラーレンビューアは、フラーレン分子模型を3D表示してぐるぐる回して見るツールです。フラーレンの応用などは [ネットで検索](http://websearch.rakuten.co.jp/Web?toolid=1&ref=ie_box&set=tb&qt=%E3%83%95%E3%83%A9%E3%83%BC%E3%83%AC%E3%83%B3&col=OW) してみてください。  
@@ -11,7 +11,17 @@
 * カーボンナノチューブ
 * 七員環を６個使ったY-分岐フラーレン
 
-### 2) コンパイル方法 (How To Compile)
+### 2) スクリーンショット (Screenshots)
+
+![アイコン](media/screenshot-0.png)
+![アイコン](media/screenshot-1.png)
+![アイコン](media/screenshot-2.png)
+![アイコン](media/screenshot-3.png)
+![アイコン](media/screenshot-4.png)
+![アイコン](media/screenshot-5.png)
+![アイコン](media/screenshot-6.png)
+
+### 3) コンパイル方法 (How To Compile)
 　[doc/HowToCompile-ja.md](https://github.com/DrScKAWAMOTO/FullereneViewer/blob/master/doc/HowToCompile-ja.md) を見てコンパイルしてください。  
 　以下のOSで動作します。
 * FreeBSD
@@ -19,7 +29,7 @@
 * MacOSX
 * Linux
 
-### 3) 感謝とお願い (Thanks)
+### 4) 感謝とお願い (Thanks)
 　皆様のご協力なくてはフラーレンビューアの開発は出来ませんでした。皆様に改めてお礼申し上げます。ありがとうございます。 [doc/Thanks-ja.md](https://github.com/DrScKAWAMOTO/FullereneViewer/blob/master/doc/Thanks-ja.md) には、家族をはじめとする協力頂いた方々への感謝の言葉を書きました。
 
 　[Issue](https://github.com/DrScKAWAMOTO/FullereneViewer/issues) にあるとおり、フラーレンビューア作者である川本琢二（Ｅｘｔ）にはやりたいことが沢山あります。しかし、私に与えられた時間には限りがあって私一人では到底やりきれません。
@@ -28,7 +38,7 @@
 　フラーレンには、化学者・数学者・芸術家・ゲーム関係者・工学技術者など、様々な分野の人々を惹きつける独特な魅力があると思います。  
 　興味のある方は是非ご参加ください。皆様とともに、もっともっと良いソフトに仕上げていけたら良いと思っています。参加頂ける方は、 [Issue](https://github.com/DrScKAWAMOTO/FullereneViewer/issues) をオープンして下さい。
 
-### 4) 使い方 (How To Use)
+### 5) 使い方 (How To Use)
 　src/Qt/fl-guruguru がフラーレンビューア本体です。フラーレンビューアを実行すると、フラーレン(C60) を表示します。  
 　フラーレンを球形に表示するために、力学モデルを使ってシミュレーションしています。形が丸くなるまでしばらくお待ち下さい。  
 　ときどき炭素の一つがとんでもない位置に飛んだりすることがありますが、これは気にしなくて良いです。形が丸くなればそのようなことはもう起きません。これは塊を形成しないように初期条件をランダムに指定しているからです。
@@ -60,7 +70,7 @@
 * [出力] - [スナップショット図]
     * povray37 を使ってスナップショットをレンダリングします。
 
-### 5) 数学的な話 (Mathematics)
+### 6) 数学的な話 (Mathematics)
 　フラーレンビューアでは、化学的な構成可能性についてはひとまずおいといて、数学的構成可能性について検証しています。
 
 　フラーレンをコンビナトリアルに総当りで全て求め、コンビナトリアルな同型を全て取り除くソフトを開発しました。  
@@ -74,10 +84,10 @@
 
 　数学的な話題で興味のある方、 [Issue](https://github.com/DrScKAWAMOTO/FullereneViewer/issues) で情報交換しましょう。
 
-### 6) 実験その１（カーボン・ナノ・チューブ Carbon Nano Tube）
+### 7) 実験その１（カーボン・ナノ・チューブ Carbon Nano Tube）
 　メニューに、カーボン・ナノ・チューブの典型パターンを生成する項目(extras - Carbon Nano Tube)があります。これもぐるぐる回せます。どこかのページで見ましたが、カーボン・ナノ・チューブは確か格子点で分類出来たはず。これで生成出来ているカーボン・ナノ・チューブは何型でしょうか？情報求めます。
 
-### 7) 実験その２（七員環を６個使ったY-分岐フラーレン Y-branch fullerene）
+### 8) 実験その２（七員環を６個使ったY-分岐フラーレン Y-branch fullerene）
 　メニューに、七員環を６個使ったY-分岐フラーレンを生成する項目(extras - Fullerene Y)があります。これもぐるぐる回せます。  
 　炭素数があまりにも多いので、拡大表示のままでは動作が遅いです。ウィンドウを通常サイズに戻して見て下さい。  
 　これは感動ものです。  
@@ -85,15 +95,15 @@
 　Y-分岐フラーレンは集積回路の配線として活用が期待されています。そのためには棒状に含まれるカーボン・ナノ・チューブ部分に導電性がある必要が有ります。実験その２で構成されたY-分岐フラーレンは、はたして導電性があるのでしょうか？ご存じの方、 [Issue](https://github.com/DrScKAWAMOTO/FullereneViewer/issues) をオープンして情報提供お願いします。  
 　もし導電性が無いのなら、導電性の有るカーボン・ナノ・チューブを使ってY-分岐フラーレンを構成しなおさなければなりません。
 
-### 8) ライセンス (License)
+### 9) ライセンス (License)
 　Copyright (C) 2011-14 Dr.Sc.KAWAMOTO,Takuji (Ext)  
 　Apache License に基づき公開します。
 
-### 9) リリースノート (Release Note)
+### 10) リリースノート (Release Note)
 　[doc/ReleaseNote-ja.md](https://github.com/DrScKAWAMOTO/FullereneViewer/blob/master/doc/ReleaseNote-ja.md) を参照して下さい。  
 　ご報告・ご指摘・ご感想は [Issue](https://github.com/DrScKAWAMOTO/FullereneViewer/issues) でお願いします。
 
-### 10) 作者 (Author)
+### 11) 作者 (Author)
 * 川本 琢二（Ｅｘｔ）
 * Dr.Sc.KAWAMOTO,Takuji (Ext)
 * システム・アーキテクト
