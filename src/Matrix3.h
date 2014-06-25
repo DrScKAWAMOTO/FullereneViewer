@@ -40,7 +40,7 @@ public:
   const double* to_array44() const;
 
   // comparators
-  bool operator == (const Matrix3& that);
+  bool operator == (const Matrix3& that) const;
 
   // math operators
   friend Vector3 operator * (const Vector3& a, const Matrix3& b);
