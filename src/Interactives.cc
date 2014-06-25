@@ -140,7 +140,6 @@ void Interactives::operate_interactions(double delta)
           break;
         }
     }
-  static int time = 0;
   int stability = 0;
   for (int i = 0; i < int_len; ++i)
     {
@@ -151,7 +150,6 @@ void Interactives::operate_interactions(double delta)
     --p_simulation_active;
   else
     p_simulation_active = STABILITY_THRESHOLD;
-  printf("check %d %d\n", time++, stability);
 }
 
 void Interactives::randomized_force(double width)

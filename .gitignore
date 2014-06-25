@@ -35,6 +35,9 @@ src/Qt/Makefile
 src/Qt/moc_fl-guruguru.cpp
 src/Qt/moc_mainwindow.cpp
 src/Qt/ui_mainwindow.h
+src/Qt/Info.plist
+src/Qt/build
+src/Qt/fl-guruguru.xcodeproj
 
 # Project Specific extra files
 archive.name
