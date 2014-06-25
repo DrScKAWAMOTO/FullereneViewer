@@ -47,6 +47,7 @@
     FullereneViewer> cd src
     src> cd Qt
     Qt> qmake -spec macx-xcode
-  これにより、Xcode 用プロジェクトファイル FullereneViewer/src/Qt/fl-guruguru.xcodeproj が作成されるので、Xcode から開いてビルドすることが可能となる。
-  ただし、初めてプロジェクトファイルの Xcode から開いたとき、プロジェクトファイルのフォーマットを新しいフォーマットに変換するかの問い合わせがある。許可しない場合、ビルドは成功する。許可した場合、ヘッダファイル検索パスの設定が消失するためか、そのままではビルドできない。
+
+  これにより、Xcode 用プロジェクトファイル FullereneViewer/src/Qt/fl-guruguru.xcodeproj が作成されるので、Xcode から開いてビルドすることが可能となる。  
+  ただし、初めてプロジェクトファイルの Xcode から開いたとき、プロジェクトファイルのフォーマットを新しいフォーマットに変換するかの問い合わせがある。許可しない場合、ビルドは成功する。許可した場合、ヘッダファイル検索パスの設定が消失するためか、そのままではビルドできない。  
   また、Xcode から実行させると argv[1] と argv[2] に fl-guruguru が許容しない引数が指定されるため、fl-guruguru は usage を表示して終了していまう。
