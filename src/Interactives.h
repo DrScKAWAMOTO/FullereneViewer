@@ -19,6 +19,8 @@ enum ActionLocation {
   ACTION_LOCATION_VERTEX = 0,
 };
 
+#define STABILITY_THRESHOLD 100
+
 class Interactives : public Object {
   // friend classes & functions
 
@@ -26,6 +28,7 @@ class Interactives : public Object {
 private:
   List<InteractiveOperation> p_operations;
   List<Interactive> p_interactives;
+  int p_simulation_active;
 
   // private tools
 private:
@@ -57,6 +60,9 @@ public:
   // I/O
 public:
   void draw_by_OpenGL(bool selection) const;
+
+  // stability
+  void resume_simulation() { p_simulation_active = STABILITY_THRESHOLD; }
 
   // member accessing methods
 

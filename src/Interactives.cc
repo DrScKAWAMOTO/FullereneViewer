@@ -41,7 +41,7 @@ void Interactives::p_calculate_interaction(NormalForceType force_type, double de
                                          force_type, delta);
 }
 
-Interactives::Interactives()
+Interactives::Interactives() : p_simulation_active(STABILITY_THRESHOLD)
 {
 }
 
@@ -97,6 +97,8 @@ void Interactives::register_interactive(Interactive* interactive)
 
 void Interactives::operate_interactions(double delta)
 {
+  if (p_simulation_active == 0)
+    return;
   const char unknown_force_type = 0;
   int ope_len = p_operations.length();
   int int_len = p_interactives.length();
@@ -138,11 +140,18 @@ void Interactives::operate_interactions(double delta)
           break;
         }
     }
+  static int time = 0;
+  int stability = 0;
   for (int i = 0; i < int_len; ++i)
     {
       Interactive* interactive = p_interactives[i];
-      interactive->operate_interactions();
+      interactive->operate_interactions(stability);
     }
+  if (stability == 0)
+    --p_simulation_active;
+  else
+    p_simulation_active = STABILITY_THRESHOLD;
+  printf("check %d %d\n", time++, stability);
 }
 
 void Interactives::randomized_force(double width)

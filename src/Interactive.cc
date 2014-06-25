@@ -194,7 +194,7 @@ void Interactive::interaction_original(OriginalForceType force_type,
   assert(0);
 }
 
-void Interactive::operate_interactions()
+void Interactive::operate_interactions(int &stability)
 {
   // for simulation cut off
   p_radius.last_length = p_radius.length;
@@ -218,18 +218,12 @@ void Interactive::operate_interactions()
     p_center.location += p_center.next_force;
 
   // for simulation cut off
-  if (p_radius.stabled())
-    {
-      printf("The radius of Interactive::%p becomes stable\n", this);
-    }
-  if (p_posture.stabled())
-    {
-      printf("The posture of Interactive::%p becomes stable\n", this);
-    }
-  if (p_center.stabled())
-    {
-      printf("The center location of Interactive::%p becomes stable\n", this);
-    }
+  if (!p_radius.stabled())
+    stability++;
+  if (!p_posture.stabled())
+    stability++;
+  if (!p_center.stabled())
+    stability++;
 }
 
 void Interactive::randomized_force(double width)

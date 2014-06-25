@@ -1284,6 +1284,7 @@ void CarbonAllotrope::center_location_force_to_zero()
       Carbon* carbon = p_carbons[i];
       carbon->move_center_location(movement);
     }
+  resume_simulation();
 }
 
 void CarbonAllotrope::all_representations(Representations* results)
@@ -1937,6 +1938,7 @@ void CarbonAllotrope::recall_shape(const char* file_name_base)
       carbon->recall_shape(fptr);
     }
   fclose(fptr);
+  resume_simulation();
 }
 
 void CarbonAllotrope::register_ring(Ring* ring)

@@ -82,7 +82,7 @@ public:
                                          double delta);
   virtual void interaction_original(OriginalForceType force_type,
                                     Interactives* interactives, double delta);
-  void operate_interactions();
+  void operate_interactions(int &stability);
   void randomized_force(double width = 1.0);
   void move_by(const Vector3& a);
 
