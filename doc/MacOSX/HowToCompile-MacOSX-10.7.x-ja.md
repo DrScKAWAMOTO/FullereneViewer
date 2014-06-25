@@ -44,6 +44,7 @@
 
 #### 9) その他
 　Xcode を使う方法として、7-1 の手順を以下に置き換えることが可能。
+
     FullereneViewer> cd src
     src> cd Qt
     Qt> qmake -spec macx-xcode
