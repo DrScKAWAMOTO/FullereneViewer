@@ -176,6 +176,8 @@ void OpenGLUtil::reshape(int w, int h)
 
 void OpenGLUtil::display()
 {
+  if (p_need_drawing == false)
+    return;
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glLoadIdentity();
   gluLookAt(0.0, 0.0, (double)view, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0); //視点の設定
@@ -211,11 +213,8 @@ void OpenGLUtil::display()
       if (OpenGLUtil::ca->operate_interactions(0.1))
         resume_drawing();
     }
-  if (OpenGLUtil::p_need_drawing)
-    {
-      printf("draw by OpenGL !!\n");
-      OpenGLUtil::ca->draw_by_OpenGL(false);
-    }
+  printf("draw by OpenGL !!\n");
+  OpenGLUtil::ca->draw_by_OpenGL(false);
   stop_drawing();
 }
 
