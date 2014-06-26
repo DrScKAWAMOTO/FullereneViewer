@@ -403,6 +403,7 @@ bool OpenGLUtil::rotate()
           Carbon* carbon = ca->get_carbon_by_sequence_no(p_carbon_picking_sequence_no);
           carbon->move_by(real_motion - p_last_real_motion);
           p_last_real_motion = real_motion;
+          ca->resume_simulation();
           if (released)
             {
               p_last_real_motion = Vector3();

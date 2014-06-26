@@ -194,8 +194,13 @@ void Interactive::interaction_original(OriginalForceType force_type,
   assert(0);
 }
 
-void Interactive::operate_interactions()
+void Interactive::operate_interactions(int &stability)
 {
+  // for simulation cut off
+  p_radius.last_length = p_radius.length;
+  p_posture.last_posture = p_posture.posture;
+  p_center.last_location = p_center.location;
+
   if (p_radius.fixed)
     p_radius.length = p_radius.fixed_length;
   else
@@ -211,6 +216,14 @@ void Interactive::operate_interactions()
     p_center.location = p_center.fixed_location;
   else
     p_center.location += p_center.next_force;
+
+  // for simulation cut off
+  if (!p_radius.stabled())
+    stability++;
+  if (!p_posture.stabled())
+    stability++;
+  if (!p_center.stabled())
+    stability++;
 }
 
 void Interactive::randomized_force(double width)

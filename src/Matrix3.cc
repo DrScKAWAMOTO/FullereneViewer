@@ -117,7 +117,7 @@ const double* Matrix3::to_array44() const
   return array44;
 }
 
-bool Matrix3::operator == (const Matrix3& that)
+bool Matrix3::operator == (const Matrix3& that) const
 {
   Matrix3 sub = *this - that;
   return (sub.abs() <= FLT_EPSILON);
