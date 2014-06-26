@@ -1,7 +1,7 @@
 # FullereneViewer
 ## フラーレンビューア
 ### コンパイル方法 (Mac OS X 10.6.x 編)
-#### 1) XQuartz と xcode をインストールする。
+#### 1) XQuartz と Xcode 3.2.6 とコマンドライン開発ツールをインストールする。
 #### 2) Qtライブラリ4.8.6 をダウンロードする。
 　<http://qt-users.jp/download.html> の「Qt ライブラリ 4.8.6 - Mac (185 MB)」をクリックして `qt-opensource-mac-4.8.6.dmg` をダウンロードする。
 
