@@ -15,6 +15,7 @@
 #include "Quaternion.h"
 
 #define WINDOW_TITLE "Fullerene Viewer -"
+#define DRAWING_THRESHOLD 2
 
 class Vector3;
 class CarbonAllotrope;
@@ -40,7 +41,7 @@ public:
   static char window_title[3072];
   static int view;
 private:
-  static bool p_need_drawing;
+  static int p_need_drawing;
   static bool p_guruguru_mode;
   static bool p_carbon_picking_mode;
   static int p_carbon_picking_sequence_no;

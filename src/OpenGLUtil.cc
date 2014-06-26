@@ -42,7 +42,7 @@ Quaternion OpenGLUtil::rotation = Quaternion(1.0, 0.0, 0.0, 0.0);
 Quaternion OpenGLUtil::rotation_sub = Quaternion(1.0, 0.0, 0.0, 0.0);
 CarbonAllotrope* OpenGLUtil::ca = 0;
 Fullerene* OpenGLUtil::fullerene = 0;
-bool OpenGLUtil::p_need_drawing = true;
+int OpenGLUtil::p_need_drawing = DRAWING_THRESHOLD;
 bool OpenGLUtil::p_guruguru_mode = true;
 bool OpenGLUtil::p_carbon_picking_mode = false;
 int OpenGLUtil::p_carbon_picking_sequence_no = 0;
@@ -176,9 +176,6 @@ void OpenGLUtil::reshape(int w, int h)
 
 void OpenGLUtil::display()
 {
-  if (p_need_drawing == false)
-    return;
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glLoadIdentity();
   gluLookAt(0.0, 0.0, (double)view, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0); //視点の設定
   glLightfv(GL_LIGHT0, GL_POSITION, lightpos); //ライトの設定
@@ -206,16 +203,22 @@ void OpenGLUtil::display()
       hits = glRenderMode(GL_RENDER);
       select_hits(hits, selectBuf);
       glMatrixMode(GL_MODELVIEW);
-      resume_drawing();
     }
   else
     {
       if (OpenGLUtil::ca->operate_interactions(0.1))
         resume_drawing();
     }
-  printf("draw by OpenGL !!\n");
-  OpenGLUtil::ca->draw_by_OpenGL(false);
-  stop_drawing();
+  if (p_need_drawing > 0)
+    {
+      static int time = 0;
+      printf("draw by OpenGL %d\n", time++);
+      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+      OpenGLUtil::ca->draw_by_OpenGL(false);
+      p_need_drawing--;
+    }
+  else if (p_need_drawing < 0)
+    p_need_drawing = DRAWING_THRESHOLD;
 }
 
 void OpenGLUtil::set_color(int color)
@@ -357,14 +360,9 @@ void OpenGLUtil::naming_end()
   glPopName();
 }
 
-void OpenGLUtil::stop_drawing()
-{
-  p_need_drawing = false;
-}
-
 void OpenGLUtil::resume_drawing()
 {
-  p_need_drawing = true;
+  p_need_drawing = DRAWING_THRESHOLD;
 }
 
 void OpenGLUtil::left_click(int x, int y)
@@ -449,6 +447,7 @@ bool OpenGLUtil::rotate()
           Vector3 direction = Vector3(drag_y - click_y, drag_x - click_x, 0.0);
           rotation_sub = Quaternion(direction, direction.abs() * 1.0) * rotation;
           glMultMatrixd(Matrix3(rotation_sub).to_array44());
+	  resume_drawing();
           if (released)
             {
               rotation = rotation_sub;
@@ -545,8 +544,6 @@ void OpenGLUtil::change_fullerene(const char* fullerene_name, const char* genera
   ca->register_interactions();
   rotation = Quaternion(1.0, 0.0, 0.0, 0.0);
   rotation_sub = Quaternion(1.0, 0.0, 0.0, 0.0);
-  p_guruguru_mode = false;
-  p_carbon_picking_mode = false;
   p_carbon_picking_sequence_no = 0;
   p_last_real_motion = Vector3();
   resume_drawing();
