@@ -54,7 +54,7 @@ protected:
   void p_register_interaction(OriginalForceType force_type, Interactive* one);
 public:
   void register_interactive(Interactive* interactive);
-  void operate_interactions(double delta);
+  bool operate_interactions(double delta);
   void randomized_force(double width = 1.0);
 
   // I/O

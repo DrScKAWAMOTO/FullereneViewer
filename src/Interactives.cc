@@ -95,10 +95,10 @@ void Interactives::register_interactive(Interactive* interactive)
   p_interactives.add(interactive);
 }
 
-void Interactives::operate_interactions(double delta)
+bool Interactives::operate_interactions(double delta)
 {
   if (p_simulation_active == 0)
-    return;
+    return false;
   const char unknown_force_type = 0;
   int ope_len = p_operations.length();
   int int_len = p_interactives.length();
@@ -152,6 +152,7 @@ void Interactives::operate_interactions(double delta)
   else
     p_simulation_active = STABILITY_THRESHOLD;
   printf("check %d %d\n", time++, stability);
+  return true;
 }
 
 void Interactives::randomized_force(double width)

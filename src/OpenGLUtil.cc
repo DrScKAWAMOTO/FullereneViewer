@@ -42,6 +42,7 @@ Quaternion OpenGLUtil::rotation = Quaternion(1.0, 0.0, 0.0, 0.0);
 Quaternion OpenGLUtil::rotation_sub = Quaternion(1.0, 0.0, 0.0, 0.0);
 CarbonAllotrope* OpenGLUtil::ca = 0;
 Fullerene* OpenGLUtil::fullerene = 0;
+bool OpenGLUtil::p_need_drawing = true;
 bool OpenGLUtil::p_guruguru_mode = true;
 bool OpenGLUtil::p_carbon_picking_mode = false;
 int OpenGLUtil::p_carbon_picking_sequence_no = 0;
@@ -161,6 +162,7 @@ void OpenGLUtil::initialize_post()
   ca = fullerene->get_carbon_allotrope();
   fullerene->set_fullerene_name(fullerene_name);
   ca->register_interactions();
+  resume_drawing();
 }
 
 void OpenGLUtil::reshape(int w, int h)
@@ -202,12 +204,19 @@ void OpenGLUtil::display()
       hits = glRenderMode(GL_RENDER);
       select_hits(hits, selectBuf);
       glMatrixMode(GL_MODELVIEW);
+      resume_drawing();
     }
   else
     {
-      OpenGLUtil::ca->operate_interactions(0.1);
+      if (OpenGLUtil::ca->operate_interactions(0.1))
+        resume_drawing();
     }
-  OpenGLUtil::ca->draw_by_OpenGL(false);
+  if (OpenGLUtil::p_need_drawing)
+    {
+      printf("draw by OpenGL !!\n");
+      OpenGLUtil::ca->draw_by_OpenGL(false);
+    }
+  stop_drawing();
 }
 
 void OpenGLUtil::set_color(int color)
@@ -349,6 +358,16 @@ void OpenGLUtil::naming_end()
   glPopName();
 }
 
+void OpenGLUtil::stop_drawing()
+{
+  p_need_drawing = false;
+}
+
+void OpenGLUtil::resume_drawing()
+{
+  p_need_drawing = true;
+}
+
 void OpenGLUtil::left_click(int x, int y)
 {
   click_x = x;
@@ -386,6 +405,7 @@ void OpenGLUtil::wheel(int direction)
   view += (direction ? 2 : -2);
   if (view < 0)
     view = 0;
+  resume_drawing();
 }
 
 bool OpenGLUtil::rotate()
@@ -530,6 +550,7 @@ void OpenGLUtil::change_fullerene(const char* fullerene_name, const char* genera
   p_carbon_picking_mode = false;
   p_carbon_picking_sequence_no = 0;
   p_last_real_motion = Vector3();
+  resume_drawing();
 }
 
 int OpenGLUtil::find_unused_file_number(const char* file_name_base)
