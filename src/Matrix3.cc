@@ -85,7 +85,7 @@ void Matrix3::randomize()
       p_zy = Random::minus1to1();
       p_zz = Random::minus1to1();
       detp = det();
-      if (fabs(detp) > DBL_EPSILON)
+      if (fabs(detp) > FLT_EPSILON)
         break;
     }
   if (detp > 0.0)

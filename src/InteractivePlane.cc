@@ -17,7 +17,7 @@ Vector3 InteractivePlane::p_get_vertex_location(int index) const
 }
 
 InteractivePlane::InteractivePlane(Interactives* interactives, int sequence_no)
-  : Interactive(interactives, sequence_no, DBL_EPSILON)
+  : Interactive(interactives, sequence_no, FLT_EPSILON)
 {
 }
 

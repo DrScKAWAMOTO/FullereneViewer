@@ -25,7 +25,7 @@ Vector3 Interactive::s_repulsive_force(const Vector3& you, const Vector3& me,
 {
   Vector3 diff = me - you;
   double abs = diff.abs();
-  while (abs <= DBL_EPSILON)
+  while (abs <= FLT_EPSILON)
     {
       diff.randomize();
       abs = diff.abs();
@@ -144,7 +144,7 @@ void Interactive::interaction_to_normal_by_normal(const Vector3& your_normal,
   switch (force_type)
     {
     case NORMAL_FORCE_TYPE_PARALLELIZE:
-      if (cos < -DBL_EPSILON)
+      if (cos < -FLT_EPSILON)
         next_force = s_attractive_force(Vector3() - your_normal, my_normal, delta);
       else
         next_force = s_attractive_force(your_normal, my_normal, delta);
@@ -153,15 +153,15 @@ void Interactive::interaction_to_normal_by_normal(const Vector3& your_normal,
       if (cos < -0.5)
         {
           Vector3 ex = exterior_product(your_normal, my_normal);
-          if (ex.abs() <= DBL_EPSILON)
+          if (ex.abs() <= FLT_EPSILON)
             {
               ex = exterior_product(Vector3(1.0, 0.0, 0.0), my_normal);
-              if (ex.abs() <= DBL_EPSILON)
+              if (ex.abs() <= FLT_EPSILON)
                 {
                   ex = exterior_product(Vector3(0.0, 1.0, 0.0), my_normal);
                 }
             }
-          assert(ex.abs() > DBL_EPSILON);
+          assert(ex.abs() > FLT_EPSILON);
           ex /= ex.abs();
           next_force = ex * delta;
         }
@@ -184,7 +184,7 @@ void Interactive::interaction_to_normal_by_location(const Vector3& your_location
   double cos = inner_product(you_minus_me, my_normal);
   cos /= you_minus_me.abs();
   cos /= my_normal.abs();
-  if (cos > DBL_EPSILON)
+  if (cos > FLT_EPSILON)
     p_center.next_force += my_normal * cos * delta * 5.0;
 }
 
