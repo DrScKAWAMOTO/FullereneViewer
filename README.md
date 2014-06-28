@@ -13,14 +13,14 @@
 
 ### 2) スクリーンショット (Screenshots)
 
-![スクリーンショット-0](media/screenshot-0.png)
-![スクリーンショット-1](media/screenshot-1.png)
-![スクリーンショット-2](media/screenshot-2.png)
-![スクリーンショット-3](media/screenshot-3.png)
-![スクリーンショット-4](media/screenshot-4.png)
-![スクリーンショット-5](media/screenshot-5.png)
-![スクリーンショット-6](media/screenshot-6.png)
-![スクリーンショット-7](media/screenshot-7.png)
+![サッカーボール状のC60](media/screenshot-0.png)
+![筒状のC200](media/screenshot-1.png)
+![C200 を拡大してみる](media/screenshot-2.png)
+![C200 の中に入ってみる](media/screenshot-3.png)
+![おにぎり状のC120](media/screenshot-4.png)
+![カーボン・ナノ・チューブ](media/screenshot-5.png)
+![Y分岐フラーレン](media/screenshot-6.png)
+![六面展開図](media/screenshot-7.png)
 
 ### 3) コンパイル方法 (How To Compile)
 　[doc/HowToCompile-ja.md](doc/HowToCompile-ja.md) を見てコンパイルしてください。  
@@ -107,7 +107,7 @@
 ### 11) 作者 (Author)
 * 川本 琢二（Ｅｘｔ）
 * Dr.Sc.KAWAMOTO,Takuji (Ext)
-* システム・アーキテクト
-* 理学博士(数学)
+* システム・アーキテクト (パナソニック アドバンストテクノロジー(株))
+* 理学博士 (数学)
 * ジャズ・ピアニスト (Jazz Pianist)
-* フリーウェア作品：Prolog-TK over LISP/TwentyOne/DEDIT/TeX previewer/fontman/WiZ バックアップツール/nm.x/sort.x/hounds/アセンブラ・ディスアセンブラ/TCP/IP over ITRON
+* 代表フリーウェア作品：Prolog-TK over LISP/TwentyOne/DEDIT/TeX previewer/fontman/WiZ バックアップツール/nm.x/sort.x/hounds/アセンブラ・ディスアセンブラ/TCP/IP over ITRON
