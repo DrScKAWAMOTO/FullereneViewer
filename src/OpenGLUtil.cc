@@ -28,6 +28,7 @@
 #include "MenuEntry.h"
 #include "OpenGLUtil.h"
 #include "DebugMemory.h"
+#include "Debug.h"
 
 int OpenGLUtil::click_x = 0;
 int OpenGLUtil::click_y = 0;
@@ -172,6 +173,7 @@ void OpenGLUtil::reshape(int w, int h)
   glLoadIdentity();
   gluPerspective(30.0, (double)w / (double)h, 1.0, 200.0); //視野の設定
   glMatrixMode(GL_MODELVIEW);
+  resume_drawing();
 }
 
 void OpenGLUtil::display()
@@ -211,8 +213,10 @@ void OpenGLUtil::display()
     }
   if (p_need_drawing > 0)
     {
+#if defined(DEBUG_STOP_DRAWING)
       static int time = 0;
       printf("draw by OpenGL %d\n", time++);
+#endif
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
       OpenGLUtil::ca->draw_by_OpenGL(false);
       p_need_drawing--;

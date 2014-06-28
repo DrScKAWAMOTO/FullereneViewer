@@ -10,6 +10,7 @@
 #include "Interactives.h"
 #include "OpenGLUtil.h"
 #include "DebugMemory.h"
+#include "Debug.h"
 
 void Interactives::p_calculate_interaction(LocationForceType force_type, double delta,
                                            Interactive* one, int one_index,
@@ -140,7 +141,6 @@ bool Interactives::operate_interactions(double delta)
           break;
         }
     }
-  static int time = 0;
   int stability = 0;
   for (int i = 0; i < int_len; ++i)
     {
@@ -151,7 +151,10 @@ bool Interactives::operate_interactions(double delta)
     --p_simulation_active;
   else
     p_simulation_active = STABILITY_THRESHOLD;
-  printf("check %d %d\n", time++, stability);
+#if defined(DEBUG_STOP_SIMULATION)
+  static int time = 0;
+  printf("simulation %d %d\n", time++, stability);
+#endif
   return true;
 }
 
