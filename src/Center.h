@@ -16,13 +16,17 @@ public:
   Vector3 location;
   bool fixed;
   Vector3 fixed_location;
+  Vector3 last_location;
   Vector3 next_force;
 
   // constructors & the destructor
 public:
-  Center() : location(), fixed(false), fixed_location(), next_force() { }
+  Center() : location(), fixed(false), fixed_location(), last_location(), next_force() { }
   ~Center() { }
   Center& operator = (const Center& that); /* dont use */
+
+  // stability
+  bool stabled() const { return last_location == location; }
 
 };
 

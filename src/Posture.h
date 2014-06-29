@@ -17,13 +17,17 @@ public:
   Matrix3 posture;
   bool fixed;
   Matrix3 fixed_posture;
+  Matrix3 last_posture;
   Vector3 next_moment;
 
   // constructors & the destructor
 public:
-  Posture() : posture(), fixed(false), fixed_posture(), next_moment() { }
+  Posture() : posture(), fixed(false), fixed_posture(), last_posture(), next_moment() { }
   ~Posture() { }
   Posture& operator = (const Posture& that); /* dont use */
+
+  // stability
+  bool stabled() const { return last_posture == posture; }
 
 };
 

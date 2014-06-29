@@ -352,7 +352,7 @@ print_POVRay_scene_description(const CarbonAllotrope* ca, FILE* fptr,
           for (i = 0; i < num; ++i)
             {
               Vector3 loc = get_carbon(i)->carbon_location() * rot + move;
-              if (loc.z() > DBL_EPSILON)
+              if (loc.z() > FLT_EPSILON)
                 break;
             }
           if (i == num)

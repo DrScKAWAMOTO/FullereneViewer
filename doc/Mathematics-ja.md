@@ -13,13 +13,13 @@
 #### EPSILON について
 　通常、浮動小数点の等値判定は、
 
-    fabs(a−b)≦DBL_EPSILON×a       (ただし a≠0.0)
+    fabs(a−b)≦FLT_EPSILON×a       (ただし a≠0.0)
 
 で行う。
 
 　本シミュレーションでは、浮動小数点を固定小数点的に使用するため、本シミュレーションでの浮動小数点の等値判定は、
 
-    fabs(a-b)≦DBL_EPSILON       (ただし a≠0.0)
+    fabs(a-b)≦FLT_EPSILON       (ただし a≠0.0)
 
 で行う。
 

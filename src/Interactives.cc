@@ -10,6 +10,7 @@
 #include "Interactives.h"
 #include "OpenGLUtil.h"
 #include "DebugMemory.h"
+#include "Debug.h"
 
 void Interactives::p_calculate_interaction(LocationForceType force_type, double delta,
                                            Interactive* one, int one_index,
@@ -41,7 +42,7 @@ void Interactives::p_calculate_interaction(NormalForceType force_type, double de
                                          force_type, delta);
 }
 
-Interactives::Interactives()
+Interactives::Interactives() : p_simulation_active(STABILITY_THRESHOLD)
 {
 }
 
@@ -95,8 +96,10 @@ void Interactives::register_interactive(Interactive* interactive)
   p_interactives.add(interactive);
 }
 
-void Interactives::operate_interactions(double delta)
+bool Interactives::operate_interactions(double delta)
 {
+  if (p_simulation_active == 0)
+    return false;
   const char unknown_force_type = 0;
   int ope_len = p_operations.length();
   int int_len = p_interactives.length();
@@ -138,11 +141,21 @@ void Interactives::operate_interactions(double delta)
           break;
         }
     }
+  int stability = 0;
   for (int i = 0; i < int_len; ++i)
     {
       Interactive* interactive = p_interactives[i];
-      interactive->operate_interactions();
+      interactive->operate_interactions(stability);
     }
+  if (stability == 0)
+    --p_simulation_active;
+  else
+    p_simulation_active = STABILITY_THRESHOLD;
+#if defined(DEBUG_STOP_SIMULATION)
+  static int time = 0;
+  printf("simulation %d %d\n", time++, stability);
+#endif
+  return true;
 }
 
 void Interactives::randomized_force(double width)

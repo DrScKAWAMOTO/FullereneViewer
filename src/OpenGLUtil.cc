@@ -28,6 +28,7 @@
 #include "MenuEntry.h"
 #include "OpenGLUtil.h"
 #include "DebugMemory.h"
+#include "Debug.h"
 
 int OpenGLUtil::click_x = 0;
 int OpenGLUtil::click_y = 0;
@@ -42,6 +43,7 @@ Quaternion OpenGLUtil::rotation = Quaternion(1.0, 0.0, 0.0, 0.0);
 Quaternion OpenGLUtil::rotation_sub = Quaternion(1.0, 0.0, 0.0, 0.0);
 CarbonAllotrope* OpenGLUtil::ca = 0;
 Fullerene* OpenGLUtil::fullerene = 0;
+int OpenGLUtil::p_need_drawing = DRAWING_THRESHOLD;
 bool OpenGLUtil::p_guruguru_mode = true;
 bool OpenGLUtil::p_carbon_picking_mode = false;
 int OpenGLUtil::p_carbon_picking_sequence_no = 0;
@@ -161,6 +163,7 @@ void OpenGLUtil::initialize_post()
   ca = fullerene->get_carbon_allotrope();
   fullerene->set_fullerene_name(fullerene_name);
   ca->register_interactions();
+  resume_drawing();
 }
 
 void OpenGLUtil::reshape(int w, int h)
@@ -170,11 +173,11 @@ void OpenGLUtil::reshape(int w, int h)
   glLoadIdentity();
   gluPerspective(30.0, (double)w / (double)h, 1.0, 200.0); //視野の設定
   glMatrixMode(GL_MODELVIEW);
+  resume_drawing();
 }
 
 void OpenGLUtil::display()
 {
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glLoadIdentity();
   gluLookAt(0.0, 0.0, (double)view, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0); //視点の設定
   glLightfv(GL_LIGHT0, GL_POSITION, lightpos); //ライトの設定
@@ -205,9 +208,21 @@ void OpenGLUtil::display()
     }
   else
     {
-      OpenGLUtil::ca->operate_interactions(0.1);
+      if (OpenGLUtil::ca->operate_interactions(0.1))
+        resume_drawing();
     }
-  OpenGLUtil::ca->draw_by_OpenGL(false);
+  if (p_need_drawing > 0)
+    {
+#if defined(DEBUG_STOP_DRAWING)
+      static int time = 0;
+      printf("draw by OpenGL %d\n", time++);
+#endif
+      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+      OpenGLUtil::ca->draw_by_OpenGL(false);
+      p_need_drawing--;
+    }
+  else if (p_need_drawing < 0)
+    p_need_drawing = DRAWING_THRESHOLD;
 }
 
 void OpenGLUtil::set_color(int color)
@@ -349,6 +364,11 @@ void OpenGLUtil::naming_end()
   glPopName();
 }
 
+void OpenGLUtil::resume_drawing()
+{
+  p_need_drawing = DRAWING_THRESHOLD;
+}
+
 void OpenGLUtil::left_click(int x, int y)
 {
   click_x = x;
@@ -386,6 +406,7 @@ void OpenGLUtil::wheel(int direction)
   view += (direction ? 2 : -2);
   if (view < 0)
     view = 0;
+  resume_drawing();
 }
 
 bool OpenGLUtil::rotate()
@@ -403,6 +424,7 @@ bool OpenGLUtil::rotate()
           Carbon* carbon = ca->get_carbon_by_sequence_no(p_carbon_picking_sequence_no);
           carbon->move_by(real_motion - p_last_real_motion);
           p_last_real_motion = real_motion;
+          ca->resume_simulation();
           if (released)
             {
               p_last_real_motion = Vector3();
@@ -429,6 +451,7 @@ bool OpenGLUtil::rotate()
           Vector3 direction = Vector3(drag_y - click_y, drag_x - click_x, 0.0);
           rotation_sub = Quaternion(direction, direction.abs() * 1.0) * rotation;
           glMultMatrixd(Matrix3(rotation_sub).to_array44());
+	  resume_drawing();
           if (released)
             {
               rotation = rotation_sub;
@@ -525,10 +548,9 @@ void OpenGLUtil::change_fullerene(const char* fullerene_name, const char* genera
   ca->register_interactions();
   rotation = Quaternion(1.0, 0.0, 0.0, 0.0);
   rotation_sub = Quaternion(1.0, 0.0, 0.0, 0.0);
-  p_guruguru_mode = false;
-  p_carbon_picking_mode = false;
   p_carbon_picking_sequence_no = 0;
   p_last_real_motion = Vector3();
+  resume_drawing();
 }
 
 int OpenGLUtil::find_unused_file_number(const char* file_name_base)

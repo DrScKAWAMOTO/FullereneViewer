@@ -57,7 +57,7 @@ Matrix3 Vector3::moment_to_rotation() const
                            -p_z, 1.0, p_x,
                             p_y,-p_x, 1.0);
   double detr = result.det();
-  assert(fabs(detr) > DBL_EPSILON);
+  assert(fabs(detr) > FLT_EPSILON);
   if (detr > 0.0)
     result *= exp(-log(detr) / 3.0);
   else
@@ -79,7 +79,7 @@ bool Vector3::operator != (const Vector3& that) const
 
 bool Vector3::operator ! () const
 {
-  return (abs() <= DBL_EPSILON);
+  return (abs() <= FLT_EPSILON);
 }
 
 Vector3 operator + (const Vector3& a, const Vector3& b)

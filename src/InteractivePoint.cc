@@ -17,7 +17,7 @@ Vector3 InteractivePoint::p_get_vertex_location(int index) const
 }
 
 InteractivePoint::InteractivePoint(Interactives* interactives, int sequence_no)
-  : Interactive(interactives, sequence_no, DBL_EPSILON)
+  : Interactive(interactives, sequence_no, FLT_EPSILON)
 {
   assert(p_n > 0);
 }
