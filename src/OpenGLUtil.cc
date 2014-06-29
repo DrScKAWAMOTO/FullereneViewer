@@ -447,7 +447,7 @@ bool OpenGLUtil::rotate()
     {
       if (dragging)
         {
-          Vector3 direction = Vector3(drag_y - click_y, drag_x - click_x, 0.0);
+          Vector3 direction = Vector3(click_y - drag_y, click_x - drag_x, 0.0);
           rotation_sub = rotation * Quaternion(direction, direction.abs() * 1.0);
           glMultMatrixd(Matrix3(rotation_sub).to_array44());
 	  resume_drawing();
