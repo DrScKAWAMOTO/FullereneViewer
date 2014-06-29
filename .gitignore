@@ -39,3 +39,11 @@ src/Qt/ui_mainwindow.h
 # Project Specific extra files
 archive.name
 archive.list
+src/GPATH
+src/GRTAGS
+src/GTAGS
+src/ID
+GPATH
+GRTAGS
+GTAGS
+ID

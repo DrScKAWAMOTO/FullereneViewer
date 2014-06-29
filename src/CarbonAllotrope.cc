@@ -1654,7 +1654,7 @@ void CarbonAllotrope::draw_by_POVRay(const char* file_name_base,
 void CarbonAllotrope::OpenGL_to_POVRay(const char* file_name_base,
                                        int view, const Quaternion& rotation)
 {
-  Matrix3 mosv = rotation.conjugation();
+  Matrix3 mosv = rotation;
   Vector3 minimum;
   Vector3 maximum;
   get_range_of_six_views(mosv, minimum, maximum);

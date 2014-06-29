@@ -38,6 +38,7 @@ public:
 
   // type converters
   const double* to_array44() const;
+  const double* to_array33() const;
 
   // comparators
   bool operator == (const Matrix3& that) const;

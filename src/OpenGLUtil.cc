@@ -413,8 +413,7 @@ bool OpenGLUtil::rotate()
 {
   if (p_carbon_picking_mode)
     {
-      Matrix3 mat = Matrix3(rotation);
-      glMultMatrixd(mat.to_array44());
+      glMultMatrixd(Matrix3(rotation).to_array44());
       if (!p_carbon_picking_sequence_no)
         return clicked;
       if (dragging)
@@ -449,7 +448,7 @@ bool OpenGLUtil::rotate()
       if (dragging)
         {
           Vector3 direction = Vector3(drag_y - click_y, drag_x - click_x, 0.0);
-          rotation_sub = Quaternion(direction, direction.abs() * 1.0) * rotation;
+          rotation_sub = rotation * Quaternion(direction, direction.abs() * 1.0);
           glMultMatrixd(Matrix3(rotation_sub).to_array44());
 	  resume_drawing();
           if (released)
