@@ -251,13 +251,13 @@ void Interactive::memory_shape(FILE* archive) const
   // radius
   fprintf(archive, "%g %d %g\n", p_radius.length, p_radius.fixed, p_radius.fixed_length);
   // posture
-  const double* array44 = p_posture.posture.to_array44();
-  fprintf(archive, "%g %g %g %g %g %g %g %g %g ", array44[0], array44[4], array44[8],
-         array44[1], array44[5], array44[9], array44[2], array44[6], array44[10]);
+  const double* array33 = p_posture.posture.to_array33();
+  fprintf(archive, "%g %g %g %g %g %g %g %g %g ", array33[0], array33[1], array33[2],
+         array33[3], array33[4], array33[5], array33[6], array33[7], array33[8]);
   fprintf(archive, "%d ", p_posture.fixed);
-  array44 = p_posture.fixed_posture.to_array44();
-  fprintf(archive, "%g %g %g %g %g %g %g %g %g\n", array44[0], array44[4], array44[8],
-         array44[1], array44[5], array44[9], array44[2], array44[6], array44[10]);
+  array33 = p_posture.fixed_posture.to_array33();
+  fprintf(archive, "%g %g %g %g %g %g %g %g %g\n", array33[0], array33[1], array33[2],
+         array33[3], array33[4], array33[5], array33[6], array33[7], array33[8]);
   // center
   fprintf(archive, "%g %g %g %d %g %g %g\n", p_center.location.x(), p_center.location.y(),
          p_center.location.z(), p_center.fixed, p_center.fixed_location.x(),
@@ -270,10 +270,12 @@ void Interactive::recall_shape(FILE* archive)
 {
   double xx, xy, xz, yx, yy, yz, zx, zy, zz;
   int a;
+  // radius
   fscanf(archive, "%lg %d %lg", &xx, &a, &xy);
   p_radius.length = xx;
   p_radius.fixed = !!a;
   p_radius.fixed_length = xy;
+  // posture
   fscanf(archive, "%lg %lg %lg %lg %lg %lg %lg %lg %lg",
          &xx, &xy, &xz, &yx, &yy, &yz, &zx, &zy, &zz);
   p_posture.posture = Matrix3(xx, xy, xz, yx, yy, yz, zx, zy, zz);
@@ -282,10 +284,12 @@ void Interactive::recall_shape(FILE* archive)
   fscanf(archive, "%lg %lg %lg %lg %lg %lg %lg %lg %lg",
          &xx, &xy, &xz, &yx, &yy, &yz, &zx, &zy, &zz);
   p_posture.fixed_posture = Matrix3(xx, xy, xz, yx, yy, yz, zx, zy, zz);
+  // center
   fscanf(archive, "%lg %lg %lg %d %lg %lg %lg\n", &xx, &xy, &xz, &a, &yx, &yy, &yz);
   p_center.location = Vector3(xx, xy, xz);
   p_center.fixed = !!a;
   p_center.fixed_location = Vector3(yx, yy, yz);
+  // normal
   fscanf(archive, "%d", &a);
   p_normal.clockwise = a;
 }

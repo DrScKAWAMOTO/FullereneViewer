@@ -99,21 +99,35 @@ static double array44[16];
 const double* Matrix3::to_array44() const
 {
   array44[0] = p_xx;
-  array44[1] = p_yx;
-  array44[2] = p_zx;
+  array44[1] = p_xy;
+  array44[2] = p_xz;
   array44[3] = 0.0;
-  array44[4] = p_xy;
+  array44[4] = p_yx;
   array44[5] = p_yy;
-  array44[6] = p_zy;
+  array44[6] = p_yz;
   array44[7] = 0.0;
-  array44[8] = p_xz;
-  array44[9] = p_yz;
+  array44[8] = p_zx;
+  array44[9] = p_zy;
   array44[10] = p_zz;
   array44[11] = 0.0;
   array44[12] = 0.0;
   array44[13] = 0.0;
   array44[14] = 0.0;
   array44[15] = 1.0;
+  return array44;
+}
+
+const double* Matrix3::to_array33() const
+{
+  array44[0] = p_xx;
+  array44[1] = p_xy;
+  array44[2] = p_xz;
+  array44[3] = p_yx;
+  array44[4] = p_yy;
+  array44[5] = p_yz;
+  array44[6] = p_zx;
+  array44[7] = p_zy;
+  array44[8] = p_zz;
   return array44;
 }
 
