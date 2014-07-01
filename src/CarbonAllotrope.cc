@@ -2106,16 +2106,12 @@ void CarbonAllotrope::get_major_axes(List<SymmetryAxis>& result) const
       if (order > max_order)
         max_order = order;
     }
-  assert(max_order > 2);
   for (int i = 0; i < len; ++i)
     {
       SymmetryAxis* axis = get_axis(i);
       int order = axis->get_order();
       if (order == max_order)
-        {
-          assert(axis->get_type() == AXIS_TYPE_CENTER_OF_RING);
-          result.add(axis);
-        }
+        result.add(axis);
     }
 }
 
