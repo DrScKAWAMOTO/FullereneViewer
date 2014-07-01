@@ -46,6 +46,7 @@ public:
 
   // interactions
 protected:
+  virtual void p_reset_interaction() = 0;
   void p_register_interaction(LocationForceType force_type,
                               Interactive* one, int one_index,
                               Interactive* the_other, int the_other_index);

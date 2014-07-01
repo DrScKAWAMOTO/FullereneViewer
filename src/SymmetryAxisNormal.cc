@@ -35,6 +35,9 @@ void SymmetryAxisNormal::interaction_original(OriginalForceType force_type,
   Vector3 north_location = north_ring->get_center_location();
   Vector3 south_location = south_ring->get_center_location();
   Vector3 normal = north_location - south_location;
+  printf("north(%d)=(%4.1f,%4.1f,%4.1f) south(%d)=(%4.1f,%4.1f,%4.1f)\n",
+         north, north_location.x(), north_location.y(), north_location.z(),
+         south, south_location.x(), south_location.y(), south_location.z());
   p_normal.clockwise = 1;
   fix_center_location(p_ca->get_center_location());
   fix_radius_length(normal.abs() * 0.55);
@@ -45,7 +48,7 @@ void SymmetryAxisNormal::draw_opaque_by_OpenGL(bool selection) const
 {
   Vector3 norm = get_normal();
   norm *= p_radius.length;
-  OpenGLUtil::set_color(0x00ff00);
+  OpenGLUtil::set_color(0x808080);
   OpenGLUtil::draw_cylinder(0.4, get_center_location() - norm,
                             get_center_location() + norm);
 }

@@ -108,6 +108,7 @@ bool Interactives::operate_interactions(double delta)
       Interactive* interactive = p_interactives[i];
       interactive->reset_interaction();
     }
+  p_reset_interaction();
   for (int i = 0; i < ope_len; ++i)
     {
       InteractiveOperation* op = p_operations[i];

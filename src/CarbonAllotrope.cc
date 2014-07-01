@@ -1191,6 +1191,18 @@ void CarbonAllotrope::reset_done()
     p_carbons[i]->reset_done();
 }
 
+void CarbonAllotrope::p_reset_interaction()
+{
+  int carbon_len = p_carbons.length();
+  p_center_location = Vector3();
+  for (int i = 0; i < carbon_len; ++i)
+    {
+      Carbon* carbon = p_carbons[i];
+      p_center_location += carbon->carbon_location();
+    }
+  p_center_location /= carbon_len;
+}
+
 void CarbonAllotrope::register_interactions()
 {
   int carbon_len = p_carbons.length();
@@ -1324,7 +1336,6 @@ void CarbonAllotrope::calculate_three_axes()
       Vector3* loc = new Vector3(carbon->carbon_location());
       st.sample(loc);
     }
-  p_center_location = st.get_average();
   st.average_to_zero();
   Matrix3 vcm = st.variance_covariance_matrix();
   Matrix3::Eigenvalues_and_Eigenvectors(vcm, p_Eigenvalue1, p_Eigenvector1,
