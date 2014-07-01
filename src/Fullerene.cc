@@ -9,6 +9,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <assert.h>
+#include "Config.h"
 #include "Fullerene.h"
 #include "CarbonAllotrope.h"
 #include "Representations.h"
