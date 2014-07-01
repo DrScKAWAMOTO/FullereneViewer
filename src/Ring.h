@@ -22,7 +22,7 @@ class Ring : public InteractiveRegularPolygon {
 private:
   int p_number_of_carbons;
   List<Carbon> p_carbons;
-  Vector3 p_center_location;
+  // TODO not used Vector3 p_center_location;
   double p_radius;
   int p_clockwise;
   int p_ring_color;

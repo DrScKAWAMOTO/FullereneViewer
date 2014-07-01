@@ -22,6 +22,7 @@
 
 # Project Specific Executables
 src/Qt/fl-guruguru
+src/Qt/fl-guruguru.core
 src/ca-char
 src/ca-cmp
 src/ca-generator

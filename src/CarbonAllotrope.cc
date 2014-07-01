@@ -19,6 +19,7 @@
 #include "InteractivePlane.h"
 #include "InteractiveLine.h"
 #include "ThreeViewNormal.h"
+#include "SymmetryAxisNormal.h"
 #include "Automorphism.h"
 #include "Statistics.h"
 #include "Utils.h"
@@ -1228,42 +1229,13 @@ void CarbonAllotrope::register_interactions()
   List<SymmetryAxis> major_axes;
   get_major_axes(major_axes);
   int list_len = major_axes.length();
+  printf("list_len = %d\n", list_len);
   for (int j = 0; j < list_len; ++j)
     {
       SymmetryAxis* major_axis = major_axes[j];
-      Automorphism* generator = major_axis->get_generator();
-      int order = major_axis->get_order();
-      InteractiveLine* axis_line = new InteractiveLine(this, 0);
-      axis_line->fix_center_location(Vector3());
-      reset_done();
-      int len = number_of_carbons();
-      while (1)
-        {
-          Carbon* carbon;
-          int i;
-          for (i = 0; i < len; ++i)
-            {
-              carbon = get_carbon(i);
-              if (!carbon->get_done())
-                break;
-            }
-          if (i == len)
-            break;
-          InteractiveRegularPolygon* poly =
-            new InteractiveRegularPolygon(this, 0, 10.0, order);
-          p_register_interaction(NORMAL_FORCE_TYPE_DIRECTION_ARRANGEMENT,
-                                 axis_line, poly);
-          p_register_interaction(LOCATION_FORCE_TYPE_ATTRACTIVE,
-                                 poly, ACTION_LOCATION_CENTER,
-                                 axis_line, ACTION_LOCATION_NEAREST);
-          for (i = 0; i < order; ++i)
-            {
-              carbon->set_done();
-              p_register_interaction(LOCATION_FORCE_TYPE_ATTRACTIVE,
-                                     poly, i, carbon, ACTION_LOCATION_CENTER);
-              carbon = get_carbon_by_sequence_no((*generator)(carbon->sequence_no()));
-            }
-        }
+      major_axis->print_out();
+      SymmetryAxisNormal* axis_normal = new SymmetryAxisNormal(this, major_axis);
+      p_register_interaction(ORIGINAL_FORCE_TYPE_ORIGINAL, axis_normal);
     }
 #endif
 }
