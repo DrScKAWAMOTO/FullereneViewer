@@ -27,17 +27,56 @@ void SymmetryAxisNormal::reset_interaction()
 void SymmetryAxisNormal::interaction_original(OriginalForceType force_type,
                                               Interactives* interactives, double delta)
 {
-  assert(p_axis->get_type() == AXIS_TYPE_CENTER_OF_RING);
+  Vector3 north_location;
+  Vector3 south_location;
   int north = p_axis->get_north_sequence_no();
   int south = p_axis->get_south_sequence_no();
-  Ring* north_ring = p_ca->get_ring_by_sequence_no(north);
-  Ring* south_ring = p_ca->get_ring_by_sequence_no(south);
-  Vector3 north_location = north_ring->get_center_location();
-  Vector3 south_location = south_ring->get_center_location();
+  switch (p_axis->get_type())
+    {
+    case AXIS_TYPE_CENTER_OF_RING:
+      {
+        Ring* north_ring = p_ca->get_ring_by_sequence_no(north);
+        Ring* south_ring = p_ca->get_ring_by_sequence_no(south);
+        north_location = north_ring->get_center_location();
+        south_location = south_ring->get_center_location();
+      }
+      break;
+    case AXIS_TYPE_CENTER_OF_BOND:
+      {
+        Bond* north_bond = p_ca->get_bond_by_sequence_no(north);
+        Bond* south_bond = p_ca->get_bond_by_sequence_no(south);
+        north_location = north_bond->get_center_location();
+        south_location = south_bond->get_center_location();
+      }
+      break;
+    case AXIS_TYPE_CENTER_OF_CARBON:
+      {
+        Carbon* north_carbon = p_ca->get_carbon_by_sequence_no(north);
+        Carbon* south_carbon = p_ca->get_carbon_by_sequence_no(south);
+        north_location = north_carbon->get_center_location();
+        south_location = south_carbon->get_center_location();
+      }
+      break;
+    case AXIS_TYPE_CENTER_OF_RING_AND_BOND:
+      {
+        Ring* north_ring = p_ca->get_ring_by_sequence_no(north);
+        Bond* south_bond = p_ca->get_bond_by_sequence_no(south);
+        north_location = north_ring->get_center_location();
+        south_location = south_bond->get_center_location();
+      }
+      break;
+    case AXIS_TYPE_CENTER_OF_RING_AND_CARBON:
+      {
+        Ring* north_ring = p_ca->get_ring_by_sequence_no(north);
+        Carbon* south_carbon = p_ca->get_carbon_by_sequence_no(south);
+        north_location = north_ring->get_center_location();
+        south_location = south_carbon->get_center_location();
+      }
+      break;
+    default:
+      assert(0);
+    }
   Vector3 normal = north_location - south_location;
-  printf("north(%d)=(%4.1f,%4.1f,%4.1f) south(%d)=(%4.1f,%4.1f,%4.1f)\n",
-         north, north_location.x(), north_location.y(), north_location.z(),
-         south, south_location.x(), south_location.y(), south_location.z());
   p_normal.clockwise = 1;
   fix_center_location(p_ca->get_center_location());
   fix_radius_length(normal.abs() * 0.55);
