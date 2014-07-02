@@ -1243,7 +1243,6 @@ void CarbonAllotrope::register_interactions()
   List<SymmetryAxis> major_axes;
   get_major_axes(major_axes);
   int list_len = major_axes.length();
-  printf("list_len = %d\n", list_len);
   for (int j = 0; j < list_len; ++j)
     {
       SymmetryAxis* major_axis = major_axes[j];
