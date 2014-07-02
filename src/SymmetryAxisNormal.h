@@ -5,29 +5,29 @@
  * Create: 2011/12/26 18:06:18 JST
  */
 
-#ifndef __THREEVIEWNORMAL_H__
-#define __THREEVIEWNORMAL_H__
+#ifndef __SYMMETRYAXISNORMAL_H__
+#define __SYMMETRYAXISNORMAL_H__
 
 #include <stdio.h>
 #include "InteractiveRegularPolygon.h"
 #include "CarbonAllotrope.h"
 
-class ThreeViewNormal : public InteractiveRegularPolygon {
+class SymmetryAxisNormal : public InteractiveRegularPolygon {
   // friend classes & functions
 
   // members
 private:
   CarbonAllotrope* p_ca;
+  SymmetryAxis* p_axis;
 
   // private tools
 private:
-  int p_get_nth() const;
 
   // constructors & the destructor
 public:
-  ThreeViewNormal(CarbonAllotrope* ca, int nth);
-  virtual ~ThreeViewNormal();
-  Bond& operator = (const ThreeViewNormal& that); /* dont use */
+  SymmetryAxisNormal(CarbonAllotrope* ca, SymmetryAxis* axis);
+  virtual ~SymmetryAxisNormal();
+  Bond& operator = (const SymmetryAxisNormal& that); /* dont use */
 
   // interactions
 public:
@@ -43,7 +43,7 @@ public:
 
 };
 
-#endif /* __THREEVIEWNORMAL_H__ */
+#endif /* __SYMMETRYAXISNORMAL_H__ */
 
 /* Local Variables:	*/
 /* mode: c++		*/

@@ -19,6 +19,7 @@
 #include "InteractivePlane.h"
 #include "InteractiveLine.h"
 #include "ThreeViewNormal.h"
+#include "SymmetryAxisNormal.h"
 #include "Automorphism.h"
 #include "Statistics.h"
 #include "Utils.h"
@@ -1190,6 +1191,20 @@ void CarbonAllotrope::reset_done()
     p_carbons[i]->reset_done();
 }
 
+void CarbonAllotrope::p_reset_interaction()
+{
+#if defined(CONFIG_DRAW_PRINCIPAL_COMPONENT_AXES_IN_GURUGURU_MODE)
+  int carbon_len = p_carbons.length();
+  p_center_location = Vector3();
+  for (int i = 0; i < carbon_len; ++i)
+    {
+      Carbon* carbon = p_carbons[i];
+      p_center_location += carbon->carbon_location();
+    }
+  p_center_location /= carbon_len;
+#endif
+}
+
 void CarbonAllotrope::register_interactions()
 {
   int carbon_len = p_carbons.length();
@@ -1231,39 +1246,8 @@ void CarbonAllotrope::register_interactions()
   for (int j = 0; j < list_len; ++j)
     {
       SymmetryAxis* major_axis = major_axes[j];
-      Automorphism* generator = major_axis->get_generator();
-      int order = major_axis->get_order();
-      InteractiveLine* axis_line = new InteractiveLine(this, 0);
-      axis_line->fix_center_location(Vector3());
-      reset_done();
-      int len = number_of_carbons();
-      while (1)
-        {
-          Carbon* carbon;
-          int i;
-          for (i = 0; i < len; ++i)
-            {
-              carbon = get_carbon(i);
-              if (!carbon->get_done())
-                break;
-            }
-          if (i == len)
-            break;
-          InteractiveRegularPolygon* poly =
-            new InteractiveRegularPolygon(this, 0, 10.0, order);
-          p_register_interaction(NORMAL_FORCE_TYPE_DIRECTION_ARRANGEMENT,
-                                 axis_line, poly);
-          p_register_interaction(LOCATION_FORCE_TYPE_ATTRACTIVE,
-                                 poly, ACTION_LOCATION_CENTER,
-                                 axis_line, ACTION_LOCATION_NEAREST);
-          for (i = 0; i < order; ++i)
-            {
-              carbon->set_done();
-              p_register_interaction(LOCATION_FORCE_TYPE_ATTRACTIVE,
-                                     poly, i, carbon, ACTION_LOCATION_CENTER);
-              carbon = get_carbon_by_sequence_no((*generator)(carbon->sequence_no()));
-            }
-        }
+      SymmetryAxisNormal* axis_normal = new SymmetryAxisNormal(this, major_axis);
+      p_register_interaction(ORIGINAL_FORCE_TYPE_ORIGINAL, axis_normal);
     }
 #endif
 }
@@ -1352,7 +1336,6 @@ void CarbonAllotrope::calculate_three_axes()
       Vector3* loc = new Vector3(carbon->carbon_location());
       st.sample(loc);
     }
-  p_center_location = st.get_average();
   st.average_to_zero();
   Matrix3 vcm = st.variance_covariance_matrix();
   Matrix3::Eigenvalues_and_Eigenvectors(vcm, p_Eigenvalue1, p_Eigenvector1,
@@ -2123,16 +2106,12 @@ void CarbonAllotrope::get_major_axes(List<SymmetryAxis>& result) const
       if (order > max_order)
         max_order = order;
     }
-  assert(max_order > 2);
   for (int i = 0; i < len; ++i)
     {
       SymmetryAxis* axis = get_axis(i);
       int order = axis->get_order();
       if (order == max_order)
-        {
-          assert(axis->get_type() == AXIS_TYPE_CENTER_OF_RING);
-          result.add(axis);
-        }
+        result.add(axis);
     }
 }
 

@@ -105,6 +105,9 @@ public:
   void reset_done();
 
   // interactions
+protected:
+  virtual void p_reset_interaction();
+
 public:
   void register_interactions();
   void center_location_force_to_zero();

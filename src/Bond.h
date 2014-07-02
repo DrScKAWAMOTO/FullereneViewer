@@ -46,7 +46,9 @@ public:
   virtual void draw_opaque_by_OpenGL(bool selection) const;
 
   // member accessing methods
+  // attributes
 public:
+  virtual Vector3 get_center_location() const;
   Carbon* get_left_carbon() const { return p_left; }
   Carbon* get_right_carbon() const { return p_right; }
   bool connected_with(const Carbon* carbon);

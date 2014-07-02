@@ -22,7 +22,6 @@ class Ring : public InteractiveRegularPolygon {
 private:
   int p_number_of_carbons;
   List<Carbon> p_carbons;
-  Vector3 p_center_location;
   double p_radius;
   int p_clockwise;
   int p_ring_color;
@@ -70,8 +69,10 @@ public:
   virtual void draw_semitransparent_by_OpenGL(bool selection, bool frontface) const;
 
   // member accessing methods
+  // attributes
 public:
   int number_of_carbons() const { return p_number_of_carbons; }
+  virtual Vector3 get_center_location() const;
   virtual Vector3 get_normal() const;
   Carbon* get_carbon(int index);
   const Carbon* get_carbon(int index) const;

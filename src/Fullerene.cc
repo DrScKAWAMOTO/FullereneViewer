@@ -9,6 +9,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <assert.h>
+#include "Config.h"
 #include "Fullerene.h"
 #include "CarbonAllotrope.h"
 #include "Representations.h"
@@ -185,6 +186,9 @@ void Fullerene::set_carbon_allotrope(CarbonAllotrope* carbon_allotrope)
 {
   int len;
   p_carbon_allotrope = carbon_allotrope;
+#if defined(CONFIG_DRAW_MAJOR_AXES_SYMMETRY_IN_GURUGURU_MODE)
+  s_need_representations = true;
+#endif
   if (p_carbon_allotrope &&
       (s_need_fullerene_characteristic || s_need_distance_matrix ||
        s_need_representations))

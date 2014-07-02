@@ -106,7 +106,7 @@ public:
 public:
   virtual int number_of_vertices() const = 0;
   double get_radius_length() const { return p_radius.length; }
-  Vector3 get_center_location() const { return p_center.location; }
+  virtual Vector3 get_center_location() const { return p_center.location; }
   Vector3 get_vertex_location(int index) const;
   virtual Vector3 get_nearest_point(const Vector3& by_your_location) const = 0;
   virtual Vector3 get_normal() const;

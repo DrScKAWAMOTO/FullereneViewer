@@ -72,6 +72,7 @@ HEADERS += ../Automorphism.h \
            ../SortedList.h \
            ../Statistics.h \
            ../SymmetryAxis.h \
+           ../SymmetryAxisNormal.h \
            ../ThreeViewNormal.h \
            ../Utils.h \
            ../Vector3.h \
@@ -113,6 +114,7 @@ SOURCES += ../Automorphism.cc \
            ../Ring.cc \
            ../Statistics.cc \
            ../SymmetryAxis.cc \
+           ../SymmetryAxisNormal.cc \
            ../ThreeViewNormal.cc \
            ../Utils.cc \
            ../Vector3.cc \

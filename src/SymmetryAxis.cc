@@ -107,6 +107,8 @@ void SymmetryAxis::print_out() const
       printf("Ring-Carbon Axis order=%d at Ring(%d) and carbon(%d)",
              p_order, p_north_sequence_no, p_south_sequence_no);
       break;
+    default:
+      assert(0);
     }
   if (p_type == AXIS_TYPE_CENTER_OF_RING)
     printf(", generator step=%d", p_generator_step);
