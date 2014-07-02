@@ -61,16 +61,16 @@ void ThreeViewNormal::draw_opaque_by_OpenGL(bool selection) const
   switch (p_get_nth())
     {
     case 1:
-      OpenGLUtil::set_color(0xff0000);
+      OpenGLUtil::set_color(0xff80b0);
       break;
     case 2:
-      OpenGLUtil::set_color(0x00ff00);
+      OpenGLUtil::set_color(0xb0ff80);
       break;
     default:
-      OpenGLUtil::set_color(0x0000ff);
+      OpenGLUtil::set_color(0x80b0ff);
       break;
     }
-  OpenGLUtil::draw_cylinder(0.4, get_center_location() - norm,
+  OpenGLUtil::draw_cylinder(0.1, get_center_location() - norm,
                             get_center_location() + norm);
 }
 
