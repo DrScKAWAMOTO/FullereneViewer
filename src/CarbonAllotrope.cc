@@ -1250,6 +1250,15 @@ void CarbonAllotrope::register_interactions()
       p_register_interaction(ORIGINAL_FORCE_TYPE_ORIGINAL, axis_normal);
     }
 #endif
+#if defined(CONFIG_DRAW_ALL_AXES_SYMMETRY_IN_GURUGURU_MODE)
+  int len = number_of_axes();
+  for (int i = 0; i < len; ++i)
+    {
+      SymmetryAxis* axis = get_axis(i);
+      SymmetryAxisNormal* axis_normal = new SymmetryAxisNormal(this, axis);
+      p_register_interaction(ORIGINAL_FORCE_TYPE_ORIGINAL, axis_normal);
+    }
+#endif
 }
 
 void CarbonAllotrope::center_location_force_to_zero()

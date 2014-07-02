@@ -172,7 +172,7 @@ DistanceMatrix::DistanceMatrix(CarbonAllotrope* ca)
 }
 
 DistanceMatrix::DistanceMatrix(const DistanceMatrix& that)
-  : p_number(that.p_number)
+  : Object(that), p_number(that.p_number)
 {
   for (int i = 0; i < 12; ++i)
     {
