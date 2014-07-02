@@ -1247,7 +1247,6 @@ void CarbonAllotrope::register_interactions()
   for (int j = 0; j < list_len; ++j)
     {
       SymmetryAxis* major_axis = major_axes[j];
-      major_axis->print_out();
       SymmetryAxisNormal* axis_normal = new SymmetryAxisNormal(this, major_axis);
       p_register_interaction(ORIGINAL_FORCE_TYPE_ORIGINAL, axis_normal);
     }
