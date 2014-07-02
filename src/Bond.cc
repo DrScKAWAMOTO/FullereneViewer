@@ -135,6 +135,12 @@ void Bond::draw_opaque_by_OpenGL(bool selection) const
   OpenGLUtil::draw_cylinder(p_bond_radius, loc0, loc1);
 }
 
+Vector3 Bond::get_center_location() const
+{
+  Vector3 center = p_left->get_center_location() + p_right->get_center_location();
+  return center * 0.5;
+}
+
 bool Bond::connected_with(const Carbon* carbon)
 {
   if (p_left == carbon)

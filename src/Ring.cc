@@ -387,6 +387,15 @@ void Ring::draw_semitransparent_by_OpenGL(bool selection, bool frontface) const
     }
 }
 
+Vector3 Ring::get_center_location() const
+{
+  Vector3 center;
+  int len = number_of_carbons();
+  for (int i = 0; i < len; ++i)
+    center += get_carbon(i)->get_center_location();
+  return center / (double)len;
+}
+
 Vector3 Ring::get_normal() const
 {
   Vector3 normal;

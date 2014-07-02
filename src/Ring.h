@@ -70,8 +70,10 @@ public:
   virtual void draw_semitransparent_by_OpenGL(bool selection, bool frontface) const;
 
   // member accessing methods
+  // attributes
 public:
   int number_of_carbons() const { return p_number_of_carbons; }
+  virtual Vector3 get_center_location() const;
   virtual Vector3 get_normal() const;
   Carbon* get_carbon(int index);
   const Carbon* get_carbon(int index) const;
