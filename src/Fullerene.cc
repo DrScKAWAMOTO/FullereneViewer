@@ -186,7 +186,7 @@ void Fullerene::set_carbon_allotrope(CarbonAllotrope* carbon_allotrope)
 {
   int len;
   p_carbon_allotrope = carbon_allotrope;
-#if defined(CONFIG_DRAW_MAJOR_AXES_SYMMETRY_IN_GURUGURU_MODE)
+#if defined(CONFIG_DRAW_MAJOR_AXES_SYMMETRY_IN_GURUGURU_MODE) || defined(CONFIG_DRAW_ALL_AXES_SYMMETRY_IN_GURUGURU_MODE)
   s_need_representations = true;
 #endif
   if (p_carbon_allotrope &&
