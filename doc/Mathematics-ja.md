@@ -3,7 +3,9 @@
 ### 数学
 
 #### NoA (number of automorphisms)
-　fullerene の炭素集合から自身への錯体同型写像の数。
+　fullerene の炭素集合から自身への錯体同型写像の数。  
+　これは全対称軸の数(src/Config.h で #define CONFIG_DRAW_ALL_AXES_SYMMETRY_IN_GURUGURU_MODE 1 を有効にした場合に表示される)とは違います。  
+　例えば C76-2 は NoA=4 ですが、対称軸の数は３本です。これは群論で言うと、位数２の巡回群の直積群は、元の数は４ですが、位数２の元は３個であることに対応します。残り１個は単位元です。
 
 #### 現状
 　対称性の高いフラーレンは、`ca->fill_n_polygons_around_carbons_closed_to_center_and_pentagons(val, num);` の組み合わせで、対称性の低いフラーレンは、`ca->fill_n_polygon_around_oldest_carbon(val);` の組み合わせで、すべて網羅できていそう。
@@ -13,11 +15,11 @@
 #### EPSILON について
 　通常、浮動小数点の等値判定は、
 
-    fabs(a−b)≦FLT_EPSILON×a       (ただし a≠0.0)
+    fabs(a−b)≦DBL_EPSILON×a       (ただし a≠0.0)
 
 で行う。
 
-　本シミュレーションでは、浮動小数点を固定小数点的に使用するため、本シミュレーションでの浮動小数点の等値判定は、
+　本シミュレーションでは、浮動小数点を固定小数点的に使用するためと、精度的には float で十分であることから、本シミュレーションでの浮動小数点の等値判定は、
 
     fabs(a-b)≦FLT_EPSILON       (ただし a≠0.0)
 
