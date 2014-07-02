@@ -76,10 +76,11 @@ void SymmetryAxisNormal::interaction_original(OriginalForceType force_type,
     default:
       assert(0);
     }
+  Vector3 center = (north_location + south_location) * 0.5;
   Vector3 normal = north_location - south_location;
   p_normal.clockwise = 1;
-  fix_center_location(p_ca->get_center_location());
-  fix_radius_length(normal.abs() * 0.55);
+  fix_center_location(center);
+  fix_radius_length(normal.abs() * 0.6);
   fix_posture(Matrix3(Quaternion(Vector3(0.0, 0.0, 1.0), normal)));
 }
 
