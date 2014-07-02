@@ -2,8 +2,11 @@
 ## フラーレンビューア
 ### リリースノート
 
-#### 2014/07/XX Version 1.X
-　issue30「quaternion → OpenGL の 4x4マトリックス変換が転置？」を修正
+#### 2014/07/XX Version 1.1.X
+　issue30「quaternion → OpenGL の 4x4マトリックス変換が転置？」を修正。  
+　issue53「主要対称軸表示でアサート」を修正。  
+　issue16「全対称軸の表示」を対応。  
+　NoA と対称軸の本数の違いについて解説 [doc/Mathematics-ja.md](Mathematics-ja.md)。
 
 #### 2014/06/29 Version 1.1
 　フラーレンが収束したら、シミュレーションを停止する。  
