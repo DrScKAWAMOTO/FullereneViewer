@@ -23,6 +23,9 @@
 /* fl-guruguru のぐるぐるモードで主要対象軸を表示する。 */
 // #define CONFIG_DRAW_MAJOR_AXES_SYMMETRY_IN_GURUGURU_MODE 1
 
+/* fl-guruguru のぐるぐるモードで全対象軸を表示する。 */
+#define CONFIG_DRAW_ALL_AXES_SYMMETRY_IN_GURUGURU_MODE 1
+
 /* fl-guruguru の POVRay スナップショットの背景を透明色にする。 */
 // #define CONFIG_PAINT_TRANSPARENT_COLOR_TO_BACKGROUND_IN_POVRAY_SNAPSHOT 1
 
