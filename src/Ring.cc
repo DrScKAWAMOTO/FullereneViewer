@@ -7,6 +7,7 @@
 
 #include <assert.h>
 #include <float.h>
+#include "Config.h"
 #include "Ring.h"
 #include "Bond.h"
 #include "CarbonAllotrope.h"
