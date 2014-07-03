@@ -195,7 +195,7 @@ void OpenGLUtil::display()
       glPushMatrix();
       glLoadIdentity();
       gluPickMatrix(OpenGLUtil::click_x, viewport[3] - OpenGLUtil::click_y - 1,
-                    5.0, 5.0, viewport);
+                    10.0, 10.0, viewport);
       current_aspect = (float)viewport[2] / (float)viewport[3];
       gluPerspective(30.0, current_aspect, 1.0, 100.0);
       glMatrixMode(GL_MODELVIEW);
