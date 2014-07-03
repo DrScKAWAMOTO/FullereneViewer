@@ -1337,6 +1337,7 @@ void CarbonAllotrope::calculate_three_axes()
 {
   if (p_Eigenvalue1 >= 0.0)
     return;
+  printf("called calculate_three_axes()\n");
   Statistics st;
   int len = number_of_carbons();
   for (int i = 0; i < len; ++i)
@@ -1346,10 +1347,15 @@ void CarbonAllotrope::calculate_three_axes()
       st.sample(loc);
     }
   st.average_to_zero();
+  printf("call variance_covariance_matrix()\n");
   Matrix3 vcm = st.variance_covariance_matrix();
+  printf("return from variance_covariance_matrix()\n");
+  printf("call Eigenvalues_and_Eigenvectors()\n");
   Matrix3::Eigenvalues_and_Eigenvectors(vcm, p_Eigenvalue1, p_Eigenvector1,
                                         p_Eigenvalue2, p_Eigenvector2,
                                         p_Eigenvalue3, p_Eigenvector3);
+  printf("return from Eigenvalues_and_Eigenvectors()\n");
+  printf("return from calculate_three_axes()\n");
 }
 
 Matrix3 CarbonAllotrope::generate_matrix_of_six_views()

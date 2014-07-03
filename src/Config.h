@@ -18,7 +18,7 @@
 // #define CONFIG_DRAW_NORMAL_VECTOR_IN_GURUGURU_MODE 1
 
 /* fl-guruguru のぐるぐるモードで3方向線(長径・中径・短径)を表示する。 */
-// #define CONFIG_DRAW_PRINCIPAL_COMPONENT_AXES_IN_GURUGURU_MODE 1
+#define CONFIG_DRAW_PRINCIPAL_COMPONENT_AXES_IN_GURUGURU_MODE 1
 
 /* fl-guruguru のぐるぐるモードで主要対象軸を表示する。 */
 // #define CONFIG_DRAW_MAJOR_AXES_SYMMETRY_IN_GURUGURU_MODE 1
