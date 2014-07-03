@@ -30,6 +30,9 @@
 #include "DebugMemory.h"
 #include "Debug.h"
 
+bool OpenGLUtil::drawing_done = false;
+bool OpenGLUtil::simulation_done = false;
+bool OpenGLUtil::picking_done = false;
 int OpenGLUtil::click_x = 0;
 int OpenGLUtil::click_y = 0;
 int OpenGLUtil::drag_x = 0;
@@ -52,6 +55,7 @@ Vector3 OpenGLUtil::p_last_real_motion = Vector3();
 char OpenGLUtil::fullerene_name[1024];
 char OpenGLUtil::generator_label[1024];
 char OpenGLUtil::window_title[3072];
+void (*OpenGLUtil::alert_dialog_callback)(const char* message) = NULL;
 
 int OpenGLUtil::view = 40;
 static GLfloat lightpos[] = { 0.0, 40.0, 100.0, 1.0 };
@@ -178,6 +182,9 @@ void OpenGLUtil::reshape(int w, int h)
 
 void OpenGLUtil::display()
 {
+  picking_done = false;
+  simulation_done = false;
+  drawing_done = false;
   glLoadIdentity();
   gluLookAt(0.0, 0.0, (double)view, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0); //視点の設定
   glLightfv(GL_LIGHT0, GL_POSITION, lightpos); //ライトの設定
@@ -195,7 +202,7 @@ void OpenGLUtil::display()
       glPushMatrix();
       glLoadIdentity();
       gluPickMatrix(OpenGLUtil::click_x, viewport[3] - OpenGLUtil::click_y - 1,
-                    5.0, 5.0, viewport);
+                    20.0, 20.0, viewport);
       current_aspect = (float)viewport[2] / (float)viewport[3];
       gluPerspective(30.0, current_aspect, 1.0, 100.0);
       glMatrixMode(GL_MODELVIEW);
@@ -205,11 +212,16 @@ void OpenGLUtil::display()
       hits = glRenderMode(GL_RENDER);
       select_hits(hits, selectBuf);
       glMatrixMode(GL_MODELVIEW);
+      picking_done = true;
+      resume_drawing();
     }
   else
     {
       if (OpenGLUtil::ca->operate_interactions(0.1))
-        resume_drawing();
+        {
+          simulation_done = true;
+          resume_drawing();
+        }
     }
   if (p_need_drawing > 0)
     {
@@ -219,6 +231,7 @@ void OpenGLUtil::display()
 #endif
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
       OpenGLUtil::ca->draw_by_OpenGL(false);
+      drawing_done = true;
       p_need_drawing--;
     }
   else if (p_need_drawing < 0)

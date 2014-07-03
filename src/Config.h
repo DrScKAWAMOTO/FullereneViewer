@@ -32,6 +32,9 @@
 /* fl-guruguru/ca-modeling で五員環にセロファンを貼る。 */
 #define CONFIG_PUT_COLORED_CELLOPHANE_IN_5_MEMBER_RING 1
 
+/* fl-guruguru/ca-modeling での五員環セロファンは淡い色。 */
+#define CONFIG_COLORED_CELLOPHANE_IS_TINT 1
+
 #endif /* __CONFIG_H__ */
 
 /* Local Variables:	*/

@@ -24,12 +24,12 @@
 
 #### [Issue](https://github.com/DrScKAWAMOTO/FullereneViewer/issues) にある項目を手伝って頂ける方、名乗りをあげてください。詳しくは [Issue](https://github.com/DrScKAWAMOTO/FullereneViewer/issues) をご覧下さい。
 
-#### [README.md](../README.md) に書かれた二つの実験について
+#### [README.md](../README.md) に書かれた二つのおまけについて
 　化学的もしくは数学的な情報・アイディアがあれば [Issue](https://github.com/DrScKAWAMOTO/FullereneViewer/issues) をオープンして情報共有お願いします。
 
-6) 実験その１（カーボン・ナノ・チューブ）
+6) カーボン・ナノ・チューブ
 
-7) 実験その２（７員環を６個使ったY-分岐フラーレン）
+7) ７員環を６個使ったY-分岐フラーレン
 
 #### [README.md](../README.md) に書かれた実験その２のフラーレンについて
 　導電性があるかどうかわかる方、 [Issue](https://github.com/DrScKAWAMOTO/FullereneViewer/issues) をオープンして情報提供お願いします。

@@ -27,6 +27,11 @@
     fabs(a-b)≦FLT_EPSILON       (ただし a≠0.0)
 
 で行う。
+ただし、Quaternion.cc での角度0判定は
+
+    fabs(a-b)≦DBL_EPSILON       (ただし a≠0.0)
+
+で行う。(固有値計算で微小角度が表現できずに無限ループしたため)
 
 #### Euler 標数
 

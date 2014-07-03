@@ -10,6 +10,7 @@
 
 #include <QGLWidget>
 class QBasicTimer;
+class QElapsedTimer;
 
 class Guruguru : public QGLWidget
 {
@@ -31,6 +32,13 @@ protected:
 
 private:
   QBasicTimer* timer;
+  QElapsedTimer* etimer;
+  double elapsed_time_sum_picking_and_drawing;
+  int picking_and_drawing_count;
+  double elapsed_time_sum_simulation_and_drawing;
+  int simulation_and_drawing_count;
+  double elapsed_time_sum_drawing_only;
+  int drawing_only_count;
 };
 
 #endif // FL_GURUGURU_H

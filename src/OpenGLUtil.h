@@ -26,6 +26,9 @@ class Ring;
 class OpenGLUtil {
 
 public:
+  static bool picking_done;
+  static bool simulation_done;
+  static bool drawing_done;
   static int click_x, click_y;
   static int drag_x, drag_y;
   static int release_x, release_y;
@@ -107,6 +110,10 @@ public:
   // file name handling
 public:
   static int find_unused_file_number(const char* file_name_base);
+
+  // alert dialog
+public:
+  static void (*alert_dialog_callback)(const char* message);
 
 };
 

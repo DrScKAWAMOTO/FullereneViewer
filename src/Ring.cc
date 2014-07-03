@@ -7,6 +7,7 @@
 
 #include <assert.h>
 #include <float.h>
+#include "Config.h"
 #include "Ring.h"
 #include "Bond.h"
 #include "CarbonAllotrope.h"
@@ -16,8 +17,13 @@
 
 static int index = 0;
 static int five_membered_ring_colors[12] = {
+#if defined(CONFIG_COLORED_CELLOPHANE_IS_TINT)
+  0xff8080, 0xffc080, 0xffff80, 0xc0ff80, 0x80ff80, 0x80ffc0,
+  0x80ffff, 0x80c0ff, 0x8080ff, 0xc080ff, 0xff80ff, 0xff80c0
+#else
   0xff0000, 0xc04000, 0x808000, 0x40c000, 0x00ff00, 0x00c040,
   0x008080, 0x0040c0, 0x0000ff, 0x4000c0, 0x800080, 0xc00040
+#endif
 };
 
 void Ring::p_make_carbons(CarbonAllotrope* ca, Bond* bond_connection)

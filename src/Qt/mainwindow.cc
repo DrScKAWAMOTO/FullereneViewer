@@ -5,6 +5,7 @@
  * Create: 2011/10/16 16:57:28 JST
  */
 
+#include <QMessageBox>
 #include "mainwindow.h"
 #include "OpenGLUtil.h"
 #include "CarbonAllotrope.h"
@@ -12,6 +13,13 @@
 #include "fl-guruguru.h"
 #include "QtFullereneMenu.h"
 #include "ui_mainwindow.h"
+
+static void alert_dialog(const char* message)
+{
+  QMessageBox msgBox;
+  msgBox.setText(message);
+  msgBox.exec();
+}
 
 MainWindow::MainWindow(QWidget *parent)
   : QMainWindow(parent), ui(new Ui::MainWindow)
@@ -27,6 +35,7 @@ MainWindow::MainWindow(QWidget *parent)
   connect(ui->action_R, SIGNAL(triggered()), this, SLOT(recallShape()));
   connect(ui->action_6, SIGNAL(triggered()), this, SLOT(drawSixViews()));
   connect(ui->action_S, SIGNAL(triggered()), this, SLOT(drawSnapshot()));
+  OpenGLUtil::alert_dialog_callback = alert_dialog;
 }
 
 MainWindow::~MainWindow()
