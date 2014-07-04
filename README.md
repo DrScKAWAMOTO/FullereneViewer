@@ -85,10 +85,10 @@
 
 　数学的な話題で興味のある方、 [Issue](https://github.com/DrScKAWAMOTO/FullereneViewer/issues) で情報交換しましょう。
 
-### 7) 実験その１（カーボン・ナノ・チューブ Carbon Nano Tube）
+### 7) カーボン・ナノ・チューブ (Carbon Nano Tube)
 　メニューに、 [カーボン・ナノ・チューブ](media/screenshot-5.png) の典型パターンを生成する項目(extras - Carbon Nano Tube)があります。これもぐるぐる回せます。どこかのページで見ましたが、カーボン・ナノ・チューブは確か格子点で分類出来たはず。これで生成出来ているカーボン・ナノ・チューブは何型でしょうか？情報求めます。
 
-### 8) 実験その２（七員環を６個使ったY-分岐フラーレン Y-branch fullerene）
+### 8) 七員環を６個使ったY-分岐フラーレン (Y-branch fullerene)
 　メニューに、 [七員環を６個使ったY-分岐フラーレン](media/screenshot-6.png) を生成する項目(extras - Fullerene Y)があります。これもぐるぐる回せます。  
 　炭素数があまりにも多いので、拡大表示のままでは動作が遅いです。ウィンドウを通常サイズに戻して見て下さい。  
 　これは感動ものです。  
