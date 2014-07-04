@@ -14,7 +14,7 @@
 
 void Quaternion::p_initialize_from_axis_and_degree(const Vector3& axis, double degree)
 {
-  if (fabs(degree) <= FLT_EPSILON)
+  if (fabs(degree) <= DBL_EPSILON)
     {
       p_r = 1.0;
       p_x = 0.0;
@@ -41,10 +41,10 @@ Quaternion::Quaternion(double r, double x, double y, double z)
 Quaternion::Quaternion(Vector3 from, Vector3 to)
 {
   double a = from.abs();
-  if ((a != 1.0) && (a > FLT_EPSILON))
+  if ((a != 1.0) && (a > DBL_EPSILON))
     from /= a;
   a = to.abs();
-  if ((a != 1.0) && (a > FLT_EPSILON))
+  if ((a != 1.0) && (a > DBL_EPSILON))
     to /= a;
   Vector3 axis = exterior_product(to, from);
   double degree = acos(inner_product(to, from)) / PAI * 180.0;
@@ -102,7 +102,7 @@ Quaternion Quaternion::conjugation() const
 void Quaternion::normalize()
 {
   double abs = sqrt(p_r * p_r + p_x * p_x + p_y * p_y + p_z * p_z);
-  if (abs > FLT_EPSILON)
+  if (abs > DBL_EPSILON)
     {
       p_r /= abs;
       p_x /= abs;
