@@ -1792,11 +1792,11 @@ void CarbonAllotrope::execute_POVRay(const char* pov_name)
     {
       char message[1000];
       if (result == 127)
-        sprintf(message, "povray 実行に失敗しました。\nsystem(`%s)'\n", command_line);
+        sprintf(message, "execution error: `%s'", command_line);
       else if (result < 0)
-        sprintf(message, "povray がエラー終了しました。\nsystem(`%s')\n", command_line);
+        sprintf(message, "return error from: `%s'", command_line);
       else
-        sprintf(message, "内部エラーです。\nsystem(`%s')\n", command_line);
+        sprintf(message, "internal error: `%s'", command_line);
       if (OpenGLUtil::alert_dialog_callback)
         (*OpenGLUtil::alert_dialog_callback)(message);
       else

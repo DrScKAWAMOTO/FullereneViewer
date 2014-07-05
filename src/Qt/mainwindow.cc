@@ -5,6 +5,7 @@
  * Create: 2011/10/16 16:57:28 JST
  */
 
+#include <QMessageBox>
 #include "mainwindow.h"
 #include "OpenGLUtil.h"
 #include "CarbonAllotrope.h"
