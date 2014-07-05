@@ -1787,7 +1787,24 @@ void CarbonAllotrope::execute_POVRay(const char* pov_name)
   sprintf(command_line, "povray37 -W1600 -H1200 +FN +UA %s", pov_name);
 #endif
   printf("%s\n", command_line);
-  system(command_line);
+  int result = system(command_line);
+  if (result != 0)
+    {
+      char message[1000];
+      if (result == 127)
+        sprintf(message, "povray 実行に失敗しました。\nsystem(`%s)'\n", command_line);
+      else if (result < 0)
+        sprintf(message, "povray がエラー終了しました。\nsystem(`%s')\n", command_line);
+      else
+        sprintf(message, "内部エラーです。\nsystem(`%s')\n", command_line);
+      if (OpenGLUtil::alert_dialog_callback)
+        (*OpenGLUtil::alert_dialog_callback)(message);
+      else
+        {
+          fprintf(stderr, "%s\n", message);
+          exit(1);
+        }
+    }
 }
 
 void CarbonAllotrope::

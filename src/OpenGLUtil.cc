@@ -52,6 +52,7 @@ Vector3 OpenGLUtil::p_last_real_motion = Vector3();
 char OpenGLUtil::fullerene_name[1024];
 char OpenGLUtil::generator_label[1024];
 char OpenGLUtil::window_title[3072];
+void (*OpenGLUtil::alert_dialog_callback)(const char* message) = NULL;
 
 int OpenGLUtil::view = 40;
 static GLfloat lightpos[] = { 0.0, 40.0, 100.0, 1.0 };

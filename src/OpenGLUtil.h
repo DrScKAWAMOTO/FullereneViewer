@@ -108,6 +108,10 @@ public:
 public:
   static int find_unused_file_number(const char* file_name_base);
 
+  // alert dialog
+public:
+  static void (*alert_dialog_callback)(const char* message);
+
 };
 
 #endif /* __OPENGLUTIL_H__ */
