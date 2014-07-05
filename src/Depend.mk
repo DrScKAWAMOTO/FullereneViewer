@@ -76,8 +76,8 @@ OpenGLUtil.o: OpenGLUtil.cc /usr/include/assert.h \
   /usr/include/stdlib.h /usr/include/stdio.h /usr/include/limits.h \
   /usr/include/sys/limits.h /usr/include/machine/_limits.h \
   /usr/include/sys/syslimits.h /usr/include/math.h /usr/include/dirent.h \
-  /usr/include/sys/dirent.h Vector3.h Object.h Matrix3.h Quaternion.h \
-  CarbonAllotrope.h Interactives.h List.h DebugMemory.h \
+  /usr/include/sys/dirent.h Config.h Vector3.h Object.h Matrix3.h \
+  Quaternion.h CarbonAllotrope.h Interactives.h List.h DebugMemory.h \
   InteractiveOperation.h Interactive.h Radius.h /usr/include/float.h \
   Posture.h Center.h Normal.h Ring.h InteractiveRegularPolygon.h Carbon.h \
   ErrorCode.h Bond.h SymmetryAxis.h Fullerene.h Utils.h MenuEntry.h \
@@ -156,6 +156,11 @@ InteractivePoint.o: InteractivePoint.cc /usr/include/float.h \
   /usr/include/sys/_types.h /usr/include/machine/_types.h Object.h \
   Radius.h /usr/include/math.h /usr/include/machine/_limits.h Posture.h \
   Matrix3.h Vector3.h Center.h Normal.h
+Representations.o: Representations.cc /usr/include/assert.h \
+  /usr/include/sys/cdefs.h /usr/include/stdio.h /usr/include/sys/_null.h \
+  /usr/include/sys/_types.h /usr/include/machine/_types.h \
+  Representations.h Object.h List.h DebugMemory.h Representation.h \
+  RepresentationInfo.h
 Random.o: Random.cc /usr/include/stdlib.h /usr/include/sys/cdefs.h \
   /usr/include/sys/_null.h /usr/include/sys/_types.h \
   /usr/include/machine/_types.h /usr/include/time.h \
@@ -232,6 +237,12 @@ DistanceMatrix.o: DistanceMatrix.cc /usr/include/limits.h \
   /usr/include/math.h /usr/include/float.h Posture.h Matrix3.h Vector3.h \
   Center.h Normal.h Ring.h InteractiveRegularPolygon.h Carbon.h \
   ErrorCode.h Bond.h SymmetryAxis.h Utils.h
+InteractivePlane.o: InteractivePlane.cc /usr/include/float.h \
+  /usr/include/sys/cdefs.h /usr/include/assert.h InteractivePlane.h \
+  Interactive.h /usr/include/stdio.h /usr/include/sys/_null.h \
+  /usr/include/sys/_types.h /usr/include/machine/_types.h Object.h \
+  Radius.h /usr/include/math.h /usr/include/machine/_limits.h Posture.h \
+  Matrix3.h Vector3.h Center.h Normal.h
 Utils.o: Utils.cc /usr/include/string.h /usr/include/sys/cdefs.h \
   /usr/include/sys/_null.h /usr/include/sys/_types.h \
   /usr/include/machine/_types.h /usr/include/strings.h \
@@ -241,20 +252,6 @@ Quaternion.o: Quaternion.cc /usr/include/math.h /usr/include/sys/cdefs.h \
   /usr/include/machine/_limits.h /usr/include/float.h \
   /usr/include/stdio.h /usr/include/sys/_null.h Quaternion.h Vector3.h \
   Object.h Utils.h
-InteractiveLine.o: InteractiveLine.cc /usr/include/float.h \
-  /usr/include/sys/cdefs.h /usr/include/assert.h InteractiveLine.h \
-  Interactive.h /usr/include/stdio.h /usr/include/sys/_null.h \
-  /usr/include/sys/_types.h /usr/include/machine/_types.h Object.h \
-  Radius.h /usr/include/math.h /usr/include/machine/_limits.h Posture.h \
-  Matrix3.h Vector3.h Center.h Normal.h OpenGLUtil.h \
-  /usr/local/include/GL/glut.h /usr/local/include/GL/freeglut_std.h \
-  /usr/local/include/GL/gl.h /usr/local/include/GL/glext.h \
-  /usr/include/stddef.h /usr/include/inttypes.h \
-  /usr/include/machine/_inttypes.h /usr/include/x86/_inttypes.h \
-  /usr/include/sys/stdint.h /usr/include/machine/_stdint.h \
-  /usr/include/sys/_stdint.h /usr/local/include/GL/glu.h \
-  /usr/include/stdlib.h /usr/local/include/GL/freeglut_ext.h \
-  /usr/include/stdarg.h Quaternion.h
 Carbon.o: Carbon.cc /usr/include/limits.h /usr/include/sys/cdefs.h \
   /usr/include/sys/limits.h /usr/include/machine/_limits.h \
   /usr/include/sys/syslimits.h /usr/include/assert.h /usr/include/float.h \
@@ -273,6 +270,20 @@ Carbon.o: Carbon.cc /usr/include/limits.h /usr/include/sys/cdefs.h \
   /usr/include/sys/_stdint.h /usr/local/include/GL/glu.h \
   /usr/include/stdlib.h /usr/local/include/GL/freeglut_ext.h \
   /usr/include/stdarg.h Quaternion.h Debug.h
+InteractiveLine.o: InteractiveLine.cc /usr/include/float.h \
+  /usr/include/sys/cdefs.h /usr/include/assert.h InteractiveLine.h \
+  Interactive.h /usr/include/stdio.h /usr/include/sys/_null.h \
+  /usr/include/sys/_types.h /usr/include/machine/_types.h Object.h \
+  Radius.h /usr/include/math.h /usr/include/machine/_limits.h Posture.h \
+  Matrix3.h Vector3.h Center.h Normal.h OpenGLUtil.h \
+  /usr/local/include/GL/glut.h /usr/local/include/GL/freeglut_std.h \
+  /usr/local/include/GL/gl.h /usr/local/include/GL/glext.h \
+  /usr/include/stddef.h /usr/include/inttypes.h \
+  /usr/include/machine/_inttypes.h /usr/include/x86/_inttypes.h \
+  /usr/include/sys/stdint.h /usr/include/machine/_stdint.h \
+  /usr/include/sys/_stdint.h /usr/local/include/GL/glu.h \
+  /usr/include/stdlib.h /usr/local/include/GL/freeglut_ext.h \
+  /usr/include/stdarg.h Quaternion.h
 Object.o: Object.cc /usr/include/stdio.h /usr/include/sys/cdefs.h \
   /usr/include/sys/_null.h /usr/include/sys/_types.h \
   /usr/include/machine/_types.h /usr/include/stdlib.h Object.h
@@ -336,7 +347,6 @@ Automorphism.o: Automorphism.cc /usr/include/assert.h \
   Automorphism.h
 InteractiveOperation.o: InteractiveOperation.cc InteractiveOperation.h \
   Object.h
-Pattern.o: Pattern.cc Pattern.h
 ThreeViewNormal.o: ThreeViewNormal.cc /usr/include/assert.h \
   /usr/include/sys/cdefs.h ThreeViewNormal.h /usr/include/stdio.h \
   /usr/include/sys/_null.h /usr/include/sys/_types.h \
@@ -370,27 +380,17 @@ Fullerenes.o: Fullerenes.cc Fullerenes.h List.h DebugMemory.h Fullerene.h \
   Vector3.h Center.h Normal.h Ring.h InteractiveRegularPolygon.h Carbon.h \
   ErrorCode.h Bond.h SymmetryAxis.h Representations.h Representation.h \
   RepresentationInfo.h Debug.h
-Representations.o: Representations.cc /usr/include/assert.h \
-  /usr/include/sys/cdefs.h /usr/include/stdio.h /usr/include/sys/_null.h \
-  /usr/include/sys/_types.h /usr/include/machine/_types.h \
-  Representations.h Object.h List.h DebugMemory.h Representation.h \
-  RepresentationInfo.h
 Statistics.o: Statistics.cc /usr/include/stdio.h /usr/include/sys/cdefs.h \
   /usr/include/sys/_null.h /usr/include/sys/_types.h \
   /usr/include/machine/_types.h /usr/include/stdlib.h Statistics.h List.h \
   DebugMemory.h Vector3.h Object.h Matrix3.h
+Pattern.o: Pattern.cc Pattern.h
 Representation.o: Representation.cc /usr/include/stdio.h \
   /usr/include/sys/cdefs.h /usr/include/sys/_null.h \
   /usr/include/sys/_types.h /usr/include/machine/_types.h \
   /usr/include/string.h /usr/include/strings.h \
   /usr/include/xlocale/_string.h /usr/include/assert.h Representation.h \
   Object.h List.h DebugMemory.h RepresentationInfo.h
-InteractivePlane.o: InteractivePlane.cc /usr/include/float.h \
-  /usr/include/sys/cdefs.h /usr/include/assert.h InteractivePlane.h \
-  Interactive.h /usr/include/stdio.h /usr/include/sys/_null.h \
-  /usr/include/sys/_types.h /usr/include/machine/_types.h Object.h \
-  Radius.h /usr/include/math.h /usr/include/machine/_limits.h Posture.h \
-  Matrix3.h Vector3.h Center.h Normal.h
 Interactive.o: Interactive.cc /usr/include/float.h \
   /usr/include/sys/cdefs.h /usr/include/assert.h Interactive.h \
   /usr/include/stdio.h /usr/include/sys/_null.h /usr/include/sys/_types.h \

@@ -18,6 +18,7 @@
 #ifdef _WIN32
 #include <windows.h>
 #endif
+#include "Config.h"
 #include "Vector3.h"
 #include "Matrix3.h"
 #include "Quaternion.h"
@@ -29,6 +30,17 @@
 #include "OpenGLUtil.h"
 #include "DebugMemory.h"
 #include "Debug.h"
+
+// control slices and stacks
+#define INITIAL_FARNESS_OF_VIEW_PORT 40
+#define AVERAGE_COUNT_SLICES_AND_STACKS_DECISION 30
+double OpenGLUtil::elapsed_time_updateGL = 0.0;
+int OpenGLUtil::count_updateGL = 0;
+int OpenGLUtil::flame_rate_updateGL = 0;
+int OpenGLUtil::adjustment_from_flame_rate = 0;
+int OpenGLUtil::slices_and_stacks = 10;
+double OpenGLUtil::adjust_forwarding_threshold = 0.0;
+double OpenGLUtil::adjust_backwarding_threshold = 0.0;
 
 bool OpenGLUtil::drawing_done = false;
 bool OpenGLUtil::simulation_done = false;
@@ -55,9 +67,10 @@ Vector3 OpenGLUtil::p_last_real_motion = Vector3();
 char OpenGLUtil::fullerene_name[1024];
 char OpenGLUtil::generator_label[1024];
 char OpenGLUtil::window_title[3072];
+char* const OpenGLUtil::window_title_status = OpenGLUtil::window_title + 18;
 void (*OpenGLUtil::alert_dialog_callback)(const char* message) = NULL;
 
-int OpenGLUtil::view = 40;
+int OpenGLUtil::view = INITIAL_FARNESS_OF_VIEW_PORT;
 static GLfloat lightpos[] = { 0.0, 40.0, 100.0, 1.0 };
 #define BUFMAX 100
 
@@ -150,6 +163,32 @@ void OpenGLUtil::initialize_pre(int argc, char *argv[], bool call_glutInit)
   else
     usage(argv[0]);
   sprintf(window_title, "%s %s %s", WINDOW_TITLE, fullerene_name, generator_label);
+
+  assert((CONFIG_GURUGURU_TARGET_FPS >= 1) &&
+         (CONFIG_GURUGURU_TARGET_FPS <= 99));
+  assert((CONFIG_GURUGURU_CPU_USAGE_TARGET_RATE >= 1) &&
+         (CONFIG_GURUGURU_CPU_USAGE_TARGET_RATE <= 100));
+#if CONFIG_GURUGURU_CPU_USAGE_TARGET_RATE == 100
+  OpenGLUtil::adjust_forwarding_threshold = CONFIG_GURUGURU_TARGET_FPS * 0.97;
+  if (OpenGLUtil::adjust_forwarding_threshold < 0.0)
+    OpenGLUtil::adjust_forwarding_threshold = 0.0;
+  OpenGLUtil::adjust_backwarding_threshold = CONFIG_GURUGURU_TARGET_FPS * 1.03;
+#else
+  {
+    double mean = (100.0 / CONFIG_GURUGURU_CPU_USAGE_TARGET_RATE *
+                   CONFIG_GURUGURU_TARGET_FPS);
+    double diff = 2.0 * (mean - CONFIG_GURUGURU_TARGET_FPS);
+    OpenGLUtil::adjust_forwarding_threshold = CONFIG_GURUGURU_TARGET_FPS;
+    OpenGLUtil::adjust_backwarding_threshold = CONFIG_GURUGURU_TARGET_FPS + diff;
+  }
+#endif
+#if defined(DEBUG_CONTROL_SLICES_AND_STACKS)
+  printf("CONFIG_GURUGURU_TARGET_FPS = %d\n", CONFIG_GURUGURU_TARGET_FPS);
+  printf("CONFIG_GURUGURU_CPU_USAGE_TARGET_RATE = %d\n",
+    CONFIG_GURUGURU_CPU_USAGE_TARGET_RATE);
+  printf("adjust_forwarding_threshold = %f\n", OpenGLUtil::adjust_forwarding_threshold);
+  printf("adjust_backwarding_threshold = %f\n", OpenGLUtil::adjust_backwarding_threshold);
+#endif
 }
 
 void OpenGLUtil::initialize_post()
@@ -223,6 +262,8 @@ void OpenGLUtil::display()
           resume_drawing();
         }
     }
+  if (OpenGLUtil::control_slices_and_stacks())
+    resume_drawing();
   if (p_need_drawing > 0)
     {
 #if defined(DEBUG_STOP_DRAWING)
@@ -238,6 +279,64 @@ void OpenGLUtil::display()
     p_need_drawing = DRAWING_THRESHOLD;
 }
 
+#define SIZE_OF_SLICES_AND_STACKS_TABLE 3
+static int slices_and_stacks_table[SIZE_OF_SLICES_AND_STACKS_TABLE] = {
+  30, 20, 10
+};
+
+bool OpenGLUtil::control_slices_and_stacks()
+{
+  // initialize adjustment
+  int adjustment_slices_and_stacks = 0;
+  bool modified_slices_and_stacks;
+
+  // adjustment from flame rate
+  if (count_updateGL >= AVERAGE_COUNT_SLICES_AND_STACKS_DECISION)
+    {
+      double flame_rate = (1000000000.0 * count_updateGL / elapsed_time_updateGL);
+#if defined(DEBUG_CONTROL_SLICES_AND_STACKS)
+      printf("flame rate = %f\n", flame_rate);
+#endif
+      flame_rate_updateGL = flame_rate;
+      if (flame_rate > OpenGLUtil::adjust_backwarding_threshold)
+        adjustment_from_flame_rate--;
+      else if (flame_rate >= OpenGLUtil::adjust_forwarding_threshold)
+        ;
+      else
+        adjustment_from_flame_rate++;
+      elapsed_time_updateGL = 0.0;
+      count_updateGL = 0;
+      if (adjustment_from_flame_rate >= SIZE_OF_SLICES_AND_STACKS_TABLE)
+        adjustment_from_flame_rate = SIZE_OF_SLICES_AND_STACKS_TABLE - 1;
+      else if (adjustment_from_flame_rate < 0)
+        adjustment_from_flame_rate = 0;
+#if defined(DEBUG_CONTROL_SLICES_AND_STACKS)
+      printf("adjustment from flame rate = %d\n", adjustment_from_flame_rate);
+#endif
+    }
+  adjustment_slices_and_stacks += adjustment_from_flame_rate;
+
+  // adjustment from farness
+  adjustment_slices_and_stacks += view / 25;
+
+  if (adjustment_slices_and_stacks >= SIZE_OF_SLICES_AND_STACKS_TABLE)
+    adjustment_slices_and_stacks = SIZE_OF_SLICES_AND_STACKS_TABLE - 1;
+  else if (adjustment_slices_and_stacks < 0)
+    adjustment_slices_and_stacks = 0;
+  if (slices_and_stacks != slices_and_stacks_table[adjustment_slices_and_stacks])
+    modified_slices_and_stacks = true;
+  else
+    modified_slices_and_stacks = false;
+  slices_and_stacks = slices_and_stacks_table[adjustment_slices_and_stacks];
+#if defined(DEBUG_CONTROL_SLICES_AND_STACKS)
+  static int last_slices_and_stacks = -1;
+  if (last_slices_and_stacks != slices_and_stacks)
+    printf("slices_and_stacks = %d\n", slices_and_stacks);
+  last_slices_and_stacks = slices_and_stacks;
+#endif
+  return modified_slices_and_stacks;
+}
+
 void OpenGLUtil::set_color(int color)
 {
   glColor3d(((color>>16)&255)/255.0,((color>>8)&255)/255.0,((color>>0)&255)/255.0);
@@ -251,8 +350,8 @@ void OpenGLUtil::set_color(int color, double alpha)
 
 void OpenGLUtil::draw_sphere(double radius, const Vector3& center)
 {
-  int slices = 30;
-  int stacks = 30;
+  int slices = slices_and_stacks;
+  int stacks = slices_and_stacks;
   glPushMatrix();
   glTranslated(center.x(), center.y(), center.z());
   glFrontFace(GL_CCW);
@@ -262,9 +361,9 @@ void OpenGLUtil::draw_sphere(double radius, const Vector3& center)
 
 void OpenGLUtil::draw_cylinder(double radius, const Vector3& from, const Vector3& to)
 {
-  int slices = 30;
+  int slices = slices_and_stacks;
 #ifdef FREEGLUT
-  int stacks = 30;
+  int stacks = slices_and_stacks;
 #endif
   Vector3 direction = from - to;
   double height = direction.abs();

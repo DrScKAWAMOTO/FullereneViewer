@@ -14,7 +14,13 @@
 #endif
 #include "Quaternion.h"
 
-#define WINDOW_TITLE "Fullerene Viewer -"
+#define WINDOW_TITLE "Fullerene Viewer [--f--%---]"
+#define WINDOW_TITLE_STATUS_FPS 0
+#define WINDOW_TITLE_STATUS_CPU_USAGE_RATE 3
+#define WINDOW_TITLE_STATUS_SIMULATION 6
+#define WINDOW_TITLE_STATUS_DRAWING 7
+#define WINDOW_TITLE_STATUS_RESOLUTION 8
+#define WINDOW_TITLE_STATUS_SIZE 9
 #define DRAWING_THRESHOLD 2
 
 class Vector3;
@@ -42,7 +48,23 @@ public:
   static char fullerene_name[1024];
   static char generator_label[1024];
   static char window_title[3072];
+  static char* const window_title_status;
   static int view;
+
+  // picking simulation drawing
+  static bool picking_done;
+  static bool simulation_done;
+  static bool drawing_done;
+
+  // control slices and stacks by flame-rate, farness, configuration
+  static double elapsed_time_updateGL;
+  static int count_updateGL;
+  static int flame_rate_updateGL;
+  static int adjustment_from_flame_rate;
+  static int slices_and_stacks;
+  static double adjust_forwarding_threshold;
+  static double adjust_backwarding_threshold;
+
 private:
   static int p_need_drawing;
   static bool p_guruguru_mode;
@@ -63,6 +85,10 @@ public:
   // OpenGL display
 public:
   static void display();
+
+  // control slices and stacks
+public:
+  static bool control_slices_and_stacks();
 
   // OpenGL drawing objects
 public:
