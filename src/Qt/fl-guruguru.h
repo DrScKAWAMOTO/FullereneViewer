@@ -10,6 +10,7 @@
 
 #include <QGLWidget>
 class QBasicTimer;
+class QElapsedTimer;
 
 class Guruguru : public QGLWidget
 {
@@ -20,6 +21,7 @@ public:
   ~Guruguru();
 
 protected:
+  void update_window_status();
   void timerEvent(QTimerEvent *e);
   void mousePressEvent(QMouseEvent* e);
   void mouseReleaseEvent(QMouseEvent* e);
@@ -31,6 +33,8 @@ protected:
 
 private:
   QBasicTimer* timer;
+  // calculate flame-rate
+  QElapsedTimer* etimer;
 };
 
 #endif // FL_GURUGURU_H

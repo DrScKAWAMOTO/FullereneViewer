@@ -15,14 +15,19 @@
 *.a
 *.lib
 
+# editor mergetool backup files
+*~
+*.bak
+*.orig
+
 # Executables
 *.exe
 *.out
 *.app
+*.core
 
 # Project Specific Executables
 src/Qt/fl-guruguru
-src/Qt/fl-guruguru.core
 src/ca-char
 src/ca-cmp
 src/ca-generator
@@ -43,12 +48,10 @@ src/Qt/fl-guruguru.xcodeproj
 # Project Specific extra files
 archive.name
 archive.list
-src/GPATH
-src/GRTAGS
-src/GTAGS
-src/ID
 GPATH
 GRTAGS
 GTAGS
 ID
-src/Depend.mk
+
+# OS oriented files
+.DS_Store
