@@ -32,9 +32,6 @@ class Ring;
 class OpenGLUtil {
 
 public:
-  static bool picking_done;
-  static bool simulation_done;
-  static bool drawing_done;
   static int click_x, click_y;
   static int drag_x, drag_y;
   static int release_x, release_y;
