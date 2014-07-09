@@ -17,8 +17,8 @@
         ------ mesa-utils のインストールが完了するのを待つ。
     $ glxinfo
         ------ 長いログが表示されることを確認する。
-    $ sudo apt-get install qt4-qmake libqt4-dev g++ freeglut3 freeglut3-dev freeglut3-dbg
-        ------ qt4-qmake libqt4-dev g++ freeglut3 freeglut3-dev freeglut3-dbg のインストールが完了するのを待つ。
+    $ sudo apt-get install qt4-qmake libqt4-dev g++
+        ------ qt4-qmake libqt4-dev g++ のインストールが完了するのを待つ。
 
 #### 2) github からソースファイル取得
     home> git clone https://github.com/DrScKAWAMOTO/FullereneViewer

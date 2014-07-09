@@ -41,6 +41,27 @@ int OpenGLUtil::adjustment_from_flame_rate = 0;
 int OpenGLUtil::slices_and_stacks = 10;
 double OpenGLUtil::adjust_forwarding_threshold = 0.0;
 double OpenGLUtil::adjust_backwarding_threshold = 0.0;
+const int OpenGLUtil::size_of_slices_and_stacks_table = 3;
+const int OpenGLUtil::slices_and_stacks_table[size_of_slices_and_stacks_table] = {
+  32, 16, 8
+};
+const double OpenGLUtil::sin_table[41] = {
+  sin(0.0),
+  sin(2.0 * PAI / 32 * 1), sin(2.0 * PAI / 32 * 2), sin(2.0 * PAI / 32 * 3),
+  sin(2.0 * PAI / 32 * 4), sin(2.0 * PAI / 32 * 5), sin(2.0 * PAI / 32 * 6),
+  sin(2.0 * PAI / 32 * 7), sin(2.0 * PAI / 32 * 8), sin(2.0 * PAI / 32 * 9),
+  sin(2.0 * PAI / 32 * 10), sin(2.0 * PAI / 32 * 11), sin(2.0 * PAI / 32 * 12),
+  sin(2.0 * PAI / 32 * 13), sin(2.0 * PAI / 32 * 14), sin(2.0 * PAI / 32 * 15),
+  sin(2.0 * PAI / 32 * 16), sin(2.0 * PAI / 32 * 17), sin(2.0 * PAI / 32 * 18),
+  sin(2.0 * PAI / 32 * 19), sin(2.0 * PAI / 32 * 20), sin(2.0 * PAI / 32 * 21),
+  sin(2.0 * PAI / 32 * 22), sin(2.0 * PAI / 32 * 23), sin(2.0 * PAI / 32 * 24),
+  sin(2.0 * PAI / 32 * 25), sin(2.0 * PAI / 32 * 26), sin(2.0 * PAI / 32 * 27),
+  sin(2.0 * PAI / 32 * 28), sin(2.0 * PAI / 32 * 29), sin(2.0 * PAI / 32 * 30),
+  sin(2.0 * PAI / 32 * 31), sin(2.0 * PAI / 32 * 32), sin(2.0 * PAI / 32 * 33),
+  sin(2.0 * PAI / 32 * 34), sin(2.0 * PAI / 32 * 35), sin(2.0 * PAI / 32 * 36),
+  sin(2.0 * PAI / 32 * 37), sin(2.0 * PAI / 32 * 38), sin(2.0 * PAI / 32 * 39),
+  sin(2.0 * PAI / 32 * 40) };
+const double * const OpenGLUtil::cos_table = OpenGLUtil::sin_table + 8;
 
 bool OpenGLUtil::drawing_done = false;
 bool OpenGLUtil::simulation_done = false;
@@ -106,10 +127,8 @@ static void usage(char* argv0)
   exit(1);
 }
 
-void OpenGLUtil::initialize_pre(int argc, char *argv[], bool call_glutInit)
+void OpenGLUtil::initialize_pre(int argc, char *argv[])
 {
-  if (call_glutInit)
-    glutInit(&argc, argv);
   if (argc == 1)
     {
       strcpy(fullerene_name, "C60 (NoA=120)");
@@ -279,11 +298,6 @@ void OpenGLUtil::display()
     p_need_drawing = DRAWING_THRESHOLD;
 }
 
-#define SIZE_OF_SLICES_AND_STACKS_TABLE 3
-static int slices_and_stacks_table[SIZE_OF_SLICES_AND_STACKS_TABLE] = {
-  30, 20, 10
-};
-
 bool OpenGLUtil::control_slices_and_stacks()
 {
   // initialize adjustment
@@ -306,8 +320,8 @@ bool OpenGLUtil::control_slices_and_stacks()
         adjustment_from_flame_rate++;
       elapsed_time_updateGL = 0.0;
       count_updateGL = 0;
-      if (adjustment_from_flame_rate >= SIZE_OF_SLICES_AND_STACKS_TABLE)
-        adjustment_from_flame_rate = SIZE_OF_SLICES_AND_STACKS_TABLE - 1;
+      if (adjustment_from_flame_rate >= size_of_slices_and_stacks_table)
+        adjustment_from_flame_rate = size_of_slices_and_stacks_table - 1;
       else if (adjustment_from_flame_rate < 0)
         adjustment_from_flame_rate = 0;
 #if defined(DEBUG_CONTROL_SLICES_AND_STACKS)
@@ -319,8 +333,8 @@ bool OpenGLUtil::control_slices_and_stacks()
   // adjustment from farness
   adjustment_slices_and_stacks += view / 25;
 
-  if (adjustment_slices_and_stacks >= SIZE_OF_SLICES_AND_STACKS_TABLE)
-    adjustment_slices_and_stacks = SIZE_OF_SLICES_AND_STACKS_TABLE - 1;
+  if (adjustment_slices_and_stacks >= size_of_slices_and_stacks_table)
+    adjustment_slices_and_stacks = size_of_slices_and_stacks_table - 1;
   else if (adjustment_slices_and_stacks < 0)
     adjustment_slices_and_stacks = 0;
   if (slices_and_stacks != slices_and_stacks_table[adjustment_slices_and_stacks])
@@ -350,21 +364,69 @@ void OpenGLUtil::set_color(int color, double alpha)
 
 void OpenGLUtil::draw_sphere(double radius, const Vector3& center)
 {
-  int slices = slices_and_stacks;
-  int stacks = slices_and_stacks;
+  int steps = 32 / slices_and_stacks;
+  double r0, r1;
+  double z0, z1;
+
   glPushMatrix();
   glTranslated(center.x(), center.y(), center.z());
+  glScaled(radius, radius, radius);
   glFrontFace(GL_CCW);
-  glutSolidSphere(radius, slices, stacks);
+
+  // north pole
+  z0 = cos_table[0];
+  z1 = cos_table[steps];
+  r0 = sin_table[0];
+  r1 = sin_table[steps];
+  glBegin(GL_TRIANGLE_FAN);
+  glNormal3d(r0, r0, z0);
+  glVertex3d(r0, r0, z0);
+  for (int i = 0; i <= 32; i += steps)
+    {
+      glNormal3d(cos_table[i] * r1, sin_table[i] * r1, z1);
+      glVertex3d(cos_table[i] * r1, sin_table[i] * r1, z1);
+    }
+  glEnd();
+
+  // body
+  for (int j = 2 * steps; j < 32; j += steps)
+    {
+      z0 = z1;
+      z1 = cos_table[j];
+      r0 = r1;
+      r1 = sin_table[j];
+      glBegin(GL_QUAD_STRIP);
+      for (int i = 0; i <= 32; i += steps)
+        {
+          glNormal3d(cos_table[i] * r0, sin_table[i] * r0, z0);
+          glVertex3d(cos_table[i] * r0, sin_table[i] * r0, z0);
+          glNormal3d(cos_table[i] * r1, sin_table[i] * r1, z1);
+          glVertex3d(cos_table[i] * r1, sin_table[i] * r1, z1);
+        }
+      glEnd();
+    }
+
+  // south pole
+  z0 = z1;
+  z1 = cos_table[32];
+  r0 = r1;
+  r1 = sin_table[32];
+  glBegin(GL_TRIANGLE_FAN);
+  for (int i = 0; i <= 32; i += steps)
+    {
+      glNormal3d(cos_table[i] * r0, sin_table[i] * r0, z0);
+      glVertex3d(cos_table[i] * r0, sin_table[i] * r0, z0);
+    }
+  glNormal3d(r1, r1, z1);
+  glVertex3d(r1, r1, z1);
+  glEnd();
+
   glPopMatrix();
 }
 
 void OpenGLUtil::draw_cylinder(double radius, const Vector3& from, const Vector3& to)
 {
-  int slices = slices_and_stacks;
-#ifdef FREEGLUT
-  int stacks = slices_and_stacks;
-#endif
+  int steps = 32 / slices_and_stacks;
   Vector3 direction = from - to;
   double height = direction.abs();
   double inner = inner_product(Vector3(0.0, 0.0, 1.0), direction) / height;
@@ -374,19 +436,15 @@ void OpenGLUtil::draw_cylinder(double radius, const Vector3& from, const Vector3
   glPushMatrix();
   glTranslated(to.x(), to.y(), to.z());
   glRotated(degree, axis.x(), axis.y(), axis.z());
-#ifdef FREEGLUT
-  glutSolidCylinder(radius, height, slices, stacks);
-#else
+  glScaled(radius, radius, height);
   glBegin(GL_QUAD_STRIP);
-  for (int i = 0; i <= slices; ++i)
+  for (int i = 0; i <= 32; i += steps)
     {
-      double t = (double)i * 2.0 * PAI / (double)slices;
-      glNormal3d(cos(t), sin(t), 0.0);
-      glVertex3d(radius * cos(t), radius * sin(t), height);
-      glVertex3d(radius * cos(t), radius * sin(t), 0.0);
+      glNormal3d(cos_table[i], sin_table[i], 0.0);
+      glVertex3d(cos_table[i], sin_table[i], 1.0);
+      glVertex3d(cos_table[i], sin_table[i], 0.0);
     }
   glEnd();
-#endif
   glPopMatrix();
 }
 
