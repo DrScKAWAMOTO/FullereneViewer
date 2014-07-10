@@ -8,9 +8,12 @@
 #ifndef __OPENGLUTIL_H__
 #define __OPENGLUTIL_H__
 
-#include <GL/glut.h>
-#ifdef FREEGLUT
-#include <GL/freeglut_ext.h>
+#if __APPLE__
+#   include <OpenGL/gl.h>
+#   include <OpenGL/glu.h>
+#else
+#   include <GL/gl.h>
+#   include <GL/glu.h>
 #endif
 #include "Quaternion.h"
 
@@ -61,6 +64,10 @@ public:
   static int slices_and_stacks;
   static double adjust_forwarding_threshold;
   static double adjust_backwarding_threshold;
+  static const int size_of_slices_and_stacks_table;
+  static const int slices_and_stacks_table[];
+  static const double sin_table[];
+  static const double * const cos_table;
 
 private:
   static int p_need_drawing;
@@ -72,7 +79,7 @@ private:
 
   // OpenGL initialize
 public:
-  static void initialize_pre(int argc, char *argv[], bool call_glutInit);
+  static void initialize_pre(int argc, char *argv[]);
   static void initialize_post();
 
   // OpenGL reshape

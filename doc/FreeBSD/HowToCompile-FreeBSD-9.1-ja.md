@@ -4,7 +4,7 @@
 #### 1) ポートのインストール
     home> su
     # cd /usr/ports
-    # portmaster -d devel/qt5 graphics/freeglut graphics/libGLU graphics/libGL graphics/povray37
+    # portmaster -d devel/qt5 graphics/libGLU graphics/libGL graphics/povray37
         graphics/povray37 は X11 を ON
         devel/sdl12 は OPENGL X11 を ON
         graphics/aalib は X11 を ON

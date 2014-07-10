@@ -61,19 +61,12 @@ void Guruguru::update_window_status()
     title_status[WINDOW_TITLE_STATUS_DRAWING] = 'D';
   else
     title_status[WINDOW_TITLE_STATUS_DRAWING] = '-';
-  switch (OpenGLUtil::slices_and_stacks)
-    {
-    case 30:
-    default:
-      title_status[WINDOW_TITLE_STATUS_RESOLUTION] = 'H';
-      break;
-    case 20:
-      title_status[WINDOW_TITLE_STATUS_RESOLUTION] = 'M';
-      break;
-    case 10:
-      title_status[WINDOW_TITLE_STATUS_RESOLUTION] = 'L';
-      break;
-    }
+  if (OpenGLUtil::slices_and_stacks == OpenGLUtil::slices_and_stacks_table[0])
+    title_status[WINDOW_TITLE_STATUS_RESOLUTION] = 'H';
+  else if (OpenGLUtil::slices_and_stacks == OpenGLUtil::slices_and_stacks_table[1])
+    title_status[WINDOW_TITLE_STATUS_RESOLUTION] = 'M';
+  else
+    title_status[WINDOW_TITLE_STATUS_RESOLUTION] = 'L';
   if (strncmp(title_status, OpenGLUtil::window_title_status,
               WINDOW_TITLE_STATUS_SIZE) != 0)
     {

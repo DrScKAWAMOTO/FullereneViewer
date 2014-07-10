@@ -13,16 +13,12 @@ INCLUDEPATH += . ..
 macx {
     DEPENDPATH += /usr/X11/include
     INCLUDEPATH += /usr/X11/include
-    LIBS += -framework glut
     ICON = icons/fl-guruguru.icns
 }
 !macx:unix {
-LIBS += -lglut -lGLU
+    LIBS += -lGLU
 }
 win32 {
-    DEPENDPATH += C:\Users\kawamoto\Documents\_projects\Qt5\freeglut-2.8.1\include
-    INCLUDEPATH += C:\Users\kawamoto\Documents\_projects\Qt5\freeglut-2.8.1\include
-    LIBS += -LC:\Users\kawamoto\Documents\_projects\Qt5\freeglut-2.8.1\lib\x86\Debug -lfreeglut
     RC_FILE = fl-guruguru.rc
 }
 
