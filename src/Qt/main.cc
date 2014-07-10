@@ -30,11 +30,7 @@ int main(int argc, char *argv[])
 #if QT_VERSION < QT_VERSION_CHECK(5,0,0)
   QTextCodec::setCodecForCStrings(QTextCodec::codecForName("SJIS"));
 #endif
-#if defined(__APPLE__)
-  OpenGLUtil::initialize_pre(argc, argv, false);
-#else
-  OpenGLUtil::initialize_pre(argc, argv, true);
-#endif
+  OpenGLUtil::initialize_pre(argc, argv);
   MainWindow w;
   w.showMaximized();
   return a.exec();

@@ -81,14 +81,11 @@ OpenGLUtil.o: OpenGLUtil.cc /usr/include/assert.h \
   InteractiveOperation.h Interactive.h Radius.h /usr/include/float.h \
   Posture.h Center.h Normal.h Ring.h InteractiveRegularPolygon.h Carbon.h \
   ErrorCode.h Bond.h SymmetryAxis.h Fullerene.h Utils.h MenuEntry.h \
-  OpenGLUtil.h /usr/local/include/GL/glut.h \
-  /usr/local/include/GL/freeglut_std.h /usr/local/include/GL/gl.h \
-  /usr/local/include/GL/glext.h /usr/include/stddef.h \
-  /usr/include/inttypes.h /usr/include/machine/_inttypes.h \
-  /usr/include/x86/_inttypes.h /usr/include/sys/stdint.h \
-  /usr/include/machine/_stdint.h /usr/include/sys/_stdint.h \
-  /usr/local/include/GL/glu.h /usr/local/include/GL/freeglut_ext.h \
-  /usr/include/stdarg.h Debug.h
+  OpenGLUtil.h /usr/local/include/GL/gl.h /usr/local/include/GL/glext.h \
+  /usr/include/stddef.h /usr/include/inttypes.h \
+  /usr/include/machine/_inttypes.h /usr/include/x86/_inttypes.h \
+  /usr/include/sys/stdint.h /usr/include/machine/_stdint.h \
+  /usr/include/sys/_stdint.h /usr/local/include/GL/glu.h Debug.h
 Fullerene.o: Fullerene.cc /usr/include/string.h /usr/include/sys/cdefs.h \
   /usr/include/sys/_null.h /usr/include/sys/_types.h \
   /usr/include/machine/_types.h /usr/include/strings.h \
@@ -109,15 +106,12 @@ Interactives.o: Interactives.cc /usr/include/assert.h \
   /usr/include/sys/_null.h /usr/include/sys/_types.h \
   /usr/include/machine/_types.h Radius.h /usr/include/math.h \
   /usr/include/machine/_limits.h /usr/include/float.h Posture.h Matrix3.h \
-  Vector3.h Center.h Normal.h OpenGLUtil.h /usr/local/include/GL/glut.h \
-  /usr/local/include/GL/freeglut_std.h /usr/local/include/GL/gl.h \
+  Vector3.h Center.h Normal.h OpenGLUtil.h /usr/local/include/GL/gl.h \
   /usr/local/include/GL/glext.h /usr/include/stddef.h \
   /usr/include/inttypes.h /usr/include/machine/_inttypes.h \
   /usr/include/x86/_inttypes.h /usr/include/sys/stdint.h \
   /usr/include/machine/_stdint.h /usr/include/sys/_stdint.h \
-  /usr/local/include/GL/glu.h /usr/include/stdlib.h \
-  /usr/local/include/GL/freeglut_ext.h /usr/include/stdarg.h Quaternion.h \
-  Debug.h
+  /usr/local/include/GL/glu.h Quaternion.h Debug.h
 Matrix3.o: Matrix3.cc /usr/include/math.h /usr/include/sys/cdefs.h \
   /usr/include/sys/_types.h /usr/include/machine/_types.h \
   /usr/include/machine/_limits.h /usr/include/float.h \
@@ -175,14 +169,12 @@ Ring.o: Ring.cc /usr/include/assert.h /usr/include/sys/cdefs.h \
   Matrix3.h Vector3.h Center.h Normal.h List.h DebugMemory.h Carbon.h \
   ErrorCode.h Bond.h CarbonAllotrope.h Interactives.h \
   InteractiveOperation.h SymmetryAxis.h OpenGLUtil.h \
-  /usr/local/include/GL/glut.h /usr/local/include/GL/freeglut_std.h \
   /usr/local/include/GL/gl.h /usr/local/include/GL/glext.h \
   /usr/include/stddef.h /usr/include/inttypes.h \
   /usr/include/machine/_inttypes.h /usr/include/x86/_inttypes.h \
   /usr/include/sys/stdint.h /usr/include/machine/_stdint.h \
-  /usr/include/sys/_stdint.h /usr/local/include/GL/glu.h \
-  /usr/include/stdlib.h /usr/local/include/GL/freeglut_ext.h \
-  /usr/include/stdarg.h Quaternion.h AvoidBugs.h
+  /usr/include/sys/_stdint.h /usr/local/include/GL/glu.h Quaternion.h \
+  AvoidBugs.h
 SymmetryAxisNormal.o: SymmetryAxisNormal.cc /usr/include/assert.h \
   /usr/include/sys/cdefs.h SymmetryAxisNormal.h /usr/include/stdio.h \
   /usr/include/sys/_null.h /usr/include/sys/_types.h \
@@ -191,28 +183,24 @@ SymmetryAxisNormal.o: SymmetryAxisNormal.cc /usr/include/assert.h \
   /usr/include/float.h Posture.h Matrix3.h Vector3.h Center.h Normal.h \
   CarbonAllotrope.h Interactives.h List.h DebugMemory.h \
   InteractiveOperation.h Ring.h Carbon.h ErrorCode.h Bond.h \
-  SymmetryAxis.h OpenGLUtil.h /usr/local/include/GL/glut.h \
-  /usr/local/include/GL/freeglut_std.h /usr/local/include/GL/gl.h \
+  SymmetryAxis.h OpenGLUtil.h /usr/local/include/GL/gl.h \
   /usr/local/include/GL/glext.h /usr/include/stddef.h \
   /usr/include/inttypes.h /usr/include/machine/_inttypes.h \
   /usr/include/x86/_inttypes.h /usr/include/sys/stdint.h \
   /usr/include/machine/_stdint.h /usr/include/sys/_stdint.h \
-  /usr/local/include/GL/glu.h /usr/include/stdlib.h \
-  /usr/local/include/GL/freeglut_ext.h /usr/include/stdarg.h Quaternion.h
+  /usr/local/include/GL/glu.h Quaternion.h
 InteractiveRegularPolygon.o: InteractiveRegularPolygon.cc \
   /usr/include/assert.h /usr/include/sys/cdefs.h /usr/include/math.h \
   /usr/include/sys/_types.h /usr/include/machine/_types.h \
   /usr/include/machine/_limits.h InteractiveRegularPolygon.h \
   Interactive.h /usr/include/stdio.h /usr/include/sys/_null.h Object.h \
   Radius.h /usr/include/float.h Posture.h Matrix3.h Vector3.h Center.h \
-  Normal.h Utils.h OpenGLUtil.h /usr/local/include/GL/glut.h \
-  /usr/local/include/GL/freeglut_std.h /usr/local/include/GL/gl.h \
+  Normal.h Utils.h OpenGLUtil.h /usr/local/include/GL/gl.h \
   /usr/local/include/GL/glext.h /usr/include/stddef.h \
   /usr/include/inttypes.h /usr/include/machine/_inttypes.h \
   /usr/include/x86/_inttypes.h /usr/include/sys/stdint.h \
   /usr/include/machine/_stdint.h /usr/include/sys/_stdint.h \
-  /usr/local/include/GL/glu.h /usr/include/stdlib.h \
-  /usr/local/include/GL/freeglut_ext.h /usr/include/stdarg.h Quaternion.h
+  /usr/local/include/GL/glu.h Quaternion.h
 ErrorCode.o: ErrorCode.cc /usr/include/stdio.h /usr/include/sys/cdefs.h \
   /usr/include/sys/_null.h /usr/include/sys/_types.h \
   /usr/include/machine/_types.h /usr/include/stdlib.h ErrorCode.h
@@ -262,28 +250,23 @@ Carbon.o: Carbon.cc /usr/include/limits.h /usr/include/sys/cdefs.h \
   List.h DebugMemory.h CarbonAllotrope.h Interactives.h \
   InteractiveOperation.h Ring.h Bond.h SymmetryAxis.h Representation.h \
   RepresentationInfo.h Automorphism.h OpenGLUtil.h \
-  /usr/local/include/GL/glut.h /usr/local/include/GL/freeglut_std.h \
   /usr/local/include/GL/gl.h /usr/local/include/GL/glext.h \
   /usr/include/stddef.h /usr/include/inttypes.h \
   /usr/include/machine/_inttypes.h /usr/include/x86/_inttypes.h \
   /usr/include/sys/stdint.h /usr/include/machine/_stdint.h \
-  /usr/include/sys/_stdint.h /usr/local/include/GL/glu.h \
-  /usr/include/stdlib.h /usr/local/include/GL/freeglut_ext.h \
-  /usr/include/stdarg.h Quaternion.h Debug.h
+  /usr/include/sys/_stdint.h /usr/local/include/GL/glu.h Quaternion.h \
+  Debug.h
 InteractiveLine.o: InteractiveLine.cc /usr/include/float.h \
   /usr/include/sys/cdefs.h /usr/include/assert.h InteractiveLine.h \
   Interactive.h /usr/include/stdio.h /usr/include/sys/_null.h \
   /usr/include/sys/_types.h /usr/include/machine/_types.h Object.h \
   Radius.h /usr/include/math.h /usr/include/machine/_limits.h Posture.h \
   Matrix3.h Vector3.h Center.h Normal.h OpenGLUtil.h \
-  /usr/local/include/GL/glut.h /usr/local/include/GL/freeglut_std.h \
   /usr/local/include/GL/gl.h /usr/local/include/GL/glext.h \
   /usr/include/stddef.h /usr/include/inttypes.h \
   /usr/include/machine/_inttypes.h /usr/include/x86/_inttypes.h \
   /usr/include/sys/stdint.h /usr/include/machine/_stdint.h \
-  /usr/include/sys/_stdint.h /usr/local/include/GL/glu.h \
-  /usr/include/stdlib.h /usr/local/include/GL/freeglut_ext.h \
-  /usr/include/stdarg.h Quaternion.h
+  /usr/include/sys/_stdint.h /usr/local/include/GL/glu.h Quaternion.h
 Object.o: Object.cc /usr/include/stdio.h /usr/include/sys/cdefs.h \
   /usr/include/sys/_null.h /usr/include/sys/_types.h \
   /usr/include/machine/_types.h /usr/include/stdlib.h Object.h
@@ -308,13 +291,11 @@ CarbonAllotrope.o: CarbonAllotrope.cc /usr/include/math.h \
   RepresentationInfo.h Representation.h Representations.h \
   InteractivePlane.h InteractiveLine.h ThreeViewNormal.h \
   SymmetryAxisNormal.h Automorphism.h Statistics.h Utils.h OpenGLUtil.h \
-  /usr/local/include/GL/glut.h /usr/local/include/GL/freeglut_std.h \
   /usr/local/include/GL/gl.h /usr/local/include/GL/glext.h \
   /usr/include/stddef.h /usr/include/inttypes.h \
   /usr/include/machine/_inttypes.h /usr/include/x86/_inttypes.h \
   /usr/include/sys/stdint.h /usr/include/machine/_stdint.h \
-  /usr/include/sys/_stdint.h /usr/local/include/GL/glu.h \
-  /usr/local/include/GL/freeglut_ext.h /usr/include/stdarg.h Quaternion.h \
+  /usr/include/sys/_stdint.h /usr/local/include/GL/glu.h Quaternion.h \
   Pattern.h Debug.h
 Bond.o: Bond.cc /usr/include/assert.h /usr/include/sys/cdefs.h \
   /usr/include/float.h Bond.h /usr/include/stdio.h \
@@ -324,14 +305,11 @@ Bond.o: Bond.cc /usr/include/assert.h /usr/include/sys/cdefs.h \
   Posture.h Matrix3.h Vector3.h Center.h Normal.h CarbonAllotrope.h \
   Interactives.h List.h DebugMemory.h InteractiveOperation.h Ring.h \
   Carbon.h ErrorCode.h SymmetryAxis.h OpenGLUtil.h \
-  /usr/local/include/GL/glut.h /usr/local/include/GL/freeglut_std.h \
   /usr/local/include/GL/gl.h /usr/local/include/GL/glext.h \
   /usr/include/stddef.h /usr/include/inttypes.h \
   /usr/include/machine/_inttypes.h /usr/include/x86/_inttypes.h \
   /usr/include/sys/stdint.h /usr/include/machine/_stdint.h \
-  /usr/include/sys/_stdint.h /usr/local/include/GL/glu.h \
-  /usr/include/stdlib.h /usr/local/include/GL/freeglut_ext.h \
-  /usr/include/stdarg.h Quaternion.h
+  /usr/include/sys/_stdint.h /usr/local/include/GL/glu.h Quaternion.h
 Generator.o: Generator.cc /usr/include/stdio.h /usr/include/sys/cdefs.h \
   /usr/include/sys/_null.h /usr/include/sys/_types.h \
   /usr/include/machine/_types.h /usr/include/assert.h Generator.h Utils.h \
@@ -355,14 +333,12 @@ ThreeViewNormal.o: ThreeViewNormal.cc /usr/include/assert.h \
   /usr/include/float.h Posture.h Matrix3.h Vector3.h Center.h Normal.h \
   CarbonAllotrope.h Interactives.h List.h DebugMemory.h \
   InteractiveOperation.h Ring.h Carbon.h ErrorCode.h Bond.h \
-  SymmetryAxis.h OpenGLUtil.h /usr/local/include/GL/glut.h \
-  /usr/local/include/GL/freeglut_std.h /usr/local/include/GL/gl.h \
+  SymmetryAxis.h OpenGLUtil.h /usr/local/include/GL/gl.h \
   /usr/local/include/GL/glext.h /usr/include/stddef.h \
   /usr/include/inttypes.h /usr/include/machine/_inttypes.h \
   /usr/include/x86/_inttypes.h /usr/include/sys/stdint.h \
   /usr/include/machine/_stdint.h /usr/include/sys/_stdint.h \
-  /usr/local/include/GL/glu.h /usr/include/stdlib.h \
-  /usr/local/include/GL/freeglut_ext.h /usr/include/stdarg.h Quaternion.h
+  /usr/local/include/GL/glu.h Quaternion.h
 SymmetryAxis.o: SymmetryAxis.cc /usr/include/assert.h \
   /usr/include/sys/cdefs.h SymmetryAxis.h Object.h Automorphism.h Ring.h \
   InteractiveRegularPolygon.h Interactive.h /usr/include/stdio.h \
