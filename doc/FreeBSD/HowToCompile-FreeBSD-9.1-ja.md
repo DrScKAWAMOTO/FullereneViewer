@@ -39,7 +39,7 @@
     FullereneViewer> 
 
 #### 4) コンパイル
-##### 4-1) フラーレンビューア(fl-guruguru)
+##### 4-1) フラーレンビューア(FullereneViewer)
     FullereneViewer> cd src
     src> gmake Qt
     src> 
@@ -78,7 +78,7 @@
 　ビューアをコンパイルした FreeBSD ホストで X11 を起動する。
 
     FullereneViewer> cd src/Qt
-    Qt> ./fl-guruguru
+    Qt> ./FullereneViewer
 
 　X11 を起動してからはじめての実行では
 
@@ -93,7 +93,7 @@
 
     home> cd FullereneViewer/src/Qt
     Qt> export LIBGL_ALWAYS_INDIRECT=1
-    Qt> ./fl-guruguru
+    Qt> ./FullereneViewer
 
 　遅いが、動作します。
 
@@ -104,12 +104,12 @@
 
     home> cd FullereneViewer/src/Qt
     Qt> export LIBGL_ALWAYS_INDIRECT=1
-    Qt> ./fl-guruguru
+    Qt> ./FullereneViewer
 
 　遅いが、動作します。
 
-#### 6) `scripts/unix` に起動スクリプト `fl-guruguru.sh` を用意しました。
-　なお、 `fl-guruguru` を起動したフォルダには展開図やスナップショット図が出力されます。
+#### 6) `scripts/unix` に起動スクリプト `FullereneViewer.sh` を用意しました。
+　なお、 `FullereneViewer` を起動したフォルダには展開図やスナップショット図が出力されます。
 
 #### 7) お願い
 　仮想マシンでの実行例があれば [Issue](https://github.com/DrScKAWAMOTO/FullereneViewer/issues) で情報提供お願いします。

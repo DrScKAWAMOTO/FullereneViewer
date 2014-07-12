@@ -11,35 +11,35 @@
 /* ca-modeling の POVRay アニメーションで法線を表示する。 */
 // #define CONFIG_DRAW_NORMAL_VECTOR_IN_POVRAY_ANIMATION 1
 
-/* fl-guruguru の POVRay 6面展開図で法線を表示する。 */
+/* FullereneViewer の POVRay 6面展開図で法線を表示する。 */
 // #define CONFIG_DRAW_NORMAL_VECTOR_IN_POVRAY_SIX_VIEWS 1
 
-/* fl-guruguru のぐるぐるモードで法線を表示する。 */
+/* FullereneViewer のぐるぐるモードで法線を表示する。 */
 // #define CONFIG_DRAW_NORMAL_VECTOR_IN_GURUGURU_MODE 1
 
-/* fl-guruguru のぐるぐるモードで3方向線(長径・中径・短径)を表示する。 */
+/* FullereneViewer のぐるぐるモードで3方向線(長径・中径・短径)を表示する。 */
 // #define CONFIG_DRAW_PRINCIPAL_COMPONENT_AXES_IN_GURUGURU_MODE 1
 
-/* fl-guruguru のぐるぐるモードで主要対象軸を表示する。 */
+/* FullereneViewer のぐるぐるモードで主要対象軸を表示する。 */
 // #define CONFIG_DRAW_MAJOR_AXES_SYMMETRY_IN_GURUGURU_MODE 1
 
-/* fl-guruguru のぐるぐるモードで全対象軸を表示する。 */
+/* FullereneViewer のぐるぐるモードで全対象軸を表示する。 */
 // #define CONFIG_DRAW_ALL_AXES_SYMMETRY_IN_GURUGURU_MODE 1
 
-/* fl-guruguru の POVRay スナップショットの背景を透明色にする。 */
+/* FullereneViewer の POVRay スナップショットの背景を透明色にする。 */
 // #define CONFIG_PAINT_TRANSPARENT_COLOR_TO_BACKGROUND_IN_POVRAY_SNAPSHOT 1
 
-/* fl-guruguru/ca-modeling で五員環にセロファンを貼る。 */
+/* FullereneViewer/ca-modeling で五員環にセロファンを貼る。 */
 #define CONFIG_PUT_COLORED_CELLOPHANE_IN_5_MEMBER_RING 1
 
-/* fl-guruguru/ca-modeling での五員環セロファンは淡い色。 */
+/* FullereneViewer/ca-modeling での五員環セロファンは淡い色。 */
 // #define CONFIG_COLORED_CELLOPHANE_IS_TINT 1
 
-/* fl-guruguru のぐるぐるモードでの動画再生目標速度(単位はfps)を設定する。 */
+/* FullereneViewer のぐるぐるモードでの動画再生目標速度(単位はfps)を設定する。 */
 /* 値は 1 から 99 までの整数値 */
 #define CONFIG_GURUGURU_TARGET_FPS 60
 
-/* fl-guruguru のぐるぐるモードでの目標CPU使用率(単位は%)を設定する。 */
+/* FullereneViewer のぐるぐるモードでの目標CPU使用率(単位は%)を設定する。 */
 /* 値は 1 から 99 までの整数値 */
 #define CONFIG_GURUGURU_CPU_USAGE_TARGET_RATE 80
 

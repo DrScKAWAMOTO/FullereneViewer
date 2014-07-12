@@ -31,11 +31,11 @@ $(TARGETS): %: %.o $(OBJECTS)
 	$(LINK.cpp) $^ $(LOADLIBES) $(LDLIBS) -o $@
 
 Qtmakefile:
-	cd Qt; $(QMAKE) fl-guruguru.pro
+	cd Qt; $(QMAKE) FullereneViewer.pro
 
 Qt: Qtmakefile
 ifeq ($(SYSTEM),Darwin)
-	echo "Click folder fl-guruguru.xcodeproj by finder."
+	echo "Click folder FullereneViewer.xcodeproj by finder."
 else
 	cd Qt; $(MAKE)
 endif

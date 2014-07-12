@@ -25,18 +25,18 @@
 　1776行目(付近)に `pvengine32-sse2.exe` を起動するコードが書かれているので、インストールパスが正しいか確認し、異なっておればソースコードを修正する。
 
 #### 6) Launch `Qt Creator`.
-　`FullereneViewer\src\Qt\fl-guruguru.pro` をダブルクリックする。  
+　`FullereneViewer\src\Qt\FullereneViewer.pro` をダブルクリックする。  
 　「Configure Project」ボタンを押す。
 
-#### 7) Build project "fl-guruguru".
-　[ビルド] - [プロジェクト "fl-guruguru" をビルド] を選択する。
+#### 7) Build project "FullereneViewer".
+　[ビルド] - [プロジェクト "FullereneViewer" をビルド] を選択する。
 
-#### 8) Debug project "fl-guruguru".
+#### 8) Debug project "FullereneViewer".
 　動作します。
 
 #### 9) Make folder and copy batch file into it.
-　`scripts/windows/fl-guruguru.bat` の記述が正しいか確認し、これをお好きなフォルダにコピーして下さい。  
-　なお、 `fl-guruguru.bat` をコピーしたフォルダには展開図やスナップショット図が出力されます。
+　`scripts/windows/FullereneViewer.bat` の記述が正しいか確認し、これをお好きなフォルダにコピーして下さい。  
+　なお、 `FullereneViewer.bat` をコピーしたフォルダには展開図やスナップショット図が出力されます。
 
 #### 10) Execute batch file.
 　動作します。

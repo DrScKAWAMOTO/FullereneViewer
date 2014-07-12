@@ -1,7 +1,7 @@
 # FullereneViewer
 ## フラーレンビューア
 
-![アイコン](media/fl-guruguru.png)
+![アイコン](media/FullereneViewer.png)
 
 ### 1) はじめに (Introduction)
 　フラーレンビューアは、フラーレン分子模型を3D表示してぐるぐる回して見るツールです。フラーレンの応用などは [ネットで検索](http://websearch.rakuten.co.jp/Web?toolid=1&ref=ie_box&set=tb&qt=%E3%83%95%E3%83%A9%E3%83%BC%E3%83%AC%E3%83%B3&col=OW) してみてください。  
@@ -40,7 +40,7 @@
 　興味のある方は是非ご参加ください。皆様とともに、もっともっと良いソフトに仕上げていけたら良いと思っています。参加頂ける方は、 [Issue](https://github.com/DrScKAWAMOTO/FullereneViewer/issues) をオープンして下さい。
 
 ### 5) 使い方 (How To Use)
-　src/Qt/fl-guruguru がフラーレンビューア本体です。フラーレンビューアを実行すると、 [フラーレン(C60)](media/screenshot-0.png) を表示します。  
+　src/Qt/FullereneViewer がフラーレンビューア本体です。フラーレンビューアを実行すると、 [フラーレン(C60)](media/screenshot-0.png) を表示します。  
 　フラーレンを球形に表示するために、力学モデルを使ってシミュレーションしています。形が丸くなるまでしばらくお待ち下さい。  
 　ときどき炭素の一つがとんでもない位置に飛んだりすることがありますが、これは気にしなくて良いです。形が丸くなればそのようなことはもう起きません。これは塊を形成しないように初期条件をランダムに指定しているからです。
 

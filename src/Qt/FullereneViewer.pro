@@ -7,19 +7,19 @@
 
 QT       += core gui opengl
 TEMPLATE = app
-TARGET = fl-guruguru
+TARGET = FullereneViewer
 DEPENDPATH += . ..
 INCLUDEPATH += . ..
 macx {
     DEPENDPATH += /usr/X11/include
     INCLUDEPATH += /usr/X11/include
-    ICON = icons/fl-guruguru.icns
+    ICON = icons/FullereneViewer.icns
 }
 !macx:unix {
     LIBS += -lGLU
 }
 win32 {
-    RC_FILE = fl-guruguru.rc
+    RC_FILE = FullereneViewer.rc
 }
 
 # Input

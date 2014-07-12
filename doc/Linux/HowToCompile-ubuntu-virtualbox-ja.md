@@ -26,7 +26,7 @@
     FullereneViewer> 
 
 #### 3) コンパイル
-##### 3-1) フラーレンビューア(fl-guruguru)
+##### 3-1) フラーレンビューア(FullereneViewer)
     FullereneViewer> cd src
     src> make Qt
     src> 
@@ -41,10 +41,10 @@
 　ビューアをコンパイルした ubuntu ホストで X11 を起動する。
 
     FullereneViewer> cd src/Qt
-    Qt> ./fl-guruguru
+    Qt> ./FullereneViewer
 
-#### 5) `FullereneViewer/scripts/unix` に起動スクリプト `fl-guruguru.sh` を用意しました。
-　なお、 `fl-guruguru` を起動したフォルダには展開図やスナップショット図が出力されます。  
+#### 5) `FullereneViewer/scripts/unix` に起動スクリプト `FullereneViewer.sh` を用意しました。
+　なお、 `FullereneViewer` を起動したフォルダには展開図やスナップショット図が出力されます。  
 　動作します。
 
 #### 6) お願い

@@ -20,11 +20,11 @@
     FullereneViewer> 
 
 #### 7) コンパイル
-##### 7-1) フラーレンビューア(fl-guruguru)
+##### 7-1) フラーレンビューア(FullereneViewer)
     FullereneViewer> cd src
     src> make Qt
 
-　`Click folder fl-guruguru.xcodeproj by finder.`と表示されるが、生成された Qt/Makefile を使ってコマンドラインでビルドする。
+　`Click folder FullereneViewer.xcodeproj by finder.`と表示されるが、生成された Qt/Makefile を使ってコマンドラインでビルドする。
     src> cd Qt
     Qt> make
 
@@ -36,11 +36,11 @@
 
 #### 8) 実行
 　以下のいずれかの方法で実行できる。
-* Finder から src/Qt/fl-guruguru を起動する
-* コマンドラインから fl-guruguru.app を起動する
-    FullereneViewer> open src/Qt/fl-guruguru.app
-* コマンドラインから fl-guruguru を起動する
-    FullereneViewer> ./src/Qt/fl-guruguru.app/Contents/MacOS/fl-guruguru
+* Finder から src/Qt/FullereneViewer を起動する
+* コマンドラインから FullereneViewer.app を起動する
+    FullereneViewer> open src/Qt/FullereneViewer.app
+* コマンドラインから FullereneViewer を起動する
+    FullereneViewer> ./src/Qt/FullereneViewer.app/Contents/MacOS/FullereneViewer
 
 #### 9) その他
 　Xcode を使う方法として、7-1 の手順を以下に置き換えることが可能。
@@ -49,6 +49,6 @@
     src> cd Qt
     Qt> qmake -spec macx-xcode
 
-　これにより、Xcode 用プロジェクトファイル FullereneViewer/src/Qt/fl-guruguru.xcodeproj が作成されるので、Xcode から開いてビルドすることが可能となる。  
+　これにより、Xcode 用プロジェクトファイル FullereneViewer/src/Qt/FullereneViewer.xcodeproj が作成されるので、Xcode から開いてビルドすることが可能となる。  
 　ただし、初めてプロジェクトファイルの Xcode から開いたとき、プロジェクトファイルのフォーマットを新しいフォーマットに変換するかの問い合わせがある。許可しない場合、ビルドは成功する。許可した場合、ヘッダファイル検索パスの設定が消失するためか、そのままではビルドできない。  
-　また、Xcode から実行させると argv[1] と argv[2] に fl-guruguru が許容しない引数が指定されるため、fl-guruguru は usage を表示して終了していまう。
+　また、Xcode から実行させると argv[1] と argv[2] に FullereneViewer が許容しない引数が指定されるため、FullereneViewer は usage を表示して終了していまう。
