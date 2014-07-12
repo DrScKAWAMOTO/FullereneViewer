@@ -36,7 +36,7 @@ src/ca-sort
 src/ca-test
 src/ca-uniq
 
-# Project Specific temporary source files
+# Project Specific temporary files
 src/Qt/Makefile
 src/Qt/moc_fl-guruguru.cpp
 src/Qt/moc_mainwindow.cpp
@@ -44,6 +44,8 @@ src/Qt/ui_mainwindow.h
 src/Qt/Info.plist
 src/Qt/build
 src/Qt/fl-guruguru.xcodeproj
+src/Qt/fl-guruguru.pro.user
+src/build-*
 
 # Project Specific extra files
 archive.name

@@ -5,6 +5,9 @@
  * Create: 2014/05/28 22:36:40 JST
  */
 
+#include <QtCore/QStandardPaths>
+#include <QtCore/QDir>
+#include <QtCore/QString>
 #include <QtCore/QtGlobal>
 #if QT_VERSION < QT_VERSION_CHECK(5,0,0)
 #include <QtGui/QApplication>
@@ -25,6 +28,12 @@ int main(int argc, char *argv[])
       print_version("FullereneViewer Ver 1.1");
       exit(0);
     }
+
+  QString home = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
+  QString path = home.append("/fullerene");
+  QDir dir = QDir(home);
+  dir.mkdir(path);
+  QDir::setCurrent(path);
 
   QApplication a(argc, argv);
 #if QT_VERSION < QT_VERSION_CHECK(5,0,0)

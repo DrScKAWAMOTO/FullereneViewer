@@ -2,9 +2,9 @@
 ## フラーレンビューア
 ### コンパイル方法 (Windows 7 Professional 編)
 #### 1) Download and install `Qt5`.
-　<http://qt-users.jp/download.html> の「Qt 5.2.1 - Windows 32-bit (MinGW 4.8, OpenGL, 634 MB)」を選択してダウンロードする。  
-　ダウンロードした `qt-opensource-windows-x86-mingw48_opengl-5.2.1.exe` をダブルクリックする。  
-　これは mingw4.8 を同梱している。
+　<http://qt-users.jp/download.html> の「Qt 5.3.1 - Windows 32-bit (MinGW 4.8.2, OpenGL, 735 MB)」を選択してダウンロードする。  
+　ダウンロードした `qt-opensource-windows-x86-mingw482_opengl-5.3.1.exe` をダブルクリックする。  
+　これは mingw4.8.2 を同梱している。
 
 #### 2) Install `POVRay 3.7.0`.
 　<http://www.povray.org/download/> から POVRay の binary インストーラである `povwin-3.7-agpl3-setup.exe` をダウンロードして実行し、インストール先を確認する。
@@ -14,7 +14,7 @@
 　ご自分のディスプレイの解像度や、出力したいデータフォーマットなどにあわせてください。
 
 ##### 3-1) 参考(2014/06/02 時点)
-　デスクトップに作成されたアイコンは、 `C:\Program Files\POV-Ray\v3.7\bin\pvengine-sse2.exe` を指していて実行できない。`C:\Program Files\POV-Ray\v3.7\bin\pvengine32-sse2.exe` に変更する。
+　デスクトップに作成されたアイコンは `C:\Program Files\POV-Ray\v3.7\bin\pvengine-sse2.exe` を指していて実行できない。`C:\Program Files\POV-Ray\v3.7\bin\pvengine32-sse2.exe` に変更する。
 
 #### 4) Get source codes from `github`.
     home> git clone https://github.com/DrScKAWAMOTO/FullereneViewer
