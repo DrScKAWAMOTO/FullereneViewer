@@ -12,17 +12,27 @@
 #include <QMainWindow>
 #include "Config.h"
 #include "OpenGLUtil.h"
-#include "fl-guruguru.h"
+#include "Guruguru.h"
+
+static Guruguru *my_guruguru = NULL;
+
+static void static_interval_timer_setup()
+{
+  if (my_guruguru)
+    my_guruguru->interval_timer_setup();
+}
 
 Guruguru::Guruguru(QWidget *parent)
   : QGLWidget(parent), timer(new QBasicTimer), etimer(new QElapsedTimer)
 {
+  my_guruguru = this;
+  OpenGLUtil::interval_timer_setup_callback = static_interval_timer_setup;
 }
 
 Guruguru::~Guruguru()
 {   
-    delete timer;
-    timer = 0;
+  delete timer;
+  timer = 0;
 }
 
 void Guruguru::update_window_status()
@@ -34,7 +44,7 @@ void Guruguru::update_window_status()
     {
       sprintf(title_status, "--f--%%---");
     }
-  else if (OpenGLUtil::flame_rate_updateGL <= CONFIG_GURUGURU_TARGET_FPS)
+  else if (OpenGLUtil::flame_rate_updateGL <= OpenGLUtil::config_viewer_target_fps)
     {
       flame_rate = OpenGLUtil::flame_rate_updateGL;
       cpu_usage_rate = 99;
@@ -42,8 +52,8 @@ void Guruguru::update_window_status()
     }
   else
     {
-      flame_rate = CONFIG_GURUGURU_TARGET_FPS;
-      cpu_usage_rate = (100.0 * CONFIG_GURUGURU_TARGET_FPS /
+      flame_rate = OpenGLUtil::config_viewer_target_fps;
+      cpu_usage_rate = (100.0 * OpenGLUtil::config_viewer_target_fps /
                         OpenGLUtil::flame_rate_updateGL);
       if (cpu_usage_rate < 0)
         cpu_usage_rate = 0;
@@ -61,9 +71,9 @@ void Guruguru::update_window_status()
     title_status[WINDOW_TITLE_STATUS_DRAWING] = 'D';
   else
     title_status[WINDOW_TITLE_STATUS_DRAWING] = '-';
-  if (OpenGLUtil::slices_and_stacks == OpenGLUtil::slices_and_stacks_table[0])
+  if (OpenGLUtil::slice == OpenGLUtil::slice_table[0])
     title_status[WINDOW_TITLE_STATUS_RESOLUTION] = 'H';
-  else if (OpenGLUtil::slices_and_stacks == OpenGLUtil::slices_and_stacks_table[1])
+  else if (OpenGLUtil::slice == OpenGLUtil::slice_table[1])
     title_status[WINDOW_TITLE_STATUS_RESOLUTION] = 'M';
   else
     title_status[WINDOW_TITLE_STATUS_RESOLUTION] = 'L';
@@ -117,11 +127,16 @@ void Guruguru::initializeGL()
 {
   OpenGLUtil::initialize_post();
   //タイマーの開始
-  //間隔を 1000 / CONFIG_GURUGURU_TARGET_FPS (切り捨て) に設定 issue#33
-  //60fps の場合、16msに設定
-  timer->start(1000 / CONFIG_GURUGURU_TARGET_FPS, this);
+  interval_timer_setup();
   //経過タイマーの開始
   etimer->start();
+}
+
+void Guruguru::interval_timer_setup()
+{
+  //間隔を 1000 / OpenGLUtil::config_viewer_target_fps (切り捨て) に設定 issue#33
+  //60fps の場合、16msに設定
+  timer->start(1000 / OpenGLUtil::config_viewer_target_fps, this);
 }
 
 void Guruguru::resizeGL(int w, int h)

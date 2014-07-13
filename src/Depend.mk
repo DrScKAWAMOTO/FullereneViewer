@@ -76,16 +76,17 @@ OpenGLUtil.o: OpenGLUtil.cc /usr/include/assert.h \
   /usr/include/stdlib.h /usr/include/stdio.h /usr/include/limits.h \
   /usr/include/sys/limits.h /usr/include/machine/_limits.h \
   /usr/include/sys/syslimits.h /usr/include/math.h /usr/include/dirent.h \
-  /usr/include/sys/dirent.h Config.h Vector3.h Object.h Matrix3.h \
-  Quaternion.h CarbonAllotrope.h Interactives.h List.h DebugMemory.h \
-  InteractiveOperation.h Interactive.h Radius.h /usr/include/float.h \
-  Posture.h Center.h Normal.h Ring.h InteractiveRegularPolygon.h Carbon.h \
-  ErrorCode.h Bond.h SymmetryAxis.h Fullerene.h Utils.h MenuEntry.h \
-  OpenGLUtil.h /usr/local/include/GL/gl.h /usr/local/include/GL/glext.h \
-  /usr/include/stddef.h /usr/include/inttypes.h \
-  /usr/include/machine/_inttypes.h /usr/include/x86/_inttypes.h \
-  /usr/include/sys/stdint.h /usr/include/machine/_stdint.h \
-  /usr/include/sys/_stdint.h /usr/local/include/GL/glu.h Debug.h
+  /usr/include/sys/dirent.h Config.h Configuration.h Vector3.h Object.h \
+  Matrix3.h Quaternion.h CarbonAllotrope.h Interactives.h List.h \
+  DebugMemory.h InteractiveOperation.h Interactive.h Radius.h \
+  /usr/include/float.h Posture.h Center.h Normal.h Ring.h \
+  InteractiveRegularPolygon.h Carbon.h ErrorCode.h Bond.h SymmetryAxis.h \
+  Fullerene.h Utils.h MenuEntry.h OpenGLUtil.h /usr/local/include/GL/gl.h \
+  /usr/local/include/GL/glext.h /usr/include/stddef.h \
+  /usr/include/inttypes.h /usr/include/machine/_inttypes.h \
+  /usr/include/x86/_inttypes.h /usr/include/sys/stdint.h \
+  /usr/include/machine/_stdint.h /usr/include/sys/_stdint.h \
+  /usr/local/include/GL/glu.h Debug.h
 Fullerene.o: Fullerene.cc /usr/include/string.h /usr/include/sys/cdefs.h \
   /usr/include/sys/_null.h /usr/include/sys/_types.h \
   /usr/include/machine/_types.h /usr/include/strings.h \
@@ -215,6 +216,16 @@ GeneratorLine.o: GeneratorLine.cc /usr/include/stdlib.h \
   /usr/include/string.h /usr/include/strings.h \
   /usr/include/xlocale/_string.h /usr/include/assert.h \
   /usr/include/stdio.h GeneratorLine.h Object.h DebugMemory.h
+Configuration.o: Configuration.cc /usr/include/assert.h \
+  /usr/include/sys/cdefs.h /usr/include/string.h /usr/include/sys/_null.h \
+  /usr/include/sys/_types.h /usr/include/machine/_types.h \
+  /usr/include/strings.h /usr/include/xlocale/_string.h \
+  /usr/include/stdio.h Configuration.h OpenGLUtil.h \
+  /usr/local/include/GL/gl.h /usr/local/include/GL/glext.h \
+  /usr/include/stddef.h /usr/include/inttypes.h \
+  /usr/include/machine/_inttypes.h /usr/include/x86/_inttypes.h \
+  /usr/include/sys/stdint.h /usr/include/machine/_stdint.h \
+  /usr/include/sys/_stdint.h /usr/local/include/GL/glu.h Quaternion.h
 DistanceMatrix.o: DistanceMatrix.cc /usr/include/limits.h \
   /usr/include/sys/cdefs.h /usr/include/sys/limits.h \
   /usr/include/machine/_limits.h /usr/include/sys/syslimits.h \
@@ -240,6 +251,17 @@ Quaternion.o: Quaternion.cc /usr/include/math.h /usr/include/sys/cdefs.h \
   /usr/include/machine/_limits.h /usr/include/float.h \
   /usr/include/stdio.h /usr/include/sys/_null.h Quaternion.h Vector3.h \
   Object.h Utils.h
+InteractiveLine.o: InteractiveLine.cc /usr/include/float.h \
+  /usr/include/sys/cdefs.h /usr/include/assert.h InteractiveLine.h \
+  Interactive.h /usr/include/stdio.h /usr/include/sys/_null.h \
+  /usr/include/sys/_types.h /usr/include/machine/_types.h Object.h \
+  Radius.h /usr/include/math.h /usr/include/machine/_limits.h Posture.h \
+  Matrix3.h Vector3.h Center.h Normal.h OpenGLUtil.h \
+  /usr/local/include/GL/gl.h /usr/local/include/GL/glext.h \
+  /usr/include/stddef.h /usr/include/inttypes.h \
+  /usr/include/machine/_inttypes.h /usr/include/x86/_inttypes.h \
+  /usr/include/sys/stdint.h /usr/include/machine/_stdint.h \
+  /usr/include/sys/_stdint.h /usr/local/include/GL/glu.h Quaternion.h
 Carbon.o: Carbon.cc /usr/include/limits.h /usr/include/sys/cdefs.h \
   /usr/include/sys/limits.h /usr/include/machine/_limits.h \
   /usr/include/sys/syslimits.h /usr/include/assert.h /usr/include/float.h \
@@ -256,17 +278,6 @@ Carbon.o: Carbon.cc /usr/include/limits.h /usr/include/sys/cdefs.h \
   /usr/include/sys/stdint.h /usr/include/machine/_stdint.h \
   /usr/include/sys/_stdint.h /usr/local/include/GL/glu.h Quaternion.h \
   Debug.h
-InteractiveLine.o: InteractiveLine.cc /usr/include/float.h \
-  /usr/include/sys/cdefs.h /usr/include/assert.h InteractiveLine.h \
-  Interactive.h /usr/include/stdio.h /usr/include/sys/_null.h \
-  /usr/include/sys/_types.h /usr/include/machine/_types.h Object.h \
-  Radius.h /usr/include/math.h /usr/include/machine/_limits.h Posture.h \
-  Matrix3.h Vector3.h Center.h Normal.h OpenGLUtil.h \
-  /usr/local/include/GL/gl.h /usr/local/include/GL/glext.h \
-  /usr/include/stddef.h /usr/include/inttypes.h \
-  /usr/include/machine/_inttypes.h /usr/include/x86/_inttypes.h \
-  /usr/include/sys/stdint.h /usr/include/machine/_stdint.h \
-  /usr/include/sys/_stdint.h /usr/local/include/GL/glu.h Quaternion.h
 Object.o: Object.cc /usr/include/stdio.h /usr/include/sys/cdefs.h \
   /usr/include/sys/_null.h /usr/include/sys/_types.h \
   /usr/include/machine/_types.h /usr/include/stdlib.h Object.h

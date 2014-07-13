@@ -56,16 +56,17 @@ public:
   static bool simulation_done;
   static bool drawing_done;
 
-  // control slices and stacks by flame-rate, farness, configuration
+  // control slice by flame-rate, farness, configuration
+  static int config_viewer_target_fps;
   static double elapsed_time_updateGL;
   static int count_updateGL;
   static int flame_rate_updateGL;
   static int adjustment_from_flame_rate;
-  static int slices_and_stacks;
+  static int slice;
   static double adjust_forwarding_threshold;
   static double adjust_backwarding_threshold;
-  static const int size_of_slices_and_stacks_table;
-  static const int slices_and_stacks_table[];
+  static const int size_of_slice_table;
+  static const int slice_table[];
   static const double sin_table[];
   static const double * const cos_table;
 
@@ -92,7 +93,7 @@ public:
 
   // control slices and stacks
 public:
-  static bool control_slices_and_stacks();
+  static bool control_slice();
 
   // OpenGL drawing objects
 public:
@@ -144,6 +145,10 @@ public:
   // alert dialog
 public:
   static void (*alert_dialog_callback)(const char* message);
+
+  // interval timer setup
+public:
+  static void (*interval_timer_setup_callback)();
 
 };
 

@@ -13,7 +13,7 @@
 // #define DEBUG_ERRORS 1
 // #define DEBUG_STOP_SIMULATION 1
 // #define DEBUG_STOP_DRAWING 1
-// #define DEBUG_CONTROL_SLICES_AND_STACKS 1
+// #define DEBUG_CONTROL_SLICE 1
 
 #endif /* __DEBUG_H__ */
 

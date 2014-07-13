@@ -5,20 +5,21 @@
  * Create: 2014/05/28 22:36:40 JST
  */
 
-#include <QtCore/QStandardPaths>
 #include <QtCore/QDir>
 #include <QtCore/QString>
 #include <QtCore/QtGlobal>
 #if QT_VERSION < QT_VERSION_CHECK(5,0,0)
 #include <QtGui/QApplication>
 #else
+#include <QtCore/QStandardPaths>
 #include <QtWidgets/QApplication>
 #endif
 #include <QTextCodec>
 #include <stdlib.h>
 #include "Version.h"
-#include "mainwindow.h"
+#include "MainWindow.h"
 #include "OpenGLUtil.h"
+#include "Configuration.h"
 
 int main(int argc, char *argv[])
 {
@@ -29,8 +30,18 @@ int main(int argc, char *argv[])
       exit(0);
     }
 
+#if QT_VERSION < QT_VERSION_CHECK(5,0,0)
+#if defined(__APPLE__) || defined(__unix)
+  QString home = getenv("HOME");
+#else
+# error "Broken under Windows + Qt4."
+#endif
+#else
   QString home = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
-  QString path = home.append("/fullerene");
+#endif
+  configuration = new Configuration(home.toLocal8Bit().data());
+  configuration->load();
+  QString path = configuration->get_working_directory_name();
   QDir dir = QDir(home);
   dir.mkdir(path);
   QDir::setCurrent(path);
@@ -41,6 +52,7 @@ int main(int argc, char *argv[])
 #endif
   OpenGLUtil::initialize_pre(argc, argv);
   MainWindow w;
+  configuration->reflect();
   w.showMaximized();
   return a.exec();
 }

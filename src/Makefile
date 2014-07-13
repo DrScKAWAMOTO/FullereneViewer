@@ -51,7 +51,7 @@ tags:
 
 clean: Qtclean
 	rm -f $(OBJECTS) $(MBJECTS) $(TARGETS) *.ini *.pov *.png
-	rm -f *.core *~ *.bak */*~ */*.bak GPATH GRTAGS GTAGS
+	rm -f *.core *~ *.bak */*~ */*.bak GPATH GRTAGS GTAGS ID
 	rm -f *.shape *.bmp
 	rm -rf **/axes **/char **/dmat
 

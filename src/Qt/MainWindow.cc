@@ -6,13 +6,14 @@
  */
 
 #include <QMessageBox>
-#include "mainwindow.h"
+#include "MainWindow.h"
 #include "OpenGLUtil.h"
 #include "CarbonAllotrope.h"
 #include "Fullerene.h"
-#include "fl-guruguru.h"
+#include "Guruguru.h"
 #include "QtFullereneMenu.h"
-#include "ui_mainwindow.h"
+#include "ConfigurationDialog.h"
+#include "ui_MainWindow.h"
 
 static void alert_dialog(const char* message)
 {
@@ -35,12 +36,13 @@ MainWindow::MainWindow(QWidget *parent)
   connect(ui->action_R, SIGNAL(triggered()), this, SLOT(recallShape()));
   connect(ui->action_6, SIGNAL(triggered()), this, SLOT(drawSixViews()));
   connect(ui->action_S, SIGNAL(triggered()), this, SLOT(drawSnapshot()));
+  connect(ui->action_SD, SIGNAL(triggered()), this, SLOT(setupDialog()));
   OpenGLUtil::alert_dialog_callback = alert_dialog;
 }
 
 MainWindow::~MainWindow()
 {
-    delete ui;
+  delete ui;
 }
 
 void MainWindow::setGuruguruMode()
@@ -106,6 +108,21 @@ void MainWindow::drawSnapshot()
   char work[1000];
   make_file_name(work);
   OpenGLUtil::ca->OpenGL_to_POVRay(work, OpenGLUtil::view, OpenGLUtil::rotation);
+}
+
+void MainWindow::setupDialog()
+{
+  ConfigurationDialog *config = new ConfigurationDialog(this);
+  int result = config->exec();
+  if (result == QDialog::Accepted)
+    {
+      printf("accepted\n");
+    }
+  else if (result == QDialog::Rejected)
+    {
+      printf("rejected\n");
+    }
+  delete config;
 }
 
 void MainWindow::fullereneSelected()

@@ -16,11 +16,11 @@ class MainWindow;
 
 class MainWindow : public QMainWindow
 {
-    Q_OBJECT
+  Q_OBJECT
     
 public:
-    explicit MainWindow(QWidget *parent = 0);
-    ~MainWindow();
+  explicit MainWindow(QWidget *parent = 0);
+  ~MainWindow();
     
 private slots:
   void setGuruguruMode();
@@ -30,10 +30,11 @@ private slots:
   void recallShape();
   void drawSixViews();
   void drawSnapshot();
+  void setupDialog();
   void fullereneSelected();
 
 private:
-    Ui::MainWindow *ui;
+  Ui::MainWindow *ui;
 };
 
 #endif // MAINWINDOW_H

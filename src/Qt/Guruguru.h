@@ -5,8 +5,8 @@
  * Create: 2011/10/16 16:57:28 JST
  */
 
-#ifndef FL_GURUGURU_H
-#define FL_GURUGURU_H
+#ifndef GURUGURU_H
+#define GURUGURU_H
 
 #include <QGLWidget>
 class QBasicTimer;
@@ -19,6 +19,7 @@ class Guruguru : public QGLWidget
 public:
   Guruguru(QWidget *parent = 0);
   ~Guruguru();
+  void interval_timer_setup();
 
 protected:
   void update_window_status();
@@ -37,4 +38,4 @@ private:
   QElapsedTimer* etimer;
 };
 
-#endif // FL_GURUGURU_H
+#endif // GURUGURU_H

@@ -38,9 +38,8 @@ src/ca-uniq
 
 # Project Specific temporary files
 src/Qt/Makefile
-src/Qt/moc_fl-guruguru.cpp
-src/Qt/moc_mainwindow.cpp
-src/Qt/ui_mainwindow.h
+src/Qt/moc_*.cpp
+src/Qt/ui_*.h
 src/Qt/Info.plist
 src/Qt/build
 src/Qt/FullereneViewer.xcodeproj

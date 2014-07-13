@@ -19,6 +19,7 @@
 #include <windows.h>
 #endif
 #include "Config.h"
+#include "Configuration.h"
 #include "Vector3.h"
 #include "Matrix3.h"
 #include "Quaternion.h"
@@ -31,18 +32,19 @@
 #include "DebugMemory.h"
 #include "Debug.h"
 
-// control slices and stacks
+// control slice
 #define INITIAL_FARNESS_OF_VIEW_PORT 40
-#define AVERAGE_COUNT_SLICES_AND_STACKS_DECISION 30
+#define AVERAGE_COUNT_SLICE_DECISION 30
+int OpenGLUtil::config_viewer_target_fps = 60;
 double OpenGLUtil::elapsed_time_updateGL = 0.0;
 int OpenGLUtil::count_updateGL = 0;
 int OpenGLUtil::flame_rate_updateGL = 0;
 int OpenGLUtil::adjustment_from_flame_rate = 0;
-int OpenGLUtil::slices_and_stacks = 10;
+int OpenGLUtil::slice = 10;
 double OpenGLUtil::adjust_forwarding_threshold = 0.0;
 double OpenGLUtil::adjust_backwarding_threshold = 0.0;
-const int OpenGLUtil::size_of_slices_and_stacks_table = 3;
-const int OpenGLUtil::slices_and_stacks_table[size_of_slices_and_stacks_table] = {
+const int OpenGLUtil::size_of_slice_table = 3;
+const int OpenGLUtil::slice_table[size_of_slice_table] = {
   32, 16, 8
 };
 const double OpenGLUtil::sin_table[41] = {
@@ -90,6 +92,7 @@ char OpenGLUtil::generator_label[1024];
 char OpenGLUtil::window_title[3072];
 char* const OpenGLUtil::window_title_status = OpenGLUtil::window_title + 18;
 void (*OpenGLUtil::alert_dialog_callback)(const char* message) = NULL;
+void (*OpenGLUtil::interval_timer_setup_callback)() = NULL;
 
 int OpenGLUtil::view = INITIAL_FARNESS_OF_VIEW_PORT;
 static GLfloat lightpos[] = { 0.0, 40.0, 100.0, 1.0 };
@@ -183,28 +186,26 @@ void OpenGLUtil::initialize_pre(int argc, char *argv[])
     usage(argv[0]);
   sprintf(window_title, "%s %s %s", WINDOW_TITLE, fullerene_name, generator_label);
 
-  assert((CONFIG_GURUGURU_TARGET_FPS >= 1) &&
-         (CONFIG_GURUGURU_TARGET_FPS <= 99));
-  assert((CONFIG_GURUGURU_CPU_USAGE_TARGET_RATE >= 1) &&
-         (CONFIG_GURUGURU_CPU_USAGE_TARGET_RATE <= 100));
-#if CONFIG_GURUGURU_CPU_USAGE_TARGET_RATE == 100
-  OpenGLUtil::adjust_forwarding_threshold = CONFIG_GURUGURU_TARGET_FPS * 0.97;
+  assert((CONFIG_VIEWER_CPU_USAGE_TARGET_RATE >= 1) &&
+         (CONFIG_VIEWER_CPU_USAGE_TARGET_RATE <= 100));
+#if CONFIG_VIEWER_CPU_USAGE_TARGET_RATE == 100
+  OpenGLUtil::adjust_forwarding_threshold = OpenGLUtil::config_viewer_target_fps * 0.97;
   if (OpenGLUtil::adjust_forwarding_threshold < 0.0)
     OpenGLUtil::adjust_forwarding_threshold = 0.0;
-  OpenGLUtil::adjust_backwarding_threshold = CONFIG_GURUGURU_TARGET_FPS * 1.03;
+  OpenGLUtil::adjust_backwarding_threshold = OpenGLUtil::config_viewer_target_fps * 1.03;
 #else
   {
-    double mean = (100.0 / CONFIG_GURUGURU_CPU_USAGE_TARGET_RATE *
-                   CONFIG_GURUGURU_TARGET_FPS);
-    double diff = 2.0 * (mean - CONFIG_GURUGURU_TARGET_FPS);
-    OpenGLUtil::adjust_forwarding_threshold = CONFIG_GURUGURU_TARGET_FPS;
-    OpenGLUtil::adjust_backwarding_threshold = CONFIG_GURUGURU_TARGET_FPS + diff;
+    double mean = (100.0 / CONFIG_VIEWER_CPU_USAGE_TARGET_RATE *
+                   OpenGLUtil::config_viewer_target_fps);
+    double diff = 2.0 * (mean - OpenGLUtil::config_viewer_target_fps);
+    OpenGLUtil::adjust_forwarding_threshold = OpenGLUtil::config_viewer_target_fps;
+    OpenGLUtil::adjust_backwarding_threshold = OpenGLUtil::config_viewer_target_fps+diff;
   }
 #endif
-#if defined(DEBUG_CONTROL_SLICES_AND_STACKS)
-  printf("CONFIG_GURUGURU_TARGET_FPS = %d\n", CONFIG_GURUGURU_TARGET_FPS);
-  printf("CONFIG_GURUGURU_CPU_USAGE_TARGET_RATE = %d\n",
-    CONFIG_GURUGURU_CPU_USAGE_TARGET_RATE);
+#if defined(DEBUG_CONTROL_SLICE)
+  printf("config_viewer_target_fps = %d\n", OpenGLUtil::config_viewer_target_fps);
+  printf("CONFIG_VIEWER_CPU_USAGE_TARGET_RATE = %d\n",
+    CONFIG_VIEWER_CPU_USAGE_TARGET_RATE);
   printf("adjust_forwarding_threshold = %f\n", OpenGLUtil::adjust_forwarding_threshold);
   printf("adjust_backwarding_threshold = %f\n", OpenGLUtil::adjust_backwarding_threshold);
 #endif
@@ -281,7 +282,7 @@ void OpenGLUtil::display()
           resume_drawing();
         }
     }
-  if (OpenGLUtil::control_slices_and_stacks())
+  if (OpenGLUtil::control_slice())
     resume_drawing();
   if (p_need_drawing > 0)
     {
@@ -298,57 +299,61 @@ void OpenGLUtil::display()
     p_need_drawing = DRAWING_THRESHOLD;
 }
 
-bool OpenGLUtil::control_slices_and_stacks()
+bool OpenGLUtil::control_slice()
 {
   // initialize adjustment
-  int adjustment_slices_and_stacks = 0;
-  bool modified_slices_and_stacks;
+  int adjustment_slice = 0;
+  bool modified_slice;
 
   // adjustment from flame rate
-  if (count_updateGL >= AVERAGE_COUNT_SLICES_AND_STACKS_DECISION)
+  if (count_updateGL >= AVERAGE_COUNT_SLICE_DECISION)
     {
       double flame_rate = (1000000000.0 * count_updateGL / elapsed_time_updateGL);
-#if defined(DEBUG_CONTROL_SLICES_AND_STACKS)
+#if defined(DEBUG_CONTROL_SLICE)
       printf("flame rate = %f\n", flame_rate);
 #endif
       flame_rate_updateGL = flame_rate;
-      if (flame_rate > OpenGLUtil::adjust_backwarding_threshold)
-        adjustment_from_flame_rate--;
-      else if (flame_rate >= OpenGLUtil::adjust_forwarding_threshold)
-        ;
-      else
-        adjustment_from_flame_rate++;
       elapsed_time_updateGL = 0.0;
       count_updateGL = 0;
-      if (adjustment_from_flame_rate >= size_of_slices_and_stacks_table)
-        adjustment_from_flame_rate = size_of_slices_and_stacks_table - 1;
-      else if (adjustment_from_flame_rate < 0)
-        adjustment_from_flame_rate = 0;
-#if defined(DEBUG_CONTROL_SLICES_AND_STACKS)
-      printf("adjustment from flame rate = %d\n", adjustment_from_flame_rate);
+      if (configuration->get_picture_quality() != QUALITY_HIGH)
+        {
+          if (flame_rate > OpenGLUtil::adjust_backwarding_threshold)
+            adjustment_from_flame_rate--;
+          else if (flame_rate >= OpenGLUtil::adjust_forwarding_threshold)
+            ;
+          else
+            adjustment_from_flame_rate++;
+          if (adjustment_from_flame_rate >= size_of_slice_table)
+            adjustment_from_flame_rate = size_of_slice_table - 1;
+          else if (adjustment_from_flame_rate < 0)
+            adjustment_from_flame_rate = 0;
+#if defined(DEBUG_CONTROL_SLICE)
+          printf("adjustment from flame rate = %d\n", adjustment_from_flame_rate);
 #endif
+        }
     }
-  adjustment_slices_and_stacks += adjustment_from_flame_rate;
+  if (configuration->get_picture_quality() != QUALITY_HIGH)
+    adjustment_slice += adjustment_from_flame_rate;
 
   // adjustment from farness
-  adjustment_slices_and_stacks += view / 25;
+  adjustment_slice += view / 25;
 
-  if (adjustment_slices_and_stacks >= size_of_slices_and_stacks_table)
-    adjustment_slices_and_stacks = size_of_slices_and_stacks_table - 1;
-  else if (adjustment_slices_and_stacks < 0)
-    adjustment_slices_and_stacks = 0;
-  if (slices_and_stacks != slices_and_stacks_table[adjustment_slices_and_stacks])
-    modified_slices_and_stacks = true;
+  if (adjustment_slice >= size_of_slice_table)
+    adjustment_slice = size_of_slice_table - 1;
+  else if (adjustment_slice < 0)
+    adjustment_slice = 0;
+  if (slice != slice_table[adjustment_slice])
+    modified_slice = true;
   else
-    modified_slices_and_stacks = false;
-  slices_and_stacks = slices_and_stacks_table[adjustment_slices_and_stacks];
-#if defined(DEBUG_CONTROL_SLICES_AND_STACKS)
-  static int last_slices_and_stacks = -1;
-  if (last_slices_and_stacks != slices_and_stacks)
-    printf("slices_and_stacks = %d\n", slices_and_stacks);
-  last_slices_and_stacks = slices_and_stacks;
+    modified_slice = false;
+  slice = slice_table[adjustment_slice];
+#if defined(DEBUG_CONTROL_SLICE)
+  static int last_slice = -1;
+  if (last_slice != slice)
+    printf("slice = %d\n", slice);
+  last_slice = slice;
 #endif
-  return modified_slices_and_stacks;
+  return modified_slice;
 }
 
 void OpenGLUtil::set_color(int color)
@@ -364,7 +369,7 @@ void OpenGLUtil::set_color(int color, double alpha)
 
 void OpenGLUtil::draw_sphere(double radius, const Vector3& center)
 {
-  int steps = 32 / slices_and_stacks;
+  int steps = 32 / slice;
   double r0, r1;
   double z0, z1;
 
@@ -426,7 +431,7 @@ void OpenGLUtil::draw_sphere(double radius, const Vector3& center)
 
 void OpenGLUtil::draw_cylinder(double radius, const Vector3& from, const Vector3& to)
 {
-  int steps = 32 / slices_and_stacks;
+  int steps = 32 / slice;
   Vector3 direction = from - to;
   double height = direction.abs();
   double inner = inner_product(Vector3(0.0, 0.0, 1.0), direction) / height;
