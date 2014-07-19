@@ -60,23 +60,23 @@ bool Word::equals_to(const char* ptr)
     return false;
 }
 
-Configuration::Configuration(const char* home_directory, const char* desktop_directory)
+Configuration::Configuration(const char* home, const char* desktop)
 {
-  int length = strlen(home_directory);
+  int length = strlen(home);
   assert(length > 0);
   assert(length + strlen(CONFIGURATION_FILE_NAME) < PATH_LENGTH);
-  strcpy(p_configuration_file_name, home_directory);
+  strcpy(p_configuration_file_name, home);
   if (p_configuration_file_name[length - 1] == '/')
     p_configuration_file_name[length - 1] = '\0';
   strcat(p_configuration_file_name, CONFIGURATION_FILE_NAME);
 
-  length = strlen(desktop_directory);
+  length = strlen(desktop);
   assert(length > 0);
-  assert(length + strlen(WORKING_DIRECTORY_NAME) < PATH_LENGTH);
-  strcpy(p_working_directory_name, desktop_directory);
-  if (p_working_directory_name[length - 1] == '/')
-    p_working_directory_name[length - 1] = '\0';
-  strcat(p_working_directory_name, WORKING_DIRECTORY_NAME);
+  assert(length + strlen(WORKING_FOLDER_NAME) < PATH_LENGTH);
+  strcpy(p_working_folder_name, desktop);
+  if (p_working_folder_name[length - 1] == '/')
+    p_working_folder_name[length - 1] = '\0';
+  strcat(p_working_folder_name, WORKING_FOLDER_NAME);
 
   p_picture_quality = QUALITY_HIGH;
   p_motion_quality = QUALITY_HIGH;
@@ -137,9 +137,9 @@ void Configuration::load()
   while (fgets(buffer, LINE_LENGTH, fptr))
     {
       Word word(buffer);
-      if (word.equals_to("working_directory_name"))
+      if (word.equals_to("working_folder"))
         {
-          read_path(word, p_working_directory_name);
+          read_path(word, p_working_folder_name);
         }
       else if (word.equals_to("picture_quality"))
         {
@@ -176,13 +176,13 @@ static const char* quality_to_name(Quality quality)
 void Configuration::save() const
 {
   FILE* fptr = fopen(p_configuration_file_name, "w");
-  fprintf(fptr, "working_directory_name = %s\n", p_working_directory_name);
   fprintf(fptr, "picture_quality = %s\n", quality_to_name(p_picture_quality));
   fprintf(fptr, "motion_quality = %s\n", quality_to_name(p_motion_quality));
+  fprintf(fptr, "working_folder = %s\n", p_working_folder_name);
   fclose(fptr);
 }
 
-static void make_directory_recursive(const char *path)
+static void make_folder_recursive(const char *path)
 {
   struct stat sb;
   if (stat(path, &sb) == 0)
@@ -208,7 +208,7 @@ static void make_directory_recursive(const char *path)
   if (delimiter == NULL)
     return;
   *delimiter = '\0';
-  make_directory_recursive(parent);
+  make_folder_recursive(parent);
 #if defined(__unix)
   mkdir(path, 0755);
 #else
@@ -233,20 +233,20 @@ void Configuration::reflect() const
   if (OpenGLUtil::interval_timer_setup_callback)
     (*OpenGLUtil::interval_timer_setup_callback)();
 
-  int length = strlen(configuration->p_working_directory_name);
+  int length = strlen(configuration->p_working_folder_name);
   assert(length <= PATH_LENGTH);
   char path[PATH_LENGTH + 1];
-  strcpy(path, configuration->p_working_directory_name);
+  strcpy(path, configuration->p_working_folder_name);
   if ((length >= 1) && ((path[length - 1] == '/') || (path[length - 1] == '\\')))
     path[length - 1] = '\0';
-  make_directory_recursive(path);
+  make_folder_recursive(path);
   chdir(path);
 }
 
-void Configuration::set_working_directory_name(const char* path)
+void Configuration::set_working_folder_name(const char* path)
 {
   assert(strlen(path) < PATH_LENGTH);
-  strcpy(p_working_directory_name, path);
+  strcpy(p_working_folder_name, path);
 }
 
 /* Local Variables:	*/

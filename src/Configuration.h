@@ -10,7 +10,7 @@
 
 #define PATH_LENGTH 1024
 #define CONFIGURATION_FILE_NAME "/.FullereneViewer.conf"
-#define WORKING_DIRECTORY_NAME "/fullerene"
+#define WORKING_FOLDER_NAME "/fullerene"
 
 enum Quality {
   QUALITY_HIGH,
@@ -24,7 +24,7 @@ class Configuration {
   // members
 private:
   char p_configuration_file_name[PATH_LENGTH + 1];
-  char p_working_directory_name[PATH_LENGTH + 1];
+  char p_working_folder_name[PATH_LENGTH + 1];
   Quality p_picture_quality;
   Quality p_motion_quality;
 
@@ -32,7 +32,7 @@ private:
 
   // constructors & the destructor
 public:
-  Configuration(const char* home_directory, const char* desktop_directory);
+  Configuration(const char* home, const char* desktop);
   ~Configuration();
 
   // type converters
@@ -53,8 +53,8 @@ public:
   void set_picture_quality(Quality quality) { p_picture_quality = quality; }
   Quality get_motion_quality() const { return p_motion_quality; }
   void set_motion_quality(Quality quality) { p_motion_quality = quality; }
-  const char* get_working_directory_name() const { return p_working_directory_name; }
-  void set_working_directory_name(const char* path);
+  const char* get_working_folder_name() const { return p_working_folder_name; }
+  void set_working_folder_name(const char* path);
 
 };
 
