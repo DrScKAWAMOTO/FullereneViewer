@@ -39,7 +39,6 @@ ConfigurationDialog::~ConfigurationDialog()
 
 void ConfigurationDialog::slot_accept()
 {
-  printf("ConfigurationDialog::accept() called\n");
   if (ui->pictureHighRadioButton->isChecked())
     configuration->set_picture_quality(QUALITY_HIGH);
   else
@@ -57,6 +56,5 @@ void ConfigurationDialog::slot_accept()
 
 void ConfigurationDialog::slot_reject()
 {
-  printf("ConfigurationDialog::reject() called\n");
   reject();
 }
