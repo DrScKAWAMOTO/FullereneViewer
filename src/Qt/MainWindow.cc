@@ -115,13 +115,9 @@ void MainWindow::setupDialog()
   ConfigurationDialog *config = new ConfigurationDialog(this);
   int result = config->exec();
   if (result == QDialog::Accepted)
-    {
-      printf("accepted\n");
-    }
+    ;
   else if (result == QDialog::Rejected)
-    {
-      printf("rejected\n");
-    }
+    ;
   delete config;
 }
 

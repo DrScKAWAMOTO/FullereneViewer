@@ -8,6 +8,8 @@
 #include <assert.h>
 #include <string.h>
 #include <stdio.h>
+#include <sys/stat.h>
+#include <unistd.h>
 #include "Configuration.h"
 #include "OpenGLUtil.h"
 
@@ -28,6 +30,7 @@ Word::Word(const char* buffer)
 {
   word_top = buffer;
   length = 0;
+  next();
 }
 
 Word::~Word()
@@ -40,7 +43,7 @@ bool Word::next()
   while (*word_top == ' ')
     ++word_top;
   const char* ptr = word_top;
-  while (*ptr && *ptr != ' ')
+  while (*ptr && (*ptr != ' ') && (*ptr != '\n'))
     ++ptr;
   length = ptr - word_top;
   if (*ptr == ' ')
@@ -57,7 +60,7 @@ bool Word::equals_to(const char* ptr)
     return false;
 }
 
-Configuration::Configuration(const char* home_directory)
+Configuration::Configuration(const char* home_directory, const char* desktop_directory)
 {
   int length = strlen(home_directory);
   assert(length > 0);
@@ -66,11 +69,15 @@ Configuration::Configuration(const char* home_directory)
   if (p_configuration_file_name[length - 1] == '/')
     p_configuration_file_name[length - 1] = '\0';
   strcat(p_configuration_file_name, CONFIGURATION_FILE_NAME);
+
+  length = strlen(desktop_directory);
+  assert(length > 0);
   assert(length + strlen(WORKING_DIRECTORY_NAME) < PATH_LENGTH);
-  strcpy(p_working_directory_name, home_directory);
+  strcpy(p_working_directory_name, desktop_directory);
   if (p_working_directory_name[length - 1] == '/')
     p_working_directory_name[length - 1] = '\0';
   strcat(p_working_directory_name, WORKING_DIRECTORY_NAME);
+
   p_picture_quality = QUALITY_HIGH;
   p_motion_quality = QUALITY_HIGH;
 }
@@ -81,19 +88,20 @@ Configuration::~Configuration()
 
 static bool read_path(Word& word, char* path)
 {
-  if (word.next())
+  if (word.next() == false)
     return false;
   if (word.equals_to("=") == false)
     return false;
   if (word.next())
     return false;
-  strcpy(path, word.word_top);
+  strncpy(path, word.word_top, word.length);
+  path[word.length] = '\0';
   return true;
 }
 
 static bool name_to_quality(Word& word, Quality& result)
 {
-  if (word.next())
+  if (word.next() == false)
     return false;
   if (word.equals_to("=") == false)
     return false;
@@ -174,6 +182,40 @@ void Configuration::save() const
   fclose(fptr);
 }
 
+static void make_directory_recursive(const char *path)
+{
+  struct stat sb;
+  if (stat(path, &sb) == 0)
+    {
+      if (S_ISDIR(sb.st_mode) && access(path, X_OK))
+        return;
+    }
+  int result;
+#if defined(__unix)
+  result = mkdir(path, 0755);
+#else
+  result = mkdir(path);
+#endif
+  if (result == 0)
+    return;
+  char parent[PATH_LENGTH + 1];
+  assert(strlen(path) <= PATH_LENGTH);
+  strcpy(parent, path);
+  char* delimiter;
+  delimiter = strrchr(parent, '/');
+  if (delimiter == NULL)
+    delimiter = strrchr(parent, '\\');
+  if (delimiter == NULL)
+    return;
+  *delimiter = '\0';
+  make_directory_recursive(parent);
+#if defined(__unix)
+  mkdir(path, 0755);
+#else
+  mkdir(path);
+#endif
+}
+
 void Configuration::reflect() const
 {
   switch (p_motion_quality)
@@ -191,8 +233,14 @@ void Configuration::reflect() const
   if (OpenGLUtil::interval_timer_setup_callback)
     (*OpenGLUtil::interval_timer_setup_callback)();
 
-
-
+  int length = strlen(configuration->p_working_directory_name);
+  assert(length <= PATH_LENGTH);
+  char path[PATH_LENGTH + 1];
+  strcpy(path, configuration->p_working_directory_name);
+  if ((length >= 1) && ((path[length - 1] == '/') || (path[length - 1] == '\\')))
+    path[length - 1] = '\0';
+  make_directory_recursive(path);
+  chdir(path);
 }
 
 void Configuration::set_working_directory_name(const char* path)

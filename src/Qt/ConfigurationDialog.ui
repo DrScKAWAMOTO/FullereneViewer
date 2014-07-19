@@ -141,6 +141,29 @@
     <string notr="true">motionButtonGroup</string>
    </attribute>
   </widget>
+  <widget class="QLineEdit" name="workingDirectoryLineEdit">
+   <property name="geometry">
+    <rect>
+     <x>130</x>
+     <y>90</y>
+     <width>231</width>
+     <height>20</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="workingDirectoryLabel">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>90</y>
+     <width>121</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>ワーキングディレクトリ：</string>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections/>
