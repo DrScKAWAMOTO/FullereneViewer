@@ -60,7 +60,7 @@ bool Word::equals_to(const char* ptr)
     return false;
 }
 
-Configuration::Configuration(const char* home_directory)
+Configuration::Configuration(const char* home_directory, const char* desktop_directory)
 {
   int length = strlen(home_directory);
   assert(length > 0);
@@ -69,11 +69,15 @@ Configuration::Configuration(const char* home_directory)
   if (p_configuration_file_name[length - 1] == '/')
     p_configuration_file_name[length - 1] = '\0';
   strcat(p_configuration_file_name, CONFIGURATION_FILE_NAME);
+
+  length = strlen(desktop_directory);
+  assert(length > 0);
   assert(length + strlen(WORKING_DIRECTORY_NAME) < PATH_LENGTH);
-  strcpy(p_working_directory_name, home_directory);
+  strcpy(p_working_directory_name, desktop_directory);
   if (p_working_directory_name[length - 1] == '/')
     p_working_directory_name[length - 1] = '\0';
   strcat(p_working_directory_name, WORKING_DIRECTORY_NAME);
+
   p_picture_quality = QUALITY_HIGH;
   p_motion_quality = QUALITY_HIGH;
 }

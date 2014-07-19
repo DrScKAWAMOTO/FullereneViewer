@@ -32,7 +32,7 @@ private:
 
   // constructors & the destructor
 public:
-  Configuration(const char* home_directory);
+  Configuration(const char* home_directory, const char* desktop_directory);
   ~Configuration();
 
   // type converters

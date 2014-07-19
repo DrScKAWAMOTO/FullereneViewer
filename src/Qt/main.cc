@@ -33,13 +33,16 @@ int main(int argc, char *argv[])
 #if QT_VERSION < QT_VERSION_CHECK(5,0,0)
 #if defined(__APPLE__) || defined(__unix)
   QString home = getenv("HOME");
+  QString desktop = home + "/Desktop";
 #else
 # error "Broken under Windows + Qt4."
 #endif
 #else
   QString home = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
+  QString desktop = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation);
 #endif
-  configuration = new Configuration(home.toLocal8Bit().data());
+  configuration = new Configuration(home.toLocal8Bit().data(),
+                                    desktop.toLocal8Bit().data());
   configuration->load();
   QApplication a(argc, argv);
 #if QT_VERSION < QT_VERSION_CHECK(5,0,0)
