@@ -41,11 +41,6 @@ int main(int argc, char *argv[])
 #endif
   configuration = new Configuration(home.toLocal8Bit().data());
   configuration->load();
-  QString path = configuration->get_working_directory_name();
-  QDir dir = QDir(home);
-  dir.mkdir(path);
-  QDir::setCurrent(path);
-
   QApplication a(argc, argv);
 #if QT_VERSION < QT_VERSION_CHECK(5,0,0)
   QTextCodec::setCodecForCStrings(QTextCodec::codecForName("SJIS"));
