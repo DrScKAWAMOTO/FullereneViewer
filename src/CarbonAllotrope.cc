@@ -1259,25 +1259,6 @@ void CarbonAllotrope::register_interactions()
 #endif
 }
 
-void CarbonAllotrope::center_location_force_to_zero()
-{
-  int carbon_len = p_carbons.length();
-  Vector3 center_location = Vector3();
-  for (int i = 0; i < carbon_len; ++i)
-    {
-      Carbon* carbon = p_carbons[i];
-      center_location += carbon->carbon_location();
-    }
-  center_location /= carbon_len;
-  Vector3 movement = Vector3() - center_location;
-  for (int i = 0; i < carbon_len; ++i)
-    {
-      Carbon* carbon = p_carbons[i];
-      carbon->move_center_location(movement);
-    }
-  resume_simulation();
-}
-
 void CarbonAllotrope::all_representations(Representations* results)
 {
   int len = p_carbons.length();

@@ -344,10 +344,9 @@ void Ring::print_POVRay_scene_description(const CarbonAllotrope* ca, FILE* fptr)
     }
 }
 
-void Ring::
-print_POVRay_scene_description(const CarbonAllotrope* ca, FILE* fptr,
-                               const Matrix3& rot, const Vector3& move,
-                               bool clipped_by_Z_non_negative) const
+void Ring::print_POVRay_scene_description(const CarbonAllotrope* ca, FILE* fptr,
+                                          const Matrix3& rot, const Vector3& move,
+                                          bool clipped_by_Z_non_negative) const
 {
   int num = number_of_carbons();
   if (num != 6)

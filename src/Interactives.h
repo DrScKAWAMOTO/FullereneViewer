@@ -12,7 +12,6 @@
 #include "List.h"
 #include "InteractiveOperation.h"
 #include "Interactive.h"
-#include "CenterOfInteractives.h"
 
 enum ActionLocation {
   ACTION_LOCATION_CENTER = -1,
@@ -29,7 +28,6 @@ class Interactives : public Object {
 private:
   List<InteractiveOperation> p_operations;
   List<Interactive> p_interactives;
-  CenterOfInteractives p_center;
   int p_simulation_active;
 
   // private tools

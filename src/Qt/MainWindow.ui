@@ -41,7 +41,6 @@
     </property>
     <addaction name="action_Z"/>
     <addaction name="action_X"/>
-    <addaction name="action_C"/>
    </widget>
    <widget class="QMenu" name="menu_S">
     <property name="title">
@@ -117,14 +116,6 @@
    </property>
    <property name="shortcut">
     <string>S</string>
-   </property>
-  </action>
-  <action name="action_C">
-   <property name="text">
-    <string>中央に移動(&amp;C)</string>
-   </property>
-   <property name="shortcut">
-    <string>C</string>
    </property>
   </action>
   <action name="action_SD">

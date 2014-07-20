@@ -16,7 +16,6 @@
 #include "Posture.h"
 #include "Center.h"
 #include "Normal.h"
-#include "CenterOfInteractives.h"
 
 class Interactives;
 

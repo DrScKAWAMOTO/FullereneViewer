@@ -31,7 +31,6 @@ MainWindow::MainWindow(QWidget *parent)
   make_qt_fullerene_menu(this, ui->menu_C);
   connect(ui->action_Z, SIGNAL(triggered()), this, SLOT(setGuruguruMode()));
   connect(ui->action_X, SIGNAL(triggered()), this, SLOT(setPickingMode()));
-  connect(ui->action_C, SIGNAL(triggered()), this, SLOT(centering()));
   connect(ui->action_M, SIGNAL(triggered()), this, SLOT(memoryShape()));
   connect(ui->action_R, SIGNAL(triggered()), this, SLOT(recallShape()));
   connect(ui->action_6, SIGNAL(triggered()), this, SLOT(drawSixViews()));
@@ -48,11 +47,6 @@ MainWindow::~MainWindow()
 void MainWindow::setGuruguruMode()
 {
   OpenGLUtil::set_guruguru_mode();
-}
-
-void MainWindow::centering()
-{
-  OpenGLUtil::ca->center_location_force_to_zero();
 }
 
 void MainWindow::setPickingMode()

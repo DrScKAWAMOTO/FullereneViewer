@@ -112,7 +112,6 @@ public:
 
 public:
   void register_interactions();
-  void center_location_force_to_zero();
 
   // representation
 public:

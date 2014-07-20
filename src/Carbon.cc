@@ -567,10 +567,9 @@ void Carbon::print_POVRay_scene_description(const CarbonAllotrope* ca, FILE* fpt
 #endif
 }
 
-void Carbon::
-print_POVRay_scene_description(const CarbonAllotrope* ca, FILE* fptr,
-                               const Matrix3& rot, const Vector3& move,
-                               bool clipped_by_Z_non_negative) const
+void Carbon::print_POVRay_scene_description(const CarbonAllotrope* ca, FILE* fptr,
+                                            const Matrix3& rot, const Vector3& move,
+                                            bool clipped_by_Z_non_negative) const
 {
   Vector3 loc = carbon_location() * rot + move;
   if ((loc.z() > p_radius) || (!clipped_by_Z_non_negative))
