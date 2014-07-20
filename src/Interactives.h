@@ -12,6 +12,7 @@
 #include "List.h"
 #include "InteractiveOperation.h"
 #include "Interactive.h"
+#include "CenterOfInteractives.h"
 
 enum ActionLocation {
   ACTION_LOCATION_CENTER = -1,
@@ -28,6 +29,7 @@ class Interactives : public Object {
 private:
   List<InteractiveOperation> p_operations;
   List<Interactive> p_interactives;
+  CenterOfInteractives p_center;
   int p_simulation_active;
 
   // private tools
@@ -54,6 +56,7 @@ protected:
                               Interactive* one, Interactive* the_other);
   void p_register_interaction(OriginalForceType force_type, Interactive* one);
 public:
+  virtual const Vector3& get_center_location() const = 0;
   void register_interactive(Interactive* interactive);
   bool operate_interactions(double delta);
   void randomized_force(double width = 1.0);

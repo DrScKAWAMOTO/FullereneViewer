@@ -194,7 +194,7 @@ void Interactive::interaction_original(OriginalForceType force_type,
   assert(0);
 }
 
-void Interactive::operate_interactions(int &stability)
+void Interactive::operate_interactions(int &stability, const Vector3& center)
 {
   // for simulation cut off
   p_radius.last_length = p_radius.length;
@@ -215,7 +215,10 @@ void Interactive::operate_interactions(int &stability)
   if (p_center.fixed)
     p_center.location = p_center.fixed_location;
   else
-    p_center.location += p_center.next_force;
+    {
+      p_center.location += p_center.next_force;
+      p_center.location -= center;
+    }
 
   // for simulation cut off
   if (!p_radius.stabled())

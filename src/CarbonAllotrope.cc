@@ -1193,7 +1193,6 @@ void CarbonAllotrope::reset_done()
 
 void CarbonAllotrope::p_reset_interaction()
 {
-#if defined(CONFIG_DRAW_PRINCIPAL_COMPONENT_AXES_IN_GURUGURU_MODE)
   int carbon_len = p_carbons.length();
   p_center_location = Vector3();
   for (int i = 0; i < carbon_len; ++i)
@@ -1202,7 +1201,6 @@ void CarbonAllotrope::p_reset_interaction()
       p_center_location += carbon->carbon_location();
     }
   p_center_location /= carbon_len;
-#endif
 }
 
 void CarbonAllotrope::register_interactions()

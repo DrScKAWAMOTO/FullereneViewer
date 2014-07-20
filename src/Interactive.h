@@ -10,11 +10,13 @@
 
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
+#include "Config.h"
 #include "Object.h"
 #include "Radius.h"
 #include "Posture.h"
 #include "Center.h"
 #include "Normal.h"
+#include "CenterOfInteractives.h"
 
 class Interactives;
 
@@ -82,7 +84,7 @@ public:
                                          double delta);
   virtual void interaction_original(OriginalForceType force_type,
                                     Interactives* interactives, double delta);
-  void operate_interactions(int &stability);
+  void operate_interactions(int &stability, const Vector3& center);
   void randomized_force(double width = 1.0);
   void move_by(const Vector3& a);
 
