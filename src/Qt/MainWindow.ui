@@ -42,24 +42,18 @@
     <addaction name="action_Z"/>
     <addaction name="action_X"/>
    </widget>
-   <widget class="QMenu" name="menu_S">
+   <widget class="QMenu" name="menu_O">
     <property name="title">
-     <string>形状記憶(&amp;S)</string>
+     <string>入出力(&amp;O)</string>
     </property>
     <addaction name="action_M"/>
     <addaction name="action_R"/>
-   </widget>
-   <widget class="QMenu" name="menu_O">
-    <property name="title">
-     <string>出力(&amp;O)</string>
-    </property>
     <addaction name="action_6"/>
     <addaction name="action_S"/>
    </widget>
    <addaction name="menu_F"/>
    <addaction name="menu_C"/>
    <addaction name="menu_M"/>
-   <addaction name="menu_S"/>
    <addaction name="menu_O"/>
   </widget>
   <action name="action_Q">
@@ -88,7 +82,10 @@
   </action>
   <action name="action_M">
    <property name="text">
-    <string>記憶(&amp;M)</string>
+    <string>形状記憶(&amp;M)</string>
+   </property>
+   <property name="toolTip">
+    <string>形状記憶(M)</string>
    </property>
    <property name="shortcut">
     <string>M</string>
@@ -96,7 +93,10 @@
   </action>
   <action name="action_R">
    <property name="text">
-    <string>復帰(&amp;R)</string>
+    <string>形状復帰(&amp;R)</string>
+   </property>
+   <property name="toolTip">
+    <string>形状復帰(R)</string>
    </property>
    <property name="shortcut">
     <string>R</string>
@@ -104,7 +104,10 @@
   </action>
   <action name="action_6">
    <property name="text">
-    <string>展開図(&amp;6)</string>
+    <string>展開図出力(&amp;6)</string>
+   </property>
+   <property name="toolTip">
+    <string>展開図出力(6)</string>
    </property>
    <property name="shortcut">
     <string>6</string>
@@ -112,7 +115,10 @@
   </action>
   <action name="action_S">
    <property name="text">
-    <string>スナップショット図(&amp;S)</string>
+    <string>スナップショット出力(&amp;S)</string>
+   </property>
+   <property name="toolTip">
+    <string>スナップショット出力(S)</string>
    </property>
    <property name="shortcut">
     <string>S</string>
