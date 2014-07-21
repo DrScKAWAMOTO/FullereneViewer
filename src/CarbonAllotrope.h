@@ -107,10 +107,11 @@ public:
   // interactions
 protected:
   virtual void p_reset_interaction();
+public:
+  virtual const Vector3& get_center_location() const { return p_center_location; }
 
 public:
   void register_interactions();
-  void center_location_force_to_zero();
 
   // representation
 public:
@@ -120,7 +121,6 @@ public:
 public:
   void reset_three_axes();
   void calculate_three_axes();
-  Vector3 get_center_location() const { return p_center_location; }
   void get_primary_Eigenvalue_and_Eigenvector(double& Eigenvalue,
                                               Vector3& Eigenvector) const
   { Eigenvalue = p_Eigenvalue1; Eigenvector = p_Eigenvector1; }

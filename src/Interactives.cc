@@ -146,7 +146,7 @@ bool Interactives::operate_interactions(double delta)
   for (int i = 0; i < int_len; ++i)
     {
       Interactive* interactive = p_interactives[i];
-      interactive->operate_interactions(stability);
+      interactive->operate_interactions(stability, get_center_location());
     }
   if (stability == 0)
     --p_simulation_active;

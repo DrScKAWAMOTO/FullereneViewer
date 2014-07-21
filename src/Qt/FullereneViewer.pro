@@ -25,8 +25,8 @@ win32 {
 # Input
 HEADERS += ../Automorphism.h \
            ../Automorphisms.h ../AvoidBugs.h ../Bond.h ../Carbon.h ../CarbonAllotrope.h \
-           ../Center.h ../Configuration.h ../Config.h ../Debug.h ../DebugMemory.h \
-           ../DistanceMatrix.h \
+           ../Center.h ../Configuration.h ../Config.h \
+           ../Debug.h ../DebugMemory.h ../DistanceMatrix.h \
            ../DistanceSummaryLine.h ../DistanceVector.h ../ErrorCode.h ../Fullerene.h \
            ../FullereneCharacteristic.h ../FullereneMenu.h ../Fullerenes.h \
            ../Generator.h ../GeneratorLine.h ../Interactive.h ../InteractiveLine.h \
@@ -40,8 +40,8 @@ HEADERS += ../Automorphism.h \
            QtFullereneMenu.h ConfigurationDialog.h MainWindow.h Guruguru.h
 FORMS += MainWindow.ui ConfigurationDialog.ui
 SOURCES += ../Automorphism.cc ../Automorphisms.cc ../Bond.cc ../Carbon.cc \
-           ../CarbonAllotrope.cc ../Configuration.cc ../DebugMemory.cc \
-           ../DistanceMatrix.cc \
+           ../CarbonAllotrope.cc ../Configuration.cc \
+           ../DebugMemory.cc ../DistanceMatrix.cc \
            ../DistanceSummaryLine.cc ../DistanceVector.cc ../ErrorCode.cc \
            ../Fullerene.cc ../FullereneCharacteristic.cc ../Fullerenes.cc \
            ../Generator.cc ../GeneratorLine.cc ../Interactive.cc ../InteractiveLine.cc \

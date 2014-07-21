@@ -24,7 +24,6 @@ public:
     
 private slots:
   void setGuruguruMode();
-  void centering();
   void setPickingMode();
   void memoryShape();
   void recallShape();

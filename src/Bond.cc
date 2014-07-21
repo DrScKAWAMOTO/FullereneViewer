@@ -98,10 +98,9 @@ void Bond::print_POVRay_scene_description(const CarbonAllotrope* ca, FILE* fptr)
     }
 }
 
-void Bond::
-print_POVRay_scene_description(const CarbonAllotrope* ca, FILE* fptr,
-                               const Matrix3& rot, const Vector3& move,
-                               bool clipped_by_Z_non_negative) const
+void Bond::print_POVRay_scene_description(const CarbonAllotrope* ca, FILE* fptr,
+                                          const Matrix3& rot, const Vector3& move,
+                                          bool clipped_by_Z_non_negative) const
 {
   Vector3 loc0 = get_left_carbon()->carbon_location() * rot + move;
   Vector3 loc1 = get_right_carbon()->carbon_location() * rot + move;

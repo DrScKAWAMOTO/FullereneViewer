@@ -1193,7 +1193,6 @@ void CarbonAllotrope::reset_done()
 
 void CarbonAllotrope::p_reset_interaction()
 {
-#if defined(CONFIG_DRAW_PRINCIPAL_COMPONENT_AXES_IN_GURUGURU_MODE)
   int carbon_len = p_carbons.length();
   p_center_location = Vector3();
   for (int i = 0; i < carbon_len; ++i)
@@ -1202,7 +1201,6 @@ void CarbonAllotrope::p_reset_interaction()
       p_center_location += carbon->carbon_location();
     }
   p_center_location /= carbon_len;
-#endif
 }
 
 void CarbonAllotrope::register_interactions()
@@ -1259,25 +1257,6 @@ void CarbonAllotrope::register_interactions()
       p_register_interaction(ORIGINAL_FORCE_TYPE_ORIGINAL, axis_normal);
     }
 #endif
-}
-
-void CarbonAllotrope::center_location_force_to_zero()
-{
-  int carbon_len = p_carbons.length();
-  Vector3 center_location = Vector3();
-  for (int i = 0; i < carbon_len; ++i)
-    {
-      Carbon* carbon = p_carbons[i];
-      center_location += carbon->carbon_location();
-    }
-  center_location /= carbon_len;
-  Vector3 movement = Vector3() - center_location;
-  for (int i = 0; i < carbon_len; ++i)
-    {
-      Carbon* carbon = p_carbons[i];
-      carbon->move_center_location(movement);
-    }
-  resume_simulation();
 }
 
 void CarbonAllotrope::all_representations(Representations* results)

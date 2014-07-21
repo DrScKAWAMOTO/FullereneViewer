@@ -594,7 +594,10 @@ bool OpenGLUtil::rotate()
       if (dragging)
         {
           Vector3 drag_point = un_project(drag_x, drag_y);
-          Vector3 real_motion = drag_point - p_carbon_picking_point;
+          double mul = 1.0;
+          if (view > 0)
+            mul = (double)view / 100.0;
+          Vector3 real_motion = (drag_point - p_carbon_picking_point) * mul;
           Carbon* carbon = ca->get_carbon_by_sequence_no(p_carbon_picking_sequence_no);
           carbon->move_by(real_motion - p_last_real_motion);
           p_last_real_motion = real_motion;
@@ -622,7 +625,10 @@ bool OpenGLUtil::rotate()
     {
       if (dragging)
         {
-          Vector3 direction = Vector3(click_y - drag_y, click_x - drag_x, 0.0);
+          double mul = 1.0;
+          if (view > 0)
+            mul = (double)view / 100.0;
+          Vector3 direction = Vector3(click_y - drag_y, click_x - drag_x, 0.0) * mul;
           rotation_sub = rotation * Quaternion(direction, direction.abs() * 1.0);
           glMultMatrixd(Matrix3(rotation_sub).to_array44());
 	  resume_drawing();

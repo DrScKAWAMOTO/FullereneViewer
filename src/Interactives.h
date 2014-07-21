@@ -54,6 +54,7 @@ protected:
                               Interactive* one, Interactive* the_other);
   void p_register_interaction(OriginalForceType force_type, Interactive* one);
 public:
+  virtual const Vector3& get_center_location() const = 0;
   void register_interactive(Interactive* interactive);
   bool operate_interactions(double delta);
   void randomized_force(double width = 1.0);

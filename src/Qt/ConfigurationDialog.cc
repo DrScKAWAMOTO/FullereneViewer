@@ -28,6 +28,8 @@ ConfigurationDialog::ConfigurationDialog(QWidget *parent)
       ui->motionLowRadioButton->setChecked(true);
       break;
     }
+  ui->workingFolderLineEdit->setText(QString(configuration->get_working_folder_name()));
+
   connect(ui->buttonBox, SIGNAL(accepted()), this, SLOT(slot_accept()));
   connect(ui->buttonBox, SIGNAL(rejected()), this, SLOT(slot_reject()));
 }
@@ -49,6 +51,9 @@ void ConfigurationDialog::slot_accept()
     configuration->set_motion_quality(QUALITY_MIDDLE);
   else
     configuration->set_motion_quality(QUALITY_LOW);
+  configuration->set_working_folder_name(ui->workingFolderLineEdit->
+                                         text().toLocal8Bit().data());
+
   configuration->save();
   configuration->reflect();
   accept();
