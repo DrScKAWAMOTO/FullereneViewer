@@ -191,7 +191,7 @@ static void make_folder_recursive(const char *path)
         return;
     }
   int result;
-#if defined(__unix)
+#if defined(__unix) || defined(__APPLE__)
   result = mkdir(path, 0755);
 #else
   result = mkdir(path);
@@ -209,7 +209,7 @@ static void make_folder_recursive(const char *path)
     return;
   *delimiter = '\0';
   make_folder_recursive(parent);
-#if defined(__unix)
+#if defined(__unix) || defined(__APPLE__)
   mkdir(path, 0755);
 #else
   mkdir(path);

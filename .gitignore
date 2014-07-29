@@ -56,3 +56,6 @@ ID
 
 # OS oriented files
 .DS_Store
+
+# Qt Tools oriented files
+.qmake.stash
