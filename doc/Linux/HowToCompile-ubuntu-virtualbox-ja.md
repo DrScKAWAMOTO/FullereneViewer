@@ -43,10 +43,6 @@
     FullereneViewer> cd src/Qt
     Qt> ./FullereneViewer
 
-#### 5) `FullereneViewer/scripts/unix` に起動スクリプト `FullereneViewer.sh` を用意しました。
-　なお、 `FullereneViewer` を起動したフォルダには展開図やスナップショット図が出力されます。  
-　動作します。
-
-#### 6) お願い
+#### 5) お願い
 　VMWare などの他の仮想マシン上 Linux での動作報告を [Issue](https://github.com/DrScKAWAMOTO/FullereneViewer/issues) で教えてください。  
 　実マシンの Linux での動作報告を [Issue](https://github.com/DrScKAWAMOTO/FullereneViewer/issues) で教えてください。

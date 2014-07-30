@@ -36,7 +36,7 @@
 
 #### 9) Make folder and copy batch file into it.
 　`scripts/windows/FullereneViewer.bat` の記述が正しいか確認し、これをお好きなフォルダにコピーして下さい。  
-　なお、 `FullereneViewer.bat` をコピーしたフォルダには展開図やスナップショット図が出力されます。
+　なお、 展開図やスナップショット図が出力される作業フォルダは、設定画面で指定できます。
 
 #### 10) Execute batch file.
 　動作します。

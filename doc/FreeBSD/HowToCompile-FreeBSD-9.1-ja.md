@@ -108,8 +108,5 @@
 
 　遅いが、動作します。
 
-#### 6) `scripts/unix` に起動スクリプト `FullereneViewer.sh` を用意しました。
-　なお、 `FullereneViewer` を起動したフォルダには展開図やスナップショット図が出力されます。
-
-#### 7) お願い
+#### 6) お願い
 　仮想マシンでの実行例があれば [Issue](https://github.com/DrScKAWAMOTO/FullereneViewer/issues) で情報提供お願いします。
