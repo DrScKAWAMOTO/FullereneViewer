@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
   if ((argc >= 2) &&
       ((strcmp(argv[1], "--version") == 0) || (strcmp(argv[1], "-v") == 0)))
     {
-      print_version("FullereneViewer Ver 1.2.0");
+      print_version("FullereneViewer Ver 1.2.1");
       exit(0);
     }
 
