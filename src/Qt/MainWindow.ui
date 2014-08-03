@@ -20,7 +20,7 @@
      <x>0</x>
      <y>0</y>
      <width>640</width>
-     <height>24</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_F">
@@ -51,14 +51,24 @@
     <addaction name="action_6"/>
     <addaction name="action_S"/>
    </widget>
+   <widget class="QMenu" name="menu_H">
+    <property name="title">
+     <string>ヘルプ(H)</string>
+    </property>
+    <addaction name="action_D"/>
+   </widget>
    <addaction name="menu_F"/>
    <addaction name="menu_C"/>
    <addaction name="menu_M"/>
    <addaction name="menu_O"/>
+   <addaction name="menu_H"/>
   </widget>
   <action name="action_Q">
    <property name="text">
     <string>終了(&amp;Q)</string>
+   </property>
+   <property name="toolTip">
+    <string>終了(Q)</string>
    </property>
    <property name="shortcut">
     <string>Q</string>
@@ -127,6 +137,17 @@
   <action name="action_SD">
    <property name="text">
     <string>設定</string>
+   </property>
+  </action>
+  <action name="action_D">
+   <property name="text">
+    <string>README.html(&amp;D)</string>
+   </property>
+   <property name="toolTip">
+    <string>README.html(D)</string>
+   </property>
+   <property name="shortcut">
+    <string>D</string>
    </property>
   </action>
  </widget>

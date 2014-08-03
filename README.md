@@ -23,8 +23,9 @@
 ![六面展開図](media/screenshot-7.png)
 
 ### 3) コンパイル方法 (How To Compile)
-　[doc/HowToCompile-ja.md](doc/HowToCompile-ja.md) を見てコンパイルしてください。  
-　以下のOSで動作します。
+　インストーラを使ってフラーレンビューアをPCにインストールしている場合はコンパイルの必要はありません。
+　そうではなくソースコードを入手した方は[doc/HowToCompile-ja.md](doc/HowToCompile-ja.md) を見てコンパイルしてください。  
+　以下のOSで動作するフラーレンビューアをコンパイルできます。
 * FreeBSD
 * Windows
 * MacOSX

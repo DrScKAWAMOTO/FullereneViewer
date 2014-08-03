@@ -14,6 +14,7 @@
 #include "QtFullereneMenu.h"
 #include "ConfigurationDialog.h"
 #include "ui_MainWindow.h"
+#include "HelpBrowser.h"
 
 static void alert_dialog(const char* message)
 {
@@ -36,6 +37,7 @@ MainWindow::MainWindow(QWidget *parent)
   connect(ui->action_6, SIGNAL(triggered()), this, SLOT(drawSixViews()));
   connect(ui->action_S, SIGNAL(triggered()), this, SLOT(drawSnapshot()));
   connect(ui->action_SD, SIGNAL(triggered()), this, SLOT(setupDialog()));
+  connect(ui->action_D, SIGNAL(triggered()), this, SLOT(showHelp()));
   OpenGLUtil::alert_dialog_callback = alert_dialog;
 }
 
@@ -113,6 +115,11 @@ void MainWindow::setupDialog()
   else if (result == QDialog::Rejected)
     ;
   delete config;
+}
+
+void MainWindow::showHelp()
+{
+  HelpBrowser::showHelp();
 }
 
 void MainWindow::fullereneSelected()

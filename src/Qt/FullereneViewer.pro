@@ -5,7 +5,7 @@
 # Create: 2012/03/14 15:36:05 JST
 #
 
-QT       += core gui opengl
+QT       += core gui opengl webkitwidgets
 TEMPLATE = app
 TARGET = FullereneViewer
 DEPENDPATH += . ..
@@ -37,7 +37,8 @@ HEADERS += ../Automorphism.h \
            ../Representation.h ../RepresentationInfo.h ../Representations.h \
            ../Ring.h ../SortedList.h ../Statistics.h ../SymmetryAxis.h \
            ../SymmetryAxisNormal.h ../ThreeViewNormal.h ../Utils.h ../Vector3.h \
-           QtFullereneMenu.h ConfigurationDialog.h MainWindow.h Guruguru.h
+           QtFullereneMenu.h ConfigurationDialog.h MainWindow.h Guruguru.h \
+           HelpBrowser.h
 FORMS += MainWindow.ui ConfigurationDialog.ui
 SOURCES += ../Automorphism.cc ../Automorphisms.cc ../Bond.cc ../Carbon.cc \
            ../CarbonAllotrope.cc ../Configuration.cc \
@@ -51,4 +52,9 @@ SOURCES += ../Automorphism.cc ../Automorphisms.cc ../Bond.cc ../Carbon.cc \
            ../Representation.cc ../RepresentationInfo.cc ../Representations.cc \
            ../Ring.cc ../Statistics.cc ../SymmetryAxis.cc ../SymmetryAxisNormal.cc \
            ../ThreeViewNormal.cc ../Utils.cc ../Vector3.cc \
-           QtFullereneMenu.cc ConfigurationDialog.cc main.cc MainWindow.cc Guruguru.cc
+           QtFullereneMenu.cc ConfigurationDialog.cc main.cc MainWindow.cc Guruguru.cc \
+           HelpBrowser.cc
+
+OTHER_FILES +=
+
+RESOURCES += FullereneViewer.qrc

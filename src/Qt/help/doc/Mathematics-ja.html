@@ -1,0 +1,530 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+</head>
+<body>
+<h1 id="fullereneviewer">FullereneViewer</h1>
+<h2>フラーレンビューア</h2>
+<h3>数学</h3>
+<h4 id="noa-number-of-automorphisms">NoA (number of automorphisms)</h4>
+<p>　fullerene の炭素集合から自身への錯体同型写像の数です。</p>
+<p>　これは対称軸の全数(src/Config.h で #define CONFIG_DRAW_ALL_AXES_SYMMETRY_IN_GURUGURU_MODE 1 を有効にした場合に表示される)とは違います。<br />　例えば C76-2 は NoA=4 ですが、対称軸の数は３本です。これは群論で言うと、位数２の巡回群の直積群は、元の数は４ですが、位数２の元は３個であることに相当します。残り１個は単位元です。</p>
+<p>　他の例としては C80-4 は NoA=6 ですが、位数が２の対称軸が３本と、位数が３の対称軸が１本です。これは群論で言うと、S3 という群に相当します。位数が２の対称軸３本にはそれぞれ位数が２の元 (12) と (13) と (23) が対応し、位数が３の対称軸１本には位数が３の元 (123) と (132) の二つが対応し、残る１個は単位元です。</p>
+<h4>現状</h4>
+<p>　対称性の高いフラーレンは、<code>ca-&gt;fill_n_polygons_around_carbons_closed_to_center_and_pentagons(val, num);</code> の組み合わせで、対称性の低いフラーレンは、<code>ca-&gt;fill_n_polygon_around_oldest_carbon(val);</code> の組み合わせで、すべて網羅できていそう。</p>
+<p>　C72 が化学的には存在しないらしいが、数学的には見つかった。</p>
+<h4 id="epsilon-">EPSILON について</h4>
+<p>　通常、浮動小数点の等値判定は、</p>
+<pre><code>fabs(a−b)≦DBL_EPSILON×a       (ただし a≠0.0)</code></pre>
+<p>で行う。</p>
+<p>　本シミュレーションでは、浮動小数点を固定小数点的に使用するためと、精度的には float で十分であることから、本シミュレーションでの浮動小数点の等値判定は、</p>
+<pre><code>fabs(a-b)≦FLT_EPSILON       (ただし a≠0.0)</code></pre>
+<p>で行う。<br />ただし、Quaternion.cc での角度0判定は</p>
+<pre><code>fabs(a-b)≦DBL_EPSILON       (ただし a≠0.0)</code></pre>
+<p>で行う。(固有値計算で微小角度が表現できずに無限ループしたため)</p>
+<h4 id="euler-">Euler 標数</h4>
+<ul>
+<li>オイラーの閉曲面の分類定理</li>
+</ul>
+<p>　g-重トーラスの Euler 標数は 2-2g である。</p>
+<ul>
+<li>平面の Euler 標数</li>
+</ul>
+<p>　平面の Euler 標数は 0 である。</p>
+<h4 id="c60-">C60 の特徴</h4>
+<p>北南半球：五角形+五角形</p>
+<p>筒部：なし(俵積み型)</p>
+<p>生成式：S1-5b6c5b6b5b</p>
+<p>特性式：<script type="text/javascript">
+<!--
+h='&#48;';a='&#64;';n='&#x31;&#50;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#x31;&#50;&#32;&#x61;&#116;&#32;&#48;</noscript> <script type="text/javascript">
+<!--
+h='&#x31;';a='&#64;';n='&#54;&#48;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#54;&#48;&#32;&#x61;&#116;&#32;&#x31;</noscript> <script type="text/javascript">
+<!--
+h='&#52;';a='&#64;';n='&#54;&#48;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#54;&#48;&#32;&#x61;&#116;&#32;&#52;</noscript> <script type="text/javascript">
+<!--
+h='&#x37;';a='&#64;';n='&#x31;&#50;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#x31;&#50;&#32;&#x61;&#116;&#32;&#x37;</noscript></p>
+<h4 id="c70-">C70 の特徴</h4>
+<p>北南半球：五角形+五角形</p>
+<p>筒部：俵積み型(5個の六員環)x1</p>
+<p>生成式：S1-5b6d5b6b5b</p>
+<p>特性式：<script type="text/javascript">
+<!--
+h='&#48;';a='&#64;';n='&#x31;&#50;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#x31;&#50;&#32;&#x61;&#116;&#32;&#48;</noscript> <script type="text/javascript">
+<!--
+h='&#x31;';a='&#64;';n='&#52;&#48;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#52;&#48;&#32;&#x61;&#116;&#32;&#x31;</noscript> <script type="text/javascript">
+<!--
+h='&#50;';a='&#64;';n='&#x31;&#48;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#x31;&#48;&#32;&#x61;&#116;&#32;&#50;</noscript> <script type="text/javascript">
+<!--
+h='&#x33;';a='&#64;';n='&#50;&#48;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#50;&#48;&#32;&#x61;&#116;&#32;&#x33;</noscript> <script type="text/javascript">
+<!--
+h='&#52;';a='&#64;';n='&#50;&#48;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#50;&#48;&#32;&#x61;&#116;&#32;&#52;</noscript> <script type="text/javascript">
+<!--
+h='&#x35;';a='&#64;';n='&#50;&#48;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#50;&#48;&#32;&#x61;&#116;&#32;&#x35;</noscript> <script type="text/javascript">
+<!--
+h='&#54;';a='&#64;';n='&#50;&#48;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#50;&#48;&#32;&#x61;&#116;&#32;&#54;</noscript> <script type="text/javascript">
+<!--
+h='&#56;';a='&#64;';n='&#50;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#50;&#32;&#x61;&#116;&#32;&#56;</noscript></p>
+<h4 id="c72-">C72 の特徴</h4>
+<p>北南半球：六角形+六角形</p>
+<p>筒部：なし(俵積み型)</p>
+<p>生成式：S3-5b6c5b6c</p>
+<p>特性式：アサートで計算できない</p>
+<h4 id="c74-">C74 の特徴</h4>
+<p>三分半球：菱形+菱形+菱形</p>
+<p>筒部：なし</p>
+<p>生成式：S4-6b5c6b5b6b</p>
+<p>特性式：アサートで計算できない</p>
+<h4 id="c76-1-">C76-1 の特徴</h4>
+<p>四分半球：小三角形+小三角形+小三角形+小三角形</p>
+<p>筒部：なし</p>
+<p>生成式：S2-6c5b6c5b6b</p>
+<p>特性式：<script type="text/javascript">
+<!--
+h='&#48;';a='&#64;';n='&#x31;&#50;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#x31;&#50;&#32;&#x61;&#116;&#32;&#48;</noscript> <script type="text/javascript">
+<!--
+h='&#x31;';a='&#64;';n='&#50;&#52;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#50;&#52;&#32;&#x61;&#116;&#32;&#x31;</noscript> <script type="text/javascript">
+<!--
+h='&#50;';a='&#64;';n='&#50;&#52;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#50;&#52;&#32;&#x61;&#116;&#32;&#50;</noscript> <script type="text/javascript">
+<!--
+h='&#x33;';a='&#64;';n='&#50;&#52;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#50;&#52;&#32;&#x61;&#116;&#32;&#x33;</noscript> <script type="text/javascript">
+<!--
+h='&#x35;';a='&#64;';n='&#52;&#56;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#52;&#56;&#32;&#x61;&#116;&#32;&#x35;</noscript> <script type="text/javascript">
+<!--
+h='&#56;';a='&#64;';n='&#x31;&#50;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#x31;&#50;&#32;&#x61;&#116;&#32;&#56;</noscript></p>
+<h4 id="c78-1-">C78-1 の特徴</h4>
+<p>北南半球：大三角形+大三角形</p>
+<p>筒部：ガンベルト型(9個の六員環)x1</p>
+<p>生成式：S2-5b6c5b6c5b6b</p>
+<p>特性式：<script type="text/javascript">
+<!--
+h='&#48;';a='&#64;';n='&#x31;&#50;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#x31;&#50;&#32;&#x61;&#116;&#32;&#48;</noscript> <script type="text/javascript">
+<!--
+h='&#x31;';a='&#64;';n='&#52;&#50;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#52;&#50;&#32;&#x61;&#116;&#32;&#x31;</noscript> <script type="text/javascript">
+<!--
+h='&#52;';a='&#64;';n='&#52;&#56;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#52;&#56;&#32;&#x61;&#116;&#32;&#52;</noscript> <script type="text/javascript">
+<!--
+h='&#x35;';a='&#64;';n='&#x31;&#56;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#x31;&#56;&#32;&#x61;&#116;&#32;&#x35;</noscript> <script type="text/javascript">
+<!--
+h='&#x37;';a='&#64;';n='&#50;&#52;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#50;&#52;&#32;&#x61;&#116;&#32;&#x37;</noscript></p>
+<h4 id="c78-2-">C78-2 の特徴</h4>
+<p>北南半球：小三角形+小三角形</p>
+<p>筒部：俵積み型(6個の五員環)x1</p>
+<p>生成式：S2-6c5b6d5b6b</p>
+<p>特性式：<script type="text/javascript">
+<!--
+h='&#48;';a='&#64;';n='&#x31;&#50;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#x31;&#50;&#32;&#x61;&#116;&#32;&#48;</noscript> <script type="text/javascript">
+<!--
+h='&#x31;';a='&#64;';n='&#x31;&#56;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#x31;&#56;&#32;&#x61;&#116;&#32;&#x31;</noscript> <script type="text/javascript">
+<!--
+h='&#50;';a='&#64;';n='&#x33;&#48;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#x33;&#48;&#32;&#x61;&#116;&#32;&#50;</noscript> <script type="text/javascript">
+<!--
+h='&#x33;';a='&#64;';n='&#50;&#52;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#50;&#52;&#32;&#x61;&#116;&#32;&#x33;</noscript> <script type="text/javascript">
+<!--
+h='&#x35;';a='&#64;';n='&#52;&#50;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#52;&#50;&#32;&#x61;&#116;&#32;&#x35;</noscript> <script type="text/javascript">
+<!--
+h='&#x37;';a='&#64;';n='&#x31;&#50;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#x31;&#50;&#32;&#x61;&#116;&#32;&#x37;</noscript> <script type="text/javascript">
+<!--
+h='&#56;';a='&#64;';n='&#54;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#54;&#32;&#x61;&#116;&#32;&#56;</noscript></p>
+<h4 id="c80-1-">C80-1 の特徴</h4>
+<p>北南半球：五角形+五角形</p>
+<p>筒部：なし(ガンベルト型)</p>
+<p>生成式：S1-6b5b6c5b6b5b</p>
+<p>特性式：<script type="text/javascript">
+<!--
+h='&#48;';a='&#64;';n='&#x31;&#50;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#x31;&#50;&#32;&#x61;&#116;&#32;&#48;</noscript> <script type="text/javascript">
+<!--
+h='&#50;';a='&#64;';n='&#54;&#48;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#54;&#48;&#32;&#x61;&#116;&#32;&#50;</noscript> <script type="text/javascript">
+<!--
+h='&#x35;';a='&#64;';n='&#54;&#48;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#54;&#48;&#32;&#x61;&#116;&#32;&#x35;</noscript> <script type="text/javascript">
+<!--
+h='&#x39;';a='&#64;';n='&#x31;&#50;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#x31;&#50;&#32;&#x61;&#116;&#32;&#x39;</noscript></p>
+<h4 id="c80-2-">C80-2 の特徴</h4>
+<p>北南半球：五角形+五角形</p>
+<p>筒部：俵積み型(5個の六員環)x2</p>
+<p>生成式：S1-5b6e5b6b5b</p>
+<p>特性式：<script type="text/javascript">
+<!--
+h='&#48;';a='&#64;';n='&#x31;&#50;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#x31;&#50;&#32;&#x61;&#116;&#32;&#48;</noscript> <script type="text/javascript">
+<!--
+h='&#x31;';a='&#64;';n='&#52;&#48;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#52;&#48;&#32;&#x61;&#116;&#32;&#x31;</noscript> <script type="text/javascript">
+<!--
+h='&#x33;';a='&#64;';n='&#50;&#48;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#50;&#48;&#32;&#x61;&#116;&#32;&#x33;</noscript> <script type="text/javascript">
+<!--
+h='&#52;';a='&#64;';n='&#50;&#48;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#50;&#48;&#32;&#x61;&#116;&#32;&#52;</noscript> <script type="text/javascript">
+<!--
+h='&#x35;';a='&#64;';n='&#50;&#48;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#50;&#48;&#32;&#x61;&#116;&#32;&#x35;</noscript> <script type="text/javascript">
+<!--
+h='&#54;';a='&#64;';n='&#50;&#48;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#50;&#48;&#32;&#x61;&#116;&#32;&#54;</noscript> <script type="text/javascript">
+<!--
+h='&#56;';a='&#64;';n='&#x31;&#48;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#x31;&#48;&#32;&#x61;&#116;&#32;&#56;</noscript> <script type="text/javascript">
+<!--
+h='&#x39;';a='&#64;';n='&#50;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#50;&#32;&#x61;&#116;&#32;&#x39;</noscript></p>
+<h4 id="c80-3-">C80-3 の特徴</h4>
+<p>北南半球：五角形+五角形</p>
+<p>筒部：ガンベルト型(10個の六員環)x1</p>
+<p>生成式：S1-6b5b6b5b6c5b</p>
+<p>特性式：<script type="text/javascript">
+<!--
+h='&#48;';a='&#64;';n='&#x31;&#50;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#x31;&#50;&#32;&#x61;&#116;&#32;&#48;</noscript> <script type="text/javascript">
+<!--
+h='&#x31;';a='&#64;';n='&#x31;&#48;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#x31;&#48;&#32;&#x61;&#116;&#32;&#x31;</noscript> <script type="text/javascript">
+<!--
+h='&#50;';a='&#64;';n='&#52;&#48;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#52;&#48;&#32;&#x61;&#116;&#32;&#50;</noscript> <script type="text/javascript">
+<!--
+h='&#x33;';a='&#64;';n='&#50;&#48;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#50;&#48;&#32;&#x61;&#116;&#32;&#x33;</noscript> <script type="text/javascript">
+<!--
+h='&#x35;';a='&#64;';n='&#52;&#48;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#52;&#48;&#32;&#x61;&#116;&#32;&#x35;</noscript> <script type="text/javascript">
+<!--
+h='&#x37;';a='&#64;';n='&#50;&#48;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#50;&#48;&#32;&#x61;&#116;&#32;&#x37;</noscript> <script type="text/javascript">
+<!--
+h='&#x39;';a='&#64;';n='&#50;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#50;&#32;&#x61;&#116;&#32;&#x39;</noscript></p>
+<h4 id="c84-01-">C84-01 の特徴</h4>
+<p>北南半球：六角形+三菱</p>
+<p>筒部：俵積み型(12個の六員環)x1</p>
+<p>生成式：S2-6b5b6d5b6d</p>
+<p>特性式：<script type="text/javascript">
+<!--
+h='&#48;';a='&#64;';n='&#x31;&#50;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#x31;&#50;&#32;&#x61;&#116;&#32;&#48;</noscript> <script type="text/javascript">
+<!--
+h='&#x31;';a='&#64;';n='&#x33;&#54;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#x33;&#54;&#32;&#x61;&#116;&#32;&#x31;</noscript> <script type="text/javascript">
+<!--
+h='&#52;';a='&#64;';n='&#52;&#56;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#52;&#56;&#32;&#x61;&#116;&#32;&#52;</noscript> <script type="text/javascript">
+<!--
+h='&#x35;';a='&#64;';n='&#50;&#52;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#50;&#52;&#32;&#x61;&#116;&#32;&#x35;</noscript> <script type="text/javascript">
+<!--
+h='&#x37;';a='&#64;';n='&#50;&#52;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#50;&#52;&#32;&#x61;&#116;&#32;&#x37;</noscript></p>
+<h4 id="c84-03-">C84-03 の特徴</h4>
+<p>北南半球：三菱+三菱</p>
+<p>筒部：なし</p>
+<p>生成式：S2-6b5b6b5b6b5b6c</p>
+<p>特性式：<script type="text/javascript">
+<!--
+h='&#48;';a='&#64;';n='&#x31;&#50;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#x31;&#50;&#32;&#x61;&#116;&#32;&#48;</noscript> <script type="text/javascript">
+<!--
+h='&#x31;';a='&#64;';n='&#50;&#52;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#50;&#52;&#32;&#x61;&#116;&#32;&#x31;</noscript> <script type="text/javascript">
+<!--
+h='&#50;';a='&#64;';n='&#x31;&#50;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#x31;&#50;&#32;&#x61;&#116;&#32;&#50;</noscript> <script type="text/javascript">
+<!--
+h='&#x33;';a='&#64;';n='&#50;&#52;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#50;&#52;&#32;&#x61;&#116;&#32;&#x33;</noscript> <script type="text/javascript">
+<!--
+h='&#52;';a='&#64;';n='&#50;&#52;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#50;&#52;&#32;&#x61;&#116;&#32;&#52;</noscript> <script type="text/javascript">
+<!--
+h='&#x35;';a='&#64;';n='&#x31;&#50;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#x31;&#50;&#32;&#x61;&#116;&#32;&#x35;</noscript> <script type="text/javascript">
+<!--
+h='&#54;';a='&#64;';n='&#50;&#52;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#50;&#52;&#32;&#x61;&#116;&#32;&#54;</noscript> <script type="text/javascript">
+<!--
+h='&#x39;';a='&#64;';n='&#x31;&#50;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#x31;&#50;&#32;&#x61;&#116;&#32;&#x39;</noscript></p>
+<h4 id="c90-01-">C90-01 の特徴</h4>
+<p>北南半球：五角形+五角形</p>
+<p>筒部：俵積み型(5個の六員環)x3</p>
+<p>生成式：S1-5b6f5b6b5b</p>
+<p>特性式：<script type="text/javascript">
+<!--
+h='&#48;';a='&#64;';n='&#x31;&#50;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#x31;&#50;&#32;&#x61;&#116;&#32;&#48;</noscript> <script type="text/javascript">
+<!--
+h='&#x31;';a='&#64;';n='&#52;&#48;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#52;&#48;&#32;&#x61;&#116;&#32;&#x31;</noscript> <script type="text/javascript">
+<!--
+h='&#52;';a='&#64;';n='&#x33;&#48;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#x33;&#48;&#32;&#x61;&#116;&#32;&#52;</noscript> <script type="text/javascript">
+<!--
+h='&#x35;';a='&#64;';n='&#50;&#48;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#50;&#48;&#32;&#x61;&#116;&#32;&#x35;</noscript> <script type="text/javascript">
+<!--
+h='&#x37;';a='&#64;';n='&#52;&#48;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#52;&#48;&#32;&#x61;&#116;&#32;&#x37;</noscript> <script type="text/javascript">
+<!--
+h='&#x31;&#48;';a='&#64;';n='&#50;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#50;&#32;&#x61;&#116;&#32;&#x31;&#48;</noscript></p>
+<h4 id="c96-04-">C96-04 の特徴</h4>
+<p>北南半球：大三角形+大三角形</p>
+<p>筒部：ガンベルト型(9個の六員環)x2</p>
+<p>生成式：S2-5b6f5b6b5b6b</p>
+<p>特性式：<script type="text/javascript">
+<!--
+h='&#48;';a='&#64;';n='&#x31;&#50;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#x31;&#50;&#32;&#x61;&#116;&#32;&#48;</noscript> <script type="text/javascript">
+<!--
+h='&#x31;';a='&#64;';n='&#x33;&#54;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#x33;&#54;&#32;&#x61;&#116;&#32;&#x31;</noscript> <script type="text/javascript">
+<!--
+h='&#52;';a='&#64;';n='&#x33;&#54;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#x33;&#54;&#32;&#x61;&#116;&#32;&#52;</noscript> <script type="text/javascript">
+<!--
+h='&#x35;';a='&#64;';n='&#x31;&#50;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#x31;&#50;&#32;&#x61;&#116;&#32;&#x35;</noscript> <script type="text/javascript">
+<!--
+h='&#x37;';a='&#64;';n='&#x33;&#54;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#x33;&#54;&#32;&#x61;&#116;&#32;&#x37;</noscript> <script type="text/javascript">
+<!--
+h='&#x39;';a='&#64;';n='&#54;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#54;&#32;&#x61;&#116;&#32;&#x39;</noscript> <script type="text/javascript">
+<!--
+h='&#x31;&#48;';a='&#64;';n='&#54;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#54;&#32;&#x61;&#116;&#32;&#x31;&#48;</noscript></p>
+<h4 id="c100-01-">C100-01 の特徴</h4>
+<p>北南半球：五角形+五角形</p>
+<p>筒部：俵積み型(5個の六員環)x4</p>
+<p>生成式：S1-5b6g5b6b5b</p>
+<p>特性式：<script type="text/javascript">
+<!--
+h='&#48;';a='&#64;';n='&#x31;&#50;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#x31;&#50;&#32;&#x61;&#116;&#32;&#48;</noscript> <script type="text/javascript">
+<!--
+h='&#x31;';a='&#64;';n='&#52;&#48;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#52;&#48;&#32;&#x61;&#116;&#32;&#x31;</noscript> <script type="text/javascript">
+<!--
+h='&#52;';a='&#64;';n='&#50;&#48;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#50;&#48;&#32;&#x61;&#116;&#32;&#52;</noscript> <script type="text/javascript">
+<!--
+h='&#x35;';a='&#64;';n='&#50;&#48;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#50;&#48;&#32;&#x61;&#116;&#32;&#x35;</noscript> <script type="text/javascript">
+<!--
+h='&#x37;';a='&#64;';n='&#50;&#48;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#50;&#48;&#32;&#x61;&#116;&#32;&#x37;</noscript> <script type="text/javascript">
+<!--
+h='&#56;';a='&#64;';n='&#50;&#48;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#50;&#48;&#32;&#x61;&#116;&#32;&#56;</noscript> <script type="text/javascript">
+<!--
+h='&#x39;';a='&#64;';n='&#x31;&#48;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#x31;&#48;&#32;&#x61;&#116;&#32;&#x39;</noscript> <script type="text/javascript">
+<!--
+h='&#x31;&#x31;';a='&#64;';n='&#50;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#50;&#32;&#x61;&#116;&#32;&#x31;&#x31;</noscript></p>
+</body>
+</html>
