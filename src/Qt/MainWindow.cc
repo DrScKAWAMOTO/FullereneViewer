@@ -36,8 +36,8 @@ MainWindow::MainWindow(QWidget *parent)
   connect(ui->action_R, SIGNAL(triggered()), this, SLOT(recallShape()));
   connect(ui->action_6, SIGNAL(triggered()), this, SLOT(drawSixViews()));
   connect(ui->action_S, SIGNAL(triggered()), this, SLOT(drawSnapshot()));
-  connect(ui->action_SD, SIGNAL(triggered()), this, SLOT(setupDialog()));
-  connect(ui->action_D, SIGNAL(triggered()), this, SLOT(showHelp()));
+  connect(ui->action_C, SIGNAL(triggered()), this, SLOT(setupDialog()));
+  connect(ui->action_H, SIGNAL(triggered()), this, SLOT(showHelp()));
   OpenGLUtil::alert_dialog_callback = alert_dialog;
 }
 

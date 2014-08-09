@@ -9,12 +9,10 @@ MDTOP= ../../../README.md
 HTMLTOP= $(subst .md,.html,$(subst ../../../,,$(MDTOP)))
 MDDOC= $(wildcard ../../../doc/*.md)
 HTMLDOC= $(subst .md,.html,$(subst ../../../,,$(MDDOC)))
-SMEDIAS= $(wildcard ../../../media/*.png)
-TMEDIAS= $(subst ../../../,,$(SMEDIAS))
 
 .PHONY: all clean distclean
 
-all:  $(HTMLTOP) $(HTMLDOC) $(TMEDIAS)
+all:  $(HTMLTOP) $(HTMLDOC)
 
 $(HTMLTOP): %.html: ../../../%.md
 	pandoc -s -f markdown_github -t html $< | sed -e s/ja\.md/ja.html/g > $@
@@ -22,8 +20,5 @@ $(HTMLTOP): %.html: ../../../%.md
 $(HTMLDOC): doc/%.html: ../../../doc/%.md
 	pandoc -s -f markdown_github -t html $< | sed -e s/README\\.md/README.html/g | sed -e s/ja\\.md/ja.html/g > $@
 
-$(TMEDIAS): media/%.png: ../../../media/%.png
-	cp -f $< $@
-
 clean:
-	rm -f $(HTMLTOP) $(HTMLDOC) $(TMEDIAS)
+	rm -f $(HTMLTOP) $(HTMLDOC)

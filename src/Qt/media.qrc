@@ -1,0 +1,13 @@
+<RCC>
+    <qresource prefix="/help/media">
+        <file alias="screenshot-0.png">../../media/screenshot-0.png</file>
+        <file alias="screenshot-1.png">../../media/screenshot-1.png</file>
+        <file alias="screenshot-2.png">../../media/screenshot-2.png</file>
+        <file alias="screenshot-3.png">../../media/screenshot-3.png</file>
+        <file alias="screenshot-4.png">../../media/screenshot-4.png</file>
+        <file alias="screenshot-5.png">../../media/screenshot-5.png</file>
+        <file alias="screenshot-6.png">../../media/screenshot-6.png</file>
+        <file alias="screenshot-7.png">../../media/screenshot-7.png</file>
+        <file alias="FullereneViewer.png">../../media/FullereneViewer.png</file>
+    </qresource>
+</RCC>

@@ -57,4 +57,4 @@ SOURCES += ../Automorphism.cc ../Automorphisms.cc ../Bond.cc ../Carbon.cc \
 
 OTHER_FILES +=
 
-RESOURCES += FullereneViewer.qrc
+RESOURCES += doc.qrc media.qrc

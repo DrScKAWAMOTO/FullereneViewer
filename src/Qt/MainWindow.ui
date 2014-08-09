@@ -20,14 +20,14 @@
      <x>0</x>
      <y>0</y>
      <width>640</width>
-     <height>22</height>
+     <height>24</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_F">
     <property name="title">
      <string>ファイル(&amp;F)</string>
     </property>
-    <addaction name="action_SD"/>
+    <addaction name="action_C"/>
     <addaction name="action_Q"/>
    </widget>
    <widget class="QMenu" name="menu_C">
@@ -53,9 +53,9 @@
    </widget>
    <widget class="QMenu" name="menu_H">
     <property name="title">
-     <string>ヘルプ(H)</string>
+     <string>ヘルプ(&amp;H)</string>
     </property>
-    <addaction name="action_D"/>
+    <addaction name="action_H"/>
    </widget>
    <addaction name="menu_F"/>
    <addaction name="menu_C"/>
@@ -134,20 +134,26 @@
     <string>S</string>
    </property>
   </action>
-  <action name="action_SD">
+  <action name="action_C">
    <property name="text">
-    <string>設定</string>
-   </property>
-  </action>
-  <action name="action_D">
-   <property name="text">
-    <string>README.html(&amp;D)</string>
+    <string>設定(&amp;C)</string>
    </property>
    <property name="toolTip">
-    <string>README.html(D)</string>
+    <string>設定(C)</string>
    </property>
    <property name="shortcut">
-    <string>D</string>
+    <string>C</string>
+   </property>
+  </action>
+  <action name="action_H">
+   <property name="text">
+    <string>README(&amp;H)</string>
+   </property>
+   <property name="toolTip">
+    <string>README(H)</string>
+   </property>
+   <property name="shortcut">
+    <string>H</string>
    </property>
   </action>
  </widget>

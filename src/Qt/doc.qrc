@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/">
+        <file>help/README.html</file>
+        <file>help/doc/HowToCompile-ja.html</file>
+        <file>help/doc/Mathematics-ja.html</file>
+        <file>help/doc/ReleaseNote-ja.html</file>
+        <file>help/doc/RequestToYou-ja.html</file>
+        <file>help/doc/Thanks-ja.html</file>
+        <file>help/doc/ToContributors-ja.html</file>
+    </qresource>
+</RCC>
