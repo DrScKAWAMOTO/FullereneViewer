@@ -47,10 +47,10 @@ bool SymmetryAxis::operator <= (const SymmetryAxis& that) const
 {
   if (get_type() != that.get_type())
     return false;
-  if ((get_north_sequence_no() == that.get_north_sequence_no()) &&
-      (get_south_sequence_no() == that.get_south_sequence_no()) ||
-      (get_north_sequence_no() == that.get_south_sequence_no()) &&
-      (get_south_sequence_no() == that.get_north_sequence_no()))
+  if (((get_north_sequence_no() == that.get_north_sequence_no()) &&
+      (get_south_sequence_no() == that.get_south_sequence_no())) ||
+      ((get_north_sequence_no() == that.get_south_sequence_no()) &&
+      (get_south_sequence_no() == that.get_north_sequence_no())))
     {
       int div = that.get_order() / get_order();
       assert(get_order() * div == that.get_order());
@@ -69,10 +69,10 @@ bool SymmetryAxis::operator == (const SymmetryAxis& that) const
 {
   if (get_type() != that.get_type())
     return false;
-  if ((get_north_sequence_no() == that.get_north_sequence_no()) &&
-      (get_south_sequence_no() == that.get_south_sequence_no()) ||
-      (get_north_sequence_no() == that.get_south_sequence_no()) &&
-      (get_south_sequence_no() == that.get_north_sequence_no()))
+  if (((get_north_sequence_no() == that.get_north_sequence_no()) &&
+      (get_south_sequence_no() == that.get_south_sequence_no())) ||
+      ((get_north_sequence_no() == that.get_south_sequence_no()) &&
+      (get_south_sequence_no() == that.get_north_sequence_no())))
     return (get_order() == that.get_order());
   else
     return false;

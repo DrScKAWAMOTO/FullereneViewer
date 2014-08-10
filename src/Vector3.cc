@@ -19,7 +19,7 @@ Vector3::Vector3(double x, double y, double z)
 }
 
 Vector3::Vector3(const Vector3& that)
-  : p_x(that.p_x), p_y(that.p_y), p_z(that.p_z)
+  : Object(that.sequence_no()), p_x(that.p_x), p_y(that.p_y), p_z(that.p_z)
 {
 }
 

@@ -109,11 +109,7 @@ void MainWindow::drawSnapshot()
 void MainWindow::setupDialog()
 {
   ConfigurationDialog *config = new ConfigurationDialog(this);
-  int result = config->exec();
-  if (result == QDialog::Accepted)
-    ;
-  else if (result == QDialog::Rejected)
-    ;
+  config->exec();
   delete config;
 }
 

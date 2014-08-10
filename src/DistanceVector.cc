@@ -17,6 +17,7 @@ DistanceVector::DistanceVector()
 }
 
 DistanceVector::DistanceVector(const DistanceVector& that)
+  : Object(that.sequence_no())
 {
   for (int i = 0; i < 12; ++i)
     p_distances[i] = that.p_distances[i];

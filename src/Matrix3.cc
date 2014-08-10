@@ -268,7 +268,7 @@ Eigenvalues_and_Eigenvectors(const Matrix3& target,
   while (1)
     {
       Vector3 axis;
-      double tan2theta;
+      double tan2theta = 0.0;
       double max = 0.0;
       double V23 = fabs(Vg.yz());
       if (V23 > max)

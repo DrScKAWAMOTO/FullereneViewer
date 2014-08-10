@@ -247,7 +247,10 @@ void Fullerene::set_carbon_allotrope(CarbonAllotrope* carbon_allotrope)
               seq0 = seq4;
             }
           else
-            assert(0);
+            {
+              type = AXIS_TYPE_CENTER_OF_RING;
+              assert(0);
+            }
           p_carbon_allotrope->register_axis(new SymmetryAxis(type, order,
                                                              seq0, seq1, am));
         }
