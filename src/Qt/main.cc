@@ -26,12 +26,12 @@ int main(int argc, char *argv[])
   if ((argc >= 2) &&
       ((strcmp(argv[1], "--version") == 0) || (strcmp(argv[1], "-v") == 0)))
     {
-      print_version("FullereneViewer Ver 1.2.1");
+      print_version("FullereneViewer");
       exit(0);
     }
 
 #if QT_VERSION < QT_VERSION_CHECK(5,0,0)
-#if defined(__APPLE__) || defined(__unix)
+#if defined(Q_OS_DARWIN) || defined(Q_OS_UNIX)
   QString home = getenv("HOME");
   QString desktop = home + "/Desktop";
 #else

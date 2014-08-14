@@ -2,8 +2,9 @@
 ## フラーレンビューア
 ### リリースノート
 
-#### 2014/07/30 Version 1.2.1
+#### 2014/07/30 Version 1.3.0
 　Mac 版、mkdir 引数間違いと、povray 起動できない問題を修正。
+　Webkit を使った HelpBrowser を実装し、markdown ファイルを html に変換したものを表示。
 
 #### 2014/07/21 Version 1.2.0
 　issue30「quaternion → OpenGL の 4x4マトリックス変換が転置？」を修正。  

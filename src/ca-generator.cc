@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
         }
       else if ((strcmp(argv[0], "-v") == 0) || (strcmp(argv[0], "--version") == 0))
         {
-          print_version("ca-generator Ver 1.0");
+          print_version("ca-generator");
           exit(0);
         }
       else if (strncmp(argv[0], "--symmetric=", 12) == 0)

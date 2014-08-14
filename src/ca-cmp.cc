@@ -42,7 +42,7 @@ int main(int argc, char* argv[])
   if ((argc == 1) &&
       ((strcmp(argv[0], "-v") == 0) || (strcmp(argv[0], "--version") == 0)))
     {
-      print_version("ca-cmp Ver 1.0");
+      print_version("ca-cmp");
       exit(0);
     }
   setvbuf(stdout, 0, _IONBF, 0);

@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
   if ((argc == 2) &&
       ((strcmp(argv[1], "-v") == 0) || (strcmp(argv[1], "--version") == 0)))
     {
-      print_version("ca-test Ver 1.0");
+      print_version("ca-test");
       exit(0);
     }
   if (argc != 1)

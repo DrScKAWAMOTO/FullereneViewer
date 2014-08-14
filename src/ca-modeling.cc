@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
         }
       else if ((strcmp(argv[0], "-v") == 0) || (strcmp(argv[0], "--version") == 0))
         {
-          print_version("ca-modeling Ver 1.0");
+          print_version("ca-modeling");
           exit(0);
         }
       else if (strcmp(argv[0], "--development-view") == 0)

@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
         }
       else if ((strcmp(argv[0], "-v") == 0) || (strcmp(argv[0], "--version") == 0))
         {
-          print_version("ca-char Ver 1.0");
+          print_version("ca-char");
           exit(0);
         }
       else if (strcmp(argv[0], "--axes-summary") == 0)
