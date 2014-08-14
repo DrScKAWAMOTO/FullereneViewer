@@ -2,8 +2,8 @@
 ## フラーレンビューア
 ### リリースノート
 
-#### 2014/07/30 Version 1.3.0
-　Mac 版、mkdir 引数間違いと、povray 起動できない問題を修正。
+#### 2014/08/14 Version 1.3.0
+　Mac 版、mkdir 引数間違いと、povray 起動できない問題を修正。  
 　Webkit を使った HelpBrowser を実装し、markdown ファイルを html に変換したものを表示。
 
 #### 2014/07/21 Version 1.2.0
