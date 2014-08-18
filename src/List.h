@@ -90,7 +90,7 @@ public:
         if (p_container[i] == element)
           {
             --p_length;
-            for (i = i; i < p_length; ++i)
+            for ( ; i < p_length; ++i)
               p_container[i] = p_container[i + 1];
             element->link_down();
             return;
