@@ -29,7 +29,7 @@ InteractiveRegularPolygon::~InteractiveRegularPolygon()
 {
 }
 
-void InteractiveRegularPolygon::draw_opaque_by_OpenGL() const
+void InteractiveRegularPolygon::draw_opaque_by_OpenGL(bool selection) const
 {
   int len = number_of_vertices();
   for (int i = 0; i < len; ++i)

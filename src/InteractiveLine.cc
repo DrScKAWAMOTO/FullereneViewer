@@ -26,7 +26,7 @@ InteractiveLine::~InteractiveLine()
 {
 }
 
-void InteractiveLine::draw_opaque_by_OpenGL() const
+void InteractiveLine::draw_opaque_by_OpenGL(bool selection) const
 {
   Vector3 center = get_center_location();
   Vector3 norm = get_normal();
