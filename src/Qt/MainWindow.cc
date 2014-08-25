@@ -15,6 +15,7 @@
 #include "ConfigurationDialog.h"
 #include "ui_MainWindow.h"
 #include "HelpBrowser.h"
+#include "AboutWindow.h"
 
 static void alert_dialog(const char* message)
 {
@@ -38,6 +39,7 @@ MainWindow::MainWindow(QWidget *parent)
   connect(ui->action_S, SIGNAL(triggered()), this, SLOT(drawSnapshot()));
   connect(ui->action_C, SIGNAL(triggered()), this, SLOT(setupDialog()));
   connect(ui->action_H, SIGNAL(triggered()), this, SLOT(showHelp()));
+  connect(ui->action_A, SIGNAL(triggered()), this, SLOT(showAbout()));
   OpenGLUtil::alert_dialog_callback = alert_dialog;
 }
 
@@ -116,6 +118,11 @@ void MainWindow::setupDialog()
 void MainWindow::showHelp()
 {
   HelpBrowser::showHelp();
+}
+
+void MainWindow::showAbout()
+{
+  AboutWindow::showAbout();
 }
 
 void MainWindow::fullereneSelected()

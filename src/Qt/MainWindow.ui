@@ -56,6 +56,7 @@
      <string>ヘルプ(&amp;H)</string>
     </property>
     <addaction name="action_H"/>
+    <addaction name="action_A"/>
    </widget>
    <addaction name="menu_F"/>
    <addaction name="menu_C"/>
@@ -154,6 +155,14 @@
    </property>
    <property name="shortcut">
     <string>H</string>
+   </property>
+  </action>
+  <action name="action_A">
+   <property name="text">
+    <string>FullereneViewerについて(&amp;A)</string>
+   </property>
+   <property name="shortcut">
+    <string>A</string>
    </property>
   </action>
  </widget>

@@ -38,8 +38,10 @@ HEADERS += ../Automorphism.h \
            ../Ring.h ../SortedList.h ../Statistics.h ../SymmetryAxis.h \
            ../SymmetryAxisNormal.h ../ThreeViewNormal.h ../Utils.h ../Vector3.h \
            QtFullereneMenu.h ConfigurationDialog.h MainWindow.h Guruguru.h \
-           HelpBrowser.h
-FORMS += MainWindow.ui ConfigurationDialog.ui
+           HelpBrowser.h \
+    AboutWindow.h
+FORMS += MainWindow.ui ConfigurationDialog.ui \
+    AboutWindow.ui
 SOURCES += ../Automorphism.cc ../Automorphisms.cc ../Bond.cc ../Carbon.cc \
            ../CarbonAllotrope.cc ../Configuration.cc \
            ../DebugMemory.cc ../DistanceMatrix.cc \
@@ -53,7 +55,8 @@ SOURCES += ../Automorphism.cc ../Automorphisms.cc ../Bond.cc ../Carbon.cc \
            ../Ring.cc ../Statistics.cc ../SymmetryAxis.cc ../SymmetryAxisNormal.cc \
            ../ThreeViewNormal.cc ../Utils.cc ../Vector3.cc \
            QtFullereneMenu.cc ConfigurationDialog.cc main.cc MainWindow.cc Guruguru.cc \
-           HelpBrowser.cc
+           HelpBrowser.cc \
+    AboutWindow.cpp
 
 OTHER_FILES +=
 

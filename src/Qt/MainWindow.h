@@ -31,6 +31,7 @@ private slots:
   void drawSnapshot();
   void setupDialog();
   void showHelp();
+  void showAbout();
   void fullereneSelected();
 
 private:
