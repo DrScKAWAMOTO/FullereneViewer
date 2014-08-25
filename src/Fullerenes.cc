@@ -12,16 +12,19 @@
 #include "Debug.h"
 #include "DebugMemory.h"
 
-Fullerenes::Fullerenes(const char* generator_label, int maximum_number_of_carbons,
+Fullerenes::Fullerenes(const char* generator_formula, int maximum_number_of_carbons,
                        bool symmetric, int maximum_vertices_of_polygons)
 {
   Fullerene::s_need_representations = true;
-  Generator gen = (generator_label ?
-                   Generator(generator_label, maximum_vertices_of_polygons) :
+  Generator gen = (generator_formula ?
+                   Generator(generator_formula, maximum_vertices_of_polygons) :
                    Generator(symmetric, maximum_vertices_of_polygons));
   char buffer[1024];
   CarbonAllotrope* ca = new CarbonAllotrope();
-  ca->make_symmetric_scrap(gen.scrap_no());
+  if (gen.is_tube())
+    ca->make_equator_by_chiral_characteristic(gen.n(), gen.m(), gen.h());
+  else
+    ca->make_symmetric_scrap(gen.scrap_no());
 #ifdef DEBUG_ERRORS
   printf("* START ****************************************\n");
 #endif
@@ -52,7 +55,7 @@ Fullerenes::Fullerenes(const char* generator_label, int maximum_number_of_carbon
 #ifdef DEBUG_ERRORS
           printf("************************************************\n");
 #endif
-          gen.get_generator_label(buffer, 1024);
+          gen.get_generator_formula(buffer, 1024);
           if ((result == ERROR_CODE_OK) &&
               (number_of_carbons_in_boundary == 0))
             {
@@ -63,7 +66,7 @@ Fullerenes::Fullerenes(const char* generator_label, int maximum_number_of_carbon
 #endif
               Fullerene* fullerene = new Fullerene();
               fullerene->set_carbon_allotrope(ca);
-              fullerene->set_generator_label(buffer);
+              fullerene->set_generator_formula(buffer);
               add_fullerene(fullerene);
             }
           else if (result != ERROR_CODE_OK)
@@ -94,7 +97,10 @@ Fullerenes::Fullerenes(const char* generator_label, int maximum_number_of_carbon
           if (!gen.next_pattern())
             return;
           ca = new CarbonAllotrope();
-          ca->make_symmetric_scrap(gen.scrap_no());
+          if (gen.is_tube())
+            ca->make_equator_by_chiral_characteristic(gen.n(), gen.m(), gen.h());
+          else
+            ca->make_symmetric_scrap(gen.scrap_no());
 #ifdef DEBUG_ERRORS
           printf("* START ****************************************\n");
 #endif
@@ -122,11 +128,11 @@ void Fullerenes::add_fullerene(Fullerene* pat)
           printf("* NG same pattern = C%d(number of automorphisms=%d) %s\n",
                  pat->get_carbon_allotrope()->number_of_carbons(),
                  pat->get_representations()->number_of_automorphisms(),
-                 pat->get_generator_label());
+                 pat->get_generator_formula());
           printf("*    with pattern = C%d(number of automorphisms=%d) %s\n",
                  pati->get_carbon_allotrope()->number_of_carbons(),
                  pati->get_representations()->number_of_automorphisms(),
-                 pati->get_generator_label());
+                 pati->get_generator_formula());
           printf("************************************************\n");
 #endif
           delete pat;
@@ -138,13 +144,13 @@ void Fullerenes::add_fullerene(Fullerene* pat)
   printf("* OK different pattern = C%d (number of automorphisms=%d) %s\n",
          pat->get_carbon_allotrope()->number_of_carbons(),
          pat->get_representations()->number_of_automorphisms(),
-         pat->get_generator_label());
+         pat->get_generator_formula());
   printf("************************************************\n");
 #else
   printf("C%d (NoA=%d) %s\n",
          pat->get_carbon_allotrope()->number_of_carbons(),
          pat->get_representations()->number_of_automorphisms(),
-         pat->get_generator_label());
+         pat->get_generator_formula());
 #endif
   p_patterns.add(pat);
 }

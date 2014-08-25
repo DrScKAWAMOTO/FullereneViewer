@@ -7,7 +7,7 @@
 
 struct MenuEntry {
   const char* fullerene_name;
-  const char* generator_label;
+  const char* generator_formula;
 };
 
 MenuEntry entry0[] = {
@@ -532,8 +532,13 @@ MenuEntry entry14[] = {
 };
 
 MenuEntry entry15[] = {
-  { "Carbon Nano Tube", "T" },
-  { "Fullerene Y", "T-Y" },
+  { "zigzag Carbon Nano Tube", "T10,0,4" },
+  { "chiral Carbon Nano Tube", "T9,1,4" },
+  { "chiral Carbon Nano Tube", "T8,2,4" },
+  { "chiral Carbon Nano Tube", "T7,3,4" },
+  { "chiral Carbon Nano Tube", "T6,4,4" },
+  { "armchair Carbon Nano Tube", "T5,5,4" },
+  { "Y-branched Fullerene", "Y" },
 };
 
 /* Local Variables:	*/

@@ -110,17 +110,9 @@ void FullereneCharacteristic::print_summary(FILE* fptr) const
           ++array[dist];
         }
     }
-  bool first_time = true;
-  for (int i = 0; i <= max_dist; ++i)
-    {
-      if (array[i] == 0)
-        continue;
-      if (!first_time)
-        fprintf(fptr, " ");
-      first_time = false;
-      fprintf(fptr, "%d@%d", array[i], i);
-    }
-  fprintf(fptr, "\n");
+  for (int i = 0; i < max_dist; ++i)
+    fprintf(fptr, "%d,", array[i]);
+  fprintf(fptr, "%d\n", array[max_dist]);
 }
 
 DistanceVector* FullereneCharacteristic::get_distance_vector(int index)

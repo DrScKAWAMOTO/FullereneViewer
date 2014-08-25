@@ -1,0 +1,574 @@
+Open concave boundary segment (length=2) C9-...-C5
+Open concave boundary segment (length=2) C6-...-C3
+Open concave boundary segment (length=2) C15-...-C4
+Open concave boundary segment (length=3) C18-...-C12
+* START ****************************************
+* detail ***************************************
+C6(1) C9(1) C12(1) C18(1) C15(1) 
+number of bonds = 25
+number of carbons = 20
+number of carbons with one ring = 10
+number of carbons with two rings = 5
+number of carbons with three rings = 5
+number of 5-membered rings = 1
+number of 6-membered rings = 5
+Euler characteristic = 1
+boundary =
+  dist 1  2  2  1  2  2  1  2  2  1  2  2  1  2  2  
+  carb C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--
+   NO.   6 13 14 15 16 17 18 19 20 12 11 10  9  8  7
+  ring |6R      |6R      |6R      |6R      |6R      
+   NO.   4        5        6        3        2      
+distances to pentagons = 00000122122122122122
+clockwise = ++++++++++++++++++++
+************************************************
+Carbon(6) ... 5-polygon
+Open concave boundary segment (length=2) C13-...-C7
+* detail ***************************************
+C9(1) C15(1) C18(1) C12(1) 
+number of bonds = 28
+number of carbons = 22
+number of carbons with one ring = 10
+number of carbons with two rings = 6
+number of carbons with three rings = 6
+number of 5-membered rings = 2
+number of 6-membered rings = 5
+Euler characteristic = 1
+boundary =
+  dist 0  0  0  0  1  1  2  2  1  2  2  1  2  2  1  1  
+  carb C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--
+   NO.   7 22 21 13 14 15 16 17 18 19 20 12 11 10  9  8
+  ring |5R      |6R   |6R      |6R      |6R      |6R   
+   NO.   7        4     5        6        3        2   
+distances to pentagons = 0000000112210112212200
+clockwise = ++++++++++++++++++++++
+************************************************
+Carbon(7) ... 6-polygon
+Open concave boundary segment (length=2) C22-...-C8
+* detail ***************************************
+C9(1) C15(1) C18(1) C12(1) 
+number of bonds = 32
+number of carbons = 25
+number of carbons with one ring = 11
+number of carbons with two rings = 7
+number of carbons with three rings = 7
+number of 5-membered rings = 2
+number of 6-membered rings = 6
+Euler characteristic = 1
+boundary =
+  dist 1  2  2  1  0  0  0  1  1  2  2  1  2  2  1  2  2  1  
+  carb C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--
+   NO.   8 25 24 23 22 21 13 14 15 16 17 18 19 20 12 11 10  9
+  ring |6R         |5R   |6R   |6R      |6R      |6R      |6R
+   NO.   8           7     4     5        6        3        2
+distances to pentagons = 0000000112210112212200122
+clockwise = +++++++++++++++++++++++++
+************************************************
+Carbon(8) ... 5-polygon
+Open concave boundary segment (length=3) C25-...-C10
+* detail ***************************************
+C12(1) C15(1) C18(1) 
+number of bonds = 34
+number of carbons = 26
+number of carbons with one ring = 10
+number of carbons with two rings = 7
+number of carbons with three rings = 9
+number of 5-membered rings = 3
+number of 6-membered rings = 6
+Euler characteristic = 1
+boundary =
+  dist 0  0  0  1  1  0  0  0  1  1  2  2  1  2  2  1  1  
+  carb C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--
+   NO.  10 26 25 24 23 22 21 13 14 15 16 17 18 19 20 12 11
+  ring |5R   |6R      |5R   |6R   |6R      |6R      |6R   
+   NO.   9     8        7     4     5        6        3   
+distances to pentagons = 00000000001101122122001100
+clockwise = ++++++++++++++++++++++++++
+************************************************
+Carbon(10) ... 6-polygon
+Open concave boundary segment (length=2) C26-...-C11
+* detail ***************************************
+C12(1) C15(1) C18(1) 
+number of bonds = 38
+number of carbons = 29
+number of carbons with one ring = 11
+number of carbons with two rings = 8
+number of carbons with three rings = 10
+number of 5-membered rings = 3
+number of 6-membered rings = 7
+Euler characteristic = 1
+boundary =
+  dist 1  2  2  1  0  0  1  1  0  0  0  1  1  2  2  1  2  2  1  
+  carb C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--
+   NO.  11 29 28 27 26 25 24 23 22 21 13 14 15 16 17 18 19 20 12
+  ring |6R         |5R|6R      |5R   |6R   |6R      |6R      |6R
+   NO.  10           9  8        7     4     5        6        3
+distances to pentagons = 00000000001101122122001100122
+clockwise = +++++++++++++++++++++++++++++
+************************************************
+Carbon(11) ... 5-polygon
+Open concave boundary segment (length=3) C29-...-C20
+* detail ***************************************
+C15(1) C18(1) 
+number of bonds = 40
+number of carbons = 30
+number of carbons with one ring = 10
+number of carbons with two rings = 8
+number of carbons with three rings = 12
+number of 5-membered rings = 4
+number of 6-membered rings = 7
+Euler characteristic = 1
+boundary =
+  dist 0  0  0  1  1  0  0  1  1  0  0  0  1  1  2  2  1  1  
+  carb C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--
+   NO.  13 21 22 23 24 25 26 27 28 29 30 20 19 18 17 16 15 14
+  ring |5R   |6R      |5R|6R      |5R   |6R   |6R      |6R   
+   NO.   7     8        9 10       11     6     5        4   
+distances to pentagons = 000000000000011221100011001100
+clockwise = ++++++++++++++++++++++++++++++
+************************************************
+Carbon(13) ... 6-polygon
+Open concave boundary segment (length=2) C21-...-C14
+* detail ***************************************
+C15(1) C18(1) 
+number of bonds = 44
+number of carbons = 33
+number of carbons with one ring = 11
+number of carbons with two rings = 9
+number of carbons with three rings = 13
+number of 5-membered rings = 4
+number of 6-membered rings = 8
+Euler characteristic = 1
+boundary =
+  dist 1  2  2  1  0  0  1  1  0  0  1  1  0  0  0  1  1  2  2  1  
+  carb C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--
+   NO.  14 33 32 31 21 22 23 24 25 26 27 28 29 30 20 19 18 17 16 15
+  ring |6R         |5R|6R      |5R|6R      |5R   |6R   |6R      |6R
+   NO.  12           7  8        9 10       11     6     5        4
+distances to pentagons = 000000000000011221100011001100122
+clockwise = +++++++++++++++++++++++++++++++++
+************************************************
+Carbon(14) ... 5-polygon
+Open concave boundary segment (length=3) C33-...-C16
+* detail ***************************************
+C18(1) 
+number of bonds = 46
+number of carbons = 34
+number of carbons with one ring = 10
+number of carbons with two rings = 9
+number of carbons with three rings = 15
+number of 5-membered rings = 5
+number of 6-membered rings = 8
+Euler characteristic = 1
+boundary =
+  dist 0  0  0  1  1  0  0  1  1  0  0  1  1  0  0  0  1  1  1  
+  carb C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--
+   NO.  16 34 33 32 31 21 22 23 24 25 26 27 28 29 30 20 19 18 17
+  ring |5R   |6R      |5R|6R      |5R|6R      |5R   |6R   |6R   
+   NO.  13    12        7  8        9 10       11     6     5   
+distances to pentagons = 0000000000000000111000110011001100
+clockwise = ++++++++++++++++++++++++++++++++++
+************************************************
+Carbon(16) ... 6-polygon
+Open concave boundary segment (length=2) C34-...-C17
+* detail ***************************************
+C18(1) 
+number of bonds = 50
+number of carbons = 37
+number of carbons with one ring = 11
+number of carbons with two rings = 10
+number of carbons with three rings = 16
+number of 5-membered rings = 5
+number of 6-membered rings = 9
+Euler characteristic = 1
+boundary =
+  dist 1  2  2  1  0  0  1  1  0  0  1  1  0  0  1  1  0  0  0  1  1  
+  carb C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--
+   NO.  17 37 36 35 34 33 32 31 21 22 23 24 25 26 27 28 29 30 20 19 18
+  ring |6R         |5R|6R      |5R|6R      |5R|6R      |5R   |6R   |6R
+   NO.  14          13 12        7  8        9 10       11     6     5
+distances to pentagons = 0000000000000000111000110011001100122
+clockwise = +++++++++++++++++++++++++++++++++++++
+************************************************
+Carbon(17) ... 5-polygon
+Open concave boundary segment (length=3) C37-...-C19
+* detail ***************************************
+C19(0) 
+number of bonds = 52
+number of carbons = 38
+number of carbons with one ring = 10
+number of carbons with two rings = 10
+number of carbons with three rings = 18
+number of 5-membered rings = 6
+number of 6-membered rings = 9
+Euler characteristic = 1
+boundary =
+  dist 0  0  0  1  1  0  0  1  1  0  0  1  1  0  0  1  1  0  0  0  
+  carb C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--
+   NO.  19 38 37 36 35 34 33 32 31 21 22 23 24 25 26 27 28 29 30 20
+  ring |5R   |6R      |5R|6R      |5R|6R      |5R|6R      |5R   |6R
+   NO.  15    14       13 12        7  8        9 10       11     6
+distances to pentagons = 00000000000000000000001100110011001100
+clockwise = ++++++++++++++++++++++++++++++++++++++
+************************************************
+Carbon(19) ... 6-polygon
+Open concave boundary segment (length=3) C38-...-C30
+* detail ***************************************
+C21(0) C25(0) C29(0) C38(0) C34(0) 
+number of bonds = 55
+number of carbons = 40
+number of carbons with one ring = 10
+number of carbons with two rings = 10
+number of carbons with three rings = 20
+number of 5-membered rings = 6
+number of 6-membered rings = 10
+Euler characteristic = 1
+boundary =
+  dist 0  1  1  0  0  1  1  0  0  1  1  0  0  1  1  0  0  1  1  0  
+  carb C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--
+   NO.  21 31 32 33 34 35 36 37 38 39 40 30 29 28 27 26 25 24 23 22
+  ring |6R      |5R|6R      |5R|6R      |5R|6R      |5R|6R      |5R
+   NO.  12       13 14       15 16       11 10        9  8        7
+distances to pentagons = 0000000000000000000000110011001100110011
+clockwise = ++++++++++++++++++++++++++++++++++++++++
+************************************************
+Carbon(21) ... 6-polygon
+Open concave boundary segment (length=3) C31-...-C23
+* detail ***************************************
+C26(0) C33(0) C37(0) C30(0) 
+number of bonds = 58
+number of carbons = 42
+number of carbons with one ring = 10
+number of carbons with two rings = 10
+number of carbons with three rings = 22
+number of 5-membered rings = 6
+number of 6-membered rings = 11
+Euler characteristic = 1
+boundary =
+  dist 1  2  2  1  1  0  0  1  1  0  0  1  1  0  0  1  1  0  0  1  
+  carb C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--
+   NO.  23 42 41 31 32 33 34 35 36 37 38 39 40 30 29 28 27 26 25 24
+  ring |6R      |6R   |5R|6R      |5R|6R      |5R|6R      |5R|6R   
+   NO.  17       12    13 14       15 16       11 10        9  8   
+distances to pentagons = 000000000000000000000011001100110011001122
+clockwise = ++++++++++++++++++++++++++++++++++++++++++
+************************************************
+Carbon(23) ... 5-polygon
+Open concave boundary segment (length=2) C42-...-C24
+* detail ***************************************
+C26(0) C33(0) C37(0) C30(0) 
+number of bonds = 61
+number of carbons = 44
+number of carbons with one ring = 10
+number of carbons with two rings = 11
+number of carbons with three rings = 23
+number of 5-membered rings = 7
+number of 6-membered rings = 11
+Euler characteristic = 1
+boundary =
+  dist 0  0  0  0  1  1  1  0  0  1  1  0  0  1  1  0  0  1  1  0  0  
+  carb C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--
+   NO.  24 44 43 42 41 31 32 33 34 35 36 37 38 39 40 30 29 28 27 26 25
+  ring |5R      |6R   |6R   |5R|6R      |5R|6R      |5R|6R      |5R|6R
+   NO.  18       17    12    13 14       15 16       11 10        9  8
+distances to pentagons = 00000000000000000000000000110011001100111000
+clockwise = ++++++++++++++++++++++++++++++++++++++++++++
+************************************************
+Carbon(24) ... 6-polygon
+Open concave boundary segment (length=4) C44-...-C27
+* detail ***************************************
+C30(0) C33(0) C37(0) 
+number of bonds = 63
+number of carbons = 45
+number of carbons with one ring = 9
+number of carbons with two rings = 10
+number of carbons with three rings = 26
+number of 5-membered rings = 7
+number of 6-membered rings = 12
+Euler characteristic = 1
+boundary =
+  dist 1  1  0  0  0  1  1  1  0  0  1  1  0  0  1  1  0  0  1  
+  carb C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--
+   NO.  27 45 44 43 42 41 31 32 33 34 35 36 37 38 39 40 30 29 28
+  ring |6R   |5R   |6R   |6R   |5R|6R      |5R|6R      |5R|6R   
+   NO.  19    18    17    12    13 14       15 16       11 10   
+distances to pentagons = 000000000000000000000000001100110011001110001
+clockwise = +++++++++++++++++++++++++++++++++++++++++++++
+************************************************
+Carbon(27) ... 5-polygon
+Open concave boundary segment (length=2) C45-...-C28
+* detail ***************************************
+C30(0) C33(0) C37(0) 
+number of bonds = 66
+number of carbons = 47
+number of carbons with one ring = 9
+number of carbons with two rings = 11
+number of carbons with three rings = 27
+number of 5-membered rings = 8
+number of 6-membered rings = 12
+Euler characteristic = 1
+boundary =
+  dist 0  0  0  0  0  0  0  1  1  1  0  0  1  1  0  0  1  1  0  0  
+  carb C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--
+   NO.  28 47 46 45 44 43 42 41 31 32 33 34 35 36 37 38 39 40 30 29
+  ring |5R      |6R|5R   |6R   |6R   |5R|6R      |5R|6R      |5R|6R
+   NO.  20       19 18    17    12    13 14       15 16       11 10
+distances to pentagons = 00000000000000000000000000000011001100111000000
+clockwise = +++++++++++++++++++++++++++++++++++++++++++++++
+************************************************
+Carbon(28) ... 6-polygon
+Open concave boundary segment (length=4) C47-...-C40
+* detail ***************************************
+C34(0) C38(0) 
+number of bonds = 68
+number of carbons = 48
+number of carbons with one ring = 8
+number of carbons with two rings = 10
+number of carbons with three rings = 30
+number of 5-membered rings = 8
+number of 6-membered rings = 13
+Euler characteristic = 1
+boundary =
+  dist 1  1  0  0  0  0  0  0  1  1  1  0  0  1  1  0  0  1  
+  carb C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--
+   NO.  31 41 42 43 44 45 46 47 48 40 39 38 37 36 35 34 33 32
+  ring |6R   |5R   |6R|5R   |6R   |6R   |5R|6R      |5R|6R   
+   NO.  17    18    19 20    21    16    15 14       13 12   
+distances to pentagons = 000000000000000000000000000000110011001110000001
+clockwise = ++++++++++++++++++++++++++++++++++++++++++++++++
+************************************************
+Carbon(31) ... 5-polygon
+Open concave boundary segment (length=2) C41-...-C32
+* detail ***************************************
+C34(0) C38(0) 
+number of bonds = 71
+number of carbons = 50
+number of carbons with one ring = 8
+number of carbons with two rings = 11
+number of carbons with three rings = 31
+number of 5-membered rings = 9
+number of 6-membered rings = 13
+Euler characteristic = 1
+boundary =
+  dist 0  0  0  0  0  0  0  0  0  0  1  1  1  0  0  1  1  0  0  
+  carb C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--
+   NO.  32 50 49 41 42 43 44 45 46 47 48 40 39 38 37 36 35 34 33
+  ring |5R      |6R|5R   |6R|5R   |6R   |6R   |5R|6R      |5R|6R
+   NO.  22       17 18    19 20    21    16    15 14       13 12
+distances to pentagons = 00000000000000000000000000000000001100110000000100
+clockwise = ++++++++++++++++++++++++++++++++++++++++++++++++++
+************************************************
+Carbon(32) ... 6-polygon
+Open concave boundary segment (length=4) C50-...-C35
+* detail ***************************************
+C38(0) 
+number of bonds = 73
+number of carbons = 51
+number of carbons with one ring = 7
+number of carbons with two rings = 10
+number of carbons with three rings = 34
+number of 5-membered rings = 9
+number of 6-membered rings = 14
+Euler characteristic = 1
+boundary =
+  dist 1  1  0  0  0  0  0  0  0  0  0  1  1  1  0  0  1  
+  carb C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--
+   NO.  35 51 50 49 41 42 43 44 45 46 47 48 40 39 38 37 36
+  ring |6R   |5R   |6R|5R   |6R|5R   |6R   |6R   |5R|6R   
+   NO.  23    22    17 18    19 20    21    16    15 14   
+distances to pentagons = 000000000000000000000000000000000011001100000001001
+clockwise = +++++++++++++++++++++++++++++++++++++++++++++++++++
+************************************************
+Carbon(35) ... 5-polygon
+Open concave boundary segment (length=2) C51-...-C36
+* detail ***************************************
+C38(0) 
+number of bonds = 76
+number of carbons = 53
+number of carbons with one ring = 7
+number of carbons with two rings = 11
+number of carbons with three rings = 35
+number of 5-membered rings = 10
+number of 6-membered rings = 14
+Euler characteristic = 1
+boundary =
+  dist 0  0  0  0  0  0  0  0  0  0  0  0  0  1  1  1  0  0  
+  carb C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--
+   NO.  36 53 52 51 50 49 41 42 43 44 45 46 47 48 40 39 38 37
+  ring |5R      |6R|5R   |6R|5R   |6R|5R   |6R   |6R   |5R|6R
+   NO.  24       23 22    17 18    19 20    21    16    15 14
+distances to pentagons = 00000000000000000000000000000000000000110000000100000
+clockwise = +++++++++++++++++++++++++++++++++++++++++++++++++++++
+************************************************
+Carbon(36) ... 6-polygon
+Open concave boundary segment (length=4) C53-...-C39
+* detail ***************************************
+C39(1) 
+number of bonds = 78
+number of carbons = 54
+number of carbons with one ring = 6
+number of carbons with two rings = 10
+number of carbons with three rings = 38
+number of 5-membered rings = 10
+number of 6-membered rings = 15
+Euler characteristic = 1
+boundary =
+  dist 1  1  0  0  0  0  0  0  0  0  0  0  0  0  1  1  
+  carb C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--
+   NO.  39 54 53 52 51 50 49 41 42 43 44 45 46 47 48 40
+  ring |6R   |5R   |6R|5R   |6R|5R   |6R|5R   |6R   |6R
+   NO.  25    24    23 22    17 18    19 20    21    16
+distances to pentagons = 000000000000000000000000000000000000001100000001000001
+clockwise = ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+************************************************
+Carbon(39) ... 5-polygon
+Open concave boundary segment (length=3) C54-...-C48
+* detail ***************************************
+C41(0) C44(0) C47(0) C54(0) C51(0) 
+number of bonds = 80
+number of carbons = 55
+number of carbons with one ring = 5
+number of carbons with two rings = 10
+number of carbons with three rings = 40
+number of 5-membered rings = 11
+number of 6-membered rings = 15
+Euler characteristic = 1
+boundary =
+  dist 0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  
+  carb C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--
+   NO.  41 49 50 51 52 53 54 55 48 47 46 45 44 43 42
+  ring |5R   |6R|5R   |6R|5R   |6R|5R   |6R|5R   |6R
+   NO.  22    23 24    25 26    21 20    19 18    17
+distances to pentagons = 0000000000000000000000000000000000000000000000000000000
+clockwise = +++++++++++++++++++++++++++++++++++++++++++++++++++++++
+************************************************
+Carbon(41) ... 6-polygon
+Open concave boundary segment (length=3) C49-...-C43
+* detail ***************************************
+C45(0) C50(0) C53(0) C48(0) 
+number of bonds = 83
+number of carbons = 57
+number of carbons with one ring = 5
+number of carbons with two rings = 10
+number of carbons with three rings = 42
+number of 5-membered rings = 11
+number of 6-membered rings = 16
+Euler characteristic = 1
+boundary =
+  dist 0  1  1  0  0  0  0  0  0  0  0  0  0  0  0  
+  carb C--C--C--C--C--C--C--C--C--C--C--C--C--C--C--
+   NO.  43 57 56 49 50 51 52 53 54 55 48 47 46 45 44
+  ring |6R      |5R|6R|5R   |6R|5R   |6R|5R   |6R|5R
+   NO.  27       22 23 24    25 26    21 20    19 18
+distances to pentagons = 000000000000000000000000000000000000000000000000000000011
+clockwise = +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+************************************************
+Carbon(43) ... 6-polygon
+Open concave boundary segment (length=4) C57-...-C46
+* detail ***************************************
+C48(0) C50(0) C53(0) 
+number of bonds = 85
+number of carbons = 58
+number of carbons with one ring = 4
+number of carbons with two rings = 9
+number of carbons with three rings = 45
+number of 5-membered rings = 11
+number of 6-membered rings = 17
+Euler characteristic = 1
+boundary =
+  dist 0  1  1  1  0  0  0  0  0  0  0  0  0  
+  carb C--C--C--C--C--C--C--C--C--C--C--C--C--
+   NO.  46 58 57 56 49 50 51 52 53 54 55 48 47
+  ring |6R   |6R   |5R|6R|5R   |6R|5R   |6R|5R
+   NO.  28    27    22 23 24    25 26    21 20
+distances to pentagons = 0000000000000000000000000000000000000000000000000000000111
+clockwise = ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+************************************************
+Carbon(46) ... 6-polygon
+Open concave boundary segment (length=4) C58-...-C55
+* detail ***************************************
+C51(0) C54(0) 
+number of bonds = 87
+number of carbons = 59
+number of carbons with one ring = 3
+number of carbons with two rings = 8
+number of carbons with three rings = 48
+number of 5-membered rings = 11
+number of 6-membered rings = 18
+Euler characteristic = 1
+boundary =
+  dist 0  1  1  1  1  0  0  0  0  0  0  
+  carb C--C--C--C--C--C--C--C--C--C--C--
+   NO.  49 56 57 58 59 55 54 53 52 51 50
+  ring |6R   |6R|6R   |5R|6R|5R   |6R|5R
+   NO.  27    28 29    26 25 24    23 22
+distances to pentagons = 00000000000000000000000000000000000000000000000000000001111
+clockwise = +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+************************************************
+Carbon(49) ... 6-polygon
+Open concave boundary segment (length=4) C56-...-C52
+* detail ***************************************
+C54(0) 
+number of bonds = 89
+number of carbons = 60
+number of carbons with one ring = 2
+number of carbons with two rings = 7
+number of carbons with three rings = 51
+number of 5-membered rings = 11
+number of 6-membered rings = 19
+Euler characteristic = 1
+boundary =
+  dist 0  1  1  1  1  1  0  0  0  
+  carb C--C--C--C--C--C--C--C--C--
+   NO.  52 60 56 57 58 59 55 54 53
+  ring |6R   |6R|6R|6R   |5R|6R|5R
+   NO.  30    27 28 29    26 25 24
+distances to pentagons = 000000000000000000000000000000000000000000000000000000011111
+clockwise = ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+************************************************
+Carbon(52) ... 6-polygon
+Open concave boundary segment (length=5) C60-...-C59
+* detail ***************************************
+C57(1) 
+number of bonds = 90
+number of carbons = 60
+number of carbons with one ring = 0
+number of carbons with two rings = 5
+number of carbons with three rings = 55
+number of 5-membered rings = 11
+number of 6-membered rings = 20
+Euler characteristic = 1
+boundary =
+  dist 1  1  1  1  1  
+  carb C--C--C--C--C--
+   NO.  56 60 59 58 57
+  ring |6R|6R|6R|6R|6R
+   NO.  30 31 29 28 27
+distances to pentagons = 000000000000000000000000000000000000000000000000000000011111
+clockwise = ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+************************************************
+Carbon(56) ... 5-polygon
+Closed concave boundary segment (length=5) ...C56...
+* detail ***************************************
+number of bonds = 90
+number of carbons = 60
+number of carbons with one ring = 0
+number of carbons with two rings = 0
+number of carbons with three rings = 60
+number of 5-membered rings = 12
+number of 6-membered rings = 20
+Euler characteristic = 2
+distances to pentagons = 000001221221221221223344334433443344334455655655655655677777
+clockwise = ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+************************************************
+************************************************
+* OK generated pattern = C60 A1-5b6b5b6b5b6b5b6b5b6c5b6b5b6b5b6b5b6b5b6f5b
+************************************************
+* representations ******************************
+Clockwise(1) Carbon(1) Bond(1) Same(120) FFFFSFFFSFFSFFSFFSFSFSFFSSFFSSFFSSFFSSFSFSFSSFSSFSSFSSSFSSS
+Clockwise(1) Carbon(1) Bond(5) Same(120) FFFFFSFFSFFSFSFFSFSFSFFSFSFSFSFSFSFSFSSFFSSFSFSSFSFSSSFSSSS
+Clockwise(1) Carbon(1) Bond(10) Same(120) FFFFFSFFFSFSFFSFSFFSSFFSFSFSFSFSFSFSFSSFSFSFSSFSFSSFSSFSSSS
+************************************************
+************************************************
+* OK different pattern = C60 (number of automorphisms=120) A1-5b6b5b6b5b6b5b6b5b6c5b6b5b6b5b6b5b6b5b6f5b
+************************************************

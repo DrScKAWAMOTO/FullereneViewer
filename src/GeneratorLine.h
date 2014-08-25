@@ -21,7 +21,10 @@ private:
 
   // private tools
 private:
-  bool p_get_number_and_NoA(int& number, int& NoA) const;
+  bool p_get_number_NoA_isS_isT_and_isA(int& number, int& NoA, bool& isS,
+                                        bool& isT, bool& isA) const;
+  void p_get_n_m_and_h(int& n, int& m, int& h) const;
+  bool p_get_scrap(int& scrap) const;
 
   // constructors & the destructor
 public:

@@ -88,7 +88,7 @@ int OpenGLUtil::p_carbon_picking_sequence_no = 0;
 Vector3 OpenGLUtil::p_carbon_picking_point = Vector3();
 Vector3 OpenGLUtil::p_last_real_motion = Vector3();
 char OpenGLUtil::fullerene_name[1024];
-char OpenGLUtil::generator_label[1024];
+char OpenGLUtil::generator_formula[1024];
 char OpenGLUtil::window_title[3072];
 char* const OpenGLUtil::window_title_status = OpenGLUtil::window_title + 18;
 void (*OpenGLUtil::alert_dialog_callback)(const char* message) = NULL;
@@ -126,7 +126,7 @@ static void select_hits(int hits, int* selectBuf)
 
 static void usage(char* argv0)
 {
-  fprintf(stderr, "usage: %s [[C[int]=]generator_label]\n", argv0);
+  fprintf(stderr, "usage: %s [[C[int]=]generator_formula]\n", argv0);
   exit(1);
 }
 
@@ -135,7 +135,7 @@ void OpenGLUtil::initialize_pre(int argc, char *argv[])
   if (argc == 1)
     {
       strcpy(fullerene_name, "C60 (NoA=120)");
-      strcpy(generator_label, "S1-5b6c5b6b5b");
+      strcpy(generator_formula, "S1-5b6c5b6b5b");
     }
   else if (argc == 2)
     {
@@ -153,7 +153,7 @@ void OpenGLUtil::initialize_pre(int argc, char *argv[])
               {
                 ++ptr;
                 sprintf(fullerene_name, "C%d (NoA=XXX)", num);
-                strcpy(generator_label, ptr);
+                strcpy(generator_formula, ptr);
               }
             else
               {
@@ -164,18 +164,18 @@ void OpenGLUtil::initialize_pre(int argc, char *argv[])
                   usage(argv[0]);
                 strncpy(fullerene_name, argv[1], ptr - argv[1]);
                 fullerene_name[ptr - argv[1]] = '\0';
-                strcpy(generator_label, ptr + 1);
+                strcpy(generator_formula, ptr + 1);
               }
           }
           break;
         case 'A':
         case 'S':
           strcpy(fullerene_name, "CXX (NoA=XXX)");
-          strcpy(generator_label, argv[1]);
+          strcpy(generator_formula, argv[1]);
           break;
         case 'T':
           strcpy(fullerene_name, "CXX (NoA=XXX)");
-          strcpy(generator_label, argv[1]);
+          strcpy(generator_formula, argv[1]);
           break;
         default:
           usage(argv[0]);
@@ -184,7 +184,7 @@ void OpenGLUtil::initialize_pre(int argc, char *argv[])
     }
   else
     usage(argv[0]);
-  sprintf(window_title, "%s %s %s", WINDOW_TITLE, fullerene_name, generator_label);
+  sprintf(window_title, "%s %s %s", WINDOW_TITLE, fullerene_name, generator_formula);
 
   assert((CONFIG_VIEWER_CPU_USAGE_TARGET_RATE >= 1) &&
          (CONFIG_VIEWER_CPU_USAGE_TARGET_RATE <= 100));
@@ -222,7 +222,7 @@ void OpenGLUtil::initialize_post()
   glEnable(GL_LIGHT0);
   glEnable(GL_COLOR_MATERIAL); //マテリアルの設定
   glColorMaterial(GL_FRONT_AND_BACK,GL_AMBIENT_AND_DIFFUSE); //マテリアルの設定
-  fullerene = new Fullerene(generator_label);
+  fullerene = new Fullerene(generator_formula);
   ca = fullerene->get_carbon_allotrope();
   fullerene->set_fullerene_name(fullerene_name);
   ca->register_interactions();
@@ -716,14 +716,14 @@ Vector3 OpenGLUtil::un_project(int win_x, int win_y)
   return Vector3(x, y, z);
 }
 
-void OpenGLUtil::change_fullerene(const char* fullerene_name, const char* generator_label)
+void OpenGLUtil::change_fullerene(const char* fullerene_name, const char* generator_formula)
 {
   if (fullerene)
     delete fullerene;
-  fullerene = new Fullerene(generator_label);
+  fullerene = new Fullerene(generator_formula);
   fullerene->set_fullerene_name(fullerene_name);
   sprintf(window_title, "%s %s %s", WINDOW_TITLE,
-          fullerene->get_fullerene_name(), fullerene->get_generator_label());
+          fullerene->get_fullerene_name(), fullerene->get_generator_formula());
   ca = fullerene->get_carbon_allotrope();
   ca->register_interactions();
   rotation = Quaternion(1.0, 0.0, 0.0, 0.0);

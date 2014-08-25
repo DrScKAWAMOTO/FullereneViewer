@@ -26,18 +26,6 @@ InteractiveLine::~InteractiveLine()
 {
 }
 
-void InteractiveLine::draw_opaque_by_OpenGL(bool selection) const
-{
-  Vector3 center = get_center_location();
-  Vector3 norm = get_normal();
-  Vector3 loc1 = center + norm * 10.0;
-  Vector3 loc2 = center - norm * 10.0;
-  OpenGLUtil::set_color(0xff0000);
-  OpenGLUtil::draw_cylinder(0.2, loc1, center);
-  OpenGLUtil::set_color(0x0000ff);
-  OpenGLUtil::draw_cylinder(0.2, center, loc2);
-}
-
 int InteractiveLine::number_of_vertices() const
 {
   return 0;

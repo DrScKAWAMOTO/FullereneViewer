@@ -46,7 +46,7 @@ public:
   static CarbonAllotrope* ca;
   static Fullerene* fullerene;
   static char fullerene_name[1024];
-  static char generator_label[1024];
+  static char generator_formula[1024];
   static char window_title[3072];
   static char* const window_title_status;
   static int view;
@@ -136,7 +136,7 @@ public:
 
   // menu common
 public:
-  static void change_fullerene(const char* fullerene_name, const char* generator_label);
+  static void change_fullerene(const char* fullerene_name, const char* generator_formula);
 
   // file name handling
 public:

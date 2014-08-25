@@ -18,7 +18,7 @@ QMAKE= qmake
 CXX= g++
 INCLUDES= -I/usr/local/include -I/usr/local/include/drm
 CXXFLAGS= -g -Wall -Wno-unused-parameter -D_THREAD_SAFE $(INCLUDES)
-LDFLAGS= -L/usr/local/lib
+LDFLAGS= -L/usr/local/lib -L/usr/X11/lib
 LOADLIBES= -lGLU -lGL
 INSTALL= install
 INSTALLDIR= ~/bin/$(shell uname -s).$(shell uname -m)
@@ -41,7 +41,7 @@ else
 endif
 
 install: all
-	$(INSTALL) -cp ca-modeling ca-generator ca-char ca-sort ca-cmp ca-uniq $(INSTALLDIR)
+	$(INSTALL) -cp $(TARGETS) $(INSTALLDIR)
 
 depend:
 	$(CXX) -M $(INCLUDES) $(MAINS) $(SOURCES) > Depend.mk

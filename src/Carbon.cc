@@ -924,7 +924,7 @@ Bond* Carbon::inner_bond() const
 // という形のボンドの開いたつながり。
 // closed convex boundary segment とは、
 //   １面の炭素-１面の炭素-１面の炭素...-１面の炭素-最初の炭素
-// という形のボンドの開いたつながり。
+// という形のボンドの閉じたつながり。
 // open convex boundary segment と closed convex boundary segment とをあわせて
 // convex boundary segment と呼ぶ。
 // convex boundary segment の長さとは、ボンドの数。

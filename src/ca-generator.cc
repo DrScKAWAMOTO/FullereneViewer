@@ -18,13 +18,17 @@
 
 static void usage(const char* arg0)
 {
-  fprintf(stderr, "usage: %s [options] [generator label]\n", arg0);
-  fprintf(stderr, "    generator label ....... if specified, list up from this,\n");
+  fprintf(stderr, "usage: %s [options] [generator-formula]\n", arg0);
+  fprintf(stderr, "    generator-formula .... if specified, list up from this formula,\n");
   fprintf(stderr, "options:\n");
-  fprintf(stderr, "    --symmetric=[num] ..... list up all symmetric fullerenes up to [num] carbons,\n");
-  fprintf(stderr, "    --ordinary=[num] ...... list up all ordinary fullerenes up to [num] carbons,\n");
-  fprintf(stderr, "    -v (--version) ........ show version,\n");
-  fprintf(stderr, "    -h .................... show this message.\n");
+  fprintf(stderr, "    --symmetric=[num] .... list up all symmetric fullerenes up to [num] carbons,\n");
+  fprintf(stderr, "            generator-formula looks like 'S1-5b6b...',\n");
+  fprintf(stderr, "    --ordinary=[num] ..... list up all ordinary fullerenes up to [num] carbons,\n");
+  fprintf(stderr, "            generator-formula looks like 'A1-5b6b...',\n");
+  fprintf(stderr, "    --tube=[num] ......... list up all carbon nano tubes up to [num] carbons,\n");
+  fprintf(stderr, "            generator-formula looks like 'T10,0,1-5b6b...', has to be specified,\n");
+  fprintf(stderr, "    -v (--version) ....... show version,\n");
+  fprintf(stderr, "    -h ................... show this message.\n");
   exit(0);
 }
 
@@ -32,9 +36,10 @@ int main(int argc, char *argv[])
 {
   int symmetric = -1;
   int ordinary = -1;
+  int tube = -1;
 
   const char* arg0 = argv[0];
-  const char* generator_label = 0;
+  const char* generator_formula = 0;
   if (argc == 1)
     usage(arg0);
   argc--;
@@ -62,9 +67,15 @@ int main(int argc, char *argv[])
           argc--;
           argv++;
         }
-      else if (!generator_label)
+      else if (strncmp(argv[0], "--tube=", 7) == 0)
         {
-          generator_label = argv[0];
+          tube = atoi(argv[0] + 7);
+          argc--;
+          argv++;
+        }
+      else if (!generator_formula)
+        {
+          generator_formula = argv[0];
           argc--;
           argv++;
         }
@@ -80,24 +91,51 @@ int main(int argc, char *argv[])
         {
           if (symmetric < 60)
             symmetric = 60;
-          if (generator_label && (generator_label[0] != 'S'))
+          if (generator_formula && ((generator_formula[0] != 'S') ||
+                                    (generator_formula[1] < '1') ||
+                                    (generator_formula[1] > '4') ||
+                                    (generator_formula[2] != '-')))
             usage(arg0);
-          Fullerenes ap = Fullerenes(generator_label, symmetric, true,
+          Fullerenes ap = Fullerenes(generator_formula, symmetric, true,
                                      MAXIMUM_VERTICES_OF_POLYGON);
         }
       else if (ordinary >= 1)
         {
           if (ordinary < 60)
             ordinary = 60;
-          if (generator_label && (generator_label[0] != 'A'))
+          if (generator_formula && ((generator_formula[0] != 'A') ||
+                                    (generator_formula[1] != '1') ||
+                                    (generator_formula[2] != '-')))
             usage(arg0);
-          Fullerenes ap = Fullerenes(generator_label, ordinary, false,
+          Fullerenes ap = Fullerenes(generator_formula, ordinary, false,
+                                     MAXIMUM_VERTICES_OF_POLYGON);
+        }
+      else if (tube >= 1)
+        {
+          if (tube < 60)
+            tube = 60;
+          if (!generator_formula || (generator_formula[0] != 'T'))
+            usage(arg0);
+          const char *ptr = generator_formula + 1;
+          while ((*ptr >= '0') && (*ptr <= '9'))
+            ++ptr;
+          if (*ptr++ != ',')
+            usage(arg0);
+          while ((*ptr >= '0') && (*ptr <= '9'))
+            ++ptr;
+          if (*ptr++ != ',')
+            usage(arg0);
+          while ((*ptr >= '0') && (*ptr <= '9'))
+            ++ptr;
+          if (*ptr != '-')
+            usage(arg0);
+          Fullerenes ap = Fullerenes(generator_formula, tube, false,
                                      MAXIMUM_VERTICES_OF_POLYGON);
         }
     }
-  catch (const std::bad_alloc& err)
+  catch (const std::exception& err)
     {
-      printf("std::bad_alloc exception\n");
+      printf("std::exception %s\n", err.what());
       exit(10);
     }
   catch (...)

@@ -31,6 +31,7 @@ src/Qt/FullereneViewer
 src/ca-char
 src/ca-cmp
 src/ca-generator
+src/ca-loop
 src/ca-modeling
 src/ca-sort
 src/ca-test

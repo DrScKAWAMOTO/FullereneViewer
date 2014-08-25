@@ -22,7 +22,7 @@ private:
 
   // constructors & the destructor
 public:
-  Fullerenes(const char* generator_label, int maximum_number_of_carbons,
+  Fullerenes(const char* generator_formula, int maximum_number_of_carbons,
              bool symmetric = true, int maximum_vertices_of_polygons = 6);
   ~Fullerenes();
 

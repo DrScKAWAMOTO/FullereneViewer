@@ -650,21 +650,6 @@ ErrorCode CarbonAllotrope::make_symmetric_scrap(int scrap_no)
   return ERROR_CODE_OK;
 }
 
-void CarbonAllotrope::p_combination_equally(int num, int den, int* comb)
-{
-  assert(den > 0);
-  int step = num * 2;
-  int work = den;
-  int div = den * 2;
-  for (int ind = 0; ind < den; ++ind)
-    {
-      work += step;
-      int wd = work / div;
-      comb[ind] = wd;
-      work -= div * wd;
-    }
-}
-
 char* CarbonAllotrope::p_determine_permutation_of_lattice_basis(int n, int m)
 {
   char* perm = new char[n + m];
@@ -698,17 +683,17 @@ char* CarbonAllotrope::p_determine_permutation_of_lattice_basis(int n, int m)
         }
       return perm;
     }
-  int* comb = new int[m + 1];
-  p_combination_equally(n, m + 1, comb);
-  for (int ofs = 0; ofs < m; ++ofs)
+  int count = 0;
+  for (int ofs = 0; ofs < n; ++ofs)
     {
-      for (int wrk = 0; wrk < comb[ofs]; ++wrk)
-        perm[ind++] = top;
-      perm[ind++] = sec;
+      count += m;
+      if (count >= n)
+        {
+          perm[ind++] = sec;
+          count -= n;
+        }
+      perm[ind++] = top;
     }
-  for (int wrk = 0; wrk < comb[m]; ++wrk)
-    perm[ind++] = top;
-  delete[] comb;
   return perm;
 }
 
@@ -886,7 +871,6 @@ void CarbonAllotrope::make_equator_by_chiral_characteristic(int n, int m, int h)
 #else
       enlarge_cylinder_by_n_polygons(new Pattern(6), result_number);
 #endif
-      printf("cylinder by %d\n", result_number);
     }
 }
 
@@ -989,7 +973,7 @@ void CarbonAllotrope::close_normally_once()
               assert(bond3);
               Carbon* carbon3 = carbon2;
               while (1)
-                {
+                { /* check isolated pentagon rule */
                   assert(carbon3->number_of_rings() == 2);
                   Ring* ring = carbon3->get_ring(0);
                   assert(ring);
@@ -1424,6 +1408,7 @@ void CarbonAllotrope::print_detail()
     printf("number of many-membered rings = %d\n", nums[MAX_N + 1]);
   printf("Euler characteristic = %d\n", Euler_characteristic());
   List<Carbon> already;
+  int index = 0;
   while (1)
     {
       List<Carbon> boundary;
@@ -1431,7 +1416,7 @@ void CarbonAllotrope::print_detail()
       len = boundary.length();
       if (len == 0)
         break;
-      printf("boundary =\n");
+      printf("boundary[%d] =\n", index++);
       printf("  dist ");
       for (int i = 0; i < len; ++i)
         {
@@ -1448,7 +1433,16 @@ void CarbonAllotrope::print_detail()
       for (int i = 0; i < len; ++i)
         {
           Carbon* carbon = boundary[i];
-          printf("%3d", carbon->sequence_no());
+          int no = carbon->sequence_no();
+          if (carbon->number_of_rings() == 2)
+            {
+              if (no < 100)
+                printf("|%2d", no);
+              else
+                printf("%3d", no);
+            }
+          else
+            printf("%3d", no);
         }
       printf("\n");
       printf("  ring ");
@@ -1457,12 +1451,11 @@ void CarbonAllotrope::print_detail()
           Carbon* carbon = boundary[i];
           if (carbon->number_of_rings() == 2)
             {
-              printf("|");
               Carbon* carbon_after = boundary[(i + 1) % len];
               Bond* bond_1 = carbon->bond_between(carbon_after);
               Bond* bond_2 = carbon->inner_bond();
               Ring* ring_12 = carbon->ring_between(bond_1, bond_2);
-              printf("%dR", ring_12->number_of_carbons());
+              printf("|%dR", ring_12->number_of_carbons());
             }
           else
             printf("   ");
@@ -1478,7 +1471,35 @@ void CarbonAllotrope::print_detail()
               Bond* bond_1 = carbon->bond_between(carbon_after);
               Bond* bond_2 = carbon->inner_bond();
               Ring* ring_12 = carbon->ring_between(bond_1, bond_2);
-              printf("%3d", ring_12->sequence_no());
+              int no = ring_12->sequence_no();
+              if (no < 100)
+                printf("|%2d", no);
+              else
+                printf("%3d", no);
+            }
+          else
+            printf("   ");
+        }
+      printf("\n");
+      printf("  carb ");
+      for (int i = 0; i < len; ++i)
+        {
+          Carbon* carbon = boundary[i];
+          if (carbon->number_of_rings() == 2)
+            printf("C  ");
+          else
+            printf("   ");
+        }
+      printf("\n");
+      printf("   NO. ");
+      for (int i = 0; i < len; ++i)
+        {
+          Carbon* carbon = boundary[i];
+          if (carbon->number_of_rings() == 2)
+            {
+              Bond* bond = carbon->inner_bond();
+              Carbon* carbon2 = bond->get_carbon_beyond(carbon);
+              printf("%3d", carbon2->sequence_no());
             }
           else
             printf("   ");

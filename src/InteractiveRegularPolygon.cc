@@ -29,18 +29,6 @@ InteractiveRegularPolygon::~InteractiveRegularPolygon()
 {
 }
 
-void InteractiveRegularPolygon::draw_opaque_by_OpenGL(bool selection) const
-{
-  int len = number_of_vertices();
-  for (int i = 0; i < len; ++i)
-    {
-      Vector3 loc0 = get_vertex_location(i);
-      Vector3 loc1 = get_vertex_location((i+1)%len);
-      OpenGLUtil::set_color(0x00ff00);
-      OpenGLUtil::draw_cylinder(0.4, loc0, loc1);
-    }
-}
-
 int InteractiveRegularPolygon::number_of_vertices() const
 {
   return p_n;

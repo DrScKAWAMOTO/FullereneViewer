@@ -35,8 +35,6 @@ public:
   // representation
 
   // I/O
-public:
-  virtual void draw_opaque_by_OpenGL(bool selection) const;
 
   // class decision
 

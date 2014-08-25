@@ -29,7 +29,7 @@ public:
 private:
   CarbonAllotrope* p_carbon_allotrope;
   char p_fullerene_name[NAME_MAX_SIZE + 1];
-  char p_generator_label[NAME_MAX_SIZE + 1];
+  char p_generator_formula[NAME_MAX_SIZE + 1];
   int p_n, p_m, p_h;
   Representations* p_representations;
   FullereneCharacteristic* p_characteristic;
@@ -40,7 +40,7 @@ private:
   // constructors & the destructor
 public:
   Fullerene();
-  Fullerene(const char* generator_label);
+  Fullerene(const char* generator_formula);
   virtual ~Fullerene();
   Fullerene& operator = (const Fullerene& that); /* dont use */
 
@@ -60,10 +60,10 @@ public:
 public:
   void set_carbon_allotrope(CarbonAllotrope* carbon_allotrope);
   void set_fullerene_name(const char* fullerene_name);
-  void set_generator_label(const char* generator_label);
+  void set_generator_formula(const char* generator_formula);
   CarbonAllotrope* get_carbon_allotrope() { return p_carbon_allotrope; }
   const char* get_fullerene_name() const { return p_fullerene_name; }
-  const char* get_generator_label() const { return p_generator_label; }
+  const char* get_generator_formula() const { return p_generator_formula; }
   Representations* get_representations() { return p_representations; }
   FullereneCharacteristic* get_characteristic() { return p_characteristic; }
   DistanceMatrix* get_distance_matrix() { return p_distance_matrix; }

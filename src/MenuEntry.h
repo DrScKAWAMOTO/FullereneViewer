@@ -10,7 +10,7 @@
 
 struct MenuEntry {
   const char* fullerene_name;
-  const char* generator_label;
+  const char* generator_formula;
 };
 
 #endif /* __MENUENTRY_H__ */

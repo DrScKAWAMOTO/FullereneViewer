@@ -30,16 +30,16 @@ Fullerene::Fullerene()
   : p_carbon_allotrope(0), p_n(0), p_m(0), p_h(0),
     p_representations(0), p_characteristic(0), p_distance_matrix(0)
 {
-  strcpy(p_generator_label, "");
+  strcpy(p_generator_formula, "");
 }
 
-Fullerene::Fullerene(const char* generator_label)
+Fullerene::Fullerene(const char* generator_formula)
   : p_carbon_allotrope(0), p_n(0), p_m(0), p_h(0),
     p_representations(0), p_characteristic(0), p_distance_matrix(0)
 {
-  strcpy(p_generator_label, generator_label);
+  strcpy(p_generator_formula, generator_formula);
   CarbonAllotrope* ca = new CarbonAllotrope();
-  if (strcmp(p_generator_label, "T-Y") == 0)
+  if (strcmp(p_generator_formula, "Y") == 0)
     {
       ca->make_equator_by_chiral_characteristic(6, 6, 5);
       ca->close_normally_once();
@@ -120,24 +120,34 @@ Fullerene::Fullerene(const char* generator_label)
       ca->enlarge_cylinder_by_n_polygons(new Pattern(6), result_number);
       ca->close_normally_once();
     }
-  else if (p_generator_label[0] == 'T')
-    {
-      p_n = 10;
-      p_m = 0;
-      p_h = 4;
-      sscanf(p_generator_label, "T%d,%d,%d", &p_n, &p_m, &p_h);
-      sprintf(p_generator_label, "T%d,%d,%d", p_n, p_m, p_h);
-      ca->make_equator_by_chiral_characteristic(p_n, p_m, p_h);
-      // TODO ca->close_force();
-#ifdef DEBUG_CARBON_ALLOTROPE_CONSTRUCTION
-      ca->print_detail();
-#endif
-    }
   else
     {
-      Generator gen = Generator(generator_label, 6);
-      bool symmetric = gen.symmetric();
-      ca->make_symmetric_scrap(gen.scrap_no());
+      if (p_generator_formula[0] == 'T')
+        {
+          const char *ptr = p_generator_formula + 1;
+          p_n = strtol(ptr, (char**)&ptr, 10);
+          if (*ptr == ',')
+            ++ptr;
+          p_m = strtol(ptr, (char**)&ptr, 10);
+          if (*ptr == ',')
+            ++ptr;
+          p_h = strtol(ptr, (char**)&ptr, 10);
+          if (*ptr == '\0')
+            {
+              ca->make_equator_by_chiral_characteristic(p_n, p_m, p_h);
+              // TODO ca->close_force();
+#ifdef DEBUG_CARBON_ALLOTROPE_CONSTRUCTION
+              ca->print_detail();
+#endif
+              goto finish;
+            }
+        }
+      /* 'S' 'A' 'T' */
+      Generator gen = Generator(generator_formula, 6);
+      if (gen.is_tube())
+        ca->make_equator_by_chiral_characteristic(gen.n(), gen.m(), gen.h());
+      else
+        ca->make_symmetric_scrap(gen.scrap_no());
 #ifdef DEBUG_CARBON_ALLOTROPE_CONSTRUCTION
       ca->print_detail();
 #endif
@@ -146,7 +156,7 @@ Fullerene::Fullerene(const char* generator_label)
           int No = gen.glow();
           int num;
           ErrorCode result;
-          if (symmetric)
+          if (gen.symmetric())
             result =
               ca->fill_n_polygons_around_carbons_closed_to_center_and_pentagons(No, num);
           else
@@ -162,6 +172,7 @@ Fullerene::Fullerene(const char* generator_label)
             break;
         }
     }
+ finish:
   set_carbon_allotrope(ca);
 }
 
@@ -267,10 +278,10 @@ void Fullerene::set_fullerene_name(const char* fullerene_name)
   strcpy(p_fullerene_name, fullerene_name);
 }
 
-void Fullerene::set_generator_label(const char* generator_label)
+void Fullerene::set_generator_formula(const char* generator_formula)
 {
-  assert(strlen(generator_label) <= NAME_MAX_SIZE);
-  strcpy(p_generator_label, generator_label);
+  assert(strlen(generator_formula) <= NAME_MAX_SIZE);
+  strcpy(p_generator_formula, generator_formula);
 }
 
 /* Local Variables:	*/

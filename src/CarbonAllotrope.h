@@ -81,7 +81,6 @@ public:
 
   // carbon nano-tube constructions
 private:
-  void p_combination_equally(int num, int den, int* comb);
   char* p_determine_permutation_of_lattice_basis(int n, int m);
   void p_make_equator_by_chiral_characteristic(int n, int m);
 public:

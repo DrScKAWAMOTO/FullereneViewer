@@ -19,14 +19,16 @@
 
 static void usage(const char* arg0)
 {
-  fprintf(stderr, "usage: %s [options] [generator-name|generator-name-list-file]\n",
+  fprintf(stderr, "usage: %s [options] <generator-label|generator-label-list-file]\n",
           arg0);
+  fprintf(stderr, "    generator-label ............ generator-label for fullerene,\n");
+  fprintf(stderr, "    generator-label-list-file .. file name which contains generator-labels,\n");
   fprintf(stderr, "options:\n");
-  fprintf(stderr, "    --axes-summary ........ show axes summary (default),\n");
-  fprintf(stderr, "    --pentagon-distances .. show distances between pentagons,\n");
-  fprintf(stderr, "    --pentagon-matrix ..... show distance matrix between pentagons,\n");
-  fprintf(stderr, "    -v (--version) ........ show version,\n");
-  fprintf(stderr, "    -h .................... show this message.\n");
+  fprintf(stderr, "    --axes-summary ............. show axes summary (default),\n");
+  fprintf(stderr, "    --pentagon-distances ....... show distances between pentagons,\n");
+  fprintf(stderr, "    --pentagon-matrix .......... show distance matrix between pentagons,\n");
+  fprintf(stderr, "    -v (--version) ............. show version,\n");
+  fprintf(stderr, "    -h ......................... show this message.\n");
   exit(0);
 }
 
@@ -68,7 +70,7 @@ int main(int argc, char *argv[])
           axes_summary = false;
           pentagon_distances = true;
           pentagon_matrix = false;
-          strcpy(extension, "char");
+          strcpy(extension, "dist");
           argc--;
           argv++;
         }
@@ -95,6 +97,8 @@ int main(int argc, char *argv[])
     Fullerene::s_need_fullerene_characteristic = true;
   else if (pentagon_matrix)
     Fullerene::s_need_distance_matrix = true;
+  else
+    Fullerene::s_need_representations = true;
 
   setvbuf(stdout, 0, _IONBF, 0);
   Random::initialize();
@@ -128,7 +132,9 @@ int main(int argc, char *argv[])
             ++ptr;
           ++ptr;
         }
-      ptr[strlen(ptr) - 1] = '\0';
+      int len = strlen(ptr);
+      if (ptr[len - 1] == '\n')
+        ptr[len - 1] = '\0';
       fullerene = new Fullerene(ptr);
       ca = fullerene->get_carbon_allotrope();
       FILE* fout = stdout;
@@ -136,13 +142,13 @@ int main(int argc, char *argv[])
         {
           char filename[1024];
           sprintf(filename, "%s/C%d=%s.%s", extension, ca->number_of_carbons(),
-                  fullerene->get_generator_label(), extension);
+                  fullerene->get_generator_formula(), extension);
           fout = fopen(filename, "w");
         }
       if (pentagon_distances)
         fullerene->get_characteristic()->print_summary(fout);
       else if (pentagon_matrix)
-        fullerene->get_distance_matrix()->print_as_line(fout);
+        fullerene->get_distance_matrix()->print_as_table(fout);
       else if (axes_summary)
         ca->print_axes_summary(fout);
       fclose(fout);
