@@ -33,16 +33,25 @@ int main(int argc, char* argv[])
     usage(argv[0]);
   setvbuf(stdout, 0, _IONBF, 0);
   {
+    Fullerene::s_need_representations = true;
     List<Fullerene> patterns;
+    int last_number_of_carbons = -1;
     try
       {
         while (1)
           {
             char buffer[1024];
+            int num;
             if (fgets(buffer, 1024, stdin) != buffer)
               break;
             buffer[strlen(buffer) - 1] = '\0';
             const char* name = buffer + 1;
+            sscanf(name, "%d", &num);
+            if (num != last_number_of_carbons)
+              {
+                patterns.clean();
+                last_number_of_carbons = num;
+              }
             while (*name != ' ')
               ++name;
             ++name;

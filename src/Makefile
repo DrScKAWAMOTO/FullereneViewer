@@ -16,10 +16,10 @@ TARGETS= $(subst .cc,,$(MAINS))
 QMAKE= qmake
 
 CXX= g++
-INCLUDES= -I/usr/local/include -I/usr/local/include/drm -I/usr/X11/include
+INCLUDES= -I/usr/local/include -I/usr/local/include/drm
 CXXFLAGS= -g -Wall -Wno-unused-parameter -D_THREAD_SAFE $(INCLUDES)
-LDFLAGS= -L/usr/local/lib -L/usr/X11/lib
-LOADLIBES= -lglut -lGLU -lGL
+LDFLAGS= -L/usr/local/lib
+LOADLIBES= -lGLU -lGL
 INSTALL= install
 INSTALLDIR= ~/bin/$(shell uname -s).$(shell uname -m)
 

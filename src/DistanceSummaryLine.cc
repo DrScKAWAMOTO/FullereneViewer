@@ -38,6 +38,8 @@ bool DistanceSummaryLine::p_get_distance_and_number(const char*& ptr,
 DistanceSummaryLine::DistanceSummaryLine(const char* line)
   : Object(s_next_sequence++)
 {
+  assert(line);
+  assert(line[0]);
   int len = strlen(line) + 1;
   p_line = new char[len];
   strcpy(p_line, line);
