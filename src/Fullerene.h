@@ -9,6 +9,7 @@
 #define __FULLERENE_H__
 
 #include "Object.h"
+#include "ErrorCode.h"
 
 class CarbonAllotrope;
 class Representations;
@@ -28,6 +29,7 @@ public:
 
 private:
   CarbonAllotrope* p_carbon_allotrope;
+  ErrorCode p_error_code;
   char p_fullerene_name[NAME_MAX_SIZE + 1];
   char p_generator_formula[NAME_MAX_SIZE + 1];
   int p_n, p_m, p_h;
@@ -41,6 +43,7 @@ private:
 public:
   Fullerene();
   Fullerene(const char* generator_formula);
+  ErrorCode error_code() const { return p_error_code; }
   virtual ~Fullerene();
   Fullerene& operator = (const Fullerene& that); /* dont use */
 

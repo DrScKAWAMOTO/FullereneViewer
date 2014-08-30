@@ -51,8 +51,7 @@ void ConfigurationDialog::slot_accept()
     configuration->set_motion_quality(QUALITY_MIDDLE);
   else
     configuration->set_motion_quality(QUALITY_LOW);
-  configuration->set_working_folder_name(ui->workingFolderLineEdit->
-                                         text().toLocal8Bit().data());
+  configuration->set_working_folder_name(qPrintable(ui->workingFolderLineEdit->text()));
 
   configuration->save();
   configuration->reflect();

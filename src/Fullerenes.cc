@@ -5,6 +5,8 @@
  * Create: 2012/01/18 00:37:23 JST
  */
 
+#include <limits.h>
+#include <assert.h>
 #include "Fullerenes.h"
 #include "Generator.h"
 #include "CarbonAllotrope.h"
@@ -13,7 +15,7 @@
 #include "DebugMemory.h"
 
 Fullerenes::Fullerenes(const char* generator_formula, int maximum_number_of_carbons,
-                       bool symmetric, int maximum_vertices_of_polygons)
+                       bool symmetric, int maximum_vertices_of_polygons, int close)
 {
   Fullerene::s_need_representations = true;
   Generator gen = (generator_formula ?
@@ -21,10 +23,24 @@ Fullerenes::Fullerenes(const char* generator_formula, int maximum_number_of_carb
                    Generator(symmetric, maximum_vertices_of_polygons));
   char buffer[1024];
   CarbonAllotrope* ca = new CarbonAllotrope();
-  if (gen.is_tube())
-    ca->make_equator_by_chiral_characteristic(gen.n(), gen.m(), gen.h());
+  bool is_tube = false;
+  if (gen.type() == GENERATOR_TYPE_TUBE)
+    {
+      ca->make_equator_by_chiral_characteristic(gen.n(), gen.m(), gen.h());
+      is_tube = true;
+    }
   else
     ca->make_symmetric_scrap(gen.scrap_no());
+  List<Carbon> boundary;
+  List<Carbon> oldest_boundary;
+  bool all_pentagons = true;
+  if (!symmetric)
+    {
+      ca->list_connected_boundary_carbons(boundary);
+      ca->list_connected_boundary_carbons(oldest_boundary);
+      all_pentagons = true;
+    }
+  int close_count = close;
 #ifdef DEBUG_ERRORS
   printf("* START ****************************************\n");
 #endif
@@ -40,36 +56,64 @@ Fullerenes::Fullerenes(const char* generator_formula, int maximum_number_of_carb
         result =
           ca->fill_n_polygons_around_carbons_closed_to_center_and_pentagons(No, num);
       else
-        result = ca->fill_n_polygon_around_oldest_carbon(No);
+        {
+          if (No != 6)
+            all_pentagons = false;
+          int len = boundary.length();
+          int sequence_no = INT_MAX;
+          Carbon* carbon = 0;
+          for (int i = 0; i < len; ++i)
+            {
+              if (boundary[i]->number_of_rings() == 2)
+                {
+                  int seq = boundary[i]->sequence_no();
+                  if (seq < sequence_no)
+                    {
+                      carbon = boundary[i];
+                      sequence_no = seq;
+                    }
+                }
+            }
+          assert(carbon);
+          result = ca->fill_n_polygon_around_carbon(No, carbon, boundary,
+                                                    oldest_boundary);
+        }
 #ifdef DEBUG_CARBON_ALLOTROPE_CONSTRUCTION
       ca->print_detail();
 #endif
       int number_of_carbons = ca->number_of_carbons();
-      List<Carbon> boundary;
-      ca->list_boundary_carbons(boundary);
+      int number_of_carbons_in_oldest_boundary = 0;
+      if (is_tube && all_pentagons)
+        number_of_carbons_in_oldest_boundary = oldest_boundary.length();
+      if (symmetric)
+        {
+          boundary.clean();
+          ca->list_connected_boundary_carbons(boundary);
+        }
       int number_of_carbons_in_boundary = boundary.length();
+      if (!symmetric && (number_of_carbons_in_boundary == 0))
+        {
+          if (--close_count > 0)
+            {
+              boundary.clean();
+              ca->list_connected_boundary_carbons(boundary);
+              oldest_boundary.clean();
+              ca->list_connected_boundary_carbons(oldest_boundary);
+              number_of_carbons_in_boundary = boundary.length();
+              number_of_carbons_in_oldest_boundary = oldest_boundary.length();
+              all_pentagons = true;
+            }
+        }
       if ((result != ERROR_CODE_OK) ||
-          (number_of_carbons_in_boundary == 0) ||
-          (number_of_carbons > maximum_number_of_carbons))
+          (number_of_carbons > maximum_number_of_carbons) ||
+          (is_tube && all_pentagons && (number_of_carbons_in_oldest_boundary == 0)) ||
+          (number_of_carbons_in_boundary == 0))
         {
 #ifdef DEBUG_ERRORS
           printf("************************************************\n");
 #endif
           gen.get_generator_formula(buffer, 1024);
-          if ((result == ERROR_CODE_OK) &&
-              (number_of_carbons_in_boundary == 0))
-            {
-#ifdef DEBUG_ERRORS
-              printf("* OK generated pattern = C%d %s\n",
-                     ca->number_of_carbons(), buffer);
-              printf("************************************************\n");
-#endif
-              Fullerene* fullerene = new Fullerene();
-              fullerene->set_carbon_allotrope(ca);
-              fullerene->set_generator_formula(buffer);
-              add_fullerene(fullerene);
-            }
-          else if (result != ERROR_CODE_OK)
+          if (result != ERROR_CODE_OK)
             {
 #ifdef DEBUG_ERRORS
               printf("* ERROR %s ", buffer);
@@ -86,7 +130,16 @@ Fullerenes::Fullerenes(const char* generator_formula, int maximum_number_of_carb
 #endif
               delete ca;
             }
-          else
+          else if (is_tube && all_pentagons &&
+                   (number_of_carbons_in_oldest_boundary == 0))
+            {
+#ifdef DEBUG_ERRORS
+              printf("* ERROR %s Tube height is enlarged\n", buffer);
+              printf("************************************************\n");
+#endif
+              delete ca;
+            }
+          else if (number_of_carbons_in_boundary > 0)
             {
 #ifdef DEBUG_ERRORS
               printf("* ERROR %s Unknown error\n", buffer);
@@ -94,13 +147,34 @@ Fullerenes::Fullerenes(const char* generator_formula, int maximum_number_of_carb
 #endif
               delete ca;
             }
+          else
+            {
+#ifdef DEBUG_ERRORS
+              printf("* OK generated pattern = C%d %s\n",
+                     ca->number_of_carbons(), buffer);
+              printf("************************************************\n");
+#endif
+              Fullerene* fullerene = new Fullerene();
+              fullerene->set_carbon_allotrope(ca);
+              fullerene->set_generator_formula(buffer);
+              add_fullerene(fullerene);
+            }
           if (!gen.next_pattern())
             return;
           ca = new CarbonAllotrope();
-          if (gen.is_tube())
+          if (gen.type() == GENERATOR_TYPE_TUBE)
             ca->make_equator_by_chiral_characteristic(gen.n(), gen.m(), gen.h());
           else
             ca->make_symmetric_scrap(gen.scrap_no());
+          if (!symmetric)
+            {
+              boundary.clean();
+              ca->list_connected_boundary_carbons(boundary);
+              oldest_boundary.clean();
+              ca->list_connected_boundary_carbons(oldest_boundary);
+              all_pentagons = true;
+            }
+          close_count = close;
 #ifdef DEBUG_ERRORS
           printf("* START ****************************************\n");
 #endif

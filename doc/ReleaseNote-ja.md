@@ -2,9 +2,8 @@
 ## リリースノート
 
 ### 2014/09/XX Version 1.3.1
-　draw_opaque_by_OpenGL() 引数間違い修正。__
 　ca シリーズのデバッグ。  
-　FullereneViewr について画面追加。  
+　FullereneViewer について画面追加。  
 　OS-X デバッグ。  
 　閉・開カーボンナノチューブの生成関連追加(Un,m,h-....)。  
 　「ジェネレータラベル」を「生成式」に改名。  

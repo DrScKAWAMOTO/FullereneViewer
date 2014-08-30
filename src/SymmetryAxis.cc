@@ -19,7 +19,7 @@ SymmetryAxis::SymmetryAxis(AxisType type, int order,
 {
   if (p_generator)
     p_generator->link_up();
-  if (p_type == AXIS_TYPE_CENTER_OF_RING)
+  if (p_type == AXIS_TYPE_CENTER_OF_TWO_RINGS)
     {
       CarbonAllotrope* ca = p_generator->get_carbon_allotrope();
       Ring* ring = ca->get_ring_by_sequence_no(p_north_sequence_no);
@@ -87,30 +87,66 @@ void SymmetryAxis::print_out() const
 {
   switch (p_type)
     {
-    case AXIS_TYPE_CENTER_OF_RING:
-      printf("Ring Axis order=%d at Ring(%d) and Ring(%d)",
-             p_order, p_north_sequence_no, p_south_sequence_no);
-      break;
-    case AXIS_TYPE_CENTER_OF_BOND:
-      printf("Bond Axis order=%d at Bond(%d) and Bond(%d)",
-             p_order, p_north_sequence_no, p_south_sequence_no);
-      break;
-    case AXIS_TYPE_CENTER_OF_CARBON:
+    case AXIS_TYPE_CENTER_OF_TWO_CARBONS:
       printf("Carbon Axis order=%d at Carbon(%d) and Carbon(%d)",
              p_order, p_north_sequence_no, p_south_sequence_no);
       break;
-    case AXIS_TYPE_CENTER_OF_RING_AND_BOND:
-      printf("Ring-Bond Axis order=%d at Ring(%d) and Bond(%d)",
+    case AXIS_TYPE_CENTER_OF_CARBON_AND_BOND:
+      printf("Carbon-Bond Axis order=%d at Carbon(%d) and Bond(%d)",
              p_order, p_north_sequence_no, p_south_sequence_no);
       break;
-    case AXIS_TYPE_CENTER_OF_RING_AND_CARBON:
-      printf("Ring-Carbon Axis order=%d at Ring(%d) and carbon(%d)",
+    case AXIS_TYPE_CENTER_OF_CARBON_AND_RING:
+      printf("Carbon-Ring Axis order=%d at Carbon(%d) and Ring(%d)",
              p_order, p_north_sequence_no, p_south_sequence_no);
+      break;
+    case AXIS_TYPE_CENTER_OF_CARBON_AND_BOUNDARY:
+      printf("Carbon-Boundary Axis order=%d at Carbon(%d) and Boundary(%d)",
+             p_order, p_north_sequence_no, p_south_sequence_no);
+      break;
+    case AXIS_TYPE_CENTER_OF_TWO_BONDS:
+      printf("Bond Axis order=%d at Bond(%d) and Bond(%d)",
+             p_order, p_north_sequence_no, p_south_sequence_no);
+      break;
+    case AXIS_TYPE_CENTER_OF_BOND_AND_RING:
+      printf("Bond-Ring Axis order=%d at Bond(%d) and Ring(%d)",
+             p_order, p_north_sequence_no, p_south_sequence_no);
+      break;
+    case AXIS_TYPE_CENTER_OF_BOND_AND_BOUNDARY:
+      printf("Bond-Boundary Axis order=%d at Bond(%d) and Boundary(%d)",
+             p_order, p_north_sequence_no, p_south_sequence_no);
+      break;
+    case AXIS_TYPE_CENTER_OF_TWO_RINGS:
+      printf("Ring Axis order=%d at Ring(%d) and Ring(%d)",
+             p_order, p_north_sequence_no, p_south_sequence_no);
+      break;
+    case AXIS_TYPE_CENTER_OF_RING_AND_BOUNDARY:
+      printf("Ring-Boundary Axis order=%d at Ring(%d) and Boundary(%d)",
+             p_order, p_north_sequence_no, p_south_sequence_no);
+      break;
+    case AXIS_TYPE_CENTER_OF_TWO_BOUNDARIES:
+      printf("Boundary Axis order=%d at Boundary(%d) and Boundary(%d)",
+             p_order, p_north_sequence_no, p_south_sequence_no);
+      break;
+    case AXIS_TYPE_CENTER_OF_ONLY_ONE_CARBON:
+      printf("Carbon Axis order=%d at only one Carbon(%d)",
+             p_order, p_north_sequence_no);
+      break;
+    case AXIS_TYPE_CENTER_OF_ONLY_ONE_BOND:
+      printf("Bond Axis order=%d at only one Bond(%d)",
+             p_order, p_north_sequence_no);
+      break;
+    case AXIS_TYPE_CENTER_OF_ONLY_ONE_RING:
+      printf("Ring Axis order=%d at only one Ring(%d)",
+             p_order, p_north_sequence_no);
+      break;
+    case AXIS_TYPE_CENTER_OF_ONLY_ONE_BOUNDARY:
+      printf("Boundary Axis order=%d at only one Boundary(%d)",
+             p_order, p_north_sequence_no);
       break;
     default:
       assert(0);
     }
-  if (p_type == AXIS_TYPE_CENTER_OF_RING)
+  if (p_type == AXIS_TYPE_CENTER_OF_TWO_RINGS)
     printf(", generator step=%d", p_generator_step);
   printf("\n");
 }

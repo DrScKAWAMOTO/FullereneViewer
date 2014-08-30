@@ -34,6 +34,7 @@
     <property name="title">
      <string>フラーレン指定(&amp;C)</string>
     </property>
+    <addaction name="action_F"/>
    </widget>
    <widget class="QMenu" name="menu_M">
     <property name="title">
@@ -163,6 +164,17 @@
    </property>
    <property name="shortcut">
     <string>A</string>
+   </property>
+  </action>
+  <action name="action_F">
+   <property name="text">
+    <string>生成式指定...(&amp;F)</string>
+   </property>
+   <property name="toolTip">
+    <string>生成式指定(F)</string>
+   </property>
+   <property name="shortcut">
+    <string>F</string>
    </property>
   </action>
  </widget>

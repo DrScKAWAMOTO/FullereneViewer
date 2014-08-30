@@ -26,7 +26,7 @@ win32 {
 HEADERS += ../Automorphism.h \
            ../Automorphisms.h ../AvoidBugs.h ../Bond.h ../Carbon.h ../CarbonAllotrope.h \
            ../Center.h ../Configuration.h ../Config.h \
-           ../Debug.h ../DebugMemory.h ../DistanceMatrix.h \
+           ../Debug.h ../DebugMemory.h ../DistanceMatrix.h ../ConnectedBoundary.h \
            ../DistanceSummaryLine.h ../DistanceVector.h ../ErrorCode.h ../Fullerene.h \
            ../FullereneCharacteristic.h ../FullereneMenu.h ../Fullerenes.h \
            ../Generator.h ../GeneratorLine.h ../Interactive.h ../InteractiveLine.h \
@@ -38,13 +38,11 @@ HEADERS += ../Automorphism.h \
            ../Ring.h ../SortedList.h ../Statistics.h ../SymmetryAxis.h \
            ../SymmetryAxisNormal.h ../ThreeViewNormal.h ../Utils.h ../Vector3.h \
            QtFullereneMenu.h ConfigurationDialog.h MainWindow.h Guruguru.h \
-           HelpBrowser.h \
-    AboutWindow.h
-FORMS += MainWindow.ui ConfigurationDialog.ui \
-    AboutWindow.ui
+           HelpBrowser.h AboutWindow.h GeneratorFormulaDialog.h
+FORMS += MainWindow.ui ConfigurationDialog.ui AboutWindow.ui GeneratorFormulaDialog.ui
 SOURCES += ../Automorphism.cc ../Automorphisms.cc ../Bond.cc ../Carbon.cc \
            ../CarbonAllotrope.cc ../Configuration.cc \
-           ../DebugMemory.cc ../DistanceMatrix.cc \
+           ../DebugMemory.cc ../DistanceMatrix.cc ../ConnectedBoundary.cc \
            ../DistanceSummaryLine.cc ../DistanceVector.cc ../ErrorCode.cc \
            ../Fullerene.cc ../FullereneCharacteristic.cc ../Fullerenes.cc \
            ../Generator.cc ../GeneratorLine.cc ../Interactive.cc ../InteractiveLine.cc \
@@ -55,8 +53,7 @@ SOURCES += ../Automorphism.cc ../Automorphisms.cc ../Bond.cc ../Carbon.cc \
            ../Ring.cc ../Statistics.cc ../SymmetryAxis.cc ../SymmetryAxisNormal.cc \
            ../ThreeViewNormal.cc ../Utils.cc ../Vector3.cc \
            QtFullereneMenu.cc ConfigurationDialog.cc main.cc MainWindow.cc Guruguru.cc \
-           HelpBrowser.cc \
-    AboutWindow.cpp
+           HelpBrowser.cc AboutWindow.cpp GeneratorFormulaDialog.cpp
 
 OTHER_FILES +=
 

@@ -13,6 +13,7 @@
 #include "Guruguru.h"
 #include "QtFullereneMenu.h"
 #include "ConfigurationDialog.h"
+#include "GeneratorFormulaDialog.h"
 #include "ui_MainWindow.h"
 #include "HelpBrowser.h"
 #include "AboutWindow.h"
@@ -38,6 +39,7 @@ MainWindow::MainWindow(QWidget *parent)
   connect(ui->action_6, SIGNAL(triggered()), this, SLOT(drawSixViews()));
   connect(ui->action_S, SIGNAL(triggered()), this, SLOT(drawSnapshot()));
   connect(ui->action_C, SIGNAL(triggered()), this, SLOT(setupDialog()));
+  connect(ui->action_F, SIGNAL(triggered()), this, SLOT(formulaDialog()));
   connect(ui->action_H, SIGNAL(triggered()), this, SLOT(showHelp()));
   connect(ui->action_A, SIGNAL(triggered()), this, SLOT(showAbout()));
   OpenGLUtil::alert_dialog_callback = alert_dialog;
@@ -60,12 +62,12 @@ void MainWindow::setPickingMode()
 
 void MainWindow::memoryShape()
 {
-  OpenGLUtil::ca->memory_shape(OpenGLUtil::fullerene->get_generator_label());
+  OpenGLUtil::ca->memory_shape(OpenGLUtil::fullerene->get_generator_formula());
 }
 
 void MainWindow::recallShape()
 {
-  OpenGLUtil::ca->recall_shape(OpenGLUtil::fullerene->get_generator_label());
+  OpenGLUtil::ca->recall_shape(OpenGLUtil::fullerene->get_generator_formula());
 }
 
 static void make_file_name(char *file_name)
@@ -91,7 +93,7 @@ static void make_file_name(char *file_name)
     }
   if ((dst > file_name) && (dst[-1] != '-'))
     *dst++ = '-';
-  strcpy(dst, OpenGLUtil::fullerene->get_generator_label());
+  strcpy(dst, OpenGLUtil::fullerene->get_generator_formula());
 }
 
 void MainWindow::drawSixViews()
@@ -115,6 +117,13 @@ void MainWindow::setupDialog()
   delete config;
 }
 
+void MainWindow::formulaDialog()
+{
+  GeneratorFormulaDialog *formula = new GeneratorFormulaDialog(this);
+  formula->exec();
+  delete formula;
+}
+
 void MainWindow::showHelp()
 {
   HelpBrowser::showHelp();
@@ -128,7 +137,7 @@ void MainWindow::showAbout()
 void MainWindow::fullereneSelected()
 {
   QAction* action = qobject_cast<QAction *>(sender());
-  OpenGLUtil::change_fullerene(qPrintable(action->text()),
-                               qPrintable(action->statusTip()));
-  setWindowTitle(OpenGLUtil::window_title);
+  if (OpenGLUtil::change_fullerene(qPrintable(action->text()),
+                                   qPrintable(action->statusTip())))
+    setWindowTitle(OpenGLUtil::window_title);
 }

@@ -223,6 +223,19 @@ void OpenGLUtil::initialize_post()
   glEnable(GL_COLOR_MATERIAL); //マテリアルの設定
   glColorMaterial(GL_FRONT_AND_BACK,GL_AMBIENT_AND_DIFFUSE); //マテリアルの設定
   fullerene = new Fullerene(generator_formula);
+  if (fullerene->error_code() != ERROR_CODE_OK)
+    {
+      delete fullerene;
+      char message[1024];
+      sprintf(message, "illegal generator formula `%s'", generator_formula);
+      if (alert_dialog_callback)
+        (*alert_dialog_callback)(message);
+      else
+        fprintf(stderr, "%s\n", message);
+      strcpy(fullerene_name, "C60 (NoA=120)");
+      strcpy(generator_formula, "S1-5b6c5b6b5b");
+      fullerene = new Fullerene(generator_formula);
+    }
   ca = fullerene->get_carbon_allotrope();
   fullerene->set_fullerene_name(fullerene_name);
   ca->register_interactions();
@@ -716,11 +729,24 @@ Vector3 OpenGLUtil::un_project(int win_x, int win_y)
   return Vector3(x, y, z);
 }
 
-void OpenGLUtil::change_fullerene(const char* fullerene_name, const char* generator_formula)
+bool
+OpenGLUtil::change_fullerene(const char* fullerene_name, const char* generator_formula)
 {
+  Fullerene* new_fullerene = new Fullerene(generator_formula);
+  if (new_fullerene->error_code() != ERROR_CODE_OK)
+    {
+      delete new_fullerene;
+      char message[1024];
+      sprintf(message, "illegal generator formula `%s'", generator_formula);
+      if (alert_dialog_callback)
+        (*alert_dialog_callback)(message);
+      else
+        fprintf(stderr, "%s\n", message);
+      return false;
+    }
   if (fullerene)
     delete fullerene;
-  fullerene = new Fullerene(generator_formula);
+  fullerene = new_fullerene;
   fullerene->set_fullerene_name(fullerene_name);
   sprintf(window_title, "%s %s %s", WINDOW_TITLE,
           fullerene->get_fullerene_name(), fullerene->get_generator_formula());
@@ -731,6 +757,7 @@ void OpenGLUtil::change_fullerene(const char* fullerene_name, const char* genera
   p_carbon_picking_sequence_no = 0;
   p_last_real_motion = Vector3();
   resume_drawing();
+  return true;
 }
 
 int OpenGLUtil::find_unused_file_number(const char* file_name_base)

@@ -11,7 +11,7 @@
 
 #define MAKE_SUBMENU(mw,mn,No) for (int i = 0; i < (int)(sizeof(entry##No) / sizeof(MenuEntry)); ++i) { \
   QAction* action = new QAction(entry##No[i].fullerene_name, mw); \
-  action->setStatusTip(entry##No[i].generator_label); \
+  action->setStatusTip(entry##No[i].generator_formula); \
   QObject::connect(action, SIGNAL(triggered()), mw, SLOT(fullereneSelected())); \
   mn->addAction(action); \
   }

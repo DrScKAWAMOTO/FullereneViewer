@@ -8,6 +8,7 @@
 #ifndef __PATTERNS_H__
 #define __PATTERNS_H__
 
+#include <limits.h>
 #include "List.h"
 #include "Fullerene.h"
 
@@ -23,7 +24,8 @@ private:
   // constructors & the destructor
 public:
   Fullerenes(const char* generator_formula, int maximum_number_of_carbons,
-             bool symmetric = true, int maximum_vertices_of_polygons = 6);
+             bool symmetric = true, int maximum_vertices_of_polygons = 6,
+             int close = INT_MAX);
   ~Fullerenes();
 
   // type converters

@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <limits.h>
 #include "Version.h"
 #include "Fullerenes.h"
 #include "Random.h"
@@ -27,6 +28,8 @@ static void usage(const char* arg0)
   fprintf(stderr, "            generator-formula looks like 'A1-5b6b...',\n");
   fprintf(stderr, "    --tube=[num] ......... list up all carbon nano tubes up to [num] carbons,\n");
   fprintf(stderr, "            generator-formula looks like 'T10,0,1-5b6b...', has to be specified,\n");
+  fprintf(stderr, "    --close=[num] ........ close [num] connected boundary component(s),\n");
+  fprintf(stderr, "            default is infinity,\n");
   fprintf(stderr, "    -v (--version) ....... show version,\n");
   fprintf(stderr, "    -h ................... show this message.\n");
   exit(0);
@@ -37,6 +40,7 @@ int main(int argc, char *argv[])
   int symmetric = -1;
   int ordinary = -1;
   int tube = -1;
+  int close = INT_MAX;
 
   const char* arg0 = argv[0];
   const char* generator_formula = 0;
@@ -73,6 +77,12 @@ int main(int argc, char *argv[])
           argc--;
           argv++;
         }
+      else if (strncmp(argv[0], "--close=", 8) == 0)
+        {
+          close = atoi(argv[0] + 8);
+          argc--;
+          argv++;
+        }
       else if (!generator_formula)
         {
           generator_formula = argv[0];
@@ -97,7 +107,7 @@ int main(int argc, char *argv[])
                                     (generator_formula[2] != '-')))
             usage(arg0);
           Fullerenes ap = Fullerenes(generator_formula, symmetric, true,
-                                     MAXIMUM_VERTICES_OF_POLYGON);
+                                     MAXIMUM_VERTICES_OF_POLYGON, close);
         }
       else if (ordinary >= 1)
         {
@@ -108,7 +118,7 @@ int main(int argc, char *argv[])
                                     (generator_formula[2] != '-')))
             usage(arg0);
           Fullerenes ap = Fullerenes(generator_formula, ordinary, false,
-                                     MAXIMUM_VERTICES_OF_POLYGON);
+                                     MAXIMUM_VERTICES_OF_POLYGON, close);
         }
       else if (tube >= 1)
         {
@@ -130,7 +140,7 @@ int main(int argc, char *argv[])
           if (*ptr != '-')
             usage(arg0);
           Fullerenes ap = Fullerenes(generator_formula, tube, false,
-                                     MAXIMUM_VERTICES_OF_POLYGON);
+                                     MAXIMUM_VERTICES_OF_POLYGON, close);
         }
     }
   catch (const std::exception& err)

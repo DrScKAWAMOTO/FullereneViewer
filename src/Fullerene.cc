@@ -9,6 +9,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <limits.h>
 #include "Config.h"
 #include "Fullerene.h"
 #include "CarbonAllotrope.h"
@@ -27,18 +28,34 @@ bool Fullerene::s_need_fullerene_characteristic = false;
 bool Fullerene::s_need_distance_matrix = false;
 
 Fullerene::Fullerene()
-  : p_carbon_allotrope(0), p_n(0), p_m(0), p_h(0),
+  : p_carbon_allotrope(0), p_error_code(ERROR_CODE_OK), p_n(0), p_m(0), p_h(0),
     p_representations(0), p_characteristic(0), p_distance_matrix(0)
 {
   strcpy(p_generator_formula, "");
 }
 
 Fullerene::Fullerene(const char* generator_formula)
-  : p_carbon_allotrope(0), p_n(0), p_m(0), p_h(0),
+  : p_carbon_allotrope(0), p_error_code(ERROR_CODE_OK), p_n(0), p_m(0), p_h(0),
     p_representations(0), p_characteristic(0), p_distance_matrix(0)
 {
-  strcpy(p_generator_formula, generator_formula);
+  while ((generator_formula[0] != 'S') &&
+         (generator_formula[0] != 'A') &&
+         (generator_formula[0] != 'T') &&
+         (generator_formula[0] != 'Y') &&
+         (generator_formula[0] != '\0'))
+    ++generator_formula;
   CarbonAllotrope* ca = new CarbonAllotrope();
+  if ((generator_formula[0] != 'S') &&
+      (generator_formula[0] != 'A') &&
+      (generator_formula[0] != 'T') &&
+      (generator_formula[0] != 'Y'))
+    {
+      p_error_code = ERROR_CODE_ILLEGAL_GENERATOR_FORMULA;
+      delete ca;
+      ca = 0;
+      goto do_nothing;
+    }
+  strcpy(p_generator_formula, generator_formula);
   if (strcmp(p_generator_formula, "Y") == 0)
     {
       ca->make_equator_by_chiral_characteristic(6, 6, 5);
@@ -144,29 +161,71 @@ Fullerene::Fullerene(const char* generator_formula)
         }
       /* 'S' 'A' 'T' */
       Generator gen = Generator(generator_formula, 6);
-      if (gen.is_tube())
+      if (gen.type() == GENERATOR_TYPE_ILLEGAL)
+        {
+          delete ca;
+          p_error_code = ERROR_CODE_ILLEGAL_GENERATOR_FORMULA;
+          ca = 0;
+          goto do_nothing;
+        }
+      if (gen.type() == GENERATOR_TYPE_TUBE)
         ca->make_equator_by_chiral_characteristic(gen.n(), gen.m(), gen.h());
       else
         ca->make_symmetric_scrap(gen.scrap_no());
+      List<Carbon> boundary;
+      List<Carbon> oldest_boundary;
+      bool symmetric = (gen.type() == GENERATOR_TYPE_SYMMETRIC);
+      if (!symmetric)
+        {
+          ca->list_connected_boundary_carbons(boundary);
+          ca->list_connected_boundary_carbons(oldest_boundary);
+        }
 #ifdef DEBUG_CARBON_ALLOTROPE_CONSTRUCTION
       ca->print_detail();
 #endif
       while (1)
         {
-          int No = gen.glow();
+          int No = gen.history();
+          if (No == -1)
+            break;
           int num;
           ErrorCode result;
-          if (gen.symmetric())
+          if (symmetric)
             result =
               ca->fill_n_polygons_around_carbons_closed_to_center_and_pentagons(No, num);
           else
-            result = ca->fill_n_polygon_around_oldest_carbon(No);
-          assert(result == ERROR_CODE_OK);
+            {
+              int len = boundary.length();
+              int sequence_no = INT_MAX;
+              Carbon* carbon = 0;
+              for (int i = 0; i < len; ++i)
+                {
+                  if (boundary[i]->number_of_rings() == 2)
+                    {
+                      int seq = boundary[i]->sequence_no();
+                      if (seq < sequence_no)
+                        {
+                          carbon = boundary[i];
+                          sequence_no = seq;
+                        }
+                    }
+                }
+              assert(carbon);
+              result = ca->fill_n_polygon_around_carbon(No, carbon, boundary,
+                                                        oldest_boundary);
+            }
+          if (result != ERROR_CODE_OK)
+            {
+              delete ca;
+              p_error_code = result;
+              ca = 0;
+              goto do_nothing;
+            }
 #ifdef DEBUG_CARBON_ALLOTROPE_CONSTRUCTION
           ca->print_detail();
 #endif
-          List<Carbon> boundary;
-          ca->list_boundary_carbons(boundary);
+          if (symmetric)
+            ca->list_connected_boundary_carbons(boundary);
           int number_of_carbons_in_boundary = boundary.length();
           if (number_of_carbons_in_boundary == 0)
             break;
@@ -174,6 +233,8 @@ Fullerene::Fullerene(const char* generator_formula)
     }
  finish:
   set_carbon_allotrope(ca);
+ do_nothing:
+  ;
 }
 
 Fullerene::~Fullerene()
@@ -218,6 +279,7 @@ void Fullerene::set_carbon_allotrope(CarbonAllotrope* carbon_allotrope)
         }
       printf("************************************************\n");
 #endif
+      p_carbon_allotrope->all_boundaries();
       Automorphisms ams = Automorphisms(this);
       len = ams.number_of_automorphisms();
       for (int i = 0; i < len; ++i)
@@ -226,40 +288,105 @@ void Fullerene::set_carbon_allotrope(CarbonAllotrope* carbon_allotrope)
           int order = am->order();
           if (order == 1)
             continue;
-          int seq0, seq1, seq2, seq3, seq4, seq5;
+          int seq0, seq1, seq2, seq3, seq4, seq5, seq6, seq7;
           int fixed_carbons = am->fixed_carbons(seq0, seq1);
           int fixed_bonds = am->fixed_bonds(seq2, seq3);
           int fixed_rings = am->fixed_rings(seq4, seq5);
+          int fixed_boundaries = am->fixed_boundaries(seq6, seq7);
           AxisType type;
-          if (fixed_carbons == 2)
-            type = AXIS_TYPE_CENTER_OF_CARBON;
-          else if (fixed_bonds == 2)
+          if ((fixed_carbons == 2) && (fixed_bonds == 0) &&
+              (fixed_rings == 0) && (fixed_boundaries == 0))
+            type = AXIS_TYPE_CENTER_OF_TWO_CARBONS;
+          else if ((fixed_carbons == 1) && (fixed_bonds == 1) &&
+                   (fixed_rings == 0) && (fixed_boundaries == 0))
             {
-              type = AXIS_TYPE_CENTER_OF_BOND;
+              type = AXIS_TYPE_CENTER_OF_CARBON_AND_BOND;
+              seq1 = seq2;
+            }
+          else if ((fixed_carbons == 1) && (fixed_bonds == 0) &&
+                   (fixed_rings == 1) && (fixed_boundaries == 0))
+            {
+              type = AXIS_TYPE_CENTER_OF_CARBON_AND_RING;
+              seq1 = seq4;
+            }
+          else if ((fixed_carbons == 1) && (fixed_bonds == 0) &&
+                   (fixed_rings == 0) && (fixed_boundaries == 1))
+            {
+              type = AXIS_TYPE_CENTER_OF_CARBON_AND_BOUNDARY;
+              seq1 = seq6;
+            }
+          else if ((fixed_carbons == 0) && (fixed_bonds == 2) &&
+                   (fixed_rings == 0) && (fixed_boundaries == 0))
+            {
+              type = AXIS_TYPE_CENTER_OF_TWO_BONDS;
               seq0 = seq2;
               seq1 = seq3;
             }
-          else if (fixed_rings == 2)
+          else if ((fixed_carbons == 0) && (fixed_bonds == 1) &&
+                   (fixed_rings == 1) && (fixed_boundaries == 0))
             {
-              type = AXIS_TYPE_CENTER_OF_RING;
+              type = AXIS_TYPE_CENTER_OF_BOND_AND_RING;
+              seq0 = seq2;
+              seq1 = seq4;
+            }
+          else if ((fixed_carbons == 0) && (fixed_bonds == 1) &&
+                   (fixed_rings == 0) && (fixed_boundaries == 1))
+            {
+              type = AXIS_TYPE_CENTER_OF_BOND_AND_BOUNDARY;
+              seq0 = seq2;
+              seq1 = seq6;
+            }
+          else if ((fixed_carbons == 0) && (fixed_bonds == 0) &&
+                   (fixed_rings == 2) && (fixed_boundaries == 0))
+            {
+              type = AXIS_TYPE_CENTER_OF_TWO_RINGS;
               seq0 = seq4;
               seq1 = seq5;
             }
-          else if ((fixed_rings == 1) && (fixed_bonds == 1))
+          else if ((fixed_carbons == 0) && (fixed_bonds == 0) &&
+                   (fixed_rings == 1) && (fixed_boundaries == 1))
             {
-              type = AXIS_TYPE_CENTER_OF_RING_AND_BOND;
+              type = AXIS_TYPE_CENTER_OF_RING_AND_BOUNDARY;
               seq0 = seq4;
-              seq1 = seq2;
+              seq1 = seq6;
             }
-          else if ((fixed_rings == 1) && (fixed_carbons == 1))
+          else if ((fixed_carbons == 0) && (fixed_bonds == 0) &&
+                   (fixed_rings == 0) && (fixed_boundaries == 2))
             {
-              type = AXIS_TYPE_CENTER_OF_RING_AND_CARBON;
-              seq1 = seq0;
+              type = AXIS_TYPE_CENTER_OF_TWO_BOUNDARIES;
+              seq0 = seq6;
+              seq1 = seq7;
+            }
+          else if ((fixed_carbons == 1) && (fixed_bonds == 0) &&
+                   (fixed_rings == 0) && (fixed_boundaries == 0))
+            type = AXIS_TYPE_CENTER_OF_ONLY_ONE_CARBON;
+          else if ((fixed_carbons == 0) && (fixed_bonds == 1) &&
+                   (fixed_rings == 0) && (fixed_boundaries == 0))
+            {
+              type = AXIS_TYPE_CENTER_OF_ONLY_ONE_BOND;
+              seq0 = seq2;
+            }
+          else if ((fixed_carbons == 0) && (fixed_bonds == 0) &&
+                   (fixed_rings == 1) && (fixed_boundaries == 0))
+            {
+              type = AXIS_TYPE_CENTER_OF_ONLY_ONE_RING;
               seq0 = seq4;
             }
+          else if ((fixed_carbons == 0) && (fixed_bonds == 0) &&
+                   (fixed_rings == 0) && (fixed_boundaries == 1))
+            {
+              type = AXIS_TYPE_CENTER_OF_ONLY_ONE_BOUNDARY;
+              seq0 = seq6;
+            }
+          else if ((fixed_carbons == 0) && (fixed_bonds == 0) &&
+                   (fixed_rings == 0) && (fixed_boundaries == 0))
+            continue;
           else
             {
-              type = AXIS_TYPE_CENTER_OF_RING;
+              printf("fixed carbons = %d\n", fixed_carbons);
+              printf("fixed bonds = %d\n", fixed_bonds);
+              printf("fixed rings = %d\n", fixed_rings);
+              printf("fixed boundaries = %d\n", fixed_boundaries);
               assert(0);
             }
           p_carbon_allotrope->register_axis(new SymmetryAxis(type, order,

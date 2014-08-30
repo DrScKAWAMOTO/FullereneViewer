@@ -8,14 +8,20 @@
 #ifndef __GENERATOR_H__
 #define __GENERATOR_H__
 
+enum GeneratorType {
+  GENERATOR_TYPE_SYMMETRIC = 1,
+  GENERATOR_TYPE_TUBE = 2,
+  GENERATOR_TYPE_ORDINARY = 3,
+  GENERATOR_TYPE_ILLEGAL = 4,
+};
+
 class Generator {
   // friend classes & functions
 
   // members
 private:
-  bool p_is_tube;
+  GeneratorType p_type;
   int p_scrap_no;
-  bool p_symmetric;
   int p_n;
   int p_m;
   int p_h;
@@ -44,13 +50,13 @@ public:
   // member accessing methods
 public:
   bool next_pattern();
+  GeneratorType type() const { return p_type; }
   int scrap_no() const { return p_scrap_no; }
-  bool symmetric() const { return p_symmetric; }
-  bool is_tube() const { return p_is_tube; }
   int n() const { return p_n; }
   int m() const { return p_m; }
   int h() const { return p_h; }
   int glow();
+  int history();
   void get_generator_formula(char* buffer, int length);
 
 };

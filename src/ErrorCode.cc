@@ -31,6 +31,9 @@ void error_handler(ErrorCode result)
       printf("Only one concave and only one convex boundary segment !!\n");
       exit(20);
       return;
+    case ERROR_CODE_ILLEGAL_GENERATOR_FORMULA:
+      printf("Illegal generator formula !!\n");
+      return;
   }
   printf("Unknown error code !!\n");
 }

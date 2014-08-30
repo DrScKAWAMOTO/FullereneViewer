@@ -63,7 +63,7 @@ void No_to_digits10x10(int No, char*& buffer)
     {
       if (No == 0)
         break;
-      work[index] = (No % 26) + '0';
+      work[index] = (No % 10) + '0';
       No /= 10;
     }
   while (--index >= 0)

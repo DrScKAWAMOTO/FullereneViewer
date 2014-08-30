@@ -11,7 +11,8 @@
 #include "DebugMemory.h"
 
 Automorphism::Automorphism(CarbonAllotrope* ca)
-  : p_ca(ca), p_index(0), p_order(-1), p_carbon_map(0), p_bond_map(0), p_ring_map(0)
+  : p_ca(ca), p_index(0), p_order(-1),
+    p_carbon_map(0), p_bond_map(0), p_ring_map(0), p_boundary_map(0)
 {
   int len = p_ca->number_of_carbons();
   p_carbon_map = new int[len];
@@ -19,7 +20,8 @@ Automorphism::Automorphism(CarbonAllotrope* ca)
 
 Automorphism::Automorphism(CarbonAllotrope* ca, Bond* from_bond, Carbon* from_carbon,
                            Bond* to_bond, Carbon* to_carbon)
-  : p_ca(ca), p_index(0), p_order(-1), p_carbon_map(0), p_bond_map(0), p_ring_map(0)
+  : p_ca(ca), p_index(0), p_order(-1),
+    p_carbon_map(0), p_bond_map(0), p_ring_map(0), p_boundary_map(0)
 {
   int len = p_ca->number_of_carbons();
   p_carbon_map = new int[len];
@@ -71,6 +73,24 @@ Automorphism::Automorphism(CarbonAllotrope* ca, Bond* from_bond, Carbon* from_ca
       ring = carbon1->ring_between(bond01, bond12);
       p_ring_map[i - 1] = ring->sequence_no() - 1;
     }
+  len = p_ca->number_of_boundaries();
+  p_boundary_map = new int[len];
+  for (int i = 1; i <= len; ++i)
+    {
+      ConnectedBoundary* boundary = p_ca->get_boundary_by_sequence_no(i);
+      Carbon* carbon = (*boundary)[0];
+      int carbon_index = operator () (carbon->sequence_no());
+      carbon = p_ca->get_carbon_by_sequence_no(carbon_index);
+      for (int j = 1; j <= len; ++j)
+        {
+          ConnectedBoundary* boundary2 = p_ca->get_boundary_by_sequence_no(j);
+          if (boundary2->contained(carbon))
+            {
+              p_boundary_map[i - 1] = j - 1;
+              break;
+            }
+        }
+    }
 }
 
 void Automorphism::initialize(int from_seq, int to_seq)
@@ -88,6 +108,8 @@ Automorphism::~Automorphism()
     delete[] p_bond_map;
   if (p_ring_map)
     delete[] p_ring_map;
+  if (p_boundary_map)
+    delete[] p_boundary_map;
 }
 
 bool operator == (const Automorphism& one, const Automorphism& the_other)
@@ -190,6 +212,11 @@ int Automorphism::number_of_rings() const
   return p_ca->number_of_rings();
 }
 
+int Automorphism::number_of_boundaries() const
+{
+  return p_ca->number_of_boundaries();
+}
+
 int Automorphism::operator () (int sequence_no) const
 {
   assert((sequence_no >= 1) && (sequence_no <= number_of_carbons()));
@@ -212,6 +239,12 @@ int Automorphism::ring_map(int sequence_no) const
 {
   assert((sequence_no >= 1) && (sequence_no <= number_of_rings()));
   return p_ring_map[sequence_no - 1] + 1;
+}
+
+int Automorphism::boundary_map(int sequence_no) const
+{
+  assert((sequence_no >= 1) && (sequence_no <= number_of_boundaries()));
+  return p_boundary_map[sequence_no - 1] + 1;
 }
 
 void Automorphism::set_step(int sequence_no)
@@ -262,7 +295,6 @@ int Automorphism::fixed_carbons(int& sequence_no0, int& sequence_no1)
   return num;
 }
 
-
 int Automorphism::fixed_bonds(int& sequence_no0, int& sequence_no1)
 {
   int num = 0;
@@ -288,6 +320,24 @@ int Automorphism::fixed_rings(int& sequence_no0, int& sequence_no1)
   for (int i = 1; i <= len; ++i)
     {
       if (i == ring_map(i))
+        {
+          if (num == 0)
+            sequence_no0 = i;
+          else if (num == 1)
+            sequence_no1 = i;
+          num++;
+        }
+    }
+  return num;
+}
+
+int Automorphism::fixed_boundaries(int& sequence_no0, int& sequence_no1)
+{
+  int num = 0;
+  int len = p_ca->number_of_boundaries();
+  for (int i = 1; i <= len; ++i)
+    {
+      if (i == boundary_map(i))
         {
           if (num == 0)
             sequence_no0 = i;

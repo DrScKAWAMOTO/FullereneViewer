@@ -55,7 +55,9 @@ GPATH
 GRTAGS
 GTAGS
 ID
-*.html
+/*.html
+/doc/*.html
+/doc/*/*.html
 
 # OS oriented files
 .DS_Store

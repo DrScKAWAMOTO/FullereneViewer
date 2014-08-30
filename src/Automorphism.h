@@ -25,6 +25,7 @@ private:
   int* p_carbon_map;
   int* p_bond_map;
   int* p_ring_map;
+  int* p_boundary_map;
 
   // private tools
 
@@ -61,16 +62,19 @@ public:
   int number_of_carbons() const;
   int number_of_bonds() const;
   int number_of_rings() const;
+  int number_of_boundaries() const;
   CarbonAllotrope* get_carbon_allotrope() const { return p_ca; }
   int operator () (int sequence_no) const;
   int carbon_map(int sequence_no) const;
   int bond_map(int sequence_no) const;
   int ring_map(int sequence_no) const;
+  int boundary_map(int sequence_no) const;
   void set_step(int sequence_no);
   int order();
   int fixed_carbons(int& sequence_no0, int& sequence_no1);
   int fixed_bonds(int& sequence_no0, int& sequence_no1);
   int fixed_rings(int& sequence_no0, int& sequence_no1);
+  int fixed_boundaries(int& sequence_no0, int& sequence_no1);
 
 };
 

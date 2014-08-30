@@ -434,17 +434,23 @@ void Carbon::write_representation(Representation& representation, Bond* from)
           second = p_bond_0;
         }
     }
-  Carbon* carbon = first->get_carbon_beyond(this);
-  if (!carbon->get_done())
+  if (first)
     {
-      representation.set_step('F');
-      carbon->write_representation(representation, first);
+      Carbon* carbon = first->get_carbon_beyond(this);
+      if (!carbon->get_done())
+        {
+          representation.set_step('F');
+          carbon->write_representation(representation, first);
+        }
     }
-  carbon = second->get_carbon_beyond(this);
-  if (!carbon->get_done())
+  if (second)
     {
-      representation.set_step('S');
-      carbon->write_representation(representation, second);
+      Carbon* carbon = second->get_carbon_beyond(this);
+      if (!carbon->get_done())
+        {
+          representation.set_step('S');
+          carbon->write_representation(representation, second);
+        }
     }
 }
 
@@ -495,12 +501,18 @@ void Carbon::write_automorphism(Automorphism& automorphism, Bond* from)
         }
     }
   automorphism.set_step(sequence_no());
-  Carbon* carbon = first->get_carbon_beyond(this);
-  if (!carbon->get_done())
-    carbon->write_automorphism(automorphism, first);
-  carbon = second->get_carbon_beyond(this);
-  if (!carbon->get_done())
-    carbon->write_automorphism(automorphism, second);
+  if (first)
+    {
+      Carbon* carbon = first->get_carbon_beyond(this);
+      if (!carbon->get_done())
+        carbon->write_automorphism(automorphism, first);
+    }
+  if (second)
+    {
+      Carbon* carbon = second->get_carbon_beyond(this);
+      if (!carbon->get_done())
+        carbon->write_automorphism(automorphism, second);
+    }
 }
 
 void Carbon::print_structure(int indent, bool deep) const
@@ -954,7 +966,7 @@ Bond* Carbon::inner_bond() const
 //     ... closed concave boundary segment のボンドの一つ
 //
 ErrorCode
-Carbon::concave_boundary_segment(int number_of_carbons, int& length, Bond*& end_bond)
+Carbon::concave_boundary_segment(int n_members, int& length, Bond*& end_bond)
 {
   end_bond = 0;
   Carbon* end_carbon = 0;
@@ -983,9 +995,9 @@ Carbon::concave_boundary_segment(int number_of_carbons, int& length, Bond*& end_
           printf("Closed concave boundary segment (length=%d) ...C%d...\n",
                  length, carbon->sequence_no());
 #endif
-          if ((number_of_carbons == 5) && has_pentagon)
+          if ((n_members == 5) && has_pentagon)
             return ERROR_CODE_BREAKING_ISOLATED_PENTAGON_RULE;
-          if (length != number_of_carbons)
+          if (length != n_members)
             return ERROR_CODE_DOES_NOT_FIX_LENGTH_OF_CLOSED_CONCAVE_BOUNDARY_SEGMENT;
           return ERROR_CODE_OK;
         }
@@ -1035,9 +1047,9 @@ Carbon::concave_boundary_segment(int number_of_carbons, int& length, Bond*& end_
       end_bond = bond;
       end_carbon = carbon;
     }
-  if ((number_of_carbons == 5) && has_pentagon)
+  if ((n_members == 5) && has_pentagon)
     return ERROR_CODE_BREAKING_ISOLATED_PENTAGON_RULE;
-  if (length + 1 > number_of_carbons)
+  if (length + 1 > n_members)
     return ERROR_CODE_DOES_NOT_FIX_LENGTH_OF_OPEN_CONCAVE_BOUNDARY_SEGMENT;
   return ERROR_CODE_OK;
 }

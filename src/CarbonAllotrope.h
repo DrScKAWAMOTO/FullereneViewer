@@ -14,6 +14,7 @@
 #include "Ring.h"
 #include "Carbon.h"
 #include "Bond.h"
+#include "ConnectedBoundary.h"
 #include "SymmetryAxis.h"
 
 class Representations;
@@ -28,6 +29,7 @@ private:
   List<Carbon> p_carbons;
   List<Carbon> p_centers;
   List<Bond> p_bonds;
+  List<ConnectedBoundary> p_boundaries;
   bool p_has_reflection_symmetricity;
   List<SymmetryAxis> p_axes;
   Vector3 p_center_location;
@@ -42,11 +44,12 @@ public:
   int bond_next_sequence;
   double bond_radius;
   int bond_color;
+  int boundary_next_sequence;
   bool print_out_sequence_no;
 
   // private tools
 private:
-  void p_make_n_polygon(int number_of_carbons);
+  void p_make_n_polygon(int n_members);
   void p_set_center();
   void p_list_most_inside_carbons_on_boundary(List<Carbon>& boundary);
 
@@ -61,11 +64,10 @@ public:
 private:
   ErrorCode p_fill_hexagons_around(Ring* ring);
 public:
-  ErrorCode fill_hexagons_around_n_polygons(int number_of_carbons);
-  ErrorCode append_n_polygon_at_carbon(int number_of_carbons, int carbon_sequence_no);
-  ErrorCode append_n_polygon_at_carbons(int number_of_carbons,
-                                        const int* carbon_sequence_nos);
-  ErrorCode append_n_polygon_at_bond(int number_of_carbons, int bond_sequence_no);
+  ErrorCode fill_hexagons_around_n_polygons(int n_members);
+  ErrorCode append_n_polygon_at_carbon(int n_members, int carbon_sequence_no);
+  ErrorCode append_n_polygon_at_carbons(int n_members, const int* carbon_sequence_nos);
+  ErrorCode append_n_polygon_at_bond(int n_members, int bond_sequence_no);
 
   // fullerene constructions
 private:
@@ -74,9 +76,11 @@ public:
   ErrorCode enlarge_cylinder_by_n_polygons(Pattern* n_pattern, int& result_number);
   ErrorCode make_fullerene(int distance);
   ErrorCode
-  fill_n_polygons_around_carbons_closed_to_center_and_pentagons(int number_of_carbons,
+  fill_n_polygons_around_carbons_closed_to_center_and_pentagons(int n_members,
                                                                 int& number_of_results);
-  ErrorCode fill_n_polygon_around_oldest_carbon(int number_of_carbons);
+  ErrorCode fill_n_polygon_around_carbon(int n_members, Carbon* carbon,
+                                         List<Carbon>& boundary, 
+                                         List<Carbon>& oldest_boundary);
   ErrorCode make_symmetric_scrap(int scrap_no);
 
   // carbon nano-tube constructions
@@ -164,25 +168,42 @@ public:
 
   // member accessing methods
 public:
+
+  // rings
   int number_of_rings() const { return p_rings.length(); }
   void register_ring(Ring* ring);
   void remove_ring(Ring* ring);
   Ring* get_ring(int index) const;
   Ring* get_ring_by_sequence_no(int sequence_no) const;
+
+  // carbons
   int number_of_carbons() const { return p_carbons.length(); }
   void register_carbon(Carbon* ring);
   Carbon* get_carbon(int index) const;
   Carbon* get_carbon_by_sequence_no(int sequence_no) const;
+
+  // bonds
   int number_of_bonds() const { return p_bonds.length(); }
   void register_bond(Bond* ring);
   Bond* get_bond(int index) const;
   Bond* get_bond_by_sequence_no(int sequence_no) const;
-  void list_carbons_with_two_rings(List<Carbon>& result) const;
-  int list_boundary_carbons(List<Carbon>& result) const;
-  int list_reverse_boundary_carbons(List<Carbon>& result) const;
-  int list_boundary_carbons(List<Carbon>& result, const List<Carbon>& already) const;
+
+  // connected boundaries
+  int list_connected_boundary_carbons(List<Carbon>& result) const;
+  int list_reverse_connected_boundary_carbons(List<Carbon>& result) const;
+  int list_connected_boundary_carbons(List<Carbon>& result,
+                                      const List<Carbon>& already) const;
+  void all_boundaries();
+  int number_of_boundaries() const { return p_boundaries.length(); }
+  void register_boundary(ConnectedBoundary* boundary);
+  ConnectedBoundary* get_boundary(int index) const;
+  ConnectedBoundary* get_boundary_by_sequence_no(int sequence_no) const;
+
+  // reflections symmetricity
   void has_reflection_symmetricity(bool yes) { p_has_reflection_symmetricity = yes; }
   bool has_reflection_symmetricity() const { return p_has_reflection_symmetricity; }
+
+  // axes
   int number_of_axes() const { return p_axes.length(); }
   SymmetryAxis* get_axis(int index) const;
   void get_major_axes(List<SymmetryAxis>& result) const;

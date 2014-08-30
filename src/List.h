@@ -39,12 +39,6 @@ protected:
       p_container[i]->link_down();
     p_length = 0;
   }
-  void p_add(const List<T>& that)
-  {
-    int len = that.length();
-    for (int i = 0; i < len; ++i)
-      add(that[i]);
-  }
 
   // constructors & the destructor
 public:
@@ -52,7 +46,7 @@ public:
   List(const List<T>& that) : p_container_size(16), p_length(0),
                               p_container(new T*[p_container_size])
   {
-    p_add(that);
+    add(that);
   }
   ~List() { p_clean(); delete[] p_container; }
   List<T>& operator = (const List<T>& that)
@@ -60,7 +54,7 @@ public:
     if (this != &that)
       {
         p_clean();
-        p_add(that);
+        add(that);
       }
     return *this;
   }
@@ -82,6 +76,12 @@ public:
     p_make_room();
     element->link_up();
     p_container[p_length++] = element;
+  }
+  void add(const List<T>& that)
+  {
+    int len = that.length();
+    for (int i = 0; i < len; ++i)
+      add(that[i]);
   }
   void remove(T* element)
   {

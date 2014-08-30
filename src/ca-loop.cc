@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
+#include <limits.h>
 #include "Version.h"
 
 #define BUFFER_SIZE 1000
@@ -27,6 +28,8 @@ static void usage(const char* arg0)
   fprintf(stderr, "            generator-formulas look like 'A1-5b6b...',\n");
   fprintf(stderr, "    --tube=[num] ......... list up all carbon nano tubes up to [num] carbons,\n");
   fprintf(stderr, "            generator-formulas look like 'T10,0,1-5b6b...', has to be specified,\n");
+  fprintf(stderr, "    --close=[num] ........ close [num] connected boundary component(s),\n");
+  fprintf(stderr, "            default is infinity,\n");
   fprintf(stderr, "    --log=<log file> ..... output log file name,\n");
   fprintf(stderr, "    -v (--version) ....... show version,\n");
   fprintf(stderr, "    -h ................... show this message.\n");
@@ -38,6 +41,7 @@ int main(int argc, char *argv[])
   int symmetric = -1;
   int ordinary = -1;
   int tube = -1;
+  int close = INT_MAX;
 
   const char* arg0 = argv[0];
   char start_generator_formula[BUFFER_SIZE] = "";
@@ -73,6 +77,12 @@ int main(int argc, char *argv[])
       else if (strncmp(argv[0], "--tube=", 7) == 0)
         {
           tube = atoi(argv[0] + 7);
+          argc--;
+          argv++;
+        }
+      else if (strncmp(argv[0], "--close=", 8) == 0)
+        {
+          close = atoi(argv[0] + 8);
           argc--;
           argv++;
         }
@@ -160,13 +170,14 @@ int main(int argc, char *argv[])
     {
       char command[BUFFER_SIZE];
       if (symmetric > 0)
-        sprintf(command, "ca-generator --symmetric=%d %s",
-                symmetric, start_generator_formula);
+        sprintf(command, "ca-generator --symmetric=%d --close=%d %s",
+                symmetric, close, start_generator_formula);
       else if (ordinary > 0)
-        sprintf(command, "ca-generator --ordinary=%d %s",
-                ordinary, start_generator_formula);
+        sprintf(command, "ca-generator --ordinary=%d --close=%d %s",
+                ordinary, close, start_generator_formula);
       else if (tube > 0)
-        sprintf(command, "ca-generator --tube=%d %s", tube, start_generator_formula);
+        sprintf(command, "ca-generator --tube=%d --close=%d %s",
+                tube, close, start_generator_formula);
       fprintf(stderr, "%s\n", command);
       FILE* generator = popen(command, "r");
       if (generator == 0)

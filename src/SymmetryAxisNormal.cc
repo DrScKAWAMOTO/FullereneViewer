@@ -33,23 +33,7 @@ void SymmetryAxisNormal::interaction_original(OriginalForceType force_type,
   int south = p_axis->get_south_sequence_no();
   switch (p_axis->get_type())
     {
-    case AXIS_TYPE_CENTER_OF_RING:
-      {
-        Ring* north_ring = p_ca->get_ring_by_sequence_no(north);
-        Ring* south_ring = p_ca->get_ring_by_sequence_no(south);
-        north_location = north_ring->get_center_location();
-        south_location = south_ring->get_center_location();
-      }
-      break;
-    case AXIS_TYPE_CENTER_OF_BOND:
-      {
-        Bond* north_bond = p_ca->get_bond_by_sequence_no(north);
-        Bond* south_bond = p_ca->get_bond_by_sequence_no(south);
-        north_location = north_bond->get_center_location();
-        south_location = south_bond->get_center_location();
-      }
-      break;
-    case AXIS_TYPE_CENTER_OF_CARBON:
+    case AXIS_TYPE_CENTER_OF_TWO_CARBONS:
       {
         Carbon* north_carbon = p_ca->get_carbon_by_sequence_no(north);
         Carbon* south_carbon = p_ca->get_carbon_by_sequence_no(south);
@@ -57,20 +41,108 @@ void SymmetryAxisNormal::interaction_original(OriginalForceType force_type,
         south_location = south_carbon->get_center_location();
       }
       break;
-    case AXIS_TYPE_CENTER_OF_RING_AND_BOND:
+    case AXIS_TYPE_CENTER_OF_CARBON_AND_BOND:
       {
-        Ring* north_ring = p_ca->get_ring_by_sequence_no(north);
+        Carbon* north_carbon = p_ca->get_carbon_by_sequence_no(north);
         Bond* south_bond = p_ca->get_bond_by_sequence_no(south);
-        north_location = north_ring->get_center_location();
+        north_location = north_carbon->get_center_location();
         south_location = south_bond->get_center_location();
       }
       break;
-    case AXIS_TYPE_CENTER_OF_RING_AND_CARBON:
+    case AXIS_TYPE_CENTER_OF_CARBON_AND_RING:
+      {
+        Carbon* north_carbon = p_ca->get_carbon_by_sequence_no(north);
+        Ring* south_ring = p_ca->get_ring_by_sequence_no(south);
+        north_location = north_carbon->get_center_location();
+        south_location = south_ring->get_center_location();
+      }
+      break;
+    case AXIS_TYPE_CENTER_OF_CARBON_AND_BOUNDARY:
+      {
+        Carbon* north_carbon = p_ca->get_carbon_by_sequence_no(north);
+        ConnectedBoundary* south_boundary = p_ca->get_boundary_by_sequence_no(south);
+        north_location = north_carbon->get_center_location();
+        south_location = south_boundary->get_center_location();
+      }
+      break;
+    case AXIS_TYPE_CENTER_OF_TWO_BONDS:
+      {
+        Bond* north_bond = p_ca->get_bond_by_sequence_no(north);
+        Bond* south_bond = p_ca->get_bond_by_sequence_no(south);
+        north_location = north_bond->get_center_location();
+        south_location = south_bond->get_center_location();
+      }
+      break;
+    case AXIS_TYPE_CENTER_OF_BOND_AND_RING:
+      {
+        Bond* north_bond = p_ca->get_bond_by_sequence_no(north);
+        Ring* south_ring = p_ca->get_ring_by_sequence_no(south);
+        north_location = north_bond->get_center_location();
+        south_location = south_ring->get_center_location();
+      }
+      break;
+    case AXIS_TYPE_CENTER_OF_BOND_AND_BOUNDARY:
+      {
+        Bond* north_bond = p_ca->get_bond_by_sequence_no(north);
+        ConnectedBoundary* south_boundary = p_ca->get_boundary_by_sequence_no(south);
+        north_location = north_bond->get_center_location();
+        south_location = south_boundary->get_center_location();
+      }
+      break;
+    case AXIS_TYPE_CENTER_OF_TWO_RINGS:
       {
         Ring* north_ring = p_ca->get_ring_by_sequence_no(north);
-        Carbon* south_carbon = p_ca->get_carbon_by_sequence_no(south);
+        Ring* south_ring = p_ca->get_ring_by_sequence_no(south);
         north_location = north_ring->get_center_location();
-        south_location = south_carbon->get_center_location();
+        south_location = south_ring->get_center_location();
+      }
+      break;
+    case AXIS_TYPE_CENTER_OF_RING_AND_BOUNDARY:
+      {
+        Ring* north_ring = p_ca->get_ring_by_sequence_no(north);
+        ConnectedBoundary* south_boundary = p_ca->get_boundary_by_sequence_no(south);
+        north_location = north_ring->get_center_location();
+        south_location = south_boundary->get_center_location();
+      }
+      break;
+    case AXIS_TYPE_CENTER_OF_TWO_BOUNDARIES:
+      {
+        ConnectedBoundary* north_boundary = p_ca->get_boundary_by_sequence_no(north);
+        ConnectedBoundary* south_boundary = p_ca->get_boundary_by_sequence_no(south);
+        north_location = north_boundary->get_center_location();
+        south_location = south_boundary->get_center_location();
+      }
+      break;
+    case AXIS_TYPE_CENTER_OF_ONLY_ONE_CARBON:
+      {
+        Carbon* north_carbon = p_ca->get_carbon_by_sequence_no(north);
+        Vector3 center_location = p_ca->get_center_location();
+        north_location = north_carbon->get_center_location();
+        south_location = Vector3() - north_location;
+      }
+      break;
+    case AXIS_TYPE_CENTER_OF_ONLY_ONE_BOND:
+      {
+        Bond* north_bond = p_ca->get_bond_by_sequence_no(north);
+        Vector3 center_location = p_ca->get_center_location();
+        north_location = north_bond->get_center_location();
+        south_location = Vector3() - north_location;
+      }
+      break;
+    case AXIS_TYPE_CENTER_OF_ONLY_ONE_RING:
+      {
+        Ring* north_ring = p_ca->get_ring_by_sequence_no(north);
+        Vector3 center_location = p_ca->get_center_location();
+        north_location = north_ring->get_center_location();
+        south_location = Vector3() - north_location;
+      }
+      break;
+    case AXIS_TYPE_CENTER_OF_ONLY_ONE_BOUNDARY:
+      {
+        ConnectedBoundary* north_boundary = p_ca->get_boundary_by_sequence_no(north);
+        Vector3 center_location = p_ca->get_center_location();
+        north_location = north_boundary->get_center_location();
+        south_location = Vector3() - north_location;
       }
       break;
     default:
@@ -88,7 +160,7 @@ void SymmetryAxisNormal::draw_opaque_by_OpenGL(bool selection) const
 {
   Vector3 norm = get_normal();
   norm *= p_radius.length;
-  OpenGLUtil::set_color(0xff80b0);
+  OpenGLUtil::set_color(0xff1000);
   OpenGLUtil::draw_cylinder(0.1, get_center_location() - norm,
                             get_center_location() + norm);
 }

@@ -30,9 +30,9 @@
 
 #define MAX_N 10
 
-void CarbonAllotrope::p_make_n_polygon(int number_of_carbons)
+void CarbonAllotrope::p_make_n_polygon(int n_members)
 {
-  new Ring(this, number_of_carbons);
+  new Ring(this, n_members);
 }
 
 void CarbonAllotrope::p_set_center()
@@ -145,6 +145,7 @@ CarbonAllotrope::CarbonAllotrope()
     ring_next_sequence(1),
     carbon_next_sequence(1), carbon_radius(0.3), carbon_color(0x000000),
     bond_next_sequence(1), bond_radius(0.1), bond_color(0xffffff),
+    boundary_next_sequence(1),
     print_out_sequence_no(false)
 {
 }
@@ -199,11 +200,11 @@ ErrorCode CarbonAllotrope::p_fill_hexagons_around(Ring* ring)
     }
 }
 
-ErrorCode CarbonAllotrope::fill_hexagons_around_n_polygons(int number_of_carbons)
+ErrorCode CarbonAllotrope::fill_hexagons_around_n_polygons(int n_members)
 {
   int len = number_of_rings();
   for (int i = 0; i < len; ++i)
-    if (p_rings[i]->number_of_carbons() == number_of_carbons)
+    if (p_rings[i]->number_of_carbons() == n_members)
       {
         ErrorCode error_code = p_fill_hexagons_around(p_rings[i]);
         if (error_code != ERROR_CODE_OK)
@@ -267,7 +268,7 @@ ErrorCode CarbonAllotrope::enlarge_cylinder_by_n_polygons(Pattern* n_pattern,
                                                           int& result_number)
 {
   List<Carbon> boundary;
-  list_reverse_boundary_carbons(boundary);
+  list_reverse_connected_boundary_carbons(boundary);
   int len = boundary.length();
   if (len == 0)
     {
@@ -326,22 +327,22 @@ ErrorCode CarbonAllotrope::make_fullerene(int required_distance)
         }
       if (index == len)
         break;
-      int number_of_carbons;
+      int n_members;
       if (satisfied_distance == required_distance)
-        number_of_carbons = 5;
+        n_members = 5;
       else
-        number_of_carbons = 6;
+        n_members = 6;
       Bond* end_bond;
       int length;
-      result = target->concave_boundary_segment(number_of_carbons, length, end_bond);
+      result = target->concave_boundary_segment(n_members, length, end_bond);
       if (result != ERROR_CODE_OK)
         return result;
-      new Ring(this, number_of_carbons, end_bond);
+      new Ring(this, n_members, end_bond);
     }
   return ERROR_CODE_OK;
 }
 
-ErrorCode CarbonAllotrope::append_n_polygon_at_carbon(int number_of_carbons,
+ErrorCode CarbonAllotrope::append_n_polygon_at_carbon(int n_members,
                                                       int carbon_sequence_no)
 {
   Carbon* carbon_connection = get_carbon_by_sequence_no(carbon_sequence_no);
@@ -349,14 +350,14 @@ ErrorCode CarbonAllotrope::append_n_polygon_at_carbon(int number_of_carbons,
   if (!carbon)
     {
       fprintf(stderr, "CarbonAllotrope::append_n_polygon_at_carbon(%d, %d)\n",
-              number_of_carbons, carbon_sequence_no);
+              n_members, carbon_sequence_no);
       fprintf(stderr, "Unknown carbon sequence No. Carbon(%d).\n", carbon_sequence_no);
       exit(1);
     }
   if (carbon->number_of_rings() != 2)
     {
       fprintf(stderr, "CarbonAllotrope::append_n_polygon_at_carbon(%d, %d)\n",
-              number_of_carbons, carbon_sequence_no);
+              n_members, carbon_sequence_no);
       fprintf(stderr, "Carbon(%d) has not have exact two rings.\n",
               carbon_sequence_no);
       exit(1);
@@ -379,30 +380,30 @@ ErrorCode CarbonAllotrope::append_n_polygon_at_carbon(int number_of_carbons,
       count++;
       if (bond == bond_connection)
         {
-          if (count != number_of_carbons)
+          if (count != n_members)
             {
               fprintf(stderr, "CarbonAllotrope::append_n_polygon_at_carbon(%d, %d)\n",
-                      number_of_carbons, carbon_sequence_no);
+                      n_members, carbon_sequence_no);
               fprintf(stderr, "A %d-polygon doesn't fit the %d-hole.\n",
-                      number_of_carbons, count);
+                      n_members, count);
               exit(1);
             }
           Bond* end_bond;
           int length;
           ErrorCode result;
-          result = carbon_connection->concave_boundary_segment(number_of_carbons,
+          result = carbon_connection->concave_boundary_segment(n_members,
                                                                length, end_bond);
           if (result != ERROR_CODE_OK)
             return result;
-          new Ring(this, number_of_carbons, end_bond);
+          new Ring(this, n_members, end_bond);
           return ERROR_CODE_OK;
         }
-      if (count == number_of_carbons - 1)
+      if (count == n_members - 1)
         {
           fprintf(stderr, "CarbonAllotrope::append_n_polygon_at_carbon(%d, %d)\n",
-                  number_of_carbons, carbon_sequence_no);
+                  n_members, carbon_sequence_no);
           fprintf(stderr, "Carbon(%d) belongs too long ring path to fit a %d-polygon.\n",
-                  carbon_sequence_no, number_of_carbons);
+                  carbon_sequence_no, n_members);
           exit(1);
         }
     }
@@ -419,40 +420,38 @@ ErrorCode CarbonAllotrope::append_n_polygon_at_carbon(int number_of_carbons,
       carbon = bond->get_carbon_beyond(carbon);
       count++;
     }
-  if (count >= number_of_carbons - 1)
+  if (count >= n_members - 1)
     {
       fprintf(stderr, "CarbonAllotrope::append_n_polygon_at_carbon(%d, %d)\n",
-              number_of_carbons, carbon_sequence_no);
+              n_members, carbon_sequence_no);
       fprintf(stderr, "Carbon(%d) belongs too long ring path to fit a %d-polygon.\n",
-              carbon_sequence_no, number_of_carbons);
+              carbon_sequence_no, n_members);
       exit(1);
     }
   Bond* end_bond;
   int length;
   ErrorCode result;
-  result = carbon_connection->concave_boundary_segment(number_of_carbons,
-                                                       length, end_bond);
+  result = carbon_connection->concave_boundary_segment(n_members, length, end_bond);
   if (result != ERROR_CODE_OK)
     return result;
-  new Ring(this, number_of_carbons, end_bond);
+  new Ring(this, n_members, end_bond);
   return ERROR_CODE_OK;
 }
 
-ErrorCode CarbonAllotrope::append_n_polygon_at_carbons(int number_of_carbons,
+ErrorCode CarbonAllotrope::append_n_polygon_at_carbons(int n_members,
                                                        const int* carbon_sequence_nos)
 {
-  new Ring(this, number_of_carbons, carbon_sequence_nos);
+  new Ring(this, n_members, carbon_sequence_nos);
   return ERROR_CODE_OK;
 }
 
-ErrorCode CarbonAllotrope::append_n_polygon_at_bond(int number_of_carbons,
-                                                    int bond_sequence_no)
+ErrorCode CarbonAllotrope::append_n_polygon_at_bond(int n_members, int bond_sequence_no)
 {
   Bond* bond = get_bond_by_sequence_no(bond_sequence_no);
   if (!bond)
     {
       fprintf(stderr, "CarbonAllotrope::append_n_polygon_at_bond(%d, %d)\n",
-              number_of_carbons, bond_sequence_no);
+              n_members, bond_sequence_no);
       fprintf(stderr, "Unknown bond sequence No. Bond(%d).\n", bond_sequence_no);
       exit(1);
     }
@@ -460,7 +459,7 @@ ErrorCode CarbonAllotrope::append_n_polygon_at_bond(int number_of_carbons,
   if (!carbon0)
     {
       fprintf(stderr, "CarbonAllotrope::append_n_polygon_at_bond(%d, %d)\n",
-              number_of_carbons, bond_sequence_no);
+              n_members, bond_sequence_no);
       fprintf(stderr, "Specified Bond(%d) does not belong to two bonds.\n",
               bond_sequence_no);
       exit(1);
@@ -468,7 +467,7 @@ ErrorCode CarbonAllotrope::append_n_polygon_at_bond(int number_of_carbons,
   if (carbon0->number_of_rings() != 1)
     {
       fprintf(stderr, "CarbonAllotrope::append_n_polygon_at_bond(%d, %d)\n",
-              number_of_carbons, bond_sequence_no);
+              n_members, bond_sequence_no);
       fprintf(stderr, "Carbon(%d) does not belong to exact one ring.\n",
               carbon0->sequence_no());
       exit(1);
@@ -477,7 +476,7 @@ ErrorCode CarbonAllotrope::append_n_polygon_at_bond(int number_of_carbons,
   if (!carbon1)
     {
       fprintf(stderr, "CarbonAllotrope::append_n_polygon_at_bond(%d, %d)\n",
-              number_of_carbons, bond_sequence_no);
+              n_members, bond_sequence_no);
       fprintf(stderr, "Specified Bond(%d) does not belong to two bonds.\n",
               bond_sequence_no);
       exit(1);
@@ -485,17 +484,17 @@ ErrorCode CarbonAllotrope::append_n_polygon_at_bond(int number_of_carbons,
   if (carbon1->number_of_rings() != 1)
     {
       fprintf(stderr, "CarbonAllotrope::append_n_polygon_at_bond(%d, %d)\n",
-              number_of_carbons, bond_sequence_no);
+              n_members, bond_sequence_no);
       fprintf(stderr, "Carbon(%d) does not belong to exact one ring.\n",
               carbon1->sequence_no());
       exit(1);
     }
-  new Ring(this, number_of_carbons, bond);
+  new Ring(this, n_members, bond);
   return ERROR_CODE_OK;
 }
 
 ErrorCode CarbonAllotrope::
-fill_n_polygons_around_carbons_closed_to_center_and_pentagons(int number_of_carbons,
+fill_n_polygons_around_carbons_closed_to_center_and_pentagons(int n_members,
                                                               int& number_of_results)
 {
   List<Carbon> boundary;
@@ -515,13 +514,13 @@ fill_n_polygons_around_carbons_closed_to_center_and_pentagons(int number_of_carb
       if (carbon->distance_to_set() == min)
         {
 #ifdef DEBUG_CARBON_ALLOTROPE_CONSTRUCTION
-          printf("Carbon(%d) ... %d-polygon\n", carbon->sequence_no(), number_of_carbons);
+          printf("Carbon(%d) ... %d-polygon\n", carbon->sequence_no(), n_members);
 #endif
           assert(carbon->number_of_rings() == 2);
           Bond* end_bond;
           int length;
           ErrorCode result;
-          result = carbon->concave_boundary_segment(number_of_carbons, length, end_bond);
+          result = carbon->concave_boundary_segment(n_members, length, end_bond);
           if (result != ERROR_CODE_OK)
             return result;
         }
@@ -535,41 +534,47 @@ fill_n_polygons_around_carbons_closed_to_center_and_pentagons(int number_of_carb
           Bond* end_bond;
           int length;
           ErrorCode result;
-          result = carbon->concave_boundary_segment(number_of_carbons, length, end_bond);
+          result = carbon->concave_boundary_segment(n_members, length, end_bond);
           if (result != ERROR_CODE_OK)
             return result;
-          new Ring(this, number_of_carbons, end_bond);
+          new Ring(this, n_members, end_bond);
           number_of_results++;
         }
     }
   return ERROR_CODE_OK;
 }
 
-ErrorCode CarbonAllotrope::fill_n_polygon_around_oldest_carbon(int number_of_carbons)
+ErrorCode CarbonAllotrope::fill_n_polygon_around_carbon(int n_members, Carbon* carbon,
+                                                        List<Carbon>& boundary,
+                                                        List<Carbon>& oldest_boundary)
 {
-  List<Carbon> boundary;
-  list_carbons_with_two_rings(boundary);
-  int len = boundary.length();
-  int sequence_no = INT_MAX;
-  for (int i = 0; i < len; ++i)
-    {
-      Carbon* carbon = boundary[i];
-      int seq = carbon->sequence_no();
-      if (seq < sequence_no)
-        sequence_no = seq;
-    }
-  assert(sequence_no < INT_MAX);
-  Carbon* carbon = get_carbon_by_sequence_no(sequence_no);
 #ifdef DEBUG_CARBON_ALLOTROPE_CONSTRUCTION
-  printf("Carbon(%d) ... %d-polygon\n", carbon->sequence_no(), number_of_carbons);
+  printf("Carbon(%d) ... %d-polygon\n", carbon->sequence_no(), n_members);
 #endif
   Bond* end_bond;
   int length;
   ErrorCode result;
-  result = carbon->concave_boundary_segment(number_of_carbons, length, end_bond);
+  result = carbon->concave_boundary_segment(n_members, length, end_bond);
   if (result != ERROR_CODE_OK)
     return result;
-  new Ring(this, number_of_carbons, end_bond);
+  Ring* ring = new Ring(this, n_members, end_bond);
+  for (int i = 0; i < n_members; ++i)
+    {
+      Carbon* carbon2 = ring->get_carbon(i);
+      switch (carbon2->number_of_rings())
+        {
+        case 1:
+          boundary.add(carbon2);
+          break;
+        case 2:
+          break;
+        default:
+        case 3:
+          boundary.remove(carbon2);
+          oldest_boundary.remove(carbon2);
+          break;
+        }
+    }
   return ERROR_CODE_OK;
 }
 
@@ -879,7 +884,7 @@ void CarbonAllotrope::close_force()
   while (1)
     {
       List<Carbon> boundary;
-      list_reverse_boundary_carbons(boundary);
+      list_reverse_connected_boundary_carbons(boundary);
       int len = boundary.length();
       if (len == 0)
         return;
@@ -939,7 +944,7 @@ void CarbonAllotrope::close_normally_once()
   while (1)
     {
       List<Carbon> boundary;
-      list_reverse_boundary_carbons(boundary);
+      list_reverse_connected_boundary_carbons(boundary);
       int len = boundary.length();
       assert(len > 0);
       int num = 0;
@@ -1250,7 +1255,8 @@ void CarbonAllotrope::all_representations(Representations* results)
   for (int i = 0; i < len; ++i)
     {
       Carbon* carbon = p_carbons[i];
-      assert(carbon->number_of_bonds() == 3);
+      if (carbon->number_of_bonds() != 3)
+        continue;
       for (int j = 0; j < 3; ++j)
         {
           Bond* bond = carbon->get_bond(j);
@@ -1269,7 +1275,8 @@ void CarbonAllotrope::all_representations(Representations* results)
   for (int i = 0; i < len; ++i)
     {
       Carbon* carbon = p_carbons[i];
-      assert(carbon->number_of_bonds() == 3);
+      if (carbon->number_of_bonds() != 3)
+        continue;
       for (int j = 0; j < 3; ++j)
         {
           Bond* bond = carbon->get_bond(j);
@@ -1412,7 +1419,7 @@ void CarbonAllotrope::print_detail()
   while (1)
     {
       List<Carbon> boundary;
-      list_boundary_carbons(boundary, already);
+      list_connected_boundary_carbons(boundary, already);
       len = boundary.length();
       if (len == 0)
         break;
@@ -1505,11 +1512,7 @@ void CarbonAllotrope::print_detail()
             printf("   ");
         }
       printf("\n");
-      for (int i = 0; i < len; ++i)
-        {
-          Carbon* carbon = boundary[i];
-          already.add(carbon);
-        }
+      already.add(boundary);
     }
   printf("distances to pentagons = ");
   len = p_carbons.length();
@@ -1574,16 +1577,34 @@ void CarbonAllotrope::print_axes_summary(FILE* fptr) const
           {
             if (!first)
               fprintf(fptr, ", ");
-            if (j == AXIS_TYPE_CENTER_OF_RING)
-              fprintf(fptr, "Ring=%d", summary[i][j]);
-            else if (j == AXIS_TYPE_CENTER_OF_BOND)
-              fprintf(fptr, "Bond=%d", summary[i][j]);
-            else if (j == AXIS_TYPE_CENTER_OF_CARBON)
+            if (j == AXIS_TYPE_CENTER_OF_TWO_CARBONS)
+              fprintf(fptr, "Carbons=%d", summary[i][j]);
+            else if (j == AXIS_TYPE_CENTER_OF_CARBON_AND_BOND)
+              fprintf(fptr, "Carbon-Bond=%d", summary[i][j]);
+            else if (j == AXIS_TYPE_CENTER_OF_CARBON_AND_RING)
+              fprintf(fptr, "Carbon-Ring=%d", summary[i][j]);
+            else if (j == AXIS_TYPE_CENTER_OF_CARBON_AND_BOUNDARY)
+              fprintf(fptr, "Carbon-Boundary=%d", summary[i][j]);
+            else if (j == AXIS_TYPE_CENTER_OF_TWO_BONDS)
+              fprintf(fptr, "Bonds=%d", summary[i][j]);
+            else if (j == AXIS_TYPE_CENTER_OF_BOND_AND_RING)
+              fprintf(fptr, "Bond-Ring=%d", summary[i][j]);
+            else if (j == AXIS_TYPE_CENTER_OF_BOND_AND_BOUNDARY)
+              fprintf(fptr, "Bond-Boundary=%d", summary[i][j]);
+            else if (j == AXIS_TYPE_CENTER_OF_TWO_RINGS)
+              fprintf(fptr, "Rings=%d", summary[i][j]);
+            else if (j == AXIS_TYPE_CENTER_OF_RING_AND_BOUNDARY)
+              fprintf(fptr, "Ring-Boundary=%d", summary[i][j]);
+            else if (j == AXIS_TYPE_CENTER_OF_TWO_BOUNDARIES)
+              fprintf(fptr, "Boundaries=%d", summary[i][j]);
+            else if (j == AXIS_TYPE_CENTER_OF_ONLY_ONE_CARBON)
               fprintf(fptr, "Carbon=%d", summary[i][j]);
-            else if (j == AXIS_TYPE_CENTER_OF_RING_AND_BOND)
-              fprintf(fptr, "Ring-Bond=%d", summary[i][j]);
-            else if (j == AXIS_TYPE_CENTER_OF_RING_AND_CARBON)
-              fprintf(fptr, "Ring-Carbon=%d", summary[i][j]);
+            else if (j == AXIS_TYPE_CENTER_OF_ONLY_ONE_BOND)
+              fprintf(fptr, "Bond=%d", summary[i][j]);
+            else if (j == AXIS_TYPE_CENTER_OF_ONLY_ONE_RING)
+              fprintf(fptr, "Ring=%d", summary[i][j]);
+            else if (j == AXIS_TYPE_CENTER_OF_ONLY_ONE_BOUNDARY)
+              fprintf(fptr, "Boundary=%d", summary[i][j]);
             first = false;
           }
       fprintf(fptr, ")\n");
@@ -1857,7 +1878,7 @@ draw_force_to_circle_by_POVRay(const char* file_name_base,
                                double delta, int steps, int divisions)
 {
   List<Carbon> cutend_list;
-  list_boundary_carbons(cutend_list);
+  list_connected_boundary_carbons(cutend_list);
   draw_force_to_circle_by_POVRay(file_name_base, cutend_list, delta, steps, divisions);
 }
 
@@ -2015,15 +2036,7 @@ Bond* CarbonAllotrope::get_bond_by_sequence_no(int sequence_no) const
   return 0;
 }
 
-void CarbonAllotrope::list_carbons_with_two_rings(List<Carbon>& result) const
-{
-  int len = number_of_carbons();
-  for (int i = 0; i < len; ++i)
-    if (p_carbons[i]->number_of_rings() == 2)
-      result.add(p_carbons[i]);
-}
-
-int CarbonAllotrope::list_boundary_carbons(List<Carbon>& result) const
+int CarbonAllotrope::list_connected_boundary_carbons(List<Carbon>& result) const
 {
   Carbon* start = 0;
   int len = number_of_carbons();
@@ -2047,7 +2060,7 @@ int CarbonAllotrope::list_boundary_carbons(List<Carbon>& result) const
     }
 }
 
-int CarbonAllotrope::list_reverse_boundary_carbons(List<Carbon>& result) const
+int CarbonAllotrope::list_reverse_connected_boundary_carbons(List<Carbon>& result) const
 {
   Carbon* start = 0;
   int len = number_of_carbons();
@@ -2071,8 +2084,8 @@ int CarbonAllotrope::list_reverse_boundary_carbons(List<Carbon>& result) const
     }
 }
 
-int CarbonAllotrope::list_boundary_carbons(List<Carbon>& result,
-                                           const List<Carbon>& already) const
+int CarbonAllotrope::list_connected_boundary_carbons(List<Carbon>& result,
+                                                     const List<Carbon>& already) const
 {
   Carbon* start = 0;
   int len = number_of_carbons();
@@ -2104,6 +2117,43 @@ int CarbonAllotrope::list_boundary_carbons(List<Carbon>& result,
       if (carbon == start)
         return result.length();
     }
+}
+
+void CarbonAllotrope::all_boundaries()
+{
+  List<Carbon> already;
+  while (1)
+    {
+      List<Carbon> boundary;
+      list_connected_boundary_carbons(boundary, already);
+      if (boundary.length() == 0)
+        return;
+      new ConnectedBoundary(this, boundary);
+      already.add(boundary);
+    }
+}
+
+void CarbonAllotrope::register_boundary(ConnectedBoundary* boundary)
+{
+  p_boundaries.add(boundary);
+}
+
+ConnectedBoundary* CarbonAllotrope::get_boundary(int index) const
+{
+  assert((index >= 0) && (index < number_of_boundaries()));
+  return p_boundaries[index];
+}
+
+ConnectedBoundary* CarbonAllotrope::get_boundary_by_sequence_no(int sequence_no) const
+{
+  int len = number_of_boundaries();
+  for (int i = 0; i < len; ++i)
+    {
+      ConnectedBoundary* boudary = p_boundaries[i];
+      if (boudary->sequence_no() == sequence_no)
+        return boudary;
+    }
+  return 0;
 }
 
 SymmetryAxis* CarbonAllotrope::get_axis(int index) const
@@ -2141,7 +2191,7 @@ void CarbonAllotrope::register_axis(SymmetryAxis* axis)
       if ((*work) != (*axis))
         continue;
       AxisType type = work->get_type();
-      if (type == AXIS_TYPE_CENTER_OF_RING)
+      if (type == AXIS_TYPE_CENTER_OF_TWO_RINGS)
         {
           int work_generator_step = work->get_generator_step();
           int axis_generator_step = axis->get_generator_step();

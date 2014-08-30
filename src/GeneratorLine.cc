@@ -77,7 +77,7 @@ bool GeneratorLine::p_get_scrap(int& scrap) const
   if (ptr[0] == 'S')
     symmetric = true;
   else if (ptr[0] == 'A')
-    symmetric == false;
+    symmetric = false;
   else
     return false;
   ptr++;

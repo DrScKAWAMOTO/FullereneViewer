@@ -2,9 +2,12 @@ ca-generator.o: ca-generator.cc /usr/include/stdio.h \
   /usr/include/sys/cdefs.h /usr/include/sys/_null.h \
   /usr/include/sys/_types.h /usr/include/machine/_types.h \
   /usr/include/stdlib.h /usr/include/string.h /usr/include/strings.h \
-  /usr/include/xlocale/_string.h Version.h Fullerenes.h List.h \
-  DebugMemory.h Fullerene.h Object.h Random.h /usr/include/c++/4.2/new \
-  /usr/include/c++/4.2/cstddef /usr/include/c++/4.2/bits/c++config.h \
+  /usr/include/xlocale/_string.h /usr/include/limits.h \
+  /usr/include/sys/limits.h /usr/include/machine/_limits.h \
+  /usr/include/sys/syslimits.h Version.h Fullerenes.h List.h \
+  DebugMemory.h Fullerene.h Object.h ErrorCode.h Random.h \
+  /usr/include/c++/4.2/new /usr/include/c++/4.2/cstddef \
+  /usr/include/c++/4.2/bits/c++config.h \
   /usr/include/c++/4.2/bits/os_defines.h \
   /usr/include/c++/4.2/bits/cpu_defines.h /usr/include/stddef.h \
   /usr/include/c++/4.2/exception
@@ -17,18 +20,19 @@ ca-modeling.o: ca-modeling.cc /usr/include/stdio.h \
   Interactive.h Config.h Radius.h /usr/include/math.h \
   /usr/include/machine/_limits.h /usr/include/float.h Posture.h Matrix3.h \
   Vector3.h Center.h Normal.h Ring.h InteractiveRegularPolygon.h Carbon.h \
-  ErrorCode.h Bond.h SymmetryAxis.h Fullerene.h FullereneCharacteristic.h \
-  DistanceVector.h SortedList.h DistanceMatrix.h Random.h
+  ErrorCode.h Bond.h ConnectedBoundary.h SymmetryAxis.h Fullerene.h \
+  FullereneCharacteristic.h DistanceVector.h SortedList.h \
+  DistanceMatrix.h Random.h
 ca-test.o: ca-test.cc /usr/include/stdlib.h /usr/include/sys/cdefs.h \
   /usr/include/sys/_null.h /usr/include/sys/_types.h \
   /usr/include/machine/_types.h /usr/include/string.h \
   /usr/include/strings.h /usr/include/xlocale/_string.h Version.h \
-  /usr/include/stdio.h Fullerene.h Object.h CarbonAllotrope.h \
+  /usr/include/stdio.h Fullerene.h Object.h ErrorCode.h CarbonAllotrope.h \
   Interactives.h List.h DebugMemory.h InteractiveOperation.h \
   Interactive.h Config.h Radius.h /usr/include/math.h \
   /usr/include/machine/_limits.h /usr/include/float.h Posture.h Matrix3.h \
   Vector3.h Center.h Normal.h Ring.h InteractiveRegularPolygon.h Carbon.h \
-  ErrorCode.h Bond.h SymmetryAxis.h Pattern.h
+  Bond.h ConnectedBoundary.h SymmetryAxis.h Pattern.h
 ca-uniq.o: ca-uniq.cc /usr/include/stdio.h /usr/include/sys/cdefs.h \
   /usr/include/sys/_null.h /usr/include/sys/_types.h \
   /usr/include/machine/_types.h /usr/include/stdlib.h \
@@ -39,7 +43,7 @@ ca-uniq.o: ca-uniq.cc /usr/include/stdio.h /usr/include/sys/cdefs.h \
   /usr/include/c++/4.2/bits/os_defines.h \
   /usr/include/c++/4.2/bits/cpu_defines.h /usr/include/stddef.h \
   /usr/include/c++/4.2/exception Version.h List.h DebugMemory.h \
-  Fullerene.h Object.h
+  Fullerene.h Object.h ErrorCode.h
 ca-char.o: ca-char.cc /usr/include/stdio.h /usr/include/sys/cdefs.h \
   /usr/include/sys/_null.h /usr/include/sys/_types.h \
   /usr/include/machine/_types.h /usr/include/stdlib.h \
@@ -55,8 +59,9 @@ ca-char.o: ca-char.cc /usr/include/stdio.h /usr/include/sys/cdefs.h \
   InteractiveOperation.h Interactive.h Config.h Radius.h \
   /usr/include/math.h /usr/include/machine/_limits.h /usr/include/float.h \
   Posture.h Matrix3.h Vector3.h Center.h Normal.h Ring.h \
-  InteractiveRegularPolygon.h Carbon.h ErrorCode.h Bond.h SymmetryAxis.h \
-  Fullerene.h FullereneCharacteristic.h DistanceVector.h SortedList.h \
+  InteractiveRegularPolygon.h Carbon.h ErrorCode.h Bond.h \
+  ConnectedBoundary.h SymmetryAxis.h Fullerene.h \
+  FullereneCharacteristic.h DistanceVector.h SortedList.h \
   DistanceMatrix.h Random.h
 ca-cmp.o: ca-cmp.cc /usr/include/stdio.h /usr/include/sys/cdefs.h \
   /usr/include/sys/_null.h /usr/include/sys/_types.h \
@@ -67,7 +72,9 @@ ca-loop.o: ca-loop.cc /usr/include/stdio.h /usr/include/sys/cdefs.h \
   /usr/include/sys/_null.h /usr/include/sys/_types.h \
   /usr/include/machine/_types.h /usr/include/stdlib.h \
   /usr/include/string.h /usr/include/strings.h \
-  /usr/include/xlocale/_string.h /usr/include/assert.h Version.h
+  /usr/include/xlocale/_string.h /usr/include/assert.h \
+  /usr/include/limits.h /usr/include/sys/limits.h \
+  /usr/include/machine/_limits.h /usr/include/sys/syslimits.h Version.h
 ca-sort.o: ca-sort.cc /usr/include/stdio.h /usr/include/sys/cdefs.h \
   /usr/include/sys/_null.h /usr/include/sys/_types.h \
   /usr/include/machine/_types.h /usr/include/stdlib.h \
@@ -86,26 +93,28 @@ OpenGLUtil.o: OpenGLUtil.cc /usr/include/assert.h \
   Matrix3.h Quaternion.h CarbonAllotrope.h Interactives.h List.h \
   DebugMemory.h InteractiveOperation.h Interactive.h Radius.h \
   /usr/include/float.h Posture.h Center.h Normal.h Ring.h \
-  InteractiveRegularPolygon.h Carbon.h ErrorCode.h Bond.h SymmetryAxis.h \
-  Fullerene.h Utils.h MenuEntry.h OpenGLUtil.h /usr/local/include/GL/gl.h \
-  /usr/local/include/GL/glext.h /usr/include/stddef.h \
-  /usr/include/inttypes.h /usr/include/machine/_inttypes.h \
-  /usr/include/x86/_inttypes.h /usr/include/sys/stdint.h \
-  /usr/include/machine/_stdint.h /usr/include/sys/_stdint.h \
-  /usr/local/include/GL/glu.h Debug.h
+  InteractiveRegularPolygon.h Carbon.h ErrorCode.h Bond.h \
+  ConnectedBoundary.h SymmetryAxis.h Fullerene.h Utils.h MenuEntry.h \
+  OpenGLUtil.h /usr/local/include/GL/gl.h /usr/local/include/GL/glext.h \
+  /usr/include/stddef.h /usr/include/inttypes.h \
+  /usr/include/machine/_inttypes.h /usr/include/x86/_inttypes.h \
+  /usr/include/sys/stdint.h /usr/include/machine/_stdint.h \
+  /usr/include/sys/_stdint.h /usr/local/include/GL/glu.h Debug.h
 Fullerene.o: Fullerene.cc /usr/include/string.h /usr/include/sys/cdefs.h \
   /usr/include/sys/_null.h /usr/include/sys/_types.h \
   /usr/include/machine/_types.h /usr/include/strings.h \
   /usr/include/xlocale/_string.h /usr/include/stdlib.h \
-  /usr/include/assert.h Config.h Fullerene.h Object.h CarbonAllotrope.h \
-  /usr/include/stdio.h Interactives.h List.h DebugMemory.h \
-  InteractiveOperation.h Interactive.h Radius.h /usr/include/math.h \
-  /usr/include/machine/_limits.h /usr/include/float.h Posture.h Matrix3.h \
-  Vector3.h Center.h Normal.h Ring.h InteractiveRegularPolygon.h Carbon.h \
-  ErrorCode.h Bond.h SymmetryAxis.h Representations.h Representation.h \
-  RepresentationInfo.h Automorphisms.h Automorphism.h \
-  FullereneCharacteristic.h DistanceVector.h SortedList.h Generator.h \
-  DistanceMatrix.h Pattern.h Utils.h Debug.h
+  /usr/include/assert.h /usr/include/limits.h /usr/include/sys/limits.h \
+  /usr/include/machine/_limits.h /usr/include/sys/syslimits.h Config.h \
+  Fullerene.h Object.h ErrorCode.h CarbonAllotrope.h /usr/include/stdio.h \
+  Interactives.h List.h DebugMemory.h InteractiveOperation.h \
+  Interactive.h Radius.h /usr/include/math.h /usr/include/float.h \
+  Posture.h Matrix3.h Vector3.h Center.h Normal.h Ring.h \
+  InteractiveRegularPolygon.h Carbon.h Bond.h ConnectedBoundary.h \
+  SymmetryAxis.h Representations.h Representation.h RepresentationInfo.h \
+  Automorphisms.h Automorphism.h FullereneCharacteristic.h \
+  DistanceVector.h SortedList.h Generator.h DistanceMatrix.h Pattern.h \
+  Utils.h Debug.h
 DebugMemory.o: DebugMemory.cc DebugMemory.h
 Interactives.o: Interactives.cc /usr/include/assert.h \
   /usr/include/sys/cdefs.h Config.h Interactives.h Object.h List.h \
@@ -124,6 +133,14 @@ Matrix3.o: Matrix3.cc /usr/include/math.h /usr/include/sys/cdefs.h \
   /usr/include/machine/_limits.h /usr/include/float.h \
   /usr/include/stdio.h /usr/include/sys/_null.h Matrix3.h Vector3.h \
   Object.h Random.h Quaternion.h Utils.h
+ConnectedBoundary.o: ConnectedBoundary.cc ConnectedBoundary.h Object.h \
+  List.h DebugMemory.h Carbon.h /usr/include/stdio.h \
+  /usr/include/sys/cdefs.h /usr/include/sys/_null.h \
+  /usr/include/sys/_types.h /usr/include/machine/_types.h ErrorCode.h \
+  InteractiveRegularPolygon.h Interactive.h Config.h Radius.h \
+  /usr/include/math.h /usr/include/machine/_limits.h /usr/include/float.h \
+  Posture.h Matrix3.h Vector3.h Center.h Normal.h CarbonAllotrope.h \
+  Interactives.h InteractiveOperation.h Ring.h Bond.h SymmetryAxis.h
 FullereneCharacteristic.o: FullereneCharacteristic.cc \
   /usr/include/limits.h /usr/include/sys/cdefs.h \
   /usr/include/sys/limits.h /usr/include/machine/_limits.h \
@@ -135,7 +152,7 @@ FullereneCharacteristic.o: FullereneCharacteristic.cc \
   Interactive.h Config.h Radius.h /usr/include/math.h \
   /usr/include/float.h Posture.h Matrix3.h Vector3.h Center.h Normal.h \
   Ring.h InteractiveRegularPolygon.h Carbon.h ErrorCode.h Bond.h \
-  SymmetryAxis.h
+  ConnectedBoundary.h SymmetryAxis.h
 DistanceVector.o: DistanceVector.cc /usr/include/limits.h \
   /usr/include/sys/cdefs.h /usr/include/sys/limits.h \
   /usr/include/machine/_limits.h /usr/include/sys/syslimits.h \
@@ -145,13 +162,13 @@ DistanceVector.o: DistanceVector.cc /usr/include/limits.h \
 Automorphisms.o: Automorphisms.cc /usr/include/assert.h \
   /usr/include/sys/cdefs.h Automorphisms.h List.h DebugMemory.h \
   Automorphism.h Object.h Representations.h Representation.h \
-  RepresentationInfo.h Fullerene.h CarbonAllotrope.h /usr/include/stdio.h \
-  /usr/include/sys/_null.h /usr/include/sys/_types.h \
+  RepresentationInfo.h Fullerene.h ErrorCode.h CarbonAllotrope.h \
+  /usr/include/stdio.h /usr/include/sys/_null.h /usr/include/sys/_types.h \
   /usr/include/machine/_types.h Interactives.h InteractiveOperation.h \
   Interactive.h Config.h Radius.h /usr/include/math.h \
   /usr/include/machine/_limits.h /usr/include/float.h Posture.h Matrix3.h \
   Vector3.h Center.h Normal.h Ring.h InteractiveRegularPolygon.h Carbon.h \
-  ErrorCode.h Bond.h SymmetryAxis.h
+  Bond.h ConnectedBoundary.h SymmetryAxis.h
 InteractivePoint.o: InteractivePoint.cc /usr/include/float.h \
   /usr/include/sys/cdefs.h /usr/include/assert.h InteractivePoint.h \
   Interactive.h /usr/include/stdio.h /usr/include/sys/_null.h \
@@ -171,7 +188,7 @@ Ring.o: Ring.cc /usr/include/assert.h /usr/include/sys/cdefs.h \
   Radius.h /usr/include/math.h /usr/include/machine/_limits.h Posture.h \
   Matrix3.h Vector3.h Center.h Normal.h List.h DebugMemory.h Carbon.h \
   ErrorCode.h Bond.h CarbonAllotrope.h Interactives.h \
-  InteractiveOperation.h SymmetryAxis.h OpenGLUtil.h \
+  InteractiveOperation.h ConnectedBoundary.h SymmetryAxis.h OpenGLUtil.h \
   /usr/local/include/GL/gl.h /usr/local/include/GL/glext.h \
   /usr/include/stddef.h /usr/include/inttypes.h \
   /usr/include/machine/_inttypes.h /usr/include/x86/_inttypes.h \
@@ -186,12 +203,12 @@ SymmetryAxisNormal.o: SymmetryAxisNormal.cc /usr/include/assert.h \
   /usr/include/machine/_limits.h /usr/include/float.h Posture.h Matrix3.h \
   Vector3.h Center.h Normal.h CarbonAllotrope.h Interactives.h List.h \
   DebugMemory.h InteractiveOperation.h Ring.h Carbon.h ErrorCode.h Bond.h \
-  SymmetryAxis.h OpenGLUtil.h /usr/local/include/GL/gl.h \
-  /usr/local/include/GL/glext.h /usr/include/stddef.h \
-  /usr/include/inttypes.h /usr/include/machine/_inttypes.h \
-  /usr/include/x86/_inttypes.h /usr/include/sys/stdint.h \
-  /usr/include/machine/_stdint.h /usr/include/sys/_stdint.h \
-  /usr/local/include/GL/glu.h Quaternion.h
+  ConnectedBoundary.h SymmetryAxis.h OpenGLUtil.h \
+  /usr/local/include/GL/gl.h /usr/local/include/GL/glext.h \
+  /usr/include/stddef.h /usr/include/inttypes.h \
+  /usr/include/machine/_inttypes.h /usr/include/x86/_inttypes.h \
+  /usr/include/sys/stdint.h /usr/include/machine/_stdint.h \
+  /usr/include/sys/_stdint.h /usr/local/include/GL/glu.h Quaternion.h
 InteractiveRegularPolygon.o: InteractiveRegularPolygon.cc \
   /usr/include/assert.h /usr/include/sys/cdefs.h /usr/include/math.h \
   /usr/include/sys/_types.h /usr/include/machine/_types.h \
@@ -244,7 +261,7 @@ DistanceMatrix.o: DistanceMatrix.cc /usr/include/limits.h \
   List.h DebugMemory.h InteractiveOperation.h Interactive.h Config.h \
   Radius.h /usr/include/math.h /usr/include/float.h Posture.h Matrix3.h \
   Vector3.h Center.h Normal.h Ring.h InteractiveRegularPolygon.h Carbon.h \
-  ErrorCode.h Bond.h SymmetryAxis.h Utils.h
+  ErrorCode.h Bond.h ConnectedBoundary.h SymmetryAxis.h Utils.h
 Utils.o: Utils.cc /usr/include/string.h /usr/include/sys/cdefs.h \
   /usr/include/sys/_null.h /usr/include/sys/_types.h \
   /usr/include/machine/_types.h /usr/include/strings.h \
@@ -262,8 +279,8 @@ Carbon.o: Carbon.cc /usr/include/limits.h /usr/include/sys/cdefs.h \
   InteractiveRegularPolygon.h Interactive.h Object.h Radius.h \
   /usr/include/math.h Posture.h Matrix3.h Vector3.h Center.h Normal.h \
   List.h DebugMemory.h CarbonAllotrope.h Interactives.h \
-  InteractiveOperation.h Ring.h Bond.h SymmetryAxis.h Representation.h \
-  RepresentationInfo.h Automorphism.h OpenGLUtil.h \
+  InteractiveOperation.h Ring.h Bond.h ConnectedBoundary.h SymmetryAxis.h \
+  Representation.h RepresentationInfo.h Automorphism.h OpenGLUtil.h \
   /usr/local/include/GL/gl.h /usr/local/include/GL/glext.h \
   /usr/include/stddef.h /usr/include/inttypes.h \
   /usr/include/machine/_inttypes.h /usr/include/x86/_inttypes.h \
@@ -301,16 +318,16 @@ CarbonAllotrope.o: CarbonAllotrope.cc /usr/include/math.h \
   CarbonAllotrope.h /usr/include/stdio.h Interactives.h Object.h List.h \
   DebugMemory.h InteractiveOperation.h Interactive.h Radius.h Posture.h \
   Matrix3.h Vector3.h Center.h Normal.h Ring.h \
-  InteractiveRegularPolygon.h Carbon.h ErrorCode.h Bond.h SymmetryAxis.h \
-  RepresentationInfo.h Representation.h Representations.h \
-  InteractivePlane.h InteractiveLine.h ThreeViewNormal.h \
-  SymmetryAxisNormal.h Automorphism.h Statistics.h Utils.h OpenGLUtil.h \
-  /usr/local/include/GL/gl.h /usr/local/include/GL/glext.h \
-  /usr/include/stddef.h /usr/include/inttypes.h \
-  /usr/include/machine/_inttypes.h /usr/include/x86/_inttypes.h \
-  /usr/include/sys/stdint.h /usr/include/machine/_stdint.h \
-  /usr/include/sys/_stdint.h /usr/local/include/GL/glu.h Quaternion.h \
-  Pattern.h Debug.h
+  InteractiveRegularPolygon.h Carbon.h ErrorCode.h Bond.h \
+  ConnectedBoundary.h SymmetryAxis.h RepresentationInfo.h \
+  Representation.h Representations.h InteractivePlane.h InteractiveLine.h \
+  ThreeViewNormal.h SymmetryAxisNormal.h Automorphism.h Statistics.h \
+  Utils.h OpenGLUtil.h /usr/local/include/GL/gl.h \
+  /usr/local/include/GL/glext.h /usr/include/stddef.h \
+  /usr/include/inttypes.h /usr/include/machine/_inttypes.h \
+  /usr/include/x86/_inttypes.h /usr/include/sys/stdint.h \
+  /usr/include/machine/_stdint.h /usr/include/sys/_stdint.h \
+  /usr/local/include/GL/glu.h Quaternion.h Pattern.h Debug.h
 Bond.o: Bond.cc /usr/include/assert.h /usr/include/sys/cdefs.h \
   /usr/include/float.h Bond.h /usr/include/stdio.h \
   /usr/include/sys/_null.h /usr/include/sys/_types.h \
@@ -318,12 +335,13 @@ Bond.o: Bond.cc /usr/include/assert.h /usr/include/sys/cdefs.h \
   Config.h Object.h Radius.h /usr/include/math.h \
   /usr/include/machine/_limits.h Posture.h Matrix3.h Vector3.h Center.h \
   Normal.h CarbonAllotrope.h Interactives.h List.h DebugMemory.h \
-  InteractiveOperation.h Ring.h Carbon.h ErrorCode.h SymmetryAxis.h \
-  OpenGLUtil.h /usr/local/include/GL/gl.h /usr/local/include/GL/glext.h \
-  /usr/include/stddef.h /usr/include/inttypes.h \
-  /usr/include/machine/_inttypes.h /usr/include/x86/_inttypes.h \
-  /usr/include/sys/stdint.h /usr/include/machine/_stdint.h \
-  /usr/include/sys/_stdint.h /usr/local/include/GL/glu.h Quaternion.h
+  InteractiveOperation.h Ring.h Carbon.h ErrorCode.h ConnectedBoundary.h \
+  SymmetryAxis.h OpenGLUtil.h /usr/local/include/GL/gl.h \
+  /usr/local/include/GL/glext.h /usr/include/stddef.h \
+  /usr/include/inttypes.h /usr/include/machine/_inttypes.h \
+  /usr/include/x86/_inttypes.h /usr/include/sys/stdint.h \
+  /usr/include/machine/_stdint.h /usr/include/sys/_stdint.h \
+  /usr/local/include/GL/glu.h Quaternion.h
 Generator.o: Generator.cc /usr/include/stdio.h /usr/include/sys/cdefs.h \
   /usr/include/sys/_null.h /usr/include/sys/_types.h \
   /usr/include/machine/_types.h /usr/include/assert.h \
@@ -336,8 +354,8 @@ Automorphism.o: Automorphism.cc /usr/include/assert.h \
   DebugMemory.h InteractiveOperation.h Interactive.h Config.h Radius.h \
   /usr/include/math.h /usr/include/machine/_limits.h /usr/include/float.h \
   Posture.h Matrix3.h Vector3.h Center.h Normal.h Ring.h \
-  InteractiveRegularPolygon.h Carbon.h ErrorCode.h Bond.h SymmetryAxis.h \
-  Automorphism.h
+  InteractiveRegularPolygon.h Carbon.h ErrorCode.h Bond.h \
+  ConnectedBoundary.h SymmetryAxis.h Automorphism.h
 InteractiveOperation.o: InteractiveOperation.cc InteractiveOperation.h \
   Object.h
 ThreeViewNormal.o: ThreeViewNormal.cc /usr/include/assert.h \
@@ -348,12 +366,12 @@ ThreeViewNormal.o: ThreeViewNormal.cc /usr/include/assert.h \
   /usr/include/machine/_limits.h /usr/include/float.h Posture.h Matrix3.h \
   Vector3.h Center.h Normal.h CarbonAllotrope.h Interactives.h List.h \
   DebugMemory.h InteractiveOperation.h Ring.h Carbon.h ErrorCode.h Bond.h \
-  SymmetryAxis.h OpenGLUtil.h /usr/local/include/GL/gl.h \
-  /usr/local/include/GL/glext.h /usr/include/stddef.h \
-  /usr/include/inttypes.h /usr/include/machine/_inttypes.h \
-  /usr/include/x86/_inttypes.h /usr/include/sys/stdint.h \
-  /usr/include/machine/_stdint.h /usr/include/sys/_stdint.h \
-  /usr/local/include/GL/glu.h Quaternion.h
+  ConnectedBoundary.h SymmetryAxis.h OpenGLUtil.h \
+  /usr/local/include/GL/gl.h /usr/local/include/GL/glext.h \
+  /usr/include/stddef.h /usr/include/inttypes.h \
+  /usr/include/machine/_inttypes.h /usr/include/x86/_inttypes.h \
+  /usr/include/sys/stdint.h /usr/include/machine/_stdint.h \
+  /usr/include/sys/_stdint.h /usr/local/include/GL/glu.h Quaternion.h
 SymmetryAxis.o: SymmetryAxis.cc /usr/include/assert.h \
   /usr/include/sys/cdefs.h SymmetryAxis.h Object.h Automorphism.h Ring.h \
   InteractiveRegularPolygon.h Interactive.h /usr/include/stdio.h \
@@ -361,16 +379,20 @@ SymmetryAxis.o: SymmetryAxis.cc /usr/include/assert.h \
   /usr/include/machine/_types.h Config.h Radius.h /usr/include/math.h \
   /usr/include/machine/_limits.h /usr/include/float.h Posture.h Matrix3.h \
   Vector3.h Center.h Normal.h List.h DebugMemory.h Carbon.h ErrorCode.h \
-  CarbonAllotrope.h Interactives.h InteractiveOperation.h Bond.h
-Fullerenes.o: Fullerenes.cc Fullerenes.h List.h DebugMemory.h Fullerene.h \
-  Object.h Generator.h CarbonAllotrope.h /usr/include/stdio.h \
-  /usr/include/sys/cdefs.h /usr/include/sys/_null.h \
-  /usr/include/sys/_types.h /usr/include/machine/_types.h Interactives.h \
-  InteractiveOperation.h Interactive.h Config.h Radius.h \
-  /usr/include/math.h /usr/include/machine/_limits.h /usr/include/float.h \
-  Posture.h Matrix3.h Vector3.h Center.h Normal.h Ring.h \
-  InteractiveRegularPolygon.h Carbon.h ErrorCode.h Bond.h SymmetryAxis.h \
-  Representations.h Representation.h RepresentationInfo.h Debug.h
+  CarbonAllotrope.h Interactives.h InteractiveOperation.h Bond.h \
+  ConnectedBoundary.h
+Fullerenes.o: Fullerenes.cc /usr/include/limits.h \
+  /usr/include/sys/cdefs.h /usr/include/sys/limits.h \
+  /usr/include/machine/_limits.h /usr/include/sys/syslimits.h \
+  /usr/include/assert.h Fullerenes.h List.h DebugMemory.h Fullerene.h \
+  Object.h ErrorCode.h Generator.h CarbonAllotrope.h /usr/include/stdio.h \
+  /usr/include/sys/_null.h /usr/include/sys/_types.h \
+  /usr/include/machine/_types.h Interactives.h InteractiveOperation.h \
+  Interactive.h Config.h Radius.h /usr/include/math.h \
+  /usr/include/float.h Posture.h Matrix3.h Vector3.h Center.h Normal.h \
+  Ring.h InteractiveRegularPolygon.h Carbon.h Bond.h ConnectedBoundary.h \
+  SymmetryAxis.h Representations.h Representation.h RepresentationInfo.h \
+  Debug.h
 Representations.o: Representations.cc /usr/include/assert.h \
   /usr/include/sys/cdefs.h /usr/include/stdio.h /usr/include/sys/_null.h \
   /usr/include/sys/_types.h /usr/include/machine/_types.h \

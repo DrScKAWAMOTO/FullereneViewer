@@ -37,8 +37,8 @@ void Generator::p_glow(int value)
 }
 
 Generator::Generator(bool symmetric, int maximum_vertices_of_polygons)
-  : p_is_tube(false), p_scrap_no(1), p_symmetric(symmetric),
-    p_n(0), p_m(0), p_h(0), p_minimum_polygons(5),
+  : p_type(symmetric ? GENERATOR_TYPE_SYMMETRIC : GENERATOR_TYPE_ORDINARY),
+    p_scrap_no(1), p_n(0), p_m(0), p_h(0), p_minimum_polygons(5),
     p_maximum_vertices_of_polygons(maximum_vertices_of_polygons),
     p_array_length(16), p_history_length(0), p_history_offset(0),
     p_history(new char[p_array_length])
@@ -46,8 +46,8 @@ Generator::Generator(bool symmetric, int maximum_vertices_of_polygons)
 }
 
 Generator::Generator(int n, int m, int h, int maximum_vertices_of_polygons)
-  : p_is_tube(true), p_scrap_no(0), p_symmetric(false),
-    p_n(n), p_m(m), p_h(h), p_minimum_polygons(5),
+  : p_type(GENERATOR_TYPE_TUBE), p_scrap_no(0), p_n(n), p_m(m), p_h(h),
+    p_minimum_polygons(5),
     p_maximum_vertices_of_polygons(maximum_vertices_of_polygons),
     p_array_length(16), p_history_length(0), p_history_offset(0),
     p_history(new char[p_array_length])
@@ -55,8 +55,8 @@ Generator::Generator(int n, int m, int h, int maximum_vertices_of_polygons)
 }
 
 Generator::Generator(const char* generator_formula, int maximum_vertices_of_polygons)
-  : p_is_tube(false), p_scrap_no(0), p_symmetric(false),
-    p_n(0), p_m(0), p_h(0), p_minimum_polygons(5),
+  : p_type(GENERATOR_TYPE_ORDINARY), p_scrap_no(0), p_n(0), p_m(0), p_h(0),
+    p_minimum_polygons(5),
     p_maximum_vertices_of_polygons(maximum_vertices_of_polygons),
     p_array_length(16), p_history_length(0), p_history_offset(0),
     p_history(new char[p_array_length])
@@ -68,7 +68,7 @@ Generator::Generator(const char* generator_formula, int maximum_vertices_of_poly
       p_scrap_no = character_to_No(*ptr++);
       break;
     case 'T':
-      p_is_tube = true;
+      p_type = GENERATOR_TYPE_TUBE;
       p_n = strtol(ptr, (char**)&ptr, 10);
       if (*ptr == ',')
         ++ptr;
@@ -78,9 +78,12 @@ Generator::Generator(const char* generator_formula, int maximum_vertices_of_poly
       p_h = strtol(ptr, (char**)&ptr, 10);
       break;
     case 'S':
-    default:
+      p_type = GENERATOR_TYPE_SYMMETRIC;
       p_scrap_no = character_to_No(*ptr++);
-      p_symmetric = true;
+      break;
+    default:
+      p_type = GENERATOR_TYPE_ILLEGAL;
+      break;
     }
   if (*ptr == '-')
     ++ptr;
@@ -97,8 +100,8 @@ Generator::Generator(const char* generator_formula, int maximum_vertices_of_poly
 }
 
 Generator::Generator(const Generator& you)
-  : p_is_tube(you.p_is_tube), p_scrap_no(you.p_scrap_no),
-    p_symmetric(you.p_symmetric), p_n(you.p_n), p_m(you.p_m), p_h(you.p_h),
+  : p_type(you.p_type),
+    p_scrap_no(you.p_scrap_no), p_n(you.p_n), p_m(you.p_m), p_h(you.p_h),
     p_minimum_polygons(you.p_minimum_polygons),
     p_maximum_vertices_of_polygons(you.p_maximum_vertices_of_polygons),
     p_array_length(you.p_array_length), p_history_length(you.p_history_length),
@@ -128,7 +131,7 @@ bool Generator::next_pattern()
         {
           if (p_history_length == 1)
             {
-              if (!p_symmetric)
+              if (p_type != GENERATOR_TYPE_SYMMETRIC)
                 return false;
               if (p_scrap_no == 4)
                 return false;
@@ -154,11 +157,18 @@ int Generator::glow()
   return p_history[p_history_offset++];
 }
 
+int Generator::history()
+{
+  if (p_history_offset == p_history_length)
+    return -1;
+  return p_history[p_history_offset++];
+}
+
 void Generator::get_generator_formula(char* buffer, int length)
 {
-  if (p_is_tube)
+  if (p_type == GENERATOR_TYPE_TUBE)
     sprintf(buffer, "T%d,%d,%d-", p_n, p_m, p_h);
-  else if (p_symmetric)
+  else if (p_type == GENERATOR_TYPE_SYMMETRIC)
     sprintf(buffer, "S%d-", p_scrap_no);
   else
     sprintf(buffer, "A%d-", p_scrap_no);

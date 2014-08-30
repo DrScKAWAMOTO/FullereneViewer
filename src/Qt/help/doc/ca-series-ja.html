@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+</head>
+<body>
+<h1 id="fullereneviewer">FullereneViewer(フラーレンビューア)</h1>
+<h2 id="ca">caシリーズユーザーズマニュアル</h2>
+<h3 id="ca-char">1) ca-char</h3>
+<p>　フラーレンの各種特性値を表示します。<br />　特性値は以下のものがあります。</p>
+<ul>
+<li>対称軸 (<code>--axes-summary</code>)<br /></li>
+<li>五員環同士の距離分布 (<code>--pentagon-distances</code>)<br /></li>
+<li>五員環同士の距離マトリックス (<code>--pentagon-matrix</code>)</li>
+</ul>
+<p>　このうち対称軸と五員環同士の距離分布はフラーレンの不変量です。<br />　不変量とは、フラーレン固有の量です。<br />　これに対し五員環同士の距離マトリックスは不変量ではありません。五員環の順番付けに依存して変化するからです。<br />　オプションを指定しない場合は、デフォルトで対称軸が選択されます。</p>
+<p>　これら特性値を指定するオプションに続けて、特性値を表示したいフラーレンの生成式もしくは、複数の生成式を収めたファイルのファイル名を指定します。<br />　生成式とは、[フラーレン指定] メニューにある、'S' もしくは 'A' からはじまる文字列のことです。<br />　生成式もフラーレンの特性値ですが、不変量ではありません。異なった生成式であっても生成されたフラーレンは同じになる場合があります。</p>
+<h4>1-1) 対称軸</h4>
+<h4>1-2) 五員環同士の距離分布</h4>
+<h4>1-3) 五員環同士の距離マトリックス</h4>
+<h3 id="ca-cmp">2) ca-cmp</h3>
+<p>　ファイルの内容を比較します。複数のファイル名を指定してください。これらファイル名のうち、内容が同じファイル名同士を一行に表示します。</p>
+<h3 id="ca-generator">3) ca-generator</h3>
+<p>　指定条件に合うフラーレンを探索し、フラーレンの生成式を表示します。<br />　対称性のあるフラーレンを探索する場合は、オプション <code>--symmetric=[num]</code> を使用します。num で探索する最大の炭素数を指定して下さい。探索対象となる生成式は <code>S1-...</code> から <code>S4-...</code> までです。<br />　カーボンナノチューブを含むフラーレンを探索する場合は、オプション <code>--tube=[num]</code> を使用します。num で探索する最大の炭素数を指定して下さい。探索対象となる生成式は <code>Tn,m,h-...</code> という形です。ここで <code>(n,m)</code> はチューブのカイラル指数です。<code>h</code> はチューブの円筒の高さです。<br />　対称性の有無にとらわれずにフラーレンを探索する場合は、オプション <code>--ordinary=[num]</code> を使用します。num で探索する最大の炭素数を指定して下さい。探索対象となる生成式は <code>A1-...</code> です。対称性のあるフラーレンの探索のほうが高速です。</p>
+<p>　また、探索を開始する生成式を指定することができます。これの指定がなければ一番最初の生成式から探し出します。<br />　ca-generator は、一度生成したフラーレンの特性値を覚えておいて同一性チェックを行うことで、同じフラーレンを二重表示しないようにします。</p>
+<h3 id="ca-loop">4) ca-loop</h3>
+<p>　前述の ca-generator のラッパープログラムです。<br />　ca-generator は開始生成式を指定して、メモリが許す限り、次々とフラーレンを検索してくれるのですが、メモリ不足などの問題が発生すると強制的に終了してしまいます。<br />　ca-loop は、開始生成式と、終了生成式を指定することで、開始生成式以上、終了生成式未満のフラーレンを ca-generator を使って全て検索します。<br />　ca-generator がメモリ不足で異常終了しても ca-generator を再起動することで継続してくれます。<br />　ca-generator がメモリ不足で異常終了した場合は、ca-generator の再起動をまたがった同一性チェックが効かないため、同一フラーレンを二重表示する場合があります。このため、出力情報は念のため ca-sort にかけた後更に ca-uniq にかけることをお勧めします。</p>
+<h3 id="ca-modeling">5) ca-modeling</h3>
+<h3 id="ca-sort">6) ca-sort</h3>
+<h3 id="ca-test">7) ca-test</h3>
+<h3 id="ca-uniq">8) ca-uniq</h3>
+<h3 id="ca-char-1">9) ca-char</h3>
+</body>
+</html>

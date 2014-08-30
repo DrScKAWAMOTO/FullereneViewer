@@ -30,6 +30,7 @@ private slots:
   void drawSixViews();
   void drawSnapshot();
   void setupDialog();
+  void formulaDialog();
   void showHelp();
   void showAbout();
   void fullereneSelected();

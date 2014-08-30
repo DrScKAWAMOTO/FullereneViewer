@@ -136,7 +136,7 @@ public:
 
   // menu common
 public:
-  static void change_fullerene(const char* fullerene_name, const char* generator_formula);
+  static bool change_fullerene(const char* fullerene_name, const char* generator_formula);
 
   // file name handling
 public:

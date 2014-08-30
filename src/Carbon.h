@@ -95,7 +95,7 @@ public:
   Bond* boundary_bond(Bond* bond = 0) const;
   Bond* inner_bond() const;
   void set_color(int color) { p_color = color; }
-  ErrorCode concave_boundary_segment(int number_of_carbons, int& length, Bond*& end_bond);
+  ErrorCode concave_boundary_segment(int n_members, int& length, Bond*& end_bond);
   bool has_pentagon() const;
   bool has_non_hexagon() const;
 
