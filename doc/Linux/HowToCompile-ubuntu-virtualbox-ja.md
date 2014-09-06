@@ -26,15 +26,13 @@
 
 ### 3) コンパイル
 #### 3-1) フラーレンビューア(FullereneViewer)
-    FullereneViewer> cd src
-    src> make Qt
-    src> 
+    FullereneViewer> make Qt
+    FullereneViewer> 
 
 #### 3-2) フラーレンジェネレータ(ca-*)
-    FullereneViewer> cd src
-    src> make depend
-    src> make
-    src> 
+    FullereneViewer> make depend
+    FullereneViewer> make
+    FullereneViewer> 
 
 ### 4) 実行例
 　ビューアをコンパイルした ubuntu ホストで X11 を起動する。

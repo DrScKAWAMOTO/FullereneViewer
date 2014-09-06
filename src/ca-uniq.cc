@@ -13,6 +13,8 @@
 #include "Version.h"
 #include "List.h"
 #include "Fullerene.h"
+#include "CarbonAllotrope.h"
+#include "Representations.h"
 #include "DebugMemory.h"
 
 void usage(char* argv0)
@@ -36,28 +38,62 @@ int main(int argc, char* argv[])
     Fullerene::s_need_representations = true;
     List<Fullerene> patterns;
     int last_number_of_carbons = -1;
+    int last_number_of_automorphisms = -1;
     try
       {
         while (1)
           {
             char buffer[1024];
-            int num;
             if (fgets(buffer, 1024, stdin) != buffer)
               break;
             buffer[strlen(buffer) - 1] = '\0';
-            const char* name = buffer + 1;
-            sscanf(name, "%d", &num);
-            if (num != last_number_of_carbons)
+            const char* name = buffer;
+            if (*name == 'C')
               {
-                patterns.clean();
-                last_number_of_carbons = num;
+                ++name;
+                int number_of_carbons;
+                int number_of_automorphisms;
+                sscanf(name, "%d", &number_of_carbons);
+                while ((*name != ' ') && (*name != '\0'))
+                  ++name;
+                if (*name == ' ')
+                  ++name;
+                while ((*name != '=') && (*name != '\0'))
+                  ++name;
+                sscanf(name, "%d", &number_of_automorphisms);
+                while ((*name != ' ') && (*name != '\0'))
+                  ++name;
+                if (*name == ' ')
+                  ++name;
+                if ((number_of_carbons != last_number_of_carbons) ||
+                    (number_of_automorphisms != last_number_of_automorphisms))
+                  {
+                    if (number_of_carbons < last_number_of_carbons)
+                      {
+                      not_sorted_error:
+                        fprintf(stderr, "infile is not sorted, use ca-sort !!\n");
+                        exit(1);
+                      }
+                    else if (number_of_carbons == last_number_of_carbons)
+                      {
+                        if (number_of_carbons < last_number_of_carbons)
+                          goto not_sorted_error;
+                        else if (number_of_carbons == last_number_of_carbons)
+                          ;
+                        else
+                          {
+                            patterns.clean();
+                            last_number_of_automorphisms = number_of_automorphisms;
+                          }
+                      }
+                    else
+                      {
+                        patterns.clean();
+                        last_number_of_carbons = number_of_carbons;
+                        last_number_of_automorphisms = number_of_automorphisms;
+                      }
+                  }
               }
-            while (*name != ' ')
-              ++name;
-            ++name;
-            while (*name != ' ')
-              ++name;
-            ++name;
             Fullerene* fullerene = new Fullerene(name);
             int len = patterns.length();
             int i = 0;
@@ -65,7 +101,10 @@ int main(int argc, char* argv[])
               {
                 if (i == len)
                   {
-                    printf("%s\n", buffer);
+                    printf("C%d (NoA=%d) %s\n",
+                           fullerene->get_carbon_allotrope()->number_of_carbons(),
+                           fullerene->get_representations()->number_of_automorphisms(),
+                           fullerene->get_generator_formula());
                     patterns.add(fullerene);
                     break;
                   }

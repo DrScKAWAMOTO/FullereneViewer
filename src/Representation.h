@@ -18,11 +18,15 @@ class Representation : public Object {
   // members
 private:
   List<RepresentationInfo> p_infos;
+  char p_last_char;
+  int p_last_count;
   int p_array_length;
   int p_offset;
   char* p_array;
 
   // private tools
+private:
+  void p_flush_step();
 
   // constructors & the destructor
 public:
@@ -45,6 +49,7 @@ public:
   void add_info(RepresentationInfo* info);
   RepresentationInfo* get_info(int index) const;
   void set_step(char step);
+  void finish_step();
 
 };
 

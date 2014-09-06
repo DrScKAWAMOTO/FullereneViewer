@@ -79,8 +79,7 @@ public:
   fill_n_polygons_around_carbons_closed_to_center_and_pentagons(int n_members,
                                                                 int& number_of_results);
   ErrorCode fill_n_polygon_around_carbon(int n_members, Carbon* carbon,
-                                         List<Carbon>& boundary, 
-                                         List<Carbon>& oldest_boundary);
+                                         List<Carbon>& boundary);
   ErrorCode make_symmetric_scrap(int scrap_no);
 
   // carbon nano-tube constructions

@@ -53,7 +53,7 @@ SOURCES += ../Automorphism.cc ../Automorphisms.cc ../Bond.cc ../Carbon.cc \
            ../Ring.cc ../Statistics.cc ../SymmetryAxis.cc ../SymmetryAxisNormal.cc \
            ../ThreeViewNormal.cc ../Utils.cc ../Vector3.cc \
            QtFullereneMenu.cc ConfigurationDialog.cc main.cc MainWindow.cc Guruguru.cc \
-           HelpBrowser.cc AboutWindow.cpp GeneratorFormulaDialog.cpp
+           HelpBrowser.cc AboutWindow.cc GeneratorFormulaDialog.cc
 
 OTHER_FILES +=
 

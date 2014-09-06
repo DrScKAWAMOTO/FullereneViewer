@@ -545,8 +545,7 @@ fill_n_polygons_around_carbons_closed_to_center_and_pentagons(int n_members,
 }
 
 ErrorCode CarbonAllotrope::fill_n_polygon_around_carbon(int n_members, Carbon* carbon,
-                                                        List<Carbon>& boundary,
-                                                        List<Carbon>& oldest_boundary)
+                                                        List<Carbon>& boundary)
 {
 #ifdef DEBUG_CARBON_ALLOTROPE_CONSTRUCTION
   printf("Carbon(%d) ... %d-polygon\n", carbon->sequence_no(), n_members);
@@ -571,7 +570,6 @@ ErrorCode CarbonAllotrope::fill_n_polygon_around_carbon(int n_members, Carbon* c
         default:
         case 3:
           boundary.remove(carbon2);
-          oldest_boundary.remove(carbon2);
           break;
         }
     }
@@ -1268,6 +1266,7 @@ void CarbonAllotrope::all_representations(Representations* results)
           info->bond_sequence_no = bond->sequence_no();
           rep->add_info(info);
           carbon->write_representation(*rep, bond);
+          rep->finish_step();
           results->add_up_to_isomorphism(rep);
         }
     }
@@ -1288,6 +1287,7 @@ void CarbonAllotrope::all_representations(Representations* results)
           info->bond_sequence_no = bond->sequence_no();
           rep->add_info(info);
           carbon->write_representation(*rep, bond);
+          rep->finish_step();
           results->add_up_to_isomorphism(rep);
         }
     }

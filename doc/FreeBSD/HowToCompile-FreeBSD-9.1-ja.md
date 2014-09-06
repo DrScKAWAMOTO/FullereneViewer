@@ -39,22 +39,18 @@
 
 ### 4) コンパイル
 #### 4-1) フラーレンビューア(FullereneViewer)
-    FullereneViewer> cd src
-    src> gmake Qt
-    src> 
+    FullereneViewer> gmake Qt
+    FullereneViewer> 
 
 #### 4-2) フラーレンジェネレータ(ca-*)
-    FullereneViewer> cd src
-    src> gmake depend
-    src> gmake
-    src> 
+    FullereneViewer> gmake
+    FullereneViewer> 
 
 #### 4-3) 参考
 　devel/qt5 のかわりに devel/qt4 をインストールした方は、4-1) において
 
-    FullereneViewer> cd src
-    src> gmake QMAKE=qmake-qt4 Qt
-    src> 
+    FullereneViewer> gmake QMAKE=qmake-qt4 Qt
+    FullereneViewer> 
 
 とします。
 

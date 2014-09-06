@@ -14,17 +14,14 @@
 
 ### 5) コンパイル
 #### 5-1) フラーレンビューア(FullereneViewer)
-    FullereneViewer> cd src
-    src> make Qt
-    src> 
+    FullereneViewer> make Qt
+    FullereneViewer> 
 
 　ファインダから `src/Qt/FullereneViewer.xcodeproj` をダブルクリック「ビルドと実行」を選択する。
 
 #### 5-2) フラーレンジェネレータ(ca-*)
-    FullereneViewer> cd src
-    src> make depend
-    src> make
-    src> 
+    FullereneViewer> make
+    FullereneViewer> 
 
 ### 6) 実行
 　POVRay が現在インストール出来ないため、[出力] の [展開図] [スナップショット図] が実行できないが、それらを除いて動作します。  

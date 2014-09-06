@@ -11,6 +11,7 @@
 #include <assert.h>
 #include <limits.h>
 #include "Version.h"
+#include "Utils.h"
 
 #define BUFFER_SIZE 1000
 
@@ -19,17 +20,22 @@ static void usage(const char* arg0)
   fprintf(stderr,
           "usage: %s [options] <start generator-formula> <ending generator-formula>\n",
           arg0);
-  fprintf(stderr, "<start generator-formula> ... list up from this formula,\n");
-  fprintf(stderr, "<ending generator-formula> .. list up to this formula,\n");
+  fprintf(stderr, "    <start generator-formula> ..... list up from this formula,\n");
+  fprintf(stderr, "    <ending generator-formula> .... list up to this formula,\n");
+  fprintf(stderr, "            <ending generator-formulas> permit with ending ``*'',\n");
   fprintf(stderr, "options:\n");
   fprintf(stderr, "    --symmetric=[num] .... list up all symmetric fullerenes up to [num] carbons,\n");
-  fprintf(stderr, "            generator-formulas look like 'S1-5b6b...',\n");
+  fprintf(stderr, "            <generator-formulas> look like 'S1-5b6b...',\n");
   fprintf(stderr, "    --ordinary=[num] ..... list up all ordinary fullerenes up to [num] carbons,\n");
-  fprintf(stderr, "            generator-formulas look like 'A1-5b6b...',\n");
+  fprintf(stderr, "            <generator-formulas> look like 'A1-5b6b...',\n");
   fprintf(stderr, "    --tube=[num] ......... list up all carbon nano tubes up to [num] carbons,\n");
-  fprintf(stderr, "            generator-formulas look like 'T10,0,1-5b6b...', has to be specified,\n");
+  fprintf(stderr, "            <generator-formulas> look like 'T10,0,1-5b6b...', has to be specified,\n");
+  fprintf(stderr, "    --test ............... list up test patterns,\n");
+  fprintf(stderr, "            <generator-formulas> look like 'T10,0,3-5b6b...', has to be specified,\n");
   fprintf(stderr, "    --close=[num] ........ close [num] connected boundary component(s),\n");
   fprintf(stderr, "            default is infinity,\n");
+  fprintf(stderr, "    --until-ending ....... until ending formula (default),\n");
+  fprintf(stderr, "    --except-ending ...... except ending formula,\n");
   fprintf(stderr, "    --log=<log file> ..... output log file name,\n");
   fprintf(stderr, "    -v (--version) ....... show version,\n");
   fprintf(stderr, "    -h ................... show this message.\n");
@@ -41,7 +47,9 @@ int main(int argc, char *argv[])
   int symmetric = -1;
   int ordinary = -1;
   int tube = -1;
+  int test = -1;
   int close = INT_MAX;
+  bool except_ending = false;
 
   const char* arg0 = argv[0];
   char start_generator_formula[BUFFER_SIZE] = "";
@@ -80,9 +88,27 @@ int main(int argc, char *argv[])
           argc--;
           argv++;
         }
+      else if (strcmp(argv[0], "--test") == 0)
+        {
+          test = 1;
+          argc--;
+          argv++;
+        }
       else if (strncmp(argv[0], "--close=", 8) == 0)
         {
           close = atoi(argv[0] + 8);
+          argc--;
+          argv++;
+        }
+      else if (strcmp(argv[0], "--until-ending") == 0)
+        {
+          except_ending = false;
+          argc--;
+          argv++;
+        }
+      else if (strcmp(argv[0], "--except-ending") == 0)
+        {
+          except_ending = true;
           argc--;
           argv++;
         }
@@ -114,7 +140,6 @@ int main(int argc, char *argv[])
   if (ending_generator_formula[0] == '\0')
     usage(arg0);
 
-  int ending_length = strlen(ending_generator_formula);
   FILE* fptr = stdout;
   if (log_file_name)
     {
@@ -132,10 +157,11 @@ int main(int argc, char *argv[])
         symmetric = 60;
       if (start_generator_formula[0] != 'S')
         usage(arg0);
-      if (start_generator_formula[0] != ending_generator_formula[0])
+      if (ending_generator_formula[0] != 'S')
         usage(arg0);
-      ordinary = 0;
-      tube = 0;
+      ordinary = -1;
+      tube = -1;
+      test = -1;
     }
   else if (ordinary >= 1)
     {
@@ -143,10 +169,11 @@ int main(int argc, char *argv[])
         ordinary = 60;
       if (start_generator_formula[0] != 'A')
         usage(arg0);
-      if (start_generator_formula[0] != ending_generator_formula[0])
+      if (ending_generator_formula[0] != 'A')
         usage(arg0);
-      symmetric = 0;
-      tube = 0;
+      symmetric = -1;
+      tube = -1;
+      test = -1;
     }
   else if (tube >= 1)
     {
@@ -154,30 +181,53 @@ int main(int argc, char *argv[])
         tube = 60;
       if (start_generator_formula[0] != 'T')
         usage(arg0);
-      if (start_generator_formula[0] != ending_generator_formula[0])
+      if (ending_generator_formula[0] != 'T')
         usage(arg0);
-      symmetric = 0;
-      ordinary = 0;
+      symmetric = -1;
+      ordinary = -1;
+      test = -1;
+    }
+  else if (test >= 1)
+    {
+      if (start_generator_formula[0] != 'T')
+        usage(arg0);
+      if (ending_generator_formula[0] != 'T')
+        usage(arg0);
+      symmetric = -1;
+      ordinary = -1;
+      tube = -1;
     }
   else
     {
-      fprintf(stderr,
-              "%s: --symmetric=[num] --ordeinary=[num] or --tube=[num] must be specified.\n", arg0);
+      fprintf(stderr, "%s: --symmetric=[num] --ordeinary=[num] --tube=[num] or --test"
+              " must be specified.\n", arg0);
       exit(1);
     }
 
   while (1)
     {
       char command[BUFFER_SIZE];
+      char *ptr = command;
+      if (test > 0)
+        sprintf(ptr, "ca-test");
+      else
+        sprintf(ptr, "ca-generator");
+      ptr += strlen(ptr);
       if (symmetric > 0)
-        sprintf(command, "ca-generator --symmetric=%d --close=%d %s",
-                symmetric, close, start_generator_formula);
+        sprintf(ptr, " --symmetric=%d", symmetric);
       else if (ordinary > 0)
-        sprintf(command, "ca-generator --ordinary=%d --close=%d %s",
-                ordinary, close, start_generator_formula);
+        sprintf(ptr, " --ordinary=%d", ordinary);
       else if (tube > 0)
-        sprintf(command, "ca-generator --tube=%d --close=%d %s",
-                tube, close, start_generator_formula);
+        sprintf(ptr, " --tube=%d", tube);
+      else if (test > 0)
+        sprintf(ptr, " --test");
+      ptr += strlen(ptr);
+      if (close != INT_MAX)
+        {
+          sprintf(ptr, " --close=%d", close);
+          ptr += strlen(ptr);
+        }
+      sprintf(ptr, " %s", start_generator_formula);
       fprintf(stderr, "%s\n", command);
       FILE* generator = popen(command, "r");
       if (generator == 0)
@@ -218,7 +268,8 @@ int main(int argc, char *argv[])
           while (*sptr != ' ')
             ++sptr;
           ++sptr;
-          if (strncmp(sptr, ending_generator_formula, ending_length) == 0)
+          int result = compare_generator_formula(ending_generator_formula, sptr);
+          if ((result < 0) || (except_ending && (result == 0)))
             {
               pclose(generator);
               fclose(fptr);

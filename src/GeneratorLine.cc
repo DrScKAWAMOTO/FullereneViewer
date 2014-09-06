@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include "GeneratorLine.h"
 #include "DebugMemory.h"
+#include "Utils.h"
 
 int GeneratorLine::s_next_sequence = 1;
 
@@ -147,7 +148,7 @@ int GeneratorLine::compare(const GeneratorLine* that) const
       if (mym != yourm)
         return mym - yourm;
       if (myh != yourh)
-        return myh - yourh;
+        return yourh - myh;
     }
   else
     {
@@ -158,9 +159,13 @@ int GeneratorLine::compare(const GeneratorLine* that) const
       if (myscrap != yourscrap)
         return myscrap - yourscrap;
     }
+#if 0
   int mySequenceNo = sequence_no();
   int yourSequenceNo = that->sequence_no();
   return mySequenceNo - yourSequenceNo;
+#else
+  return compare_generator_formula(p_line, that->p_line);
+#endif
 }
 
 void GeneratorLine::print() const

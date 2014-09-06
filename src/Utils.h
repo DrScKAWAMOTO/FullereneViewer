@@ -17,6 +17,8 @@ void No_to_digits10x10(int No, char*& buffer);
 int digits26x7_to_No(const char*& buffer);
 int digits10x10_to_No(const char*& buffer);
 void No_No_to_digits10x10_digits26x7(int No1, int No2, char*& buffer);
+int compare_generator_formula(const char* base_formula, const char* target_formula);
+int compare_sub_generator_formula(const char* base_formula, const char* target_formula);
 
 #endif /* __UTILS_H__ */
 
