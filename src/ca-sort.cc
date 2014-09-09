@@ -34,7 +34,7 @@ int main(int argc, char* argv[])
   setvbuf(stdout, 0, _IONBF, 0);
   char buffer[1024];
   if (fgets(buffer, 1024, stdin) != buffer)
-    usage(argv[0]);
+    exit(0);
   if (buffer[0] == 'C')
     {
       SortedList<GeneratorLine> lines;

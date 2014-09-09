@@ -73,7 +73,7 @@ void No_to_digits10x10(int No, char*& buffer)
 
 int digits26x7_to_No(const char*& buffer)
 {
-  if (*buffer == 'X')
+  if (*buffer == '*')
     {
       ++buffer;
       return -1;
@@ -89,7 +89,7 @@ int digits26x7_to_No(const char*& buffer)
 
 int digits10x10_to_No(const char*& buffer)
 {
-  if (*buffer == 'X')
+  if (*buffer == '*')
     {
       ++buffer;
       return -1;
@@ -107,6 +107,67 @@ void No_No_to_digits10x10_digits26x7(int No1, int No2, char*& buffer)
 {
   No_to_digits10x10(No1, buffer);
   No_to_digits26x7(No2, buffer);
+}
+
+int compare_generator_formula(const char* base_formula, const char* target_formula)
+{
+  while (*base_formula && *target_formula)
+    {
+      if (*base_formula != *target_formula)
+        return *base_formula - *target_formula;
+      if (*base_formula == '-')
+        break;
+      ++base_formula;
+      ++target_formula;
+    }
+  if (*base_formula == '\0')
+    return 0;
+  if (*target_formula == '\0')
+    return 1;
+  return compare_sub_generator_formula(base_formula + 1, target_formula + 1);
+}
+
+int compare_sub_generator_formula(const char* base_formula, const char* target_formula)
+{
+  while (1)
+    {
+      int base_No1;
+      int base_No2;
+      int target_No1;
+      int target_No2;
+      base_No1 = digits10x10_to_No(base_formula);
+      base_No2 = digits26x7_to_No(base_formula);
+      target_No1 = digits10x10_to_No(target_formula);
+      target_No2 = digits26x7_to_No(target_formula);
+      if ((base_No1 == -1) || (target_No1 == -1))
+        return 0;
+      if ((base_No1 == 0) && (target_No1 == 0))
+        return 0;
+      if (base_No1 != target_No1)
+        return base_No1 - target_No1;
+      if ((base_No2 == -1) || (target_No2 == -1))
+        return 0;
+      if (base_No2 == 0)
+        return 0;
+      if (target_No2 == 0)
+        return -1;
+      if (base_No2 < target_No2)
+        {
+          base_No1 = digits10x10_to_No(base_formula);
+          if (base_No1 <= 0)
+            return 0;
+          return base_No1 - target_No1;
+        }
+      else if (base_No2 > target_No2)
+        {
+          target_No1 = digits10x10_to_No(target_formula);
+          if (target_No1 == -1)
+            return 0;
+          if (target_No1 == 0)
+            return 1;
+          return base_No1 - target_No1;
+        }
+    }
 }
 
 /* Local Variables:	*/

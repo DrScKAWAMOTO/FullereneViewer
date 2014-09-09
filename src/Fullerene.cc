@@ -38,6 +38,20 @@ Fullerene::Fullerene(const char* generator_formula)
   : p_carbon_allotrope(0), p_error_code(ERROR_CODE_OK), p_n(0), p_m(0), p_h(0),
     p_representations(0), p_characteristic(0), p_distance_matrix(0)
 {
+  if (generator_formula[0] == 'C')
+    {
+      while ((generator_formula[0] != ' ') && (generator_formula[0] != '\0'))
+        ++generator_formula;
+      if (generator_formula[0] == ' ')
+        ++generator_formula;
+    }
+  if (generator_formula[0] == '(')
+    {
+      while ((generator_formula[0] != ' ') && (generator_formula[0] != '\0'))
+        ++generator_formula;
+      if (generator_formula[0] == ' ')
+        ++generator_formula;
+    }
   while ((generator_formula[0] != 'S') &&
          (generator_formula[0] != 'A') &&
          (generator_formula[0] != 'T') &&
@@ -173,13 +187,9 @@ Fullerene::Fullerene(const char* generator_formula)
       else
         ca->make_symmetric_scrap(gen.scrap_no());
       List<Carbon> boundary;
-      List<Carbon> oldest_boundary;
       bool symmetric = (gen.type() == GENERATOR_TYPE_SYMMETRIC);
       if (!symmetric)
-        {
-          ca->list_connected_boundary_carbons(boundary);
-          ca->list_connected_boundary_carbons(oldest_boundary);
-        }
+        ca->list_connected_boundary_carbons(boundary);
 #ifdef DEBUG_CARBON_ALLOTROPE_CONSTRUCTION
       ca->print_detail();
 #endif
@@ -211,8 +221,7 @@ Fullerene::Fullerene(const char* generator_formula)
                     }
                 }
               assert(carbon);
-              result = ca->fill_n_polygon_around_carbon(No, carbon, boundary,
-                                                        oldest_boundary);
+              result = ca->fill_n_polygon_around_carbon(No, carbon, boundary);
             }
           if (result != ERROR_CODE_OK)
             {
@@ -225,10 +234,16 @@ Fullerene::Fullerene(const char* generator_formula)
           ca->print_detail();
 #endif
           if (symmetric)
-            ca->list_connected_boundary_carbons(boundary);
+            {
+              boundary.clean();
+              ca->list_connected_boundary_carbons(boundary);
+            }
           int number_of_carbons_in_boundary = boundary.length();
-          if (number_of_carbons_in_boundary == 0)
-            break;
+          if (!symmetric && (number_of_carbons_in_boundary == 0))
+            {
+              boundary.clean();
+              ca->list_connected_boundary_carbons(boundary);
+            }
         }
     }
  finish:

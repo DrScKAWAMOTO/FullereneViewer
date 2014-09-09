@@ -32,13 +32,14 @@ Fullerenes::Fullerenes(const char* generator_formula, int maximum_number_of_carb
   else
     ca->make_symmetric_scrap(gen.scrap_no());
   List<Carbon> boundary;
-  List<Carbon> oldest_boundary;
   bool all_pentagons = true;
+  int number_of_rest_pentagons = 0;
   if (!symmetric)
     {
       ca->list_connected_boundary_carbons(boundary);
-      ca->list_connected_boundary_carbons(oldest_boundary);
       all_pentagons = true;
+      if (is_tube)
+        number_of_rest_pentagons = gen.n() + gen.m();
     }
   int close_count = close;
 #ifdef DEBUG_ERRORS
@@ -57,7 +58,9 @@ Fullerenes::Fullerenes(const char* generator_formula, int maximum_number_of_carb
           ca->fill_n_polygons_around_carbons_closed_to_center_and_pentagons(No, num);
       else
         {
-          if (No != 6)
+          if (No == 6)
+            number_of_rest_pentagons--;
+          else
             all_pentagons = false;
           int len = boundary.length();
           int sequence_no = INT_MAX;
@@ -75,16 +78,12 @@ Fullerenes::Fullerenes(const char* generator_formula, int maximum_number_of_carb
                 }
             }
           assert(carbon);
-          result = ca->fill_n_polygon_around_carbon(No, carbon, boundary,
-                                                    oldest_boundary);
+          result = ca->fill_n_polygon_around_carbon(No, carbon, boundary);
         }
 #ifdef DEBUG_CARBON_ALLOTROPE_CONSTRUCTION
       ca->print_detail();
 #endif
       int number_of_carbons = ca->number_of_carbons();
-      int number_of_carbons_in_oldest_boundary = 0;
-      if (is_tube && all_pentagons)
-        number_of_carbons_in_oldest_boundary = oldest_boundary.length();
       if (symmetric)
         {
           boundary.clean();
@@ -97,16 +96,15 @@ Fullerenes::Fullerenes(const char* generator_formula, int maximum_number_of_carb
             {
               boundary.clean();
               ca->list_connected_boundary_carbons(boundary);
-              oldest_boundary.clean();
-              ca->list_connected_boundary_carbons(oldest_boundary);
               number_of_carbons_in_boundary = boundary.length();
-              number_of_carbons_in_oldest_boundary = oldest_boundary.length();
               all_pentagons = true;
+              if (is_tube)
+                number_of_rest_pentagons = gen.n() + gen.m();
             }
         }
       if ((result != ERROR_CODE_OK) ||
           (number_of_carbons > maximum_number_of_carbons) ||
-          (is_tube && all_pentagons && (number_of_carbons_in_oldest_boundary == 0)) ||
+          (is_tube && all_pentagons && (number_of_rest_pentagons <= 0)) ||
           (number_of_carbons_in_boundary == 0))
         {
 #ifdef DEBUG_ERRORS
@@ -130,8 +128,7 @@ Fullerenes::Fullerenes(const char* generator_formula, int maximum_number_of_carb
 #endif
               delete ca;
             }
-          else if (is_tube && all_pentagons &&
-                   (number_of_carbons_in_oldest_boundary == 0))
+          else if (is_tube && all_pentagons && (number_of_rest_pentagons <= 0))
             {
 #ifdef DEBUG_ERRORS
               printf("* ERROR %s Tube height is enlarged\n", buffer);
@@ -170,9 +167,9 @@ Fullerenes::Fullerenes(const char* generator_formula, int maximum_number_of_carb
             {
               boundary.clean();
               ca->list_connected_boundary_carbons(boundary);
-              oldest_boundary.clean();
-              ca->list_connected_boundary_carbons(oldest_boundary);
               all_pentagons = true;
+              if (is_tube)
+                number_of_rest_pentagons = gen.n() + gen.m();
             }
           close_count = close;
 #ifdef DEBUG_ERRORS

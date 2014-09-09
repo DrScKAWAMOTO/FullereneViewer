@@ -34,10 +34,9 @@
 　動作します。
 
 ### 11) フラーレンジェネレータ(ca-*)のメイク
-    FullereneViewer> cd src
-    src> make depend
-    src> make
-    src> 
+    FullereneViewer> make depend
+    FullereneViewer> make
+    FullereneViewer> 
 
 ### 12) お願い
 　Mac の他の OS での動作実績があれば連絡ください。

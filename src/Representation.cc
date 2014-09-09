@@ -13,7 +13,8 @@
 #include "DebugMemory.h"
 
 Representation::Representation()
-  : p_array_length(16), p_offset(0), p_array(new char[p_array_length])
+  : p_last_char(0), p_last_count(0),
+    p_array_length(16), p_offset(0), p_array(new char[p_array_length])
 {
 }
 
@@ -62,9 +63,17 @@ RepresentationInfo* Representation::get_info(int index) const
   return p_infos[index];
 }
 
-void Representation::set_step(char step)
+void Representation::p_flush_step()
 {
-  if (p_array_length <= p_offset + 1)
+  char work[100];
+  if (p_last_count <= 0)
+    return;
+  if (p_last_count >= 2)
+    sprintf(work, "%c%d", p_last_char, p_last_count);
+  else
+    sprintf(work, "%c", p_last_char);
+  int length = strlen(work);
+  if (p_array_length <= p_offset + length)
     {
       int new_length = p_array_length * 2;
       char* new_array = new char[new_length];
@@ -73,8 +82,24 @@ void Representation::set_step(char step)
       p_array = new_array;
       p_array_length = new_length;
     }
-  p_array[p_offset++] = step;
-  p_array[p_offset] = '\0';
+  strcpy(p_array + p_offset, work);
+  p_offset += length;
+  p_last_char = 0;
+  p_last_count = 0;
+}
+
+void Representation::set_step(char step)
+{
+  if (p_last_char && (p_last_char != step))
+    p_flush_step();
+  p_last_char = step;
+  ++p_last_count;
+}
+
+void Representation::finish_step()
+{
+  if (p_last_char)
+    p_flush_step();
 }
 
 /* Local Variables:	*/

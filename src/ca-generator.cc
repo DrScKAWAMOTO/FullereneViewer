@@ -41,7 +41,6 @@ int main(int argc, char *argv[])
   int ordinary = -1;
   int tube = -1;
   int close = INT_MAX;
-
   const char* arg0 = argv[0];
   const char* generator_formula = 0;
   if (argc == 1)

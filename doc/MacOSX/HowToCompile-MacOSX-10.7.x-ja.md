@@ -20,18 +20,17 @@
 
 ### 7) コンパイル
 #### 7-1) フラーレンビューア(FullereneViewer)
-    FullereneViewer> cd src
-    src> make Qt
+    FullereneViewer> make Qt
+    FullereneViewer> 
 
-　`Click folder FullereneViewer.xcodeproj by finder.`と表示されるが、生成された Qt/Makefile を使ってコマンドラインでビルドする。
-    src> cd Qt
+　`Click folder FullereneViewer.xcodeproj by finder.`と表示されるが、生成された src/Qt/Makefile を使ってコマンドラインでビルドする。
+    FullereneViewer> cd src/Qt
     Qt> make
 
 #### 7-2) フラーレンジェネレータ(ca-*)
-    FullereneViewer> cd src
-    src> make depend
-    src> make
-    src> 
+    FullereneViewer> make depend
+    FullereneViewer> make
+    FullereneViewer> 
 
 ### 8) 実行
 　以下のいずれかの方法で実行できる。
@@ -44,8 +43,7 @@
 ### 9) その他
 　Xcode を使う方法として、7-1 の手順を以下に置き換えることが可能。
 
-    FullereneViewer> cd src
-    src> cd Qt
+    FullereneViewer> cd src/Qt
     Qt> qmake -spec macx-xcode
 
 　これにより、Xcode 用プロジェクトファイル FullereneViewer/src/Qt/FullereneViewer.xcodeproj が作成されるので、Xcode から開いてビルドすることが可能となる。  

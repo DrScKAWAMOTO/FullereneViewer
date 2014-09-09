@@ -67,6 +67,14 @@ int Representations::number_of_automorphisms()
         {
           Representation* rep = get_representation(i);
           int number_of_infos = rep->number_of_infos();
+#if 1 /* TODO */
+          if (p_number_of_automorphisms > 0)
+            {
+              assert(p_number_of_automorphisms == number_of_infos);
+            }
+          else
+            p_number_of_automorphisms = number_of_infos;
+#else
           if ((p_number_of_automorphisms > 0) &&
               (p_number_of_automorphisms != number_of_infos))
             {
@@ -76,6 +84,7 @@ int Representations::number_of_automorphisms()
           if ((p_number_of_automorphisms == 0) ||
               (p_number_of_automorphisms > number_of_infos))
             p_number_of_automorphisms = number_of_infos;
+#endif
         }
     }
   return p_number_of_automorphisms;

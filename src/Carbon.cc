@@ -452,6 +452,7 @@ void Carbon::write_representation(Representation& representation, Bond* from)
           carbon->write_representation(representation, second);
         }
     }
+  representation.set_step('b');
 }
 
 void Carbon::write_automorphism(Automorphism& automorphism, Bond* from)

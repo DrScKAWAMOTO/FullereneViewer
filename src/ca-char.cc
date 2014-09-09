@@ -83,6 +83,8 @@ int main(int argc, char *argv[])
           argc--;
           argv++;
         }
+      else if (argv[0][0] == '-')
+        usage(arg0);
       else if (!name)
         {
           name = argv[0];
@@ -92,13 +94,6 @@ int main(int argc, char *argv[])
       else
         usage(arg0);
     }
-
-  if (pentagon_distances)
-    Fullerene::s_need_fullerene_characteristic = true;
-  else if (pentagon_matrix)
-    Fullerene::s_need_distance_matrix = true;
-  else
-    Fullerene::s_need_representations = true;
 
   setvbuf(stdout, 0, _IONBF, 0);
   Random::initialize();
@@ -112,11 +107,22 @@ int main(int argc, char *argv[])
   else if (((name[0] == 'S') || (name[0] == 'A')) &&
            (name[1] != '\0') && (name[2] == '-'))
     strcpy(buffer, name);
+  else if ((name[0] == 'T') && (name[1] != '\0'))
+    strcpy(buffer, name);
   else
     fptr = fopen(name, "r");
 
   if (fptr)
     mkdir(extension, 0755);
+
+  if (pentagon_distances)
+    Fullerene::s_need_fullerene_characteristic = true;
+  else if (pentagon_matrix)
+    Fullerene::s_need_distance_matrix = true;
+  else
+    Fullerene::s_need_representations = true;
+  if (fptr)
+    Fullerene::s_need_representations = true;
 
   while (1)
     {
