@@ -1,6 +1,19 @@
 # FullereneViewer(フラーレンビューア)
 ## リリースノート
 
+### 2014/09/XX Version 1.3.2
+　鏡像もリストアップする版(新)と鏡像を略する版(従来)を Config.h で指定できるようにした。  
+　鏡像もリストアップする版の場合は、鏡像関係を出力するコマンド ca-mirror 追加。  
+　バイナリサーチを使って ca-generator / ca-uniq 高速化。  
+　距離計算のアルゴリズム改良で ca-generator / ca-uniq 高速化。  
+　パターン生成のステップアルゴリズム改良で ca-generator 高速化。  
+　ステップアルゴリズム --step-backward をデフォルトに。  
+　ca-loop / ca-generator は環境変数 CA_STEP_ALGORITHM 採用。  
+　ca-loop 引数省略可能にした。  
+　ca- シリーズで --help も使えるようにした。  
+　Qt pro ファイル整理。  
+　n+m<=12 のカーボンナノチューブリスト生成。
+
 ### 2014/09/10 Version 1.3.1
 　FullereneViewer について画面追加。  
 　閉・開カーボンナノチューブの生成関連追加(Un,m,h-....)。  

@@ -1,5 +1,5 @@
 /*
- * Project: CarbonAllotrope
+ * Project: FullereneViewer
  * Version: 1.0
  * Copyright: (C) 2011-14 Dr.Sc.KAWAMOTO,Takuji (Ext)
  * Create: 2014/09/06 08:04:09 JST
@@ -27,7 +27,7 @@ private:
 public:
   ConnectedBoundary(CarbonAllotrope* ca, const List<Carbon>& carbon_list);
   ~ConnectedBoundary();
-  Ring& operator = (const ConnectedBoundary& that); /* dont use */
+  ConnectedBoundary& operator = (const ConnectedBoundary& you); /* dont use */
 
   // type converters
 

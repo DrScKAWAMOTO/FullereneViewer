@@ -53,10 +53,10 @@ public:
 
   // comparators
 public:
-  bool operator <= (const SymmetryAxis& that) const;
-  bool operator >= (const SymmetryAxis& that) const;
-  bool operator == (const SymmetryAxis& that) const;
-  bool operator != (const SymmetryAxis& that) const;
+  bool operator <= (const SymmetryAxis& you) const;
+  bool operator >= (const SymmetryAxis& you) const;
+  bool operator == (const SymmetryAxis& you) const;
+  bool operator != (const SymmetryAxis& you) const;
 
   // math operators
 

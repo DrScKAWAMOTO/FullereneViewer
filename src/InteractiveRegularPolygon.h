@@ -28,7 +28,7 @@ public:
                             double radius_length, int n);
   virtual ~InteractiveRegularPolygon();
   InteractiveRegularPolygon&
-  operator = (const InteractiveRegularPolygon& that); /* dont use */
+  operator = (const InteractiveRegularPolygon& you); /* dont use */
 
   // interactions
 

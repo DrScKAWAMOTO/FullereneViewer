@@ -24,7 +24,7 @@ protected:
 public:
   InteractivePlane(Interactives* interactives, int sequence_no);
   virtual ~InteractivePlane();
-  InteractivePlane& operator = (const InteractivePlane& that); /* dont use */
+  InteractivePlane& operator = (const InteractivePlane& you); /* dont use */
 
   // interactions
 

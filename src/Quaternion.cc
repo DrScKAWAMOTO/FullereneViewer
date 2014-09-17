@@ -51,8 +51,8 @@ Quaternion::Quaternion(Vector3 from, Vector3 to)
   p_initialize_from_axis_and_degree(axis, degree);
 }
 
-Quaternion::Quaternion(const Vector3& that)
-  : p_r(0.0), p_x(that.x()), p_y(that.y()), p_z(that.z())
+Quaternion::Quaternion(const Vector3& you)
+  : p_r(0.0), p_x(you.x()), p_y(you.y()), p_z(you.z())
 {
 }
 
@@ -61,14 +61,14 @@ Quaternion::Quaternion(const Vector3& axis, double degree)
   p_initialize_from_axis_and_degree(axis, degree);
 }
 
-void Quaternion::operator = (const Quaternion& that)
+void Quaternion::operator = (const Quaternion& you)
 {
-  if (this != &that)
+  if (this != &you)
     {
-      p_r = that.p_r;
-      p_x = that.p_x;
-      p_y = that.p_y;
-      p_z = that.p_z;
+      p_r = you.p_r;
+      p_x = you.p_x;
+      p_y = you.p_y;
+      p_z = you.p_z;
     }
 }
 

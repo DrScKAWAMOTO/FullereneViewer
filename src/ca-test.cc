@@ -9,142 +9,82 @@
 #include <stdio.h>
 #include <string.h>
 #include "Version.h"
-#include "Utils.h"
+#include "Object.h"
+#include "Queue.h"
 
-enum Type {
-  TYPE_TERMINATE = 1,
-  TYPE_PENTAGON = 2,
-  TYPE_HEXAGON = 3,
-};
-
-class Test {
-private:
-  int p_length;
-  char p_array[8];
-
+class Test : public Object {
 public:
-  Test();
-  ~Test();
-  bool next();
-  void print() const;
-  void compressed(char* buffer) const;
-  void compressed_print() const;
+  int p_value;
+  Test(int value) : p_value(value) { }
+  ~Test() { }
+  void print() const { printf("%d\n", p_value); }
 };
 
-Test::Test()
-  : p_length(2)
+void print(Queue<Test>& queue)
 {
-  p_array[0] = TYPE_PENTAGON;
-  p_array[1] = TYPE_TERMINATE;
-}
-
-Test::~Test()
-{
-}
-
-bool Test::next()
-{
-  if (p_length == 8)
-    p_array[p_length - 1] = TYPE_HEXAGON;
-
-  while (p_array[p_length - 1] == TYPE_HEXAGON)
+  while (1)
     {
-      if (p_length == 1)
-        return false;
-      --p_length;
-    }
-  if (p_array[p_length - 1] == TYPE_PENTAGON)
-    {
-      p_array[p_length - 1] = TYPE_HEXAGON;
-      ++p_length;
-      p_array[p_length - 1] = TYPE_TERMINATE;
-      return true;
-    }
-  if (p_array[p_length - 1] == TYPE_TERMINATE)
-    {
-      p_array[p_length - 1] = TYPE_PENTAGON;
-      ++p_length;
-      p_array[p_length - 1] = TYPE_TERMINATE;
-      return true;
-    }
-  return false;
-}
-
-void Test::print() const
-{
-  printf("C100 (NoA=10) T10,0,3-");
-  for (int i = 0; i < p_length; ++i)
-    {
-      if (p_array[i] == TYPE_PENTAGON)
-        printf("5");
-      else if (p_array[i] == TYPE_HEXAGON)
-        printf("6");
-      else if (p_array[i] == TYPE_TERMINATE)
-        printf("\n");
+      Test* ptr = queue.dequeue();
+      if (!ptr)
+        return;
+      ptr->print();
     }
 }
 
-void Test::compressed(char* buffer) const
+static void fill_test(Queue<Test>& queue, int& given_value, int n)
 {
-  sprintf(buffer, "C100 (NoA=10) T10,0,3-");
-  char *ptr = buffer + strlen(buffer);
-  for (int i = 0; i < p_length; ++i)
-    {
-      int No;
-      if (p_array[i] == TYPE_PENTAGON)
-        No = 5;
-      else if (p_array[i] == TYPE_HEXAGON)
-        No = 6;
-      else
-        break;
-      int length = 0;
-      int j;
-      for (j = i; j < p_length; ++j)
-        {
-          if (p_array[i] == p_array[j])
-            ++length;
-          else
-            break;
-        }
-      No_to_digits10x10(No, ptr);
-      No_to_digits26x7(length, ptr);
-      i = j - 1;
-    }
-  *ptr++ = '\0';
+  for (int i = 0; i < n; ++i)
+    queue.enqueue(new Test(given_value++));
 }
 
-void Test::compressed_print() const
+static void check_test(Queue<Test>& queue, int& expect_value, int n)
 {
-  char buffer[100];
-  compressed(buffer);
-  fprintf(stdout, "%s\n", buffer);
+  for (int i = 0; i < n; ++i)
+    {
+      Test* work = queue.dequeue();
+      assert(work->p_value == expect_value++);
+    }
+  assert(queue.dequeue() == 0);
+}
+
+static void test_1_sub(int pre, int n, int count)
+{
+  Queue<Test> foo;
+  int given_value = 0;
+  int expect_value = 0;
+  fill_test(foo, given_value, pre);
+  check_test(foo, expect_value, pre);
+  for (int i = 0; i < count; ++i)
+    {
+      fill_test(foo, given_value, n);
+      check_test(foo, expect_value, n);
+    }
+}
+
+static void test_1(int pre_max, int n_max, int count)
+{
+  for (int pre = 0; pre <= pre_max; ++pre)
+    for (int n = 0; n <= n_max; ++n)
+      test_1_sub(pre, n, count);
 }
 
 static void usage(const char* arg0)
 {
-  fprintf(stderr, "usage: %s [options] [generator-formula]\n", arg0);
-  fprintf(stderr, "    generator-formula .... if specified, list up from this formula,\n");
+  fprintf(stderr, "usage: %s [options]\n", arg0);
   fprintf(stderr, "options:\n");
-  fprintf(stderr, "    --symmetric=[num] .... ignored,\n");
-  fprintf(stderr, "    --ordinary=[num] ..... ignored,\n");
-  fprintf(stderr, "    --tube=[num] ......... ignored,\n");
-  fprintf(stderr, "    --close=[num] ........ ignored,\n");
   fprintf(stderr, "    -v (--version) ....... show version,\n");
-  fprintf(stderr, "    -h ................... show this message.\n");
+  fprintf(stderr, "    -h (--help) .......... show this message.\n");
   exit(0);
 }
 
 int main(int argc, char *argv[])
 {
   const char* arg0 = argv[0];
-  const char* generator_formula = 0;
-  if (argc == 1)
-    usage(arg0);
   argc--;
   argv++;
   while (argc > 0)
     {
-      if (strcmp(argv[0], "-h") == 0)
+      if ((strcmp(argv[0], "-h") == 0) || (strcmp(argv[0], "--help") == 0))
         {
           usage(arg0);
         }
@@ -153,39 +93,11 @@ int main(int argc, char *argv[])
           print_version("ca-test");
           exit(0);
         }
-      else if (strncmp(argv[0], "-", 1) == 0)
-        {
-          argc--;
-          argv++;
-        }
-      else if (!generator_formula)
-        {
-          generator_formula = argv[0];
-          argc--;
-          argv++;
-        }
       else
         usage(arg0);
     }
-  if (!generator_formula)
-    usage(arg0);
 
-  Test test;
-  bool start = false;
-  while (1)
-    {
-      char buffer[100];
-      test.compressed(buffer);
-      if (start == false)
-        {
-          if (strcmp(buffer + 14, generator_formula) == 0)
-            start = true;
-        }
-      if (start)
-        fprintf(stdout, "%s\n", buffer);
-      if (test.next() == false)
-        return 0;
-    }
+  test_1(9, 11, 100);
   return 0;
 }
 

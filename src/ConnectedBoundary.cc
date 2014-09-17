@@ -1,8 +1,7 @@
 /*
- * Project: CarbonAllotrope
+ * Project: FullereneViewer
  * Version: 1.0
- * Copyright: (C) 2014 Dr.Sc.KAWAMOTO,Takuji (Ext)
- * Source: $Source$
+ * Copyright: (C) 2011-14 Dr.Sc.KAWAMOTO,Takuji (Ext)
  * Create: 2014/09/06 08:28:42 JST
  */
 

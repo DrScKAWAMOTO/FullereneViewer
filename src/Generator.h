@@ -8,6 +8,8 @@
 #ifndef __GENERATOR_H__
 #define __GENERATOR_H__
 
+#include "Object.h"
+
 enum GeneratorType {
   GENERATOR_TYPE_SYMMETRIC = 1,
   GENERATOR_TYPE_TUBE = 2,
@@ -15,7 +17,13 @@ enum GeneratorType {
   GENERATOR_TYPE_ILLEGAL = 4,
 };
 
-class Generator {
+enum GeneratorState {
+  GENERATOR_STATE_START_SPECIFIED = 1,
+  GENERATOR_STATE_START_FROM_MINIMUM = 2,
+  GENERATOR_STATE_RUNNING = 3,
+};
+
+class Generator : public Object {
   // friend classes & functions
 
   // members
@@ -25,8 +33,9 @@ private:
   int p_n;
   int p_m;
   int p_h;
-  const int p_minimum_polygons;
+  int p_minimum_polygons;
   int p_maximum_vertices_of_polygons;
+  GeneratorState p_state;
   int p_array_length;
   int p_history_length;
   int p_history_offset;
@@ -43,20 +52,25 @@ public:
   Generator(int n, int m, int h, int maximum_vertices_of_polygons = 6);
   Generator(const char* generator_formula, int maximum_vertices_of_polygons = 6);
   Generator(const Generator& you);
+  Generator& operator = (const Generator& you);
   ~Generator();
 
   // I/O
 
   // member accessing methods
 public:
-  bool next_pattern();
   GeneratorType type() const { return p_type; }
   int scrap_no() const { return p_scrap_no; }
   int n() const { return p_n; }
   int m() const { return p_m; }
   int h() const { return p_h; }
-  int glow();
+  int glow_step();
   int history();
+  bool is_there_next_branch() const;
+  void next_branch();
+  bool next_tree();
+  bool next_by_rollback();
+  void initialize_next_sequences();
   void get_generator_formula(char* buffer, int length);
 
 };

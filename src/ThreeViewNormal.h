@@ -27,7 +27,7 @@ private:
 public:
   ThreeViewNormal(CarbonAllotrope* ca, int nth);
   virtual ~ThreeViewNormal();
-  Bond& operator = (const ThreeViewNormal& that); /* dont use */
+  ThreeViewNormal& operator = (const ThreeViewNormal& you); /* dont use */
 
   // interactions
 public:

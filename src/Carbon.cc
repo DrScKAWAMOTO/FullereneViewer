@@ -10,6 +10,7 @@
 #include <float.h>
 #include "Config.h"
 #include "Carbon.h"
+#include "Queue.h"
 #include "CarbonAllotrope.h"
 #include "Representation.h"
 #include "Automorphism.h"
@@ -52,6 +53,47 @@ Carbon::~Carbon()
     p_ring_12 = 0;
   if (p_ring_20)
     p_ring_20 = 0;
+}
+
+void Carbon::copy_from(const CarbonAllotrope* ca, const Carbon* you)
+{
+  assert(sequence_no() == you->sequence_no());
+  p_radius = you->p_radius;
+  p_color = you->p_color;
+  if (you->p_bond_0)
+    {
+      p_bond_0 = ca->get_bond_by_sequence_no(you->p_bond_0->sequence_no());
+      p_bond_0->link_up();
+    }
+  else
+    p_bond_0 = 0;
+  if (you->p_ring_01)
+    p_ring_01 = ca->get_ring_by_sequence_no(you->p_ring_01->sequence_no());
+  else
+    p_ring_01 = 0;
+  if (you->p_bond_1)
+    {
+      p_bond_1 = ca->get_bond_by_sequence_no(you->p_bond_1->sequence_no());
+      p_bond_1->link_up();
+    }
+  else
+    p_bond_1 = 0;
+  if (you->p_ring_12)
+    p_ring_12 = ca->get_ring_by_sequence_no(you->p_ring_12->sequence_no());
+  else
+    p_ring_12 = 0;
+  if (you->p_bond_2)
+    {
+      p_bond_2 = ca->get_bond_by_sequence_no(you->p_bond_2->sequence_no());
+      p_bond_2->link_up();
+    }
+  else
+    p_bond_2 = 0;
+  if (you->p_ring_20)
+    p_ring_20 = ca->get_ring_by_sequence_no(you->p_ring_20->sequence_no());
+  else
+    p_ring_20 = 0;
+  p_distance_to_set = you->p_distance_to_set;
 }
 
 bool Carbon::connect_to(CarbonAllotrope* ca, Carbon* carbon)
@@ -249,80 +291,41 @@ void Carbon::remove_ring(Ring* ring)
     }
 }
 
-bool Carbon::p_calculate_distance_plus()
+int Carbon::compare(const Carbon* you) const
 {
-  bool result = false;
+  return sequence_no() - you->sequence_no();
+}
+
+void Carbon::calculate_distance_around(Queue<Carbon>& operations)
+{
+  int distance = distance_to_set() + 1;
   if (p_bond_0)
     {
       Carbon* beyond = p_bond_0->get_carbon_beyond(this);
-      int distance = beyond->distance_to_set();
-      if (distance != INT_MAX)
-        distance++;
-      if (p_distance_to_set > distance)
+      if (beyond->p_distance_to_set == INT_MAX)
         {
-          result = true;
-          p_distance_to_set = distance;
+          beyond->p_distance_to_set = distance;
+          operations.enqueue(beyond);
         }
     }
   if (p_bond_1)
     {
       Carbon* beyond = p_bond_1->get_carbon_beyond(this);
-      int distance = beyond->distance_to_set();
-      if (distance != INT_MAX)
-        distance++;
-      if (p_distance_to_set > distance)
+      if (beyond->p_distance_to_set == INT_MAX)
         {
-          result = true;
-          p_distance_to_set = distance;
+          beyond->p_distance_to_set = distance;
+          operations.enqueue(beyond);
         }
     }
   if (p_bond_2)
     {
       Carbon* beyond = p_bond_2->get_carbon_beyond(this);
-      int distance = beyond->distance_to_set();
-      if (distance != INT_MAX)
-        distance++;
-      if (p_distance_to_set > distance)
+      if (beyond->p_distance_to_set == INT_MAX)
         {
-          result = true;
-          p_distance_to_set = distance;
+          beyond->p_distance_to_set = distance;
+          operations.enqueue(beyond);
         }
     }
-  return result;
-}
-
-bool Carbon::calculate_distance_to_pentagons()
-{
-  bool result = false;
-  int len = number_of_rings();
-  for (int i = 0; i < len; ++i)
-    {
-      Ring* r = get_ring(i);
-      if (r->number_of_carbons() != 5)
-        continue;
-      if (p_distance_to_set > 0)
-        result = true;
-      p_distance_to_set = 0;
-      return result;
-    }
-  return p_calculate_distance_plus();
-}
-
-bool Carbon::calculate_distance_to_set(List<Carbon>& set)
-{
-  bool result = false;
-  int len = set.length();
-  for (int i = 0; i < len; ++i)
-    {
-      if (set[i] == this)
-        {
-          if (p_distance_to_set > 0)
-            result = true;
-          p_distance_to_set = 0;
-          return result;
-        }
-    }
-  return p_calculate_distance_plus();
 }
 
 void Carbon::reset_distance_to_set()
@@ -992,7 +995,7 @@ Carbon::concave_boundary_segment(int n_members, int& length, Bond*& end_bond)
       if (bond == bond_connection)
         {
           end_bond = bond;
-#ifdef DEBUG_CARBON_ALLOTROPE_CONSTRUCTION
+#if defined(DEBUG_CARBON_ALLOTROPE_CONSTRUCTION)
           printf("Closed concave boundary segment (length=%d) ...C%d...\n",
                  length, carbon->sequence_no());
 #endif
@@ -1029,7 +1032,7 @@ Carbon::concave_boundary_segment(int n_members, int& length, Bond*& end_bond)
         break;
       if (more_carbon == end_carbon)
         {
-#ifdef DEBUG_CARBON_ALLOTROPE_CONSTRUCTION
+#if defined(DEBUG_CARBON_ALLOTROPE_CONSTRUCTION)
           printf("Only one concave and only one convex boundary segment (length=%d) "
                  "C%d-...-C%d\n",
                  length, end_carbon->sequence_no(), carbon->sequence_no());
@@ -1039,7 +1042,7 @@ Carbon::concave_boundary_segment(int n_members, int& length, Bond*& end_bond)
       more_bond = more_carbon->boundary_bond(more_bond);
       more_carbon = more_bond->get_carbon_beyond(more_carbon);
     }
-#ifdef DEBUG_CARBON_ALLOTROPE_CONSTRUCTION
+#if defined(DEBUG_CARBON_ALLOTROPE_CONSTRUCTION)
   printf("Open concave boundary segment (length=%d) C%d-...-C%d\n",
          length, end_carbon->sequence_no(), carbon->sequence_no());
 #endif

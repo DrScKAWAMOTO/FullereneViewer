@@ -32,12 +32,13 @@ private:
 public:
   Representation();
   virtual ~Representation();
-  Representation& operator = (const Representation& that); /* dont use */
+  Representation& operator = (const Representation& you); /* dont use */
 
   // comparators
 public:
-  bool operator == (const Representation& that) const;
-  bool operator == (const List<Representation>& that) const;
+  bool operator == (const Representation& you) const;
+  bool operator == (const List<Representation>& you) const;
+  int compare(const Representation* you) const;
 
   // I/O
 public:
@@ -50,6 +51,7 @@ public:
   RepresentationInfo* get_info(int index) const;
   void set_step(char step);
   void finish_step();
+  const char* get_array() const { return p_array; }
 
 };
 

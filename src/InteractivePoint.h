@@ -26,7 +26,7 @@ protected:
 public:
   InteractivePoint(Interactives* interactives, int sequence_no);
   virtual ~InteractivePoint();
-  InteractivePoint& operator = (const InteractivePoint& that); /* dont use */
+  InteractivePoint& operator = (const InteractivePoint& you); /* dont use */
 
   // interactions
 

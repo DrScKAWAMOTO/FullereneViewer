@@ -21,7 +21,7 @@ public:
 public:
   RepresentationInfo();
   virtual ~RepresentationInfo();
-  RepresentationInfo& operator = (const RepresentationInfo& that); /* dont use */
+  RepresentationInfo& operator = (const RepresentationInfo& you); /* dont use */
 
 };
 

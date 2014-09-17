@@ -31,7 +31,9 @@
 /src/ca-char
 /src/ca-cmp
 /src/ca-generator
+/src/ca-gentest
 /src/ca-loop
+/src/ca-mirror
 /src/ca-modeling
 /src/ca-sort
 /src/ca-test
@@ -48,6 +50,7 @@
 /src/Qt/FullereneViewer.pro.user
 /src/build-*
 /src/Depend.mk
+*.gen
 
 # Project Specific extra files
 archive.name

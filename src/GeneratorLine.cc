@@ -110,7 +110,7 @@ GeneratorLine::~GeneratorLine()
     delete[] p_line;
 }
 
-int GeneratorLine::compare(const GeneratorLine* that) const
+int GeneratorLine::compare(const GeneratorLine* you) const
 {
   int mynumber;
   int myNoA;
@@ -123,8 +123,8 @@ int GeneratorLine::compare(const GeneratorLine* that) const
   bool yourT;
   bool yourA;
   assert(p_get_number_NoA_isS_isT_and_isA(mynumber, myNoA, myS, myT, myA));
-  assert(that->p_get_number_NoA_isS_isT_and_isA(yournumber, yourNoA,
-                                                yourS, yourT, yourA));
+  assert(you->p_get_number_NoA_isS_isT_and_isA(yournumber, yourNoA,
+                                               yourS, yourT, yourA));
   if (mynumber != yournumber)
     return mynumber - yournumber;
   if (myNoA != yourNoA)
@@ -142,7 +142,7 @@ int GeneratorLine::compare(const GeneratorLine* that) const
       int myn, mym, myh;
       int yourn, yourm, yourh;
       p_get_n_m_and_h(myn, mym, myh);
-      that->p_get_n_m_and_h(yourn, yourm, yourh);
+      you->p_get_n_m_and_h(yourn, yourm, yourh);
       if (myn != yourn)
         return myn - yourn;
       if (mym != yourm)
@@ -155,17 +155,16 @@ int GeneratorLine::compare(const GeneratorLine* that) const
       int myscrap;
       int yourscrap;
       assert(p_get_scrap(myscrap));
-      assert(that->p_get_scrap(yourscrap));
+      assert(you->p_get_scrap(yourscrap));
       if (myscrap != yourscrap)
         return myscrap - yourscrap;
     }
-#if 0
+  int result = compare_generator_formula(p_line, you->p_line);
+  if (result != 0)
+    return result;
   int mySequenceNo = sequence_no();
-  int yourSequenceNo = that->sequence_no();
+  int yourSequenceNo = you->sequence_no();
   return mySequenceNo - yourSequenceNo;
-#else
-  return compare_generator_formula(p_line, that->p_line);
-#endif
 }
 
 void GeneratorLine::print() const

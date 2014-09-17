@@ -23,7 +23,7 @@ public:
 public:
   Center() : location(), fixed(false), fixed_location(), last_location(), next_force() { }
   ~Center() { }
-  Center& operator = (const Center& that); /* dont use */
+  Center& operator = (const Center& you); /* dont use */
 
   // stability
   bool stabled() const { return last_location == location; }

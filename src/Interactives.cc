@@ -12,6 +12,8 @@
 #include "DebugMemory.h"
 #include "Debug.h"
 
+bool Interactives::s_need_simulation = true;
+
 void Interactives::p_calculate_interaction(LocationForceType force_type, double delta,
                                            Interactive* one, int one_index,
                                            Interactive* the_other, int the_other_index)
@@ -93,7 +95,8 @@ void Interactives::p_register_interaction(OriginalForceType force_type, Interact
 
 void Interactives::register_interactive(Interactive* interactive)
 {
-  p_interactives.add(interactive);
+  if (s_need_simulation)
+    p_interactives.add(interactive);
 }
 
 bool Interactives::operate_interactions(double delta)

@@ -20,17 +20,17 @@ template <class T> class SortedList : public List<T> {
   // constructors & the destructor
 public:
   SortedList() : List<T>() { }
-  SortedList(const SortedList<T>& that) : List<T>()
+  SortedList(const SortedList<T>& you) : List<T>()
   {
-    p_add(that);
+    List<T>::add(you);
   }
   ~SortedList() { }
-  SortedList<T>& operator = (const SortedList<T>& that)
+  SortedList<T>& operator = (const SortedList<T>& you)
   {
-    if (this != &that)
+    if (this != &you)
       {
         List<T>::p_clean();
-        List<T>::p_add(that);
+        List<T>::add(you);
       }
     return *this;
   }
@@ -47,7 +47,7 @@ public:
 
   // member accessing methods
 public:
-  virtual void add(T* element)
+  void add(T* element)
   {
     List<T>::p_make_room();
     int min = -1;

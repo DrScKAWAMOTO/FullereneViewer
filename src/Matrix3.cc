@@ -30,39 +30,39 @@ Matrix3::Matrix3(double* array)
 {
 }
 
-Matrix3::Matrix3(const Matrix3& that)
-  : p_xx(that.p_xx), p_xy(that.p_xy), p_xz(that.p_xz),
-    p_yx(that.p_yx), p_yy(that.p_yy), p_yz(that.p_yz),
-    p_zx(that.p_zx), p_zy(that.p_zy), p_zz(that.p_zz)
+Matrix3::Matrix3(const Matrix3& you)
+  : p_xx(you.p_xx), p_xy(you.p_xy), p_xz(you.p_xz),
+    p_yx(you.p_yx), p_yy(you.p_yy), p_yz(you.p_yz),
+    p_zx(you.p_zx), p_zy(you.p_zy), p_zz(you.p_zz)
 {
 }
 
-Matrix3::Matrix3(const Quaternion& that)
+Matrix3::Matrix3(const Quaternion& you)
 {
-  p_xx = 1.0 - 2.0 * (that.p_y * that.p_y + that.p_z * that.p_z);
-  p_yx = 2.0 * (that.p_y * that.p_x + that.p_r * that.p_z);
-  p_zx = 2.0 * (that.p_z * that.p_x - that.p_r * that.p_y);
-  p_xy = 2.0 * (that.p_x * that.p_y - that.p_r * that.p_z);
-  p_yy = 1.0 - 2.0 * (that.p_z * that.p_z + that.p_x * that.p_x);
-  p_zy = 2.0 * (that.p_z * that.p_y + that.p_r * that.p_x);
-  p_xz = 2.0 * (that.p_x * that.p_z + that.p_r * that.p_y);
-  p_yz = 2.0 * (that.p_y * that.p_z - that.p_r * that.p_x);
-  p_zz = 1.0 - 2.0 * (that.p_x * that.p_x + that.p_y * that.p_y);
+  p_xx = 1.0 - 2.0 * (you.p_y * you.p_y + you.p_z * you.p_z);
+  p_yx = 2.0 * (you.p_y * you.p_x + you.p_r * you.p_z);
+  p_zx = 2.0 * (you.p_z * you.p_x - you.p_r * you.p_y);
+  p_xy = 2.0 * (you.p_x * you.p_y - you.p_r * you.p_z);
+  p_yy = 1.0 - 2.0 * (you.p_z * you.p_z + you.p_x * you.p_x);
+  p_zy = 2.0 * (you.p_z * you.p_y + you.p_r * you.p_x);
+  p_xz = 2.0 * (you.p_x * you.p_z + you.p_r * you.p_y);
+  p_yz = 2.0 * (you.p_y * you.p_z - you.p_r * you.p_x);
+  p_zz = 1.0 - 2.0 * (you.p_x * you.p_x + you.p_y * you.p_y);
 }
 
-void Matrix3::operator = (const Matrix3& that)
+void Matrix3::operator = (const Matrix3& you)
 {
-  if (this != &that)
+  if (this != &you)
     {
-      p_xx = that.p_xx;
-      p_xy = that.p_xy;
-      p_xz = that.p_xz;
-      p_yx = that.p_yx;
-      p_yy = that.p_yy;
-      p_yz = that.p_yz;
-      p_zx = that.p_zx;
-      p_zy = that.p_zy;
-      p_zz = that.p_zz;
+      p_xx = you.p_xx;
+      p_xy = you.p_xy;
+      p_xz = you.p_xz;
+      p_yx = you.p_yx;
+      p_yy = you.p_yy;
+      p_yz = you.p_yz;
+      p_zx = you.p_zx;
+      p_zy = you.p_zy;
+      p_zz = you.p_zz;
     }
 }
 
@@ -131,9 +131,9 @@ const double* Matrix3::to_array33() const
   return array44;
 }
 
-bool Matrix3::operator == (const Matrix3& that) const
+bool Matrix3::operator == (const Matrix3& you) const
 {
-  Matrix3 sub = *this - that;
+  Matrix3 sub = *this - you;
   return (sub.abs() <= FLT_EPSILON);
 }
 

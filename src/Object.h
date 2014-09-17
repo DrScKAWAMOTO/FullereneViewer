@@ -22,9 +22,9 @@ private:
   // constructors & the destructor
 public:
   Object(int sequence_no = 0);
-  Object(const Object& that);
+  Object(const Object& you);
   virtual ~Object();
-  Object& operator = (const Object& that); /* dont use */
+  Object& operator = (const Object& you); /* dont use */
 
   // type converters
 

@@ -39,6 +39,12 @@
 /* 値は 1 から 99 までの整数値 */
 #define CONFIG_VIEWER_CPU_USAGE_TARGET_RATE 80
 
+/* ca-generator / ca-uniq / NoA計算で、鏡像もリストアップするかどうか。 */
+/* 鏡像もリストアップする＝＝鏡像は同型とみなさない。 */
+/* 以下にコメントをつけると、鏡像を同型とみなさない＝＝鏡像をリストアップする。 */
+/* 以下のコメントを外すと、鏡像を同型とみなす＝＝鏡像はリストアップしない。 */
+// #define CONFIG_REFLECTED_IMAGE_IS_REGARDED_AS_ISOMORPHIC 1
+
 #endif /* __CONFIG_H__ */
 
 /* Local Variables:	*/

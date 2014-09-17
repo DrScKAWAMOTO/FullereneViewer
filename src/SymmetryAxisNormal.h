@@ -27,7 +27,7 @@ private:
 public:
   SymmetryAxisNormal(CarbonAllotrope* ca, SymmetryAxis* axis);
   virtual ~SymmetryAxisNormal();
-  Bond& operator = (const SymmetryAxisNormal& that); /* dont use */
+  Bond& operator = (const SymmetryAxisNormal& you); /* dont use */
 
   // interactions
 public:

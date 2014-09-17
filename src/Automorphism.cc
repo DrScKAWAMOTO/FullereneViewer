@@ -124,13 +124,13 @@ bool operator == (const Automorphism& one, const Automorphism& the_other)
   return true;
 }
 
-Automorphism* Automorphism::composition(const Automorphism* that) const
+Automorphism* Automorphism::composition(const Automorphism* you) const
 {
-  assert(get_carbon_allotrope() == that->get_carbon_allotrope());
+  assert(get_carbon_allotrope() == you->get_carbon_allotrope());
   int len = number_of_carbons();
   Automorphism* result = new Automorphism(get_carbon_allotrope());
   for (int i = 0; i < len; ++i)
-    result->initialize(i + 1, (*this)((*that)(i + 1)));
+    result->initialize(i + 1, (*this)((*you)(i + 1)));
   return result;
 }
 

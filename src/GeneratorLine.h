@@ -35,7 +35,7 @@ public:
 
   // comparators
 public:
-  int compare(const GeneratorLine* that) const;
+  int compare(const GeneratorLine* you) const;
 
   // math operators
 

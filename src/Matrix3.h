@@ -28,11 +28,11 @@ public:
           double yx = 0.0, double yy = 1.0, double yz = 0.0,
           double zx = 0.0, double zy = 0.0, double zz = 1.0);
   Matrix3(double* array);
-  Matrix3(const Matrix3& that);
-  Matrix3(const Quaternion& that);
+  Matrix3(const Matrix3& you);
+  Matrix3(const Quaternion& you);
   // Matrix3(Q1 * Q2) = Matrix3(Q1) * Matrix3(Q2)
   // V * Matrix3(Q) = Vector3(Q.conjugation() * Quaternion(V) * Q)
-  void operator = (const Matrix3& that);
+  void operator = (const Matrix3& you);
   ~Matrix3();
   void randomize();
 
@@ -41,7 +41,7 @@ public:
   const double* to_array33() const;
 
   // comparators
-  bool operator == (const Matrix3& that) const;
+  bool operator == (const Matrix3& you) const;
 
   // math operators
   friend Vector3 operator * (const Vector3& a, const Matrix3& b);

@@ -23,35 +23,34 @@ win32 {
 }
 
 # Input
-HEADERS += ../Automorphism.h \
-           ../Automorphisms.h ../AvoidBugs.h ../Bond.h ../Carbon.h ../CarbonAllotrope.h \
-           ../Center.h ../Configuration.h ../Config.h \
-           ../Debug.h ../DebugMemory.h ../DistanceMatrix.h ../ConnectedBoundary.h \
-           ../DistanceSummaryLine.h ../DistanceVector.h ../ErrorCode.h ../Fullerene.h \
-           ../FullereneCharacteristic.h ../FullereneMenu.h ../Fullerenes.h \
-           ../Generator.h ../GeneratorLine.h ../Interactive.h ../InteractiveLine.h \
-           ../InteractiveOperation.h ../InteractivePlane.h ../InteractivePoint.h \
-           ../InteractiveRegularPolygon.h ../Interactives.h ../List.h \
-           ../Matrix3.h ../MenuEntry.h ../Normal.h ../Object.h ../OpenGLUtil.h \
-           ../Pattern.h ../Posture.h ../Quaternion.h ../Radius.h ../Random.h \
-           ../Representation.h ../RepresentationInfo.h ../Representations.h \
-           ../Ring.h ../SortedList.h ../Statistics.h ../SymmetryAxis.h \
-           ../SymmetryAxisNormal.h ../ThreeViewNormal.h ../Utils.h ../Vector3.h \
+HEADERS += ../Automorphism.h ../Automorphisms.h ../AvoidBugs.h ../Bond.h \
+           ../BoundaryCarbons.h ../Carbon.h ../CarbonAllotrope.h ../Center.h \
+           ../Configuration.h ../Config.h ../Debug.h ../DebugMemory.h \
+           ../DistanceMatrix.h ../ConnectedBoundary.h ../DistanceVector.h ../ErrorCode.h \
+           ../Fullerene.h ../FullereneCharacteristic.h ../FullereneMenu.h ../Generator.h \
+           ../Interactive.h ../InteractiveLine.h ../InteractiveOperation.h \
+           ../InteractivePlane.h ../InteractivePoint.h ../InteractiveRegularPolygon.h \
+           ../Interactives.h ../List.h ../Set.h ../Matrix3.h ../MenuEntry.h ../Normal.h \
+           ../Object.h ../OpenGLUtil.h ../Pattern.h ../Posture.h ../Quaternion.h \
+           ../Radius.h ../Random.h ../Representation.h ../RepresentationInfo.h \
+           ../Representations.h ../Ring.h ../SortedList.h ../Statistics.h \
+           ../SymmetryAxis.h ../SymmetryAxisNormal.h ../ThreeViewNormal.h ../Utils.h \
+           ../Vector3.h ../Version.h \
            QtFullereneMenu.h ConfigurationDialog.h MainWindow.h Guruguru.h \
            HelpBrowser.h AboutWindow.h GeneratorFormulaDialog.h
 FORMS += MainWindow.ui ConfigurationDialog.ui AboutWindow.ui GeneratorFormulaDialog.ui
-SOURCES += ../Automorphism.cc ../Automorphisms.cc ../Bond.cc ../Carbon.cc \
-           ../CarbonAllotrope.cc ../Configuration.cc \
-           ../DebugMemory.cc ../DistanceMatrix.cc ../ConnectedBoundary.cc \
-           ../DistanceSummaryLine.cc ../DistanceVector.cc ../ErrorCode.cc \
-           ../Fullerene.cc ../FullereneCharacteristic.cc ../Fullerenes.cc \
-           ../Generator.cc ../GeneratorLine.cc ../Interactive.cc ../InteractiveLine.cc \
-           ../InteractiveOperation.cc ../InteractivePlane.cc ../InteractivePoint.cc \
-           ../InteractiveRegularPolygon.cc ../Interactives.cc ../Matrix3.cc \
-           ../Object.cc ../OpenGLUtil.cc ../Pattern.cc ../Quaternion.cc ../Random.cc \
-           ../Representation.cc ../RepresentationInfo.cc ../Representations.cc \
-           ../Ring.cc ../Statistics.cc ../SymmetryAxis.cc ../SymmetryAxisNormal.cc \
-           ../ThreeViewNormal.cc ../Utils.cc ../Vector3.cc \
+SOURCES += ../Automorphism.cc ../Automorphisms.cc ../Bond.cc ../BoundaryCarbons.cc \
+           ../Carbon.cc ../CarbonAllotrope.cc ../Configuration.cc \
+           ../ConnectedBoundary.cc ../DebugMemory.cc ../DistanceVector.cc \
+           ../DistanceMatrix.cc ../ErrorCode.cc ../Fullerene.cc \
+           ../FullereneCharacteristic.cc ../Generator.cc ../Interactive.cc \
+           ../InteractiveLine.cc ../InteractiveOperation.cc ../InteractivePlane.cc \
+           ../InteractivePoint.cc ../InteractiveRegularPolygon.cc ../Interactives.cc \
+           ../Matrix3.cc ../Object.cc ../OpenGLUtil.cc ../Pattern.cc ../Quaternion.cc \
+           ../Random.cc ../Representation.cc ../RepresentationInfo.cc \
+           ../Representations.cc ../Ring.cc ../Statistics.cc ../SymmetryAxis.cc \
+           ../SymmetryAxisNormal.cc ../ThreeViewNormal.cc ../Utils.cc ../Vector3.cc \
+           ../Version.cc \
            QtFullereneMenu.cc ConfigurationDialog.cc main.cc MainWindow.cc Guruguru.cc \
            HelpBrowser.cc AboutWindow.cc GeneratorFormulaDialog.cc
 

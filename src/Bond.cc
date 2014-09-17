@@ -32,6 +32,20 @@ Bond::~Bond()
     }
 }
 
+void Bond::copy_from(const CarbonAllotrope* ca, const Bond* you)
+{
+  p_bond_radius = you->p_bond_radius;
+  p_bond_color = you->p_bond_color;
+  if (you->p_left)
+    p_left = ca->get_carbon_by_sequence_no(you->p_left->sequence_no());
+  else
+    p_left = 0;
+  if (you->p_right)
+    p_right = ca->get_carbon_by_sequence_no(you->p_right->sequence_no());
+  else
+    p_right = 0;
+}
+
 bool Bond::connect_to(Carbon* carbon)
 {
   if (!p_left)

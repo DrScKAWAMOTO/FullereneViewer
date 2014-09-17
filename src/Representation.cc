@@ -11,6 +11,7 @@
 #include <assert.h>
 #include "Representation.h"
 #include "DebugMemory.h"
+#include "Config.h"
 
 Representation::Representation()
   : p_last_char(0), p_last_count(0),
@@ -23,20 +24,31 @@ Representation::~Representation()
   delete[] p_array;
 }
 
-bool Representation::operator == (const Representation& that) const
+bool Representation::operator == (const Representation& you) const
 {
-  return (strcmp(p_array, that.p_array) == 0);
+  return (strcmp(p_array, you.p_array) == 0);
 }
 
-bool Representation::operator == (const List<Representation>& that) const
+bool Representation::operator == (const List<Representation>& you) const
 {
-  int len = that.length();
+  int len = you.length();
   for (int i = 0; i < len; ++i)
     {
-      if ((*this) == (*that[i]))
+      if ((*this) == (*you[i]))
         return true;
     }
   return false;
+}
+
+int Representation::compare(const Representation* you) const
+{
+#if ! defined(CONFIG_REFLECTED_IMAGE_IS_REGARDED_AS_ISOMORPHIC)
+  RepresentationInfo* my_info = get_info(0);
+  RepresentationInfo* your_info = you->get_info(0);
+  if (my_info->clockwise != your_info->clockwise)
+    return your_info->clockwise - my_info->clockwise;
+#endif
+  return strcmp(p_array, you->p_array);
 }
 
 void Representation::print() const

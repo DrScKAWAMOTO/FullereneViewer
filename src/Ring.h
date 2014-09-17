@@ -41,12 +41,14 @@ private:
 
   // constructors & the destructor
 public:
+  Ring(int number_of_carbons, CarbonAllotrope* ca); /* ring only but not carbons/bonds */
   Ring(CarbonAllotrope* ca, int number_of_carbons);
   Ring(CarbonAllotrope* ca, int number_of_carbons, Bond* bond_connection);
   Ring(CarbonAllotrope* ca, int number_of_carbons, Carbon* carbon_connection);
   Ring(CarbonAllotrope* ca, int number_of_carbons, const int* carbon_sequence_nos);
   virtual ~Ring();
-  Ring& operator = (const Ring& that); /* dont use */
+  Ring& operator = (const Ring& you); /* dont use */
+  void copy_from(const CarbonAllotrope* ca, const Ring* you);
 
   // distance
 public:

@@ -43,44 +43,44 @@ SymmetryAxis::~SymmetryAxis()
     p_generator->link_down();
 }
 
-bool SymmetryAxis::operator <= (const SymmetryAxis& that) const
+bool SymmetryAxis::operator <= (const SymmetryAxis& you) const
 {
-  if (get_type() != that.get_type())
+  if (get_type() != you.get_type())
     return false;
-  if (((get_north_sequence_no() == that.get_north_sequence_no()) &&
-      (get_south_sequence_no() == that.get_south_sequence_no())) ||
-      ((get_north_sequence_no() == that.get_south_sequence_no()) &&
-      (get_south_sequence_no() == that.get_north_sequence_no())))
+  if (((get_north_sequence_no() == you.get_north_sequence_no()) &&
+      (get_south_sequence_no() == you.get_south_sequence_no())) ||
+      ((get_north_sequence_no() == you.get_south_sequence_no()) &&
+      (get_south_sequence_no() == you.get_north_sequence_no())))
     {
-      int div = that.get_order() / get_order();
-      assert(get_order() * div == that.get_order());
+      int div = you.get_order() / get_order();
+      assert(get_order() * div == you.get_order());
       return true;
     }
   else
     return false;
 }
 
-bool SymmetryAxis::operator >= (const SymmetryAxis& that) const
+bool SymmetryAxis::operator >= (const SymmetryAxis& you) const
 {
-  return that <= (*this);
+  return you <= (*this);
 }
 
-bool SymmetryAxis::operator == (const SymmetryAxis& that) const
+bool SymmetryAxis::operator == (const SymmetryAxis& you) const
 {
-  if (get_type() != that.get_type())
+  if (get_type() != you.get_type())
     return false;
-  if (((get_north_sequence_no() == that.get_north_sequence_no()) &&
-      (get_south_sequence_no() == that.get_south_sequence_no())) ||
-      ((get_north_sequence_no() == that.get_south_sequence_no()) &&
-      (get_south_sequence_no() == that.get_north_sequence_no())))
-    return (get_order() == that.get_order());
+  if (((get_north_sequence_no() == you.get_north_sequence_no()) &&
+      (get_south_sequence_no() == you.get_south_sequence_no())) ||
+      ((get_north_sequence_no() == you.get_south_sequence_no()) &&
+      (get_south_sequence_no() == you.get_north_sequence_no())))
+    return (get_order() == you.get_order());
   else
     return false;
 }
 
-bool SymmetryAxis::operator != (const SymmetryAxis& that) const
+bool SymmetryAxis::operator != (const SymmetryAxis& you) const
 {
-  return !((*this) == that);
+  return !((*this) == you);
 }
 
 void SymmetryAxis::print_out() const

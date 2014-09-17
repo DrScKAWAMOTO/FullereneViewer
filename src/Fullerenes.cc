@@ -7,177 +7,179 @@
 
 #include <limits.h>
 #include <assert.h>
+#include <stdio.h>
 #include "Fullerenes.h"
+#include "Fullerene.h"
 #include "Generator.h"
 #include "CarbonAllotrope.h"
+#include "BoundaryCarbons.h"
 #include "Representations.h"
 #include "Debug.h"
 #include "DebugMemory.h"
 
-Fullerenes::Fullerenes(const char* generator_formula, int maximum_number_of_carbons,
-                       bool symmetric, int maximum_vertices_of_polygons, int close)
+void Fullerenes::p_step_copy_branch(Generator& gen, int maximum_number_of_carbons,
+                                    bool symmetric, int close, bool shallow_copy)
 {
-  Fullerene::s_need_representations = true;
-  Generator gen = (generator_formula ?
-                   Generator(generator_formula, maximum_vertices_of_polygons) :
-                   Generator(symmetric, maximum_vertices_of_polygons));
-  char buffer[1024];
-  CarbonAllotrope* ca = new CarbonAllotrope();
-  bool is_tube = false;
-  if (gen.type() == GENERATOR_TYPE_TUBE)
-    {
-      ca->make_equator_by_chiral_characteristic(gen.n(), gen.m(), gen.h());
-      is_tube = true;
-    }
-  else
-    ca->make_symmetric_scrap(gen.scrap_no());
-  List<Carbon> boundary;
-  bool all_pentagons = true;
-  int number_of_rest_pentagons = 0;
-  if (!symmetric)
-    {
-      ca->list_connected_boundary_carbons(boundary);
-      all_pentagons = true;
-      if (is_tube)
-        number_of_rest_pentagons = gen.n() + gen.m();
-    }
-  int close_count = close;
-#ifdef DEBUG_ERRORS
-  printf("* START ****************************************\n");
-#endif
-#ifdef DEBUG_CARBON_ALLOTROPE_CONSTRUCTION
-  ca->print_detail();
-#endif
+  Stack<Step> step_stack;
+  step_stack.push(new Step(gen, maximum_number_of_carbons, symmetric, close));
+  bool need_rollback = false;
   while (1)
     {
-      int No = gen.glow();
-      int num;
-      ErrorCode result;
-      if (symmetric)
-        result =
-          ca->fill_n_polygons_around_carbons_closed_to_center_and_pentagons(No, num);
+      Step* top = step_stack.refer_top();
+      if (top == 0)
+        return;
+      if (shallow_copy && need_rollback)
+        top->rollback();
+      need_rollback = false;
+      top->next_branch();
+      Step* target;
+      if (top->is_there_next_branch())
+        {
+          if (shallow_copy)
+            target = top->shallow_copy();
+          else
+            target = top->deep_copy();
+          target->link_up();
+        }
       else
         {
-          if (No == 6)
-            number_of_rest_pentagons--;
-          else
-            all_pentagons = false;
-          int len = boundary.length();
-          int sequence_no = INT_MAX;
-          Carbon* carbon = 0;
-          for (int i = 0; i < len; ++i)
-            {
-              if (boundary[i]->number_of_rings() == 2)
-                {
-                  int seq = boundary[i]->sequence_no();
-                  if (seq < sequence_no)
-                    {
-                      carbon = boundary[i];
-                      sequence_no = seq;
-                    }
-                }
-            }
-          assert(carbon);
-          result = ca->fill_n_polygon_around_carbon(No, carbon, boundary);
+          target = top;
+          target->link_up();
+          step_stack.pop();
         }
-#ifdef DEBUG_CARBON_ALLOTROPE_CONSTRUCTION
-      ca->print_detail();
-#endif
-      int number_of_carbons = ca->number_of_carbons();
-      if (symmetric)
-        {
-          boundary.clean();
-          ca->list_connected_boundary_carbons(boundary);
+      Fullerene* fullerene;
+      if (target->construction_step(fullerene))
+        { /* step is continue */
+          step_stack.push(target);
         }
-      int number_of_carbons_in_boundary = boundary.length();
-      if (!symmetric && (number_of_carbons_in_boundary == 0))
+      else if (fullerene)
+        { /* step is succeeded */
+          add_fullerene(fullerene);
+          need_rollback = true;
+        }
+      else
+        { /* step is failed */
+          need_rollback = true;
+        }
+      target->link_down();
+    }
+}
+
+void Fullerenes::p_step_forward(Generator& gen, int maximum_number_of_carbons,
+                                bool symmetric, int close)
+{
+  Stack<Step> step_stack;
+  step_stack.push(new Step(gen, maximum_number_of_carbons, symmetric, close));
+  while (1)
+    {
+      Step* top = step_stack.refer_top();
+      if (top == 0)
+        return;
+      top->next_branch();
+      Step* target;
+      if (top->is_there_next_branch())
         {
-          if (--close_count > 0)
+          target = top->deep_copy();
+          target->link_up();
+        }
+      else
+        {
+          target = top;
+          target->link_up();
+          step_stack.pop();
+        }
+      Fullerene* fullerene;
+      if (target->construction_step(fullerene))
+        { /* step is continue */
+          step_stack.push(target);
+          target->link_down();
+        }
+      else if (fullerene)
+        { /* step is succeeded */
+          add_fullerene(fullerene);
+          target->link_down();
+        }
+      else
+        { /* step is failed */
+          target->link_down();
+        }
+    }
+}
+
+void Fullerenes::p_step_ei_yah(const char* generator_formula,
+                               int maximum_number_of_carbons,
+                               bool symmetric, int maximum_vertices_of_polygons,
+                               int close, StepAlgorithm step_algorithm)
+{
+  Generator gen;
+  if (generator_formula)
+    gen = Generator(generator_formula, maximum_vertices_of_polygons);
+  else
+    gen = Generator(symmetric, maximum_vertices_of_polygons);
+  gen.link_up(); /* delete されないよう保険 */
+  switch (step_algorithm)
+    {
+    case STEP_ALGORITHM_COPY_BRANCH:
+      p_step_copy_branch(gen, maximum_number_of_carbons, symmetric, close, false);
+      break;
+    case STEP_ALGORITHM_FORWARD:
+      p_step_forward(gen, maximum_number_of_carbons, symmetric, close);
+      break;
+    case STEP_ALGORITHM_BACKWARD:
+      p_step_copy_branch(gen, maximum_number_of_carbons, symmetric, close, true);
+      break;
+    }
+}
+
+Fullerenes::Fullerenes(const char* generator_formula, int maximum_number_of_carbons,
+                       bool symmetric, int maximum_vertices_of_polygons, int close,
+                       StepAlgorithm step_algorithm)
+{
+  Fullerene::s_need_representations = true;
+  Interactives::s_need_simulation = false;
+  p_step_ei_yah(generator_formula, maximum_number_of_carbons,
+                symmetric, maximum_vertices_of_polygons, close, step_algorithm);
+  if (symmetric)
+    {
+      int specified = 0;
+      if (generator_formula)
+        {
+          switch (generator_formula[1])
             {
-              boundary.clean();
-              ca->list_connected_boundary_carbons(boundary);
-              number_of_carbons_in_boundary = boundary.length();
-              all_pentagons = true;
-              if (is_tube)
-                number_of_rest_pentagons = gen.n() + gen.m();
+            case '1':
+            default:
+              specified = 1;
+              break;
+            case '2':
+              specified = 2;
+              break;
+            case '3':
+              specified = 3;
+              break;
+            case '4':
+              specified = 4;
+              break;
             }
         }
-      if ((result != ERROR_CODE_OK) ||
-          (number_of_carbons > maximum_number_of_carbons) ||
-          (is_tube && all_pentagons && (number_of_rest_pentagons <= 0)) ||
-          (number_of_carbons_in_boundary == 0))
+      else
+        specified = 1;
+      switch (specified)
         {
-#ifdef DEBUG_ERRORS
-          printf("************************************************\n");
-#endif
-          gen.get_generator_formula(buffer, 1024);
-          if (result != ERROR_CODE_OK)
-            {
-#ifdef DEBUG_ERRORS
-              printf("* ERROR %s ", buffer);
-              error_handler(result);
-              printf("************************************************\n");
-#endif
-              delete ca;
-            }
-          else if (number_of_carbons > maximum_number_of_carbons)
-            {
-#ifdef DEBUG_ERRORS
-              printf("* ERROR %s Too many carbons %d\n", buffer, number_of_carbons);
-              printf("************************************************\n");
-#endif
-              delete ca;
-            }
-          else if (is_tube && all_pentagons && (number_of_rest_pentagons <= 0))
-            {
-#ifdef DEBUG_ERRORS
-              printf("* ERROR %s Tube height is enlarged\n", buffer);
-              printf("************************************************\n");
-#endif
-              delete ca;
-            }
-          else if (number_of_carbons_in_boundary > 0)
-            {
-#ifdef DEBUG_ERRORS
-              printf("* ERROR %s Unknown error\n", buffer);
-              printf("************************************************\n");
-#endif
-              delete ca;
-            }
-          else
-            {
-#ifdef DEBUG_ERRORS
-              printf("* OK generated pattern = C%d %s\n",
-                     ca->number_of_carbons(), buffer);
-              printf("************************************************\n");
-#endif
-              Fullerene* fullerene = new Fullerene();
-              fullerene->set_carbon_allotrope(ca);
-              fullerene->set_generator_formula(buffer);
-              add_fullerene(fullerene);
-            }
-          if (!gen.next_pattern())
-            return;
-          ca = new CarbonAllotrope();
-          if (gen.type() == GENERATOR_TYPE_TUBE)
-            ca->make_equator_by_chiral_characteristic(gen.n(), gen.m(), gen.h());
-          else
-            ca->make_symmetric_scrap(gen.scrap_no());
-          if (!symmetric)
-            {
-              boundary.clean();
-              ca->list_connected_boundary_carbons(boundary);
-              all_pentagons = true;
-              if (is_tube)
-                number_of_rest_pentagons = gen.n() + gen.m();
-            }
-          close_count = close;
-#ifdef DEBUG_ERRORS
-          printf("* START ****************************************\n");
-#endif
-#ifdef DEBUG_CARBON_ALLOTROPE_CONSTRUCTION
-          ca->print_detail();
-#endif
+        case 1:
+          p_step_ei_yah("S2-", maximum_number_of_carbons, symmetric,
+                        maximum_vertices_of_polygons, close, step_algorithm);
+          /* continue to next case */
+        case 2:
+          p_step_ei_yah("S3-", maximum_number_of_carbons, symmetric,
+                        maximum_vertices_of_polygons, close, step_algorithm);
+          /* continue to next case */
+        case 3:
+          p_step_ei_yah("S4-", maximum_number_of_carbons, symmetric,
+                        maximum_vertices_of_polygons, close, step_algorithm);
+          /* continue to next case */
+        case 4:
+        default:
+          break;
         }
     }
 }
@@ -188,42 +190,36 @@ Fullerenes::~Fullerenes()
 
 void Fullerenes::add_fullerene(Fullerene* pat)
 {
-  int len = p_patterns.length();
-  for (int i = 0; i < len; ++i)
+  MinimumRepresentation* min_rep = new MinimumRepresentation(pat);
+  if (p_patterns.search_else_add(min_rep))
     {
-      Fullerene* pati = p_patterns[i];
-      if ((*pat) == (*pati))
-        {
-#ifdef DEBUG_ERRORS
-          printf("************************************************\n");
-          printf("* NG same pattern = C%d(number of automorphisms=%d) %s\n",
-                 pat->get_carbon_allotrope()->number_of_carbons(),
-                 pat->get_representations()->number_of_automorphisms(),
-                 pat->get_generator_formula());
-          printf("*    with pattern = C%d(number of automorphisms=%d) %s\n",
-                 pati->get_carbon_allotrope()->number_of_carbons(),
-                 pati->get_representations()->number_of_automorphisms(),
-                 pati->get_generator_formula());
-          printf("************************************************\n");
+#if defined(DEBUG_ERRORS)
+      printf("************************************************\n");
+      printf("* NG same pattern = C%d(number of automorphisms=%d) %s\n",
+             pat->get_carbon_allotrope()->number_of_carbons(),
+             pat->get_representations()->number_of_automorphisms(),
+             pat->get_generator_formula());
+      printf("************************************************\n");
 #endif
-          delete pat;
-          return;
-        }
+      delete min_rep;
     }
-#ifdef DEBUG_ERRORS
-  printf("************************************************\n");
-  printf("* OK different pattern = C%d (number of automorphisms=%d) %s\n",
-         pat->get_carbon_allotrope()->number_of_carbons(),
-         pat->get_representations()->number_of_automorphisms(),
-         pat->get_generator_formula());
-  printf("************************************************\n");
+  else
+    {
+#if defined(DEBUG_ERRORS)
+      printf("************************************************\n");
+      printf("* OK different pattern = C%d (number of automorphisms=%d) %s\n",
+             pat->get_carbon_allotrope()->number_of_carbons(),
+             pat->get_representations()->number_of_automorphisms(),
+             pat->get_generator_formula());
+      printf("************************************************\n");
 #else
-  printf("C%d (NoA=%d) %s\n",
-         pat->get_carbon_allotrope()->number_of_carbons(),
-         pat->get_representations()->number_of_automorphisms(),
-         pat->get_generator_formula());
+      printf("C%d (NoA=%d) %s\n",
+             pat->get_carbon_allotrope()->number_of_carbons(),
+             pat->get_representations()->number_of_automorphisms(),
+             pat->get_generator_formula());
 #endif
-  p_patterns.add(pat);
+    }
+  pat->p_carbon_allotrope = 0;
 }
 
 /* Local Variables:	*/

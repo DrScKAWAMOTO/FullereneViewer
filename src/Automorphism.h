@@ -36,7 +36,7 @@ public:
                Bond* to_bond, Carbon* to_carbon);
   void initialize(int from_seq, int to_seq);
   virtual ~Automorphism();
-  Automorphism& operator = (const Automorphism& that); /* dont use */
+  Automorphism& operator = (const Automorphism& you); /* dont use */
 
   // type converters
 
@@ -46,7 +46,7 @@ public:
 
   // math operators
 public:
-  Automorphism* composition(const Automorphism* that) const;
+  Automorphism* composition(const Automorphism* you) const;
   Automorphism* inverse() const;
   bool is_unit() const;
 

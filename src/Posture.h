@@ -24,7 +24,7 @@ public:
 public:
   Posture() : posture(), fixed(false), fixed_posture(), last_posture(), next_moment() { }
   ~Posture() { }
-  Posture& operator = (const Posture& that); /* dont use */
+  Posture& operator = (const Posture& you); /* dont use */
 
   // stability
   bool stabled() const { return last_posture == posture; }

@@ -25,11 +25,10 @@ void error_handler(ErrorCode result)
       printf("Too long open concave boundary segment !!\n");
       return;
     case ERROR_CODE_BREAKING_ISOLATED_PENTAGON_RULE:
-      printf("Breaking the Isolated Pentagon Rule (IPR) !!\n");
+      printf("Breaking by the Isolated Pentagon Rule (IPR) !!\n");
       return;
     case ERROR_CODE_ONLY_ONE_CONCAVE_AND_ONLY_ONE_CONVEX_BOUNDARY_SEGMENT:
       printf("Only one concave and only one convex boundary segment !!\n");
-      exit(20);
       return;
     case ERROR_CODE_ILLEGAL_GENERATOR_FORMULA:
       printf("Illegal generator formula !!\n");

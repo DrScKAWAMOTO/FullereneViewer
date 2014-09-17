@@ -16,32 +16,32 @@ DistanceVector::DistanceVector()
     p_distances[i] = INT_MAX;
 }
 
-DistanceVector::DistanceVector(const DistanceVector& that)
-  : Object(that.sequence_no())
+DistanceVector::DistanceVector(const DistanceVector& you)
+  : Object(you.sequence_no())
 {
   for (int i = 0; i < 12; ++i)
-    p_distances[i] = that.p_distances[i];
+    p_distances[i] = you.p_distances[i];
 }
 
 DistanceVector::~DistanceVector()
 {
 }
 
-DistanceVector& DistanceVector::operator = (const DistanceVector& that)
+DistanceVector& DistanceVector::operator = (const DistanceVector& you)
 {
-  if (this != &that)
+  if (this != &you)
     {
       for (int i = 0; i < 12; ++i)
-        p_distances[i] = that.p_distances[i];
+        p_distances[i] = you.p_distances[i];
     }
   return *this;
 }
 
-int DistanceVector::compare(const DistanceVector* that) const
+int DistanceVector::compare(const DistanceVector* you) const
 {
   for (int i = 0; i < 12; ++i)
     {
-      int diff = p_distances[i] - that->p_distances[i];
+      int diff = p_distances[i] - you->p_distances[i];
       if (diff != 0)
         return diff;
     }

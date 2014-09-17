@@ -13,6 +13,7 @@
 #include <stdlib.h>
 #include "Config.h"
 #include "CarbonAllotrope.h"
+#include "BoundaryCarbons.h"
 #include "RepresentationInfo.h"
 #include "Representation.h"
 #include "Representations.h"
@@ -22,6 +23,7 @@
 #include "SymmetryAxisNormal.h"
 #include "Automorphism.h"
 #include "Statistics.h"
+#include "Queue.h"
 #include "Utils.h"
 #include "OpenGLUtil.h"
 #include "Pattern.h"
@@ -29,6 +31,12 @@
 #include "DebugMemory.h"
 
 #define MAX_N 10
+
+#if defined(CONFIG_REFLECTED_IMAGE_IS_REGARDED_AS_ISOMORPHIC)
+bool CarbonAllotrope::s_need_representations_reflection = true;
+#else
+bool CarbonAllotrope::s_need_representations_reflection = false;
+#endif
 
 void CarbonAllotrope::p_make_n_polygon(int n_members)
 {
@@ -44,7 +52,6 @@ void CarbonAllotrope::p_list_most_inside_carbons_on_boundary(List<Carbon>& bound
 {
   assert(p_centers.length());
   boundary.clean();
-  reset_distances_to_set();
   calculate_distances_to_set(p_centers);
   int len = p_carbons.length();
   int minimum_distance = INT_MAX;
@@ -122,9 +129,8 @@ void CarbonAllotrope::p_list_most_inside_carbons_on_boundary(List<Carbon>& bound
       if (carbon == start)
         break;
     }
-  reset_distances_to_set();
   p_calculate_distances_to_pentagons();
-#ifdef DEBUG_CARBON_ALLOTROPE_CONSTRUCTION
+#if defined(DEBUG_CARBON_ALLOTROPE_CONSTRUCTION)
   len = boundary.length();
   for (int i = 0; i < len; ++i)
     {
@@ -148,6 +154,48 @@ CarbonAllotrope::CarbonAllotrope()
     boundary_next_sequence(1),
     print_out_sequence_no(false)
 {
+}
+
+CarbonAllotrope* CarbonAllotrope::copy() const
+{
+  CarbonAllotrope* result = new CarbonAllotrope();
+  int len = number_of_rings();
+  for (int i = 0; i < len; ++i)
+    new Ring(get_ring(i)->number_of_carbons(), result);
+  len = number_of_carbons();
+  for (int i = 0; i < len; ++i)
+    new Carbon(result);
+  len = number_of_bonds();
+  for (int i = 0; i < len; ++i)
+    new Bond(result);
+  assert(number_of_boundaries() == 0);
+  result->has_reflection_symmetricity(has_reflection_symmetricity());
+  assert(number_of_axes() == 0);
+  result->p_center_location = p_center_location;
+  result->p_Eigenvalue1 = p_Eigenvalue1;
+  result->p_Eigenvalue2 = p_Eigenvalue2;
+  result->p_Eigenvalue3 = p_Eigenvalue3;
+  result->p_Eigenvector1 = p_Eigenvector1;
+  result->p_Eigenvector2 = p_Eigenvector2;
+  result->p_Eigenvector3 = p_Eigenvector3;
+  result->carbon_radius = carbon_radius;
+  result->carbon_color = carbon_color;
+  result->bond_radius = bond_radius;
+  result->bond_color = bond_color;
+  result->print_out_sequence_no = print_out_sequence_no;
+  len = number_of_rings();
+  for (int i = 0; i < len; ++i)
+    result->get_ring(i)->copy_from(result, get_ring(i));
+  len = number_of_carbons();
+  for (int i = 0; i < len; ++i)
+    result->get_carbon(i)->copy_from(result, get_carbon(i));
+  len = p_centers.length();
+  for (int i = 0; i < len; ++i)
+    result->p_centers.add(result->get_carbon_by_sequence_no(p_centers[i]->sequence_no()));
+  len = number_of_bonds();
+  for (int i = 0; i < len; ++i)
+    result->get_bond(i)->copy_from(result, get_bond(i));
+  return result;
 }
 
 CarbonAllotrope::~CarbonAllotrope()
@@ -268,7 +316,7 @@ ErrorCode CarbonAllotrope::enlarge_cylinder_by_n_polygons(Pattern* n_pattern,
                                                           int& result_number)
 {
   List<Carbon> boundary;
-  list_reverse_connected_boundary_carbons(boundary);
+  list_newborn_connected_boundary(boundary);
   int len = boundary.length();
   if (len == 0)
     {
@@ -513,7 +561,7 @@ fill_n_polygons_around_carbons_closed_to_center_and_pentagons(int n_members,
       Carbon* carbon = boundary[i];
       if (carbon->distance_to_set() == min)
         {
-#ifdef DEBUG_CARBON_ALLOTROPE_CONSTRUCTION
+#if defined(DEBUG_CARBON_ALLOTROPE_CONSTRUCTION)
           printf("Carbon(%d) ... %d-polygon\n", carbon->sequence_no(), n_members);
 #endif
           assert(carbon->number_of_rings() == 2);
@@ -545,9 +593,9 @@ fill_n_polygons_around_carbons_closed_to_center_and_pentagons(int n_members,
 }
 
 ErrorCode CarbonAllotrope::fill_n_polygon_around_carbon(int n_members, Carbon* carbon,
-                                                        List<Carbon>& boundary)
+                                                        BoundaryCarbons& boundary)
 {
-#ifdef DEBUG_CARBON_ALLOTROPE_CONSTRUCTION
+#if defined(DEBUG_CARBON_ALLOTROPE_CONSTRUCTION)
   printf("Carbon(%d) ... %d-polygon\n", carbon->sequence_no(), n_members);
 #endif
   Bond* end_bond;
@@ -563,13 +611,14 @@ ErrorCode CarbonAllotrope::fill_n_polygon_around_carbon(int n_members, Carbon* c
       switch (carbon2->number_of_rings())
         {
         case 1:
-          boundary.add(carbon2);
+          boundary.glow_to_one_ring_carbon(carbon2);
           break;
         case 2:
+          boundary.glow_to_two_rings_carbon(carbon2);
           break;
         default:
         case 3:
-          boundary.remove(carbon2);
+          boundary.glow_to_three_rings_carbon(carbon2);
           break;
         }
     }
@@ -843,37 +892,7 @@ void CarbonAllotrope::make_equator_by_chiral_characteristic(int n, int m, int h)
   while (--h > 0)
     {
       int result_number = 0;
-#if 0 /* TODO */
-      List<Carbon> boundary;
-      list_reverse_boundary_carbons(boundary);
-      int len = boundary.length();
-      if (len == 0)
-        break;
-      while (1)
-        {
-          int min = INT_MAX;
-          Carbon* min_c = 0;
-          for (int i = 0; i < len; ++i)
-            {
-              Carbon* carbon = boundary[i];
-              if (carbon->number_of_rings() == 2)
-                {
-                  int seq = carbon->sequence_no();
-                  if (min > seq)
-                    {
-                      min = seq;
-                      min_c = carbon;
-                    }
-                }
-            }
-          if (min == INT_MAX)
-            break;
-          new Ring(this, 6, min_c);
-          ++result_number;
-        }
-#else
       enlarge_cylinder_by_n_polygons(new Pattern(6), result_number);
-#endif
     }
 }
 
@@ -882,7 +901,7 @@ void CarbonAllotrope::close_force()
   while (1)
     {
       List<Carbon> boundary;
-      list_reverse_connected_boundary_carbons(boundary);
+      list_newborn_connected_boundary(boundary);
       int len = boundary.length();
       if (len == 0)
         return;
@@ -942,7 +961,7 @@ void CarbonAllotrope::close_normally_once()
   while (1)
     {
       List<Carbon> boundary;
-      list_reverse_connected_boundary_carbons(boundary);
+      list_newborn_connected_boundary(boundary);
       int len = boundary.length();
       assert(len > 0);
       int num = 0;
@@ -1056,37 +1075,58 @@ void CarbonAllotrope::close_normally_once()
     }
 }
 
+void CarbonAllotrope::rollback(int a_ring_next_sequence, int a_carbon_next_sequence,
+                               int a_bond_next_sequence)
+{
+  int len = number_of_rings();
+  for (int i = len - 1; i >= a_ring_next_sequence - 1; --i)
+    p_rings.remove(i);
+  ring_next_sequence = a_ring_next_sequence;
+  len = number_of_carbons();
+  for (int i = len - 1; i >= a_carbon_next_sequence - 1; --i)
+    p_carbons.remove(i);
+  carbon_next_sequence = a_carbon_next_sequence;
+  len = number_of_bonds();
+  for (int i = len - 1; i >= a_bond_next_sequence - 1; --i)
+    p_bonds.remove(i);
+  bond_next_sequence = a_bond_next_sequence;
+}
+
 void CarbonAllotrope::p_calculate_distances_to_pentagons()
 {
-  bool changed = true;
-  while (changed)
+  List<Carbon> set;
+  int len = p_rings.length();
+  for (int i = 0; i < len; ++i)
     {
-      changed = false;
-      int len = p_carbons.length();
-      for (int i = 0; i < len; ++i)
-        if (p_carbons[i]->calculate_distance_to_pentagons())
-          changed = true;
+      Ring* ring = p_rings[i];
+      if (ring->number_of_carbons() != 5)
+        continue;
+      for (int j = 0; j < 5; ++j)
+        set.add(ring->get_carbon(j));
     }
+  return calculate_distances_to_set(set);
 }
 
 void CarbonAllotrope::calculate_distances_to_set(List<Carbon>& set)
 {
-  bool changed = true;
-  while (changed)
-    {
-      changed = false;
-      int len = p_carbons.length();
-      for (int i = 0; i < len; ++i)
-        if (p_carbons[i]->calculate_distance_to_set(set))
-          changed = true;
-    }
-}
-
-void CarbonAllotrope::reset_distances_to_set()
-{
   int len = p_carbons.length();
   for (int i = 0; i < len; ++i)
     p_carbons[i]->reset_distance_to_set();
+  Queue<Carbon> operations;
+  len = set.length();
+  for (int i = 0; i < len; ++i)
+    {
+      Carbon* carbon = set[i];
+      carbon->set_distance_to_set(0);
+      operations.enqueue(carbon);
+    }
+  while (1)
+    {
+      Carbon* next = operations.dequeue();
+      if (next == 0)
+        return;
+      next->calculate_distance_around(operations);
+    }
 }
 
 int CarbonAllotrope::p_maximum_distance_to_set()
@@ -1113,7 +1153,6 @@ void CarbonAllotrope::print_distances_between_pentagons()
       List<Carbon> set;
       for (int j = 0; j < 5; ++j)
         set.add(ring->get_carbon(j));
-      reset_distances_to_set();
       calculate_distances_to_set(set);
       printf("distance =");
       for (int j = 0; j < len; ++j)
@@ -1246,10 +1285,10 @@ void CarbonAllotrope::register_interactions()
 #endif
 }
 
-void CarbonAllotrope::all_representations(Representations* results)
+void CarbonAllotrope::p_all_representations_half(Representations* results, int clockwise)
 {
   int len = p_carbons.length();
-  set_clockwise(1);
+  set_clockwise(clockwise);
   for (int i = 0; i < len; ++i)
     {
       Carbon* carbon = p_carbons[i];
@@ -1261,7 +1300,7 @@ void CarbonAllotrope::all_representations(Representations* results)
           reset_done();
           RepresentationInfo* info = new RepresentationInfo();
           Representation* rep = new Representation();
-          info->clockwise = +1;
+          info->clockwise = clockwise;
           info->carbon_sequence_no = carbon->sequence_no();
           info->bond_sequence_no = bond->sequence_no();
           rep->add_info(info);
@@ -1270,27 +1309,13 @@ void CarbonAllotrope::all_representations(Representations* results)
           results->add_up_to_isomorphism(rep);
         }
     }
-  set_clockwise(-1);
-  for (int i = 0; i < len; ++i)
-    {
-      Carbon* carbon = p_carbons[i];
-      if (carbon->number_of_bonds() != 3)
-        continue;
-      for (int j = 0; j < 3; ++j)
-        {
-          Bond* bond = carbon->get_bond(j);
-          reset_done();
-          RepresentationInfo* info = new RepresentationInfo();
-          Representation* rep = new Representation();
-          info->clockwise = -1;
-          info->carbon_sequence_no = carbon->sequence_no();
-          info->bond_sequence_no = bond->sequence_no();
-          rep->add_info(info);
-          carbon->write_representation(*rep, bond);
-          rep->finish_step();
-          results->add_up_to_isomorphism(rep);
-        }
-    }
+}
+
+void CarbonAllotrope::all_representations(Representations* results)
+{
+  p_all_representations_half(results, +1);
+  if (s_need_representations_reflection)
+    p_all_representations_half(results, -1);
 }
 
 void CarbonAllotrope::reset_three_axes()
@@ -1419,7 +1444,7 @@ void CarbonAllotrope::print_detail()
   while (1)
     {
       List<Carbon> boundary;
-      list_connected_boundary_carbons(boundary, already);
+      list_oldest_connected_boundary(boundary, already);
       len = boundary.length();
       if (len == 0)
         break;
@@ -1827,7 +1852,6 @@ draw_force_to_circle_by_POVRay(const char* file_name_base, List<Carbon>& cutend_
   if (count > 0)
     {
       /* 周辺(cutend_list) からの距離を計算する。*/
-      reset_distances_to_set();
       calculate_distances_to_set(cutend_list);
       /* 一番遠かったのが、中心。*/
       {
@@ -1841,7 +1865,6 @@ draw_force_to_circle_by_POVRay(const char* file_name_base, List<Carbon>& cutend_
               centers.add(each);
           }
         /* 逆に中心からの距離を計算する。*/
-        reset_distances_to_set();
         calculate_distances_to_set(centers);
       }
       /* 周辺(cutend_list) の Carbon を、中心からの距離に応じて配置する。*/
@@ -1878,7 +1901,7 @@ draw_force_to_circle_by_POVRay(const char* file_name_base,
                                double delta, int steps, int divisions)
 {
   List<Carbon> cutend_list;
-  list_connected_boundary_carbons(cutend_list);
+  list_oldest_connected_boundary(cutend_list);
   draw_force_to_circle_by_POVRay(file_name_base, cutend_list, delta, steps, divisions);
 }
 
@@ -2036,7 +2059,7 @@ Bond* CarbonAllotrope::get_bond_by_sequence_no(int sequence_no) const
   return 0;
 }
 
-int CarbonAllotrope::list_connected_boundary_carbons(List<Carbon>& result) const
+int CarbonAllotrope::list_oldest_connected_boundary(List<Carbon>& result) const
 {
   Carbon* start = 0;
   int len = number_of_carbons();
@@ -2060,7 +2083,31 @@ int CarbonAllotrope::list_connected_boundary_carbons(List<Carbon>& result) const
     }
 }
 
-int CarbonAllotrope::list_reverse_connected_boundary_carbons(List<Carbon>& result) const
+int CarbonAllotrope::list_oldest_connected_boundary_carbons(BoundaryCarbons& result) const
+{
+  Carbon* start = 0;
+  int len = number_of_carbons();
+  for (int i = 0; i < len; ++i)
+    if (p_carbons[i]->number_of_rings() <= 2)
+      {
+        start = p_carbons[i];
+        break;
+      }
+  if (!start)
+    return 0;
+  Carbon* carbon = start;
+  Bond* bond = carbon->boundary_bond();
+  while (1)
+    {
+      result.add(carbon);
+      bond = carbon->boundary_bond(bond);
+      carbon = bond->get_carbon_beyond(carbon);
+      if (carbon == start)
+        return result.length();
+    }
+}
+
+int CarbonAllotrope::list_newborn_connected_boundary(List<Carbon>& result) const
 {
   Carbon* start = 0;
   int len = number_of_carbons();
@@ -2084,19 +2131,19 @@ int CarbonAllotrope::list_reverse_connected_boundary_carbons(List<Carbon>& resul
     }
 }
 
-int CarbonAllotrope::list_connected_boundary_carbons(List<Carbon>& result,
-                                                     const List<Carbon>& already) const
+int CarbonAllotrope::list_oldest_connected_boundary(List<Carbon>& result,
+                                                    const List<Carbon>& ignores) const
 {
   Carbon* start = 0;
   int len = number_of_carbons();
-  int alen = already.length();
+  int alen = ignores.length();
   for (int i = 0; i < len; ++i)
     if (p_carbons[i]->number_of_rings() <= 2)
       {
         start = p_carbons[i];
         for (int j = 0; j < alen; ++j)
           {
-            if (start == already[j])
+            if (start == ignores[j])
               {
                 start = 0;
                 break;
@@ -2125,7 +2172,7 @@ void CarbonAllotrope::all_boundaries()
   while (1)
     {
       List<Carbon> boundary;
-      list_connected_boundary_carbons(boundary, already);
+      list_oldest_connected_boundary(boundary, already);
       if (boundary.length() == 0)
         return;
       new ConnectedBoundary(this, boundary);

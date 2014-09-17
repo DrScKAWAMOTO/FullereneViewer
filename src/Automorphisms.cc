@@ -11,21 +11,24 @@
 #include "Fullerene.h"
 #include "CarbonAllotrope.h"
 #include "DebugMemory.h"
+#include "Config.h"
 
 Automorphisms::Automorphisms(Fullerene* fullerene)
 {
   Representations* reps = fullerene->get_representations();
   reps->number_of_automorphisms();
-  Representation* rep = reps->get_representation(0);
-  RepresentationInfo* from_info = rep->get_info(0);
+  const Representation* rep = reps->get_representation(0);
+  const RepresentationInfo* from_info = rep->get_info(0);
+#if ! defined(CONFIG_REFLECTED_IMAGE_IS_REGARDED_AS_ISOMORPHIC)
   assert(from_info->clockwise == 1);
+#endif
   CarbonAllotrope* ca = fullerene->get_carbon_allotrope();
   Carbon* from_carbon = ca->get_carbon_by_sequence_no(from_info->carbon_sequence_no);
   Bond* from_bond = ca->get_bond_by_sequence_no(from_info->bond_sequence_no);
   int len = rep->number_of_infos();
   for (int i = 0; i < len; ++i)
     {
-      RepresentationInfo* to_info = rep->get_info(i);
+      const RepresentationInfo* to_info = rep->get_info(i);
       if (to_info->clockwise != 1)
         {
           ca->has_reflection_symmetricity(true);

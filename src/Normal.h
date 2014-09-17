@@ -17,7 +17,7 @@ public:
 public:
   Normal() : clockwise(+1) { }
   ~Normal() { }
-  Normal& operator = (const Normal& that); /* dont use */
+  Normal& operator = (const Normal& you); /* dont use */
 
 };
 

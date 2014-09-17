@@ -19,8 +19,8 @@ class Bond : public InteractiveRegularPolygon {
 
   // members
 private:
-  const double p_bond_radius;
-  const int p_bond_color;
+  double p_bond_radius;
+  int p_bond_color;
   Carbon* p_left;
   Carbon* p_right;
 
@@ -30,7 +30,8 @@ private:
 public:
   Bond(CarbonAllotrope* ca);
   virtual ~Bond();
-  Bond& operator = (const Bond& that); /* dont use */
+  Bond& operator = (const Bond& you); /* dont use */
+  void copy_from(const CarbonAllotrope* ca, const Bond* you);
   bool connect_to(Carbon* carbon);
   void remove_carbon(Carbon* carbon);
 

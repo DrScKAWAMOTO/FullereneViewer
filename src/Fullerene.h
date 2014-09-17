@@ -20,10 +20,12 @@ class DistanceMatrix;
 
 class Fullerene : public Object {
   // friend classes & functions
+  friend class Fullerenes;
 
   // members
 public:
   static bool s_need_representations;
+  static bool s_need_axes;
   static bool s_need_fullerene_characteristic;
   static bool s_need_distance_matrix;
 
@@ -45,13 +47,14 @@ public:
   Fullerene(const char* generator_formula);
   ErrorCode error_code() const { return p_error_code; }
   virtual ~Fullerene();
-  Fullerene& operator = (const Fullerene& that); /* dont use */
+  Fullerene& operator = (const Fullerene& you); /* dont use */
 
   // type converters
 
   // comparators
 public:
-  bool operator == (const Fullerene& that) const;
+  bool operator == (const Fullerene& you) const;
+  int compare(const Fullerene* you) const;
 
   // math operators
 
@@ -68,6 +71,7 @@ public:
   const char* get_fullerene_name() const { return p_fullerene_name; }
   const char* get_generator_formula() const { return p_generator_formula; }
   Representations* get_representations() { return p_representations; }
+  const Representations* get_representations() const { return p_representations; }
   FullereneCharacteristic* get_characteristic() { return p_characteristic; }
   DistanceMatrix* get_distance_matrix() { return p_distance_matrix; }
   int get_n() const { return p_n; }

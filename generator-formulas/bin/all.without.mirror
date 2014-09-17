@@ -1,0 +1,18 @@
+#! /bin/sh
+echo "configured that mirror image is regarded as isomorphic"
+time ca-loop --symmetric=100 S1- S5- --out=symmetric=100.gen
+ca-sort < symmetric=100.gen | ca-uniq > symmetric=100.gf
+rm -f symmetric=100.gen
+time ca-loop --symmetric=200 S1- S5- --out=symmetric=200.gen
+ca-sort < symmetric=200.gen | ca-uniq > symmetric=200.gf
+rm -f symmetric=200.gen
+time ca-loop --symmetric=500 S1- S5- --out=symmetric=500.gen
+ca-sort < symmetric=500.gen | ca-uniq > symmetric=500.gf
+rm -f symmetric=500.gen
+time ca-loop --symmetric=1000 S1- S5- --out=symmetric=1000.gen
+ca-sort < symmetric=1000.gen | ca-uniq > symmetric=1000.gf
+rm -f symmetric=1000.gen
+time ca-loop --ordinary=100 A1- A2- --out=ordinary=100.gen
+ca-sort < ordinary=100.gen | ca-uniq > ordinary=100.gf
+rm -f ordinary=100.gen
+echo "configured that mirror image is regarded as isomorphic"

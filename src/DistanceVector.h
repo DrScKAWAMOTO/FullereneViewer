@@ -22,27 +22,27 @@ private:
   // constructors & the destructor
 public:
   DistanceVector();
-  DistanceVector(const DistanceVector& that);
+  DistanceVector(const DistanceVector& you);
   ~DistanceVector();
-  DistanceVector& operator = (const DistanceVector& that);
+  DistanceVector& operator = (const DistanceVector& you);
 
   // type converters
 
   // comparators
 public:
-  int compare(const DistanceVector* that) const;
-  bool operator > (const DistanceVector& that) const
-  { return (compare(&that) > 0); }
-  bool operator < (const DistanceVector& that) const
-  { return (compare(&that) < 0); }
-  bool operator <= (const DistanceVector& that) const
-  { return (compare(&that) <= 0); }
-  bool operator >= (const DistanceVector& that) const
-  { return (compare(&that) >= 0); }
-  bool operator == (const DistanceVector& that) const
-  { return (compare(&that) == 0); }
-  bool operator != (const DistanceVector& that) const
-  { return (compare(&that) != 0); }
+  int compare(const DistanceVector* you) const;
+  bool operator > (const DistanceVector& you) const
+  { return (compare(&you) > 0); }
+  bool operator < (const DistanceVector& you) const
+  { return (compare(&you) < 0); }
+  bool operator <= (const DistanceVector& you) const
+  { return (compare(&you) <= 0); }
+  bool operator >= (const DistanceVector& you) const
+  { return (compare(&you) >= 0); }
+  bool operator == (const DistanceVector& you) const
+  { return (compare(&you) == 0); }
+  bool operator != (const DistanceVector& you) const
+  { return (compare(&you) != 0); }
 
   // math operators
 

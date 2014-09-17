@@ -21,7 +21,7 @@ private:
 
   // private tools
 private:
-  static bool p_get_distance_and_number(const char*& ptr, int& distance, int& number);
+  static bool p_get_number(const char*& ptr, int& number);
 
   // constructors & the destructor
 public:
@@ -32,7 +32,7 @@ public:
 
   // comparators
 public:
-  int compare(const DistanceSummaryLine* that) const;
+  int compare(const DistanceSummaryLine* you) const;
 
   // math operators
 

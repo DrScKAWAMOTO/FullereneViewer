@@ -25,6 +25,9 @@ class Interactives : public Object {
   // friend classes & functions
 
   // members
+public:
+  static bool s_need_simulation;
+
 private:
   List<InteractiveOperation> p_operations;
   List<Interactive> p_interactives;
@@ -42,7 +45,7 @@ private:
 public:
   Interactives();
   virtual ~Interactives();
-  Interactives& operator = (const Interactives& that); /* dont use */
+  Interactives& operator = (const Interactives& you); /* dont use */
 
   // interactions
 protected:

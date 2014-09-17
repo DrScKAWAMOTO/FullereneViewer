@@ -30,8 +30,13 @@ static void usage(const char* arg0)
   fprintf(stderr, "            generator-formula looks like 'T10,0,1-5b6b...', has to be specified,\n");
   fprintf(stderr, "    --close=[num] ........ close [num] connected boundary component(s),\n");
   fprintf(stderr, "            default is infinity,\n");
+  fprintf(stderr, "    --step-copy-branch ... use ``step copy branch'' algorithm,\n");
+  fprintf(stderr, "    --step-forward ....... use ``step forward'' algorithm,\n");
+  fprintf(stderr, "    --step-backward ...... use ``step backward'' algorithm (default),\n");
   fprintf(stderr, "    -v (--version) ....... show version,\n");
-  fprintf(stderr, "    -h ................... show this message.\n");
+  fprintf(stderr, "    -h (--help) .......... show this message,\n");
+  fprintf(stderr, "environment variables:\n");
+  fprintf(stderr, "    CA_STEP_ALGORITHM .... may specify one of ``--step-*'' above.\n");
   exit(0);
 }
 
@@ -41,15 +46,28 @@ int main(int argc, char *argv[])
   int ordinary = -1;
   int tube = -1;
   int close = INT_MAX;
+  StepAlgorithm step_algorithm = STEP_ALGORITHM_BACKWARD;
   const char* arg0 = argv[0];
   const char* generator_formula = 0;
+  const char* env_value = getenv("CA_STEP_ALGORITHM");
+
+  if (env_value)
+    {
+      if (strcmp(env_value, "--step-copy-branch") == 0)
+        step_algorithm = STEP_ALGORITHM_COPY_BRANCH;
+      else if (strcmp(env_value, "--step-forward") == 0)
+        step_algorithm = STEP_ALGORITHM_FORWARD;
+      else if (strcmp(env_value, "--step-backward") == 0)
+        step_algorithm = STEP_ALGORITHM_BACKWARD;
+    }
+
   if (argc == 1)
     usage(arg0);
   argc--;
   argv++;
   while (argc > 0)
     {
-      if (strcmp(argv[0], "-h") == 0)
+      if ((strcmp(argv[0], "-h") == 0) || (strcmp(argv[0], "--help") == 0))
         {
           usage(arg0);
         }
@@ -82,6 +100,24 @@ int main(int argc, char *argv[])
           argc--;
           argv++;
         }
+      else if (strcmp(argv[0], "--step-copy-branch") == 0)
+        {
+          step_algorithm = STEP_ALGORITHM_COPY_BRANCH;
+          argc--;
+          argv++;
+        }
+      else if (strcmp(argv[0], "--step-forward") == 0)
+        {
+          step_algorithm = STEP_ALGORITHM_FORWARD;
+          argc--;
+          argv++;
+        }
+      else if (strcmp(argv[0], "--step-backward") == 0)
+        {
+          step_algorithm = STEP_ALGORITHM_BACKWARD;
+          argc--;
+          argv++;
+        }
       else if (!generator_formula)
         {
           generator_formula = argv[0];
@@ -94,63 +130,51 @@ int main(int argc, char *argv[])
 
   setvbuf(stdout, 0, _IONBF, 0);
   Random::initialize();
-  try
+  print_version("ca-generator", stdout);
+  if (symmetric >= 1)
     {
-      if (symmetric >= 1)
-        {
-          if (symmetric < 60)
-            symmetric = 60;
-          if (generator_formula && ((generator_formula[0] != 'S') ||
-                                    (generator_formula[1] < '1') ||
-                                    (generator_formula[1] > '4') ||
-                                    (generator_formula[2] != '-')))
-            usage(arg0);
-          Fullerenes ap = Fullerenes(generator_formula, symmetric, true,
-                                     MAXIMUM_VERTICES_OF_POLYGON, close);
-        }
-      else if (ordinary >= 1)
-        {
-          if (ordinary < 60)
-            ordinary = 60;
-          if (generator_formula && ((generator_formula[0] != 'A') ||
-                                    (generator_formula[1] != '1') ||
-                                    (generator_formula[2] != '-')))
-            usage(arg0);
-          Fullerenes ap = Fullerenes(generator_formula, ordinary, false,
-                                     MAXIMUM_VERTICES_OF_POLYGON, close);
-        }
-      else if (tube >= 1)
-        {
-          if (tube < 60)
-            tube = 60;
-          if (!generator_formula || (generator_formula[0] != 'T'))
-            usage(arg0);
-          const char *ptr = generator_formula + 1;
-          while ((*ptr >= '0') && (*ptr <= '9'))
-            ++ptr;
-          if (*ptr++ != ',')
-            usage(arg0);
-          while ((*ptr >= '0') && (*ptr <= '9'))
-            ++ptr;
-          if (*ptr++ != ',')
-            usage(arg0);
-          while ((*ptr >= '0') && (*ptr <= '9'))
-            ++ptr;
-          if (*ptr != '-')
-            usage(arg0);
-          Fullerenes ap = Fullerenes(generator_formula, tube, false,
-                                     MAXIMUM_VERTICES_OF_POLYGON, close);
-        }
+      if (symmetric < 60)
+        symmetric = 60;
+      if (generator_formula && ((generator_formula[0] != 'S') ||
+                                (generator_formula[1] < '1') ||
+                                (generator_formula[1] > '4') ||
+                                (generator_formula[2] != '-')))
+        usage(arg0);
+      Fullerenes ap = Fullerenes(generator_formula, symmetric, true,
+                                 MAXIMUM_VERTICES_OF_POLYGON, close, step_algorithm);
     }
-  catch (const std::exception& err)
+  else if (ordinary >= 1)
     {
-      printf("std::exception %s\n", err.what());
-      exit(10);
+      if (ordinary < 60)
+        ordinary = 60;
+      if (generator_formula && ((generator_formula[0] != 'A') ||
+                                (generator_formula[1] != '1') ||
+                                (generator_formula[2] != '-')))
+        usage(arg0);
+      Fullerenes ap = Fullerenes(generator_formula, ordinary, false,
+                                 MAXIMUM_VERTICES_OF_POLYGON, close, step_algorithm);
     }
-  catch (...)
+  else if (tube >= 1)
     {
-      printf("unknown exception\n");
-      exit(11);
+      if (tube < 60)
+        tube = 60;
+      if (!generator_formula || (generator_formula[0] != 'T'))
+        usage(arg0);
+      const char *ptr = generator_formula + 1;
+      while ((*ptr >= '0') && (*ptr <= '9'))
+        ++ptr;
+      if (*ptr++ != ',')
+        usage(arg0);
+      while ((*ptr >= '0') && (*ptr <= '9'))
+        ++ptr;
+      if (*ptr++ != ',')
+        usage(arg0);
+      while ((*ptr >= '0') && (*ptr <= '9'))
+        ++ptr;
+      if (*ptr != '-')
+        usage(arg0);
+      Fullerenes ap = Fullerenes(generator_formula, tube, false,
+                                 MAXIMUM_VERTICES_OF_POLYGON, close, step_algorithm);
     }
   return 0;
 }

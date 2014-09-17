@@ -24,8 +24,8 @@ private:
   // constructors & the destructor
 public:
   Vector3(double x = 0.0, double y = 0.0, double z = 0.0);
-  Vector3(const Vector3& that);
-  void operator = (const Vector3& that);
+  Vector3(const Vector3& you);
+  void operator = (const Vector3& you);
   ~Vector3();
   void randomize(double width = 1.0);
   void randomized_force(double width = 1.0);
@@ -37,8 +37,8 @@ public:
   // comparators
 public:
   bool operator ! () const;
-  bool operator == (const Vector3& that) const;
-  bool operator != (const Vector3& that) const;
+  bool operator == (const Vector3& you) const;
+  bool operator != (const Vector3& you) const;
 
   // math operators
 public:

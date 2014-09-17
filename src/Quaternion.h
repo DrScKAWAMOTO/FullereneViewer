@@ -26,9 +26,9 @@ private:
 public:
   Quaternion(double r, double x, double y, double z);
   Quaternion(Vector3 from, Vector3 to);
-  Quaternion(const Vector3& that);
+  Quaternion(const Vector3& you);
   Quaternion(const Vector3& axis, double degree);
-  void operator = (const Quaternion& that);
+  void operator = (const Quaternion& you);
   ~Quaternion();
 
   // type converters

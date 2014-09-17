@@ -11,6 +11,7 @@
 #include <string.h>
 #include "Generator.h"
 #include "Utils.h"
+#include "Debug.h"
 #include "DebugMemory.h"
 
 void Generator::p_enlarge()
@@ -40,6 +41,7 @@ Generator::Generator(bool symmetric, int maximum_vertices_of_polygons)
   : p_type(symmetric ? GENERATOR_TYPE_SYMMETRIC : GENERATOR_TYPE_ORDINARY),
     p_scrap_no(1), p_n(0), p_m(0), p_h(0), p_minimum_polygons(5),
     p_maximum_vertices_of_polygons(maximum_vertices_of_polygons),
+    p_state(GENERATOR_STATE_START_FROM_MINIMUM),
     p_array_length(16), p_history_length(0), p_history_offset(0),
     p_history(new char[p_array_length])
 {
@@ -49,6 +51,7 @@ Generator::Generator(int n, int m, int h, int maximum_vertices_of_polygons)
   : p_type(GENERATOR_TYPE_TUBE), p_scrap_no(0), p_n(n), p_m(m), p_h(h),
     p_minimum_polygons(5),
     p_maximum_vertices_of_polygons(maximum_vertices_of_polygons),
+    p_state(GENERATOR_STATE_START_FROM_MINIMUM),
     p_array_length(16), p_history_length(0), p_history_offset(0),
     p_history(new char[p_array_length])
 {
@@ -58,6 +61,7 @@ Generator::Generator(const char* generator_formula, int maximum_vertices_of_poly
   : p_type(GENERATOR_TYPE_ORDINARY), p_scrap_no(0), p_n(0), p_m(0), p_h(0),
     p_minimum_polygons(5),
     p_maximum_vertices_of_polygons(maximum_vertices_of_polygons),
+    p_state(GENERATOR_STATE_START_FROM_MINIMUM),
     p_array_length(16), p_history_length(0), p_history_offset(0),
     p_history(new char[p_array_length])
 {
@@ -97,6 +101,8 @@ Generator::Generator(const char* generator_formula, int maximum_vertices_of_poly
         p_glow(No);
     }
   p_history_offset = 0;
+  if (p_history_length > 0)
+    p_state = GENERATOR_STATE_START_SPECIFIED;
 }
 
 Generator::Generator(const Generator& you)
@@ -104,6 +110,7 @@ Generator::Generator(const Generator& you)
     p_scrap_no(you.p_scrap_no), p_n(you.p_n), p_m(you.p_m), p_h(you.p_h),
     p_minimum_polygons(you.p_minimum_polygons),
     p_maximum_vertices_of_polygons(you.p_maximum_vertices_of_polygons),
+    p_state(you.p_state),
     p_array_length(you.p_array_length), p_history_length(you.p_history_length),
     p_history_offset(you.p_history_offset), p_history(new char[p_array_length])
 {
@@ -116,44 +123,44 @@ Generator::~Generator()
   delete[] p_history;
 }
 
-bool Generator::next_pattern()
+Generator& Generator::operator = (const Generator& you)
 {
-  p_history_offset = p_history_length - 1;
-  while (1)
+  if (this != &you)
     {
-      p_history[p_history_offset]++;
-      if (p_history[p_history_offset] <= p_maximum_vertices_of_polygons)
-        {
-          p_history_offset = 0;
-          return true;
-        }
-      else
-        {
-          if (p_history_length == 1)
-            {
-              if (p_type != GENERATOR_TYPE_SYMMETRIC)
-                return false;
-              if (p_scrap_no == 4)
-                return false;
-              p_scrap_no++;
-              p_history_length = 0;
-              p_history_offset = 0;
-              return true;
-            }
-          --p_history_length;
-          p_history_offset = p_history_length - 1;
-        }
+      p_type = you.p_type;
+      p_scrap_no = you.p_scrap_no;
+      p_n = you.p_n;
+      p_m = you.p_m;
+      p_h = you.p_h;
+      p_minimum_polygons = you.p_minimum_polygons;
+      p_maximum_vertices_of_polygons = you.p_maximum_vertices_of_polygons;
+      p_state = you.p_state;
+      p_array_length = you.p_array_length;
+      p_history_length = you.p_history_length;
+      p_history_offset = you.p_history_offset;
+
+      delete[] p_history;
+      p_history = new char[p_array_length];
+      for (int i = 0; i < p_array_length; ++i)
+        p_history[i] = you.p_history[i];
     }
+  return *this;
 }
 
-int Generator::glow()
+int Generator::glow_step()
 {
-  if (p_history_offset == p_history_length)
+  if (p_history_offset >= p_history_length - 1)
     {
       p_enlarge();
-      ++p_history_length;
-      p_history[p_history_offset] = p_minimum_polygons;
+      p_state = GENERATOR_STATE_START_FROM_MINIMUM;
     }
+  else
+    p_state = GENERATOR_STATE_START_SPECIFIED;
+#if defined(DEBUG_CONSTRUCTION_ALGORITHM)
+  printf("@@@ glow_step() = %d history_offset = %d\n", p_history[p_history_offset],
+         p_history_offset);
+  printf("@@@ now history_offset = %d\n", p_history_offset + 1);
+#endif
   return p_history[p_history_offset++];
 }
 
@@ -162,6 +169,87 @@ int Generator::history()
   if (p_history_offset == p_history_length)
     return -1;
   return p_history[p_history_offset++];
+}
+
+bool Generator::is_there_next_branch() const
+{
+  if (p_state != GENERATOR_STATE_RUNNING)
+    return true;
+  if (p_history[p_history_offset] < p_maximum_vertices_of_polygons)
+    return true;
+  return false;
+}
+
+void Generator::next_branch()
+{
+#if defined(DEBUG_CONSTRUCTION_ALGORITHM)
+  printf("@@@ next_branch() history_offset = %d\n", p_history_offset);
+#endif
+  switch (p_state)
+    {
+    case GENERATOR_STATE_START_SPECIFIED:
+      break;
+    case GENERATOR_STATE_START_FROM_MINIMUM:
+      p_history[p_history_offset] = p_minimum_polygons;
+      p_history_length = p_history_offset + 1;
+      break;
+    case GENERATOR_STATE_RUNNING:
+    default:
+      p_history[p_history_offset]++;
+      p_history_length = p_history_offset + 1;
+      break;
+    }
+  p_state = GENERATOR_STATE_RUNNING;
+}
+
+bool Generator::next_tree()
+{
+#if defined(DEBUG_CONSTRUCTION_ALGORITHM)
+  printf("@@@ next_tree()\n");
+#endif
+  p_history_offset = p_history_length - 1;
+  while (1)
+    {
+      p_history[p_history_offset]++;
+      if (p_history[p_history_offset] <= p_maximum_vertices_of_polygons)
+        {
+          p_history_offset = 0;
+          p_state = GENERATOR_STATE_START_SPECIFIED;
+          return true;
+        }
+      else
+        {
+          if (p_history_length == 1)
+            return false;
+          --p_history_length;
+          p_history_offset = p_history_length - 1;
+        }
+    }
+}
+
+bool Generator::next_by_rollback()
+{
+  p_history_offset = p_history_length - 1;
+  while (1)
+    {
+      p_history[p_history_offset]++;
+      if (p_history[p_history_offset] <= p_maximum_vertices_of_polygons)
+        {
+          p_state = GENERATOR_STATE_START_SPECIFIED;
+#if defined(DEBUG_CONSTRUCTION_ALGORITHM)
+          printf("@@@ next_by_rollback()\n@@@ now history_offset = %d\n",
+                 p_history_offset);
+#endif
+          return true;
+        }
+      else
+        {
+          if (p_history_length == 1)
+            return false;
+          --p_history_length;
+          p_history_offset = p_history_length - 1;
+        }
+    }
 }
 
 void Generator::get_generator_formula(char* buffer, int length)
@@ -175,7 +263,12 @@ void Generator::get_generator_formula(char* buffer, int length)
   int len = strlen(buffer);
   length -= len;
   buffer += len;
-  assert(length > p_history_length);
+  assert(length > p_history_length + 1);
+#if defined(DEBUG_CONSTRUCTION_ALGORITHM)
+  for (int i = 0; i < p_history_length; ++i)
+    *buffer++ = p_history[i] + '0';
+  *buffer = '\0';
+#else
   int current_No = 0;
   int count = 0;
   for (int i = 0; i < p_history_length; ++i)
@@ -191,6 +284,7 @@ void Generator::get_generator_formula(char* buffer, int length)
         }
     }
   No_No_to_digits10x10_digits26x7(current_No, count, buffer);
+#endif
 }
 
 /* Local Variables:	*/

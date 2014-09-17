@@ -18,15 +18,23 @@ Representations::~Representations()
 {
 }
 
-bool Representations::operator == (const Representation& that) const
+bool Representations::operator == (const Representation& you) const
 {
-  return (that == p_reps);
+  return (you == p_reps);
 }
 
-bool Representations::operator == (const Representations& that) const
+bool Representations::operator == (const Representations& you) const
 {
   assert(p_reps.length() > 0);
-  return that == (*(p_reps[0]));
+  assert(you.p_reps.length() > 0);
+  return (*(p_reps[0])) == (*(you.p_reps[0]));
+}
+
+int Representations::compare(const Representations* you) const
+{
+  assert(p_reps.length() > 0);
+  assert(you->p_reps.length() > 0);
+  return p_reps[0]->compare(you->p_reps[0]);
 }
 
 void Representations::print() const
@@ -36,23 +44,23 @@ void Representations::print() const
     p_reps[i]->print();
 }
 
-void Representations::add_up_to_isomorphism(Representation* that)
+void Representations::add_up_to_isomorphism(Representation* you)
 {
-  int len = p_reps.length();
-  for (int i = 0; i < len; ++i)
+  Representation* rep = p_reps.search_else_add(you);
+  if (rep)
     {
-      Representation* rep = p_reps[i];
-      if ((*rep) == (*that))
-        {
-          rep->add_info(that->get_info(0));
-          delete that;
-          return;
-        }
+      rep->add_info(you->get_info(0));
+      delete you;
     }
-  p_reps.add(that);
 }
 
 Representation* Representations::get_representation(int index)
+{
+  assert((index >= 0) && (index < p_reps.length()));
+  return p_reps[index];
+}
+
+const Representation* Representations::get_representation(int index) const
 {
   assert((index >= 0) && (index < p_reps.length()));
   return p_reps[index];
@@ -67,24 +75,10 @@ int Representations::number_of_automorphisms()
         {
           Representation* rep = get_representation(i);
           int number_of_infos = rep->number_of_infos();
-#if 1 /* TODO */
           if (p_number_of_automorphisms > 0)
-            {
-              assert(p_number_of_automorphisms == number_of_infos);
-            }
+            assert(p_number_of_automorphisms == number_of_infos);
           else
             p_number_of_automorphisms = number_of_infos;
-#else
-          if ((p_number_of_automorphisms > 0) &&
-              (p_number_of_automorphisms != number_of_infos))
-            {
-              printf("Warning:%s:%d: p_number_of_automorphisms != number_of_infos\n",
-                     __FILE__, __LINE__);
-            }
-          if ((p_number_of_automorphisms == 0) ||
-              (p_number_of_automorphisms > number_of_infos))
-            p_number_of_automorphisms = number_of_infos;
-#endif
         }
     }
   return p_number_of_automorphisms;

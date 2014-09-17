@@ -151,7 +151,6 @@ DistanceMatrix::DistanceMatrix(CarbonAllotrope* ca)
       List<Carbon> set;
       for (int j = 0; j < 5; ++j)
         set.add(ring->get_carbon(j));
-      ca->reset_distances_to_set();
       ca->calculate_distances_to_set(set);
       for (int j = 0; j < len; ++j)
         {
@@ -171,18 +170,18 @@ DistanceMatrix::DistanceMatrix(CarbonAllotrope* ca)
     }
 }
 
-DistanceMatrix::DistanceMatrix(const DistanceMatrix& that)
-  : Object(that), p_number(that.p_number)
+DistanceMatrix::DistanceMatrix(const DistanceMatrix& you)
+  : Object(you), p_number(you.p_number)
 {
   for (int i = 0; i < 12; ++i)
     {
-      p_sequence_nos[i] = that.p_sequence_nos[i];
+      p_sequence_nos[i] = you.p_sequence_nos[i];
       for (int j = 0; j < 12; ++j)
-        p_distances[i][j] = that.p_distances[i][j];
+        p_distances[i][j] = you.p_distances[i][j];
     }
 }
 
-DistanceMatrix::DistanceMatrix(const DistanceMatrix& that, int* group, int no)
+DistanceMatrix::DistanceMatrix(const DistanceMatrix& you, int* group, int no)
 {
   p_initialize();
   for (int i = 0; i < 12; ++i)
@@ -193,8 +192,8 @@ DistanceMatrix::DistanceMatrix(const DistanceMatrix& that, int* group, int no)
         {
           if (group[j] != no)
             continue;
-          set_distance(that.p_sequence_nos[i], that.p_sequence_nos[j],
-                       that.p_distances[i][j]);
+          set_distance(you.p_sequence_nos[i], you.p_sequence_nos[j],
+                       you.p_distances[i][j]);
         }
     }
 }
@@ -203,16 +202,16 @@ DistanceMatrix::~DistanceMatrix()
 {
 }
 
-DistanceMatrix& DistanceMatrix::operator = (const DistanceMatrix& that)
+DistanceMatrix& DistanceMatrix::operator = (const DistanceMatrix& you)
 {
-  if (this != &that)
+  if (this != &you)
     {
-      p_number = that.p_number;
+      p_number = you.p_number;
       for (int i = 0; i < 12; ++i)
         {
-          p_sequence_nos[i] = that.p_sequence_nos[i];
+          p_sequence_nos[i] = you.p_sequence_nos[i];
           for (int j = 0; j < 12; ++j)
-            p_distances[i][j] = that.p_distances[i][j];
+            p_distances[i][j] = you.p_distances[i][j];
         }
     }
   return *this;

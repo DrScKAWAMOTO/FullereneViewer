@@ -23,7 +23,7 @@ static void usage(const char* arg0)
   fprintf(stderr, "    --development-view .... draw northem hemisphere side,\n");
   fprintf(stderr, "    --sequence-no ......... draw sequence No of carbons,\n");
   fprintf(stderr, "    -v (--version) ........ show version,\n");
-  fprintf(stderr, "    -h .................... show this message.\n");
+  fprintf(stderr, "    -h (--help) ........... show this message.\n");
   exit(0);
 }
 
@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
   argv++;
   while (argc > 0)
     {
-      if (strcmp(argv[0], "-h") == 0)
+      if ((strcmp(argv[0], "-h") == 0) || (strcmp(argv[0], "--help") == 0))
         {
           usage(arg0);
         }

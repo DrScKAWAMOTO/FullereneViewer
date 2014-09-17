@@ -19,11 +19,15 @@
 
 class Representations;
 class Pattern;
+class BoundaryCarbons;
 
 class CarbonAllotrope : public Interactives {
   // friend classes & functions
 
   // members
+public:
+  static bool s_need_representations_reflection;
+
 private:
   List<Ring> p_rings;
   List<Carbon> p_carbons;
@@ -56,8 +60,9 @@ private:
   // constructors & the destructor
 public:
   CarbonAllotrope();
+  CarbonAllotrope* copy() const;
   virtual ~CarbonAllotrope();
-  CarbonAllotrope& operator = (const CarbonAllotrope& that); /* dont use */
+  CarbonAllotrope& operator = (const CarbonAllotrope& you); /* dont use */
   void clean();
 
   // general purpose constructions
@@ -79,7 +84,7 @@ public:
   fill_n_polygons_around_carbons_closed_to_center_and_pentagons(int n_members,
                                                                 int& number_of_results);
   ErrorCode fill_n_polygon_around_carbon(int n_members, Carbon* carbon,
-                                         List<Carbon>& boundary);
+                                         BoundaryCarbons& boundary);
   ErrorCode make_symmetric_scrap(int scrap_no);
 
   // carbon nano-tube constructions
@@ -92,13 +97,15 @@ public:
   void close_force();
   void close_normally_once();
 
+  // construction rollback
+  void rollback(int ring_next_sequence, int carbon_next_sequence, int bond_next_sequence);
+
   // distance
 private:
   void p_calculate_distances_to_pentagons();
   int p_maximum_distance_to_set();
 public:
   void calculate_distances_to_set(List<Carbon>& set);
-  void reset_distances_to_set();
   void print_distances_between_pentagons();
 
   // determining normal vector
@@ -116,6 +123,8 @@ public:
   void register_interactions();
 
   // representation
+private:
+  void p_all_representations_half(Representations* results, int clockwise);
 public:
   void all_representations(Representations* results);
 
@@ -188,10 +197,13 @@ public:
   Bond* get_bond_by_sequence_no(int sequence_no) const;
 
   // connected boundaries
-  int list_connected_boundary_carbons(List<Carbon>& result) const;
-  int list_reverse_connected_boundary_carbons(List<Carbon>& result) const;
-  int list_connected_boundary_carbons(List<Carbon>& result,
-                                      const List<Carbon>& already) const;
+  // For temporary use in construction phase.
+  int list_oldest_connected_boundary(List<Carbon>& result) const;
+  int list_oldest_connected_boundary_carbons(BoundaryCarbons& result) const;
+  int list_oldest_connected_boundary(List<Carbon>& result,
+                                     const List<Carbon>& ignores) const;
+  int list_newborn_connected_boundary(List<Carbon>& result) const;
+  // CarbonAllotrope memories all boundaries after construction done.
   void all_boundaries();
   int number_of_boundaries() const { return p_boundaries.length(); }
   void register_boundary(ConnectedBoundary* boundary);

@@ -43,18 +43,18 @@ protected:
   // constructors & the destructor
 public:
   List() : p_container_size(16), p_length(0), p_container(new T*[p_container_size]) { }
-  List(const List<T>& that) : p_container_size(16), p_length(0),
-                              p_container(new T*[p_container_size])
+  List(const List<T>& you) : p_container_size(16), p_length(0),
+                             p_container(new T*[p_container_size])
   {
-    add(that);
+    add(you);
   }
   ~List() { p_clean(); delete[] p_container; }
-  List<T>& operator = (const List<T>& that)
+  List<T>& operator = (const List<T>& you)
   {
-    if (this != &that)
+    if (this != &you)
       {
         p_clean();
-        add(that);
+        add(you);
       }
     return *this;
   }
@@ -71,17 +71,17 @@ public:
 
   // member accessing methods
 public:
-  virtual void add(T* element)
+  void add(T* element)
   {
     p_make_room();
     element->link_up();
     p_container[p_length++] = element;
   }
-  void add(const List<T>& that)
+  void add(const List<T>& you)
   {
-    int len = that.length();
+    int len = you.length();
     for (int i = 0; i < len; ++i)
-      add(that[i]);
+      add(you[i]);
   }
   void remove(T* element)
   {
@@ -89,13 +89,21 @@ public:
       {
         if (p_container[i] == element)
           {
-            --p_length;
-            for ( ; i < p_length; ++i)
-              p_container[i] = p_container[i + 1];
-            element->link_down();
+            (void)remove(i);
             return;
           }
       }
+  }
+  T* remove(int offset)
+  {
+    if ((offset < 0) || (p_length <= offset))
+      return 0;
+    --p_length;
+    T* element = p_container[offset];
+    for ( ; offset < p_length; ++offset)
+      p_container[offset] = p_container[offset + 1];
+    element->link_down();
+    return element;
   }
   void clean() { p_clean(); }
   int length() const { return p_length; }

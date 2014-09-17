@@ -94,7 +94,7 @@ public:
 MemoryCell MemoryCell::allocated;
 unsigned int DebugMemory::sequence_no = 0;
 unsigned int DebugMemory::check_point_no = 0;
-DebugMemory __attribute__((init_priority(101)) memory_debug;
+DebugMemory __attribute__((init_priority(101))) memory_debug;
 bool DebugMemory::now_memory_tracing = false;
 
 MemoryCell::MemoryCell()

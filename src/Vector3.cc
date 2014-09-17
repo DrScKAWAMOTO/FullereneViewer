@@ -18,18 +18,18 @@ Vector3::Vector3(double x, double y, double z)
 {
 }
 
-Vector3::Vector3(const Vector3& that)
-  : Object(that.sequence_no()), p_x(that.p_x), p_y(that.p_y), p_z(that.p_z)
+Vector3::Vector3(const Vector3& you)
+  : Object(you.sequence_no()), p_x(you.p_x), p_y(you.p_y), p_z(you.p_z)
 {
 }
 
-void Vector3::operator = (const Vector3& that)
+void Vector3::operator = (const Vector3& you)
 {
-  if (this != &that)
+  if (this != &you)
     {
-      p_x = that.p_x;
-      p_y = that.p_y;
-      p_z = that.p_z;
+      p_x = you.p_x;
+      p_y = you.p_y;
+      p_z = you.p_z;
     }
 }
 
@@ -65,15 +65,15 @@ Matrix3 Vector3::moment_to_rotation() const
   return result;
 }
 
-bool Vector3::operator == (const Vector3& that) const
+bool Vector3::operator == (const Vector3& you) const
 {
-  Vector3 result = *this - that;
+  Vector3 result = *this - you;
   return !result;
 }
 
-bool Vector3::operator != (const Vector3& that) const
+bool Vector3::operator != (const Vector3& you) const
 {
-  Vector3 result = *this - that;
+  Vector3 result = *this - you;
   return !!result;
 }
 

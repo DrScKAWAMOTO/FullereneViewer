@@ -25,7 +25,7 @@ public:
   Radius(double len) : length(len), fixed(false), fixed_length(0.0), last_length(0.0),
                        next_force(0.0) { }
   ~Radius() { }
-  Radius& operator = (const Radius& that); /* dont use */
+  Radius& operator = (const Radius& you); /* dont use */
 
   // stability
   bool stabled() const { return fabs(last_length - length) <= DBL_EPSILON; }

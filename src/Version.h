@@ -10,14 +10,7 @@
 
 #include <stdio.h>
 
-static inline void print_version(const char* program_name)
-{
-  fprintf(stderr, "%s Ver 1.3.0\n", program_name);
-  fprintf(stderr, "Copyright (C) 2011-14 Dr.Sc.KAWAMOTO,Takuji (Ext) All Rights Reserved.\n");
-  fprintf(stderr, "\n");
-  fprintf(stderr, "Thanks to all contributors:\n");
-  fprintf(stderr, "    KAWAMOTO,Takuto       Kunihiro AIHARA\n");
-}
+extern void print_version(const char* program_name, FILE* output = 0);
 
 #endif /* __VERSION_H__ */
 

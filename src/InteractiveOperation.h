@@ -25,7 +25,7 @@ public:
 public:
   InteractiveOperation();
   virtual ~InteractiveOperation();
-  InteractiveOperation& operator = (const InteractiveOperation& that); /* dont use */
+  InteractiveOperation& operator = (const InteractiveOperation& you); /* dont use */
 
 };
 

@@ -161,6 +161,18 @@ void Ring::p_print_POVRay_semitransparent_clipped_by_Z_non_negative(FILE* fptr,
   fprintf(fptr, "}\n");
 }
 
+Ring::Ring(int number_of_carbons, CarbonAllotrope* ca)
+ : InteractiveRegularPolygon(ca, ca->ring_next_sequence++, 1.0, number_of_carbons),
+    p_number_of_carbons(number_of_carbons), p_clockwise(0),
+    p_ring_color(five_membered_ring_colors[index])
+{
+  if (number_of_carbons != 6)
+    ++index;
+  if (index == 12)
+    index = 0;
+  ca->register_ring(this);
+}
+
 Ring::Ring(CarbonAllotrope* ca, int number_of_carbons)
   : InteractiveRegularPolygon(ca, ca->ring_next_sequence++, 1.0, number_of_carbons),
     p_number_of_carbons(number_of_carbons), p_clockwise(0),
@@ -239,6 +251,16 @@ Ring::~Ring()
   int len = p_carbons.length();
   for (int i = 0; i < len; ++i)
     p_carbons[i]->remove_ring(this);
+}
+
+void Ring::copy_from(const CarbonAllotrope* ca, const Ring* you)
+{
+  p_number_of_carbons = you->p_number_of_carbons;
+  for (int i = 0; i < p_number_of_carbons; ++i)
+    p_carbons.add(ca->get_carbon_by_sequence_no(you->p_carbons[i]->sequence_no()));
+  p_radius = you->p_radius;
+  p_clockwise = you->p_clockwise;
+  p_ring_color = you->p_ring_color;
 }
 
 int Ring::distance_to_set()

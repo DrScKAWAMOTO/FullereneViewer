@@ -29,7 +29,7 @@ public:
   FullereneCharacteristic(CarbonAllotrope* ca);
   ~FullereneCharacteristic();
   FullereneCharacteristic&
-  operator = (const FullereneCharacteristic& that); /* dont use */
+  operator = (const FullereneCharacteristic& you); /* dont use */
 
   // type converters
 

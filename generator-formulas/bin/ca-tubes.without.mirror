@@ -1,0 +1,22 @@
+#! /bin/sh
+mkdir -p ca-tubes.without.mirror
+cd ca-tubes.without.mirror
+../bin/ca-tube T10,0 gf
+../bin/ca-tube T9,1 gf
+../bin/ca-tube T8,2 gf
+../bin/ca-tube T7,3 gf
+../bin/ca-tube T6,4 gf
+../bin/ca-tube T5,5 gf
+../bin/ca-tube T11,0 gf
+../bin/ca-tube T10,1 gf
+../bin/ca-tube T9,2 gf
+../bin/ca-tube T8,3 gf
+../bin/ca-tube T7,4 gf
+../bin/ca-tube T6,5 gf
+../bin/ca-tube T12,0 gf
+../bin/ca-tube T11,1 gf
+../bin/ca-tube T10,2 gf
+../bin/ca-tube T9,3 gf
+../bin/ca-tube T8,4 gf
+../bin/ca-tube T7,5 gf
+../bin/ca-tube T6,6 gf

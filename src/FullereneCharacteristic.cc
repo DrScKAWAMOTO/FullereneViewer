@@ -25,7 +25,6 @@ FullereneCharacteristic::FullereneCharacteristic(CarbonAllotrope* ca)
       List<Carbon> set;
       for (int j = 0; j < 5; ++j)
         set.add(ring->get_carbon(j));
-      ca->reset_distances_to_set();
       ca->calculate_distances_to_set(set);
       for (int j = 0; j < len; ++j)
         {

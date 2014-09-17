@@ -11,8 +11,10 @@
 #include <assert.h>
 #include <new>
 #include "Version.h"
-#include "List.h"
+#include "Set.h"
+#include "MinimumRepresentation.h"
 #include "Fullerene.h"
+#include "Interactives.h"
 #include "CarbonAllotrope.h"
 #include "Representations.h"
 #include "DebugMemory.h"
@@ -34,101 +36,84 @@ int main(int argc, char* argv[])
   if (argc != 1)
     usage(argv[0]);
   setvbuf(stdout, 0, _IONBF, 0);
-  {
-    Fullerene::s_need_representations = true;
-    List<Fullerene> patterns;
-    int last_number_of_carbons = -1;
-    int last_number_of_automorphisms = -1;
-    try
-      {
-        while (1)
-          {
-            char buffer[1024];
-            if (fgets(buffer, 1024, stdin) != buffer)
-              break;
-            buffer[strlen(buffer) - 1] = '\0';
-            const char* name = buffer;
-            if (*name == 'C')
-              {
-                ++name;
-                int number_of_carbons;
-                int number_of_automorphisms;
-                sscanf(name, "%d", &number_of_carbons);
-                while ((*name != ' ') && (*name != '\0'))
-                  ++name;
-                if (*name == ' ')
-                  ++name;
-                while ((*name != '=') && (*name != '\0'))
-                  ++name;
-                sscanf(name, "%d", &number_of_automorphisms);
-                while ((*name != ' ') && (*name != '\0'))
-                  ++name;
-                if (*name == ' ')
-                  ++name;
-                if ((number_of_carbons != last_number_of_carbons) ||
-                    (number_of_automorphisms != last_number_of_automorphisms))
-                  {
-                    if (number_of_carbons < last_number_of_carbons)
-                      {
-                      not_sorted_error:
-                        fprintf(stderr, "infile is not sorted, use ca-sort !!\n");
-                        exit(1);
-                      }
-                    else if (number_of_carbons == last_number_of_carbons)
-                      {
-                        if (number_of_carbons < last_number_of_carbons)
-                          goto not_sorted_error;
-                        else if (number_of_carbons == last_number_of_carbons)
-                          ;
-                        else
-                          {
-                            patterns.clean();
-                            last_number_of_automorphisms = number_of_automorphisms;
-                          }
-                      }
-                    else
-                      {
-                        patterns.clean();
-                        last_number_of_carbons = number_of_carbons;
-                        last_number_of_automorphisms = number_of_automorphisms;
-                      }
-                  }
-              }
-            Fullerene* fullerene = new Fullerene(name);
-            int len = patterns.length();
-            int i = 0;
-            while (1)
-              {
-                if (i == len)
-                  {
-                    printf("C%d (NoA=%d) %s\n",
-                           fullerene->get_carbon_allotrope()->number_of_carbons(),
-                           fullerene->get_representations()->number_of_automorphisms(),
-                           fullerene->get_generator_formula());
-                    patterns.add(fullerene);
-                    break;
-                  }
-                Fullerene* pati = patterns[i];
-                if ((*fullerene) == (*pati))
-                  {
-                    delete fullerene;
-                    break;
-                  }
-                ++i;
-              }
-          }
-      }
-    catch (const std::bad_alloc& err)
-      {
-        printf("std::bad_alloc exception\n");
-        exit(10);
-      }
-    catch (...)
-      {
-        printf("unknown exception\n");
-        exit(11);
-      }
-  }
+  Fullerene::s_need_representations = true;
+  Interactives::s_need_simulation = false;
+  Set<MinimumRepresentation> patterns;
+  int last_number_of_carbons = -1;
+  int last_number_of_automorphisms = -1;
+  int line_count = 0;
+  print_version("ca-uniq", stdout);
+  while (1)
+    {
+      char buffer[1024];
+      if (fgets(buffer, 1024, stdin) != buffer)
+        break;
+      buffer[strlen(buffer) - 1] = '\0';
+      if (buffer[0] == '#')
+        continue;
+      const char* name = buffer;
+      if (*name == 'C')
+        {
+          ++name;
+          int number_of_carbons;
+          int number_of_automorphisms;
+          sscanf(name, "%d", &number_of_carbons);
+          while ((*name != ' ') && (*name != '\0'))
+            ++name;
+          if (*name == ' ')
+            ++name;
+          while ((*name != '=') && (*name != '\0'))
+            ++name;
+          sscanf(name, "%d", &number_of_automorphisms);
+          while ((*name != ' ') && (*name != '\0'))
+            ++name;
+          if (*name == ' ')
+            ++name;
+          if ((number_of_carbons != last_number_of_carbons) ||
+              (number_of_automorphisms != last_number_of_automorphisms))
+            {
+              if (number_of_carbons < last_number_of_carbons)
+                {
+                not_sorted_error:
+                  fprintf(stderr, "infile is not sorted, use ca-sort output !!\n");
+                  exit(1);
+                }
+              else if (number_of_carbons == last_number_of_carbons)
+                {
+                  if (number_of_carbons < last_number_of_carbons)
+                    goto not_sorted_error;
+                  else if (number_of_carbons == last_number_of_carbons)
+                    ;
+                  else
+                    {
+                      patterns.clean();
+                      last_number_of_automorphisms = number_of_automorphisms;
+                    }
+                }
+              else
+                {
+                  patterns.clean();
+                  last_number_of_carbons = number_of_carbons;
+                  last_number_of_automorphisms = number_of_automorphisms;
+                }
+            }
+        }
+      if (*name == '\0')
+        continue;
+      ++line_count;
+      if ((line_count % 10000) == 0)
+        fprintf(stderr, "%d lines proceeded.\n", line_count);
+      Fullerene* fullerene = new Fullerene(name);
+      MinimumRepresentation* min_rep = new MinimumRepresentation(fullerene);
+      if (patterns.search_else_add(min_rep))
+        delete min_rep;
+      else
+        printf("C%d (NoA=%d) %s\n",
+               fullerene->get_carbon_allotrope()->number_of_carbons(),
+               fullerene->get_representations()->number_of_automorphisms(),
+               fullerene->get_generator_formula());
+      delete fullerene;
+    }
   return 0;
 }
 

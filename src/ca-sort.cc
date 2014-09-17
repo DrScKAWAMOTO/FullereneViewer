@@ -18,6 +18,8 @@
 void usage(char* argv0)
 {
   fprintf(stderr, "usage: %s < infile > outfile\n", argv0);
+  fprintf(stderr, "     infile ..... generator formula lines,\n");
+  fprintf(stderr, "               or distance summary lines.\n");
   exit(1);
 }
 
@@ -32,17 +34,26 @@ int main(int argc, char* argv[])
   if (argc != 1)
     usage(argv[0]);
   setvbuf(stdout, 0, _IONBF, 0);
+  print_version("ca-sort", stdout);
   char buffer[1024];
-  if (fgets(buffer, 1024, stdin) != buffer)
-    exit(0);
+  while (1)
+    {
+      if (fgets(buffer, 1024, stdin) != buffer)
+        exit(0);
+      if (buffer[0] != '#')
+        break;
+    }
   if (buffer[0] == 'C')
     {
       SortedList<GeneratorLine> lines;
       while (1)
         {
           buffer[strlen(buffer) - 1] = '\0';
-          GeneratorLine* gtl = new GeneratorLine(buffer);
-          lines.add(gtl);
+          if (buffer[0] != '#')
+            {
+              GeneratorLine* gtl = new GeneratorLine(buffer);
+              lines.add(gtl);
+            }
           if (fgets(buffer, 1024, stdin) != buffer)
             break;
         }
@@ -56,8 +67,11 @@ int main(int argc, char* argv[])
       while (1)
         {
           buffer[strlen(buffer) - 1] = '\0';
-          DistanceSummaryLine* dsl = new DistanceSummaryLine(buffer);
-          lines.add(dsl);
+          if (buffer[0] != '#')
+            {
+              DistanceSummaryLine* dsl = new DistanceSummaryLine(buffer);
+              lines.add(dsl);
+            }
           if (fgets(buffer, 1024, stdin) != buffer)
             break;
         }

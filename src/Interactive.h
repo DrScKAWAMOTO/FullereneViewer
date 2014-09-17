@@ -61,7 +61,7 @@ protected:
 public:
   Interactive(Interactives* interactives, int sequence_no, double radius_length);
   virtual ~Interactive();
-  Interactive& operator = (const Interactive& that); /* dont use */
+  Interactive& operator = (const Interactive& you); /* dont use */
 
   // interactions
 public:

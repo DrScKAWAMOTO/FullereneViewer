@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include "ErrorCode.h"
 #include "InteractiveRegularPolygon.h"
+#include "Queue.h"
 #include "List.h"
 
 class Bond;
@@ -26,7 +27,7 @@ class Carbon : public InteractiveRegularPolygon {
 
   // members
 private:
-  const double p_radius;
+  double p_radius;
   int p_color;
   Bond* p_bond_0;
   Ring* p_ring_01;
@@ -42,20 +43,23 @@ private:
 public:
   Carbon(CarbonAllotrope* ca);
   virtual ~Carbon();
-  Carbon& operator = (const Carbon& that); /* dont use */
+  Carbon& operator = (const Carbon& you); /* dont use */
+  void copy_from(const CarbonAllotrope* ca, const Carbon* you);
   bool connect_to(CarbonAllotrope* ca, Carbon* carbon);
   bool connect_to(CarbonAllotrope* ca, Bond* bond);
   void remove_bond(Bond* bond);
   bool set_ring(Bond* bond_before, Ring* ring, Bond* bond_after);
   void remove_ring(Ring* ring);
 
-  // distance
-private:
-  bool p_calculate_distance_plus();
+  // comparators
 public:
-  bool calculate_distance_to_pentagons();
-  bool calculate_distance_to_set(List<Carbon>& set);
+  int compare(const Carbon* you) const;
+
+  // distance
+public:
+  void calculate_distance_around(Queue<Carbon>& operations);
   int distance_to_set() { return p_distance_to_set; }
+  void set_distance_to_set(int distance) { p_distance_to_set = distance; }
   void reset_distance_to_set();
 
   // determining normal vector

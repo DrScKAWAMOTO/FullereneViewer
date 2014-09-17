@@ -36,10 +36,10 @@ private:
 public:
   DistanceMatrix();
   DistanceMatrix(CarbonAllotrope* ca);
-  DistanceMatrix(const DistanceMatrix& that);
-  DistanceMatrix(const DistanceMatrix& that, int* group, int no);
+  DistanceMatrix(const DistanceMatrix& you);
+  DistanceMatrix(const DistanceMatrix& you, int* group, int no);
   ~DistanceMatrix();
-  DistanceMatrix& operator = (const DistanceMatrix& that);
+  DistanceMatrix& operator = (const DistanceMatrix& you);
 
   // type converters
 public:

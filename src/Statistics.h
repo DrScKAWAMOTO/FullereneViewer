@@ -30,7 +30,7 @@ private:
 public:
   Statistics();
   ~Statistics();
-  Statistics& operator = (const Statistics& that); /* dont use */
+  Statistics& operator = (const Statistics& you); /* dont use */
 
   // type converters
   Matrix3 variance_covariance_matrix() const;

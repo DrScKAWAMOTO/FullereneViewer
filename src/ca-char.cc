@@ -13,22 +13,23 @@
 #include "CarbonAllotrope.h"
 #include "Fullerene.h"
 #include "FullereneCharacteristic.h"
+#include "Interactives.h"
 #include "DistanceMatrix.h"
 #include "Random.h"
 #include "DebugMemory.h"
 
 static void usage(const char* arg0)
 {
-  fprintf(stderr, "usage: %s [options] <generator-label|generator-label-list-file]\n",
+  fprintf(stderr, "usage: %s [options] <generator-formula|generator-formula-list-file]\n",
           arg0);
-  fprintf(stderr, "    generator-label ............ generator-label for fullerene,\n");
-  fprintf(stderr, "    generator-label-list-file .. file name which contains generator-labels,\n");
+  fprintf(stderr, "    generator-formula ............ generator-formula for fullerene,\n");
+  fprintf(stderr, "    generator-formula-list-file .. file name which contains generator-formulas,\n");
   fprintf(stderr, "options:\n");
-  fprintf(stderr, "    --axes-summary ............. show axes summary (default),\n");
-  fprintf(stderr, "    --pentagon-distances ....... show distances between pentagons,\n");
-  fprintf(stderr, "    --pentagon-matrix .......... show distance matrix between pentagons,\n");
-  fprintf(stderr, "    -v (--version) ............. show version,\n");
-  fprintf(stderr, "    -h ......................... show this message.\n");
+  fprintf(stderr, "    --axes-summary ............... show axes summary (default),\n");
+  fprintf(stderr, "    --pentagon-distances ......... show distances between pentagons,\n");
+  fprintf(stderr, "    --pentagon-matrix ............ show distance matrix between pentagons,\n");
+  fprintf(stderr, "    -v (--version) ............... show version,\n");
+  fprintf(stderr, "    -h (--help) .................. show this message.\n");
   exit(0);
 }
 
@@ -47,7 +48,7 @@ int main(int argc, char *argv[])
   argv++;
   while (argc > 0)
     {
-      if (strcmp(argv[0], "-h") == 0)
+      if ((strcmp(argv[0], "-h") == 0) || (strcmp(argv[0], "--help") == 0))
         {
           usage(arg0);
         }
@@ -123,6 +124,7 @@ int main(int argc, char *argv[])
     Fullerene::s_need_representations = true;
   if (fptr)
     Fullerene::s_need_representations = true;
+  Interactives::s_need_simulation = false;
 
   while (1)
     {
@@ -151,6 +153,7 @@ int main(int argc, char *argv[])
                   fullerene->get_generator_formula(), extension);
           fout = fopen(filename, "w");
         }
+      print_version("ca-char", fout);
       if (pentagon_distances)
         fullerene->get_characteristic()->print_summary(fout);
       else if (pentagon_matrix)

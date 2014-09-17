@@ -21,7 +21,7 @@ void* operator new[](std::size_t, const char *source_file_name, int source_line_
 
 #endif
 
-#endif
+#endif /* __DEBUGMEMORY_H__ */
 
 /* Local Variables:	*/
 /* mode: c++		*/

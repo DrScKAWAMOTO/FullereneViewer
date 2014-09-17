@@ -24,7 +24,7 @@ protected:
 public:
   InteractiveLine(Interactives* interactives, int sequence_no);
   virtual ~InteractiveLine();
-  InteractiveLine& operator = (const InteractiveLine& that); /* dont use */
+  InteractiveLine& operator = (const InteractiveLine& you); /* dont use */
 
   // interactions
 

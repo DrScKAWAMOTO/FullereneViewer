@@ -14,22 +14,13 @@
 
 int DistanceSummaryLine::s_next_sequence = 1;
 
-bool DistanceSummaryLine::p_get_distance_and_number(const char*& ptr,
-                                                    int& distance, int& number)
+bool DistanceSummaryLine::p_get_number(const char*& ptr, int& number)
 {
   while (*ptr == ' ')
     ++ptr;
   if (!isdigit(*ptr))
     return false;
   number = atoi(ptr);
-  while (isdigit(*ptr))
-    ++ptr;
-  if (*ptr != '@')
-    return false;
-  ++ptr;
-  if (!isdigit(*ptr))
-    return false;
-  distance = atoi(ptr);
   while (isdigit(*ptr))
     ++ptr;
   return ((*ptr == ' ') || (!*ptr)) ? true : false;
@@ -51,23 +42,18 @@ DistanceSummaryLine::~DistanceSummaryLine()
     delete[] p_line;
 }
 
-int DistanceSummaryLine::compare(const DistanceSummaryLine* that) const
+int DistanceSummaryLine::compare(const DistanceSummaryLine* you) const
 {
   const char* myline = p_line;
-  const char* yourline = that->p_line;
+  const char* yourline = you->p_line;
   while (1)
     {
       if (!*myline && !*yourline)
         return 0;
-      assert(*myline && *yourline);
-      int mydistance;
-      int mynumber;
-      int yourdistance;
-      int yournumber;
-      assert(p_get_distance_and_number(myline, mydistance, mynumber));
-      assert(p_get_distance_and_number(yourline, yourdistance, yournumber));
-      if (mydistance != yourdistance)
-        return mydistance - yourdistance;
+      int mynumber = 0;
+      int yournumber = 0;
+      p_get_number(myline, mynumber);
+      p_get_number(yourline, yournumber);
       if (mynumber != yournumber)
         return yournumber - mynumber;
     }

@@ -16,6 +16,7 @@ ARCH= $(PROJECT)-$(DATE).tar.gz
 
 all:
 	touch src/Depend.mk
+	cd src; $(MAKE) depend
 	cd src; $(MAKE) all
 
 project:
@@ -26,10 +27,12 @@ version:
 
 Qt:
 	touch src/Depend.mk
+	cd src; $(MAKE) depend
 	cd src; $(MAKE) Qt
 
 install:
 	touch src/Depend.mk
+	cd src; $(MAKE) depend
 	cd src; $(MAKE) install
 
 depend:
