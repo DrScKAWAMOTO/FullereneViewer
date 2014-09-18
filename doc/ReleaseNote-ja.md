@@ -10,9 +10,12 @@
 　ステップアルゴリズム --step-backward をデフォルトに。  
 　ca-loop / ca-generator は環境変数 CA_STEP_ALGORITHM 採用。  
 　ca-loop 引数省略可能にした。  
+　ca-char は Pdd= 属性、MirrorSymmetric 属性、Mirror= 属性を出力する機能追加。  
 　ca- シリーズで --help も使えるようにした。  
 　Qt pro ファイル整理。  
-　n+m<=12 のカーボンナノチューブリスト生成。
+　カーボンナノチューブは両方閉じるとパターンが多くなるので、半分だけ閉じたものをリストアップした。n+m<=12。  
+　clang++ でもコンパイルできるようにした。  
+　generator-formulas フォルダは別リポジトリに分離した。
 
 ### 2014/09/10 Version 1.3.1
 　FullereneViewer について画面追加。  

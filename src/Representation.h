@@ -36,8 +36,6 @@ public:
 
   // comparators
 public:
-  bool operator == (const Representation& you) const;
-  bool operator == (const List<Representation>& you) const;
   int compare(const Representation* you) const;
 
   // I/O

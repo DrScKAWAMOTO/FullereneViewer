@@ -94,6 +94,8 @@ int main(int argc, char* argv[])
             ++name;
           while ((*name != '=') && (*name != '\0'))
             ++name;
+          if (*name == '=')
+            ++name;
           sscanf(name, "%d", &number_of_automorphisms);
           while ((*name != ' ') && (*name != '\0'))
             ++name;

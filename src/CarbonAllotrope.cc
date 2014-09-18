@@ -1585,7 +1585,7 @@ void CarbonAllotrope::print_axes_summary(FILE* fptr) const
       int order = axis->get_order();
       assert((order > 1) && (order <= 6));
       int type = (int)axis->get_type();
-      assert((type >= 1) && (type <= 5));
+      assert((type >= 1) && (type <= 14));
       summary[order][type]++;
     }
   for (int i = 6; i >= 0; --i)

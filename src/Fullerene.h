@@ -53,7 +53,6 @@ public:
 
   // comparators
 public:
-  bool operator == (const Fullerene& you) const;
   int compare(const Fullerene* you) const;
 
   // math operators

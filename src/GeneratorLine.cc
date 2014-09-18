@@ -29,6 +29,8 @@ bool GeneratorLine::p_get_number_NoA_isS_isT_and_isA(int& number, int& NoA,
   NoA = strtol(ptr, &ptr, 10);
   if (NoA < 1)
     return false;
+  while ((*ptr != ')') && *ptr)
+    ++ptr;
   if (strncmp(ptr, ") S", 3) == 0)
     {
       isS = true;

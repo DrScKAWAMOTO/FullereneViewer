@@ -24,22 +24,6 @@ Representation::~Representation()
   delete[] p_array;
 }
 
-bool Representation::operator == (const Representation& you) const
-{
-  return (strcmp(p_array, you.p_array) == 0);
-}
-
-bool Representation::operator == (const List<Representation>& you) const
-{
-  int len = you.length();
-  for (int i = 0; i < len; ++i)
-    {
-      if ((*this) == (*you[i]))
-        return true;
-    }
-  return false;
-}
-
 int Representation::compare(const Representation* you) const
 {
 #if ! defined(CONFIG_REFLECTED_IMAGE_IS_REGARDED_AS_ISOMORPHIC)

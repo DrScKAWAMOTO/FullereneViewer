@@ -2,6 +2,7 @@
 ## コンパイル方法
 ### FreeBSD
 #### FreeBSD 9.1 [doc/FreeBSD/HowToCompile-FreeBSD-9.1-ja.md](FreeBSD/HowToCompile-FreeBSD-9.1-ja.md)
+#### FreeBSD 10.0 [doc/FreeBSD/HowToCompile-FreeBSD-10.0-ja.md](FreeBSD/HowToCompile-FreeBSD-10.0-ja.md)
 ### Linux
 #### ubuntu/VirtualBox [doc/Linux/HowToCompile-ubuntu-virtualbox-ja.md](Linux/HowToCompile-ubuntu-virtualbox-ja.md)
 ### Mac OS X

@@ -62,6 +62,9 @@ ID
 /*.html
 /doc/*.html
 /doc/*/*.html
+/generator-formulas/ca-tubes.mirror/T?,?,?
+/generator-formulas/ca-tubes.mirror/T1?,?,?
+/generator-formulas/ca-tubes.mirror/T?,1?,?
 
 # OS oriented files
 .DS_Store

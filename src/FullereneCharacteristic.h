@@ -40,6 +40,7 @@ public:
   // I/O
 public:
   void print_detail() const;
+  const char* get_summary() const;
   void print_summary(FILE* fptr = stdout) const;
 
   // class decision

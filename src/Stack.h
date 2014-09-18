@@ -49,7 +49,7 @@ public:
 public:
   void push(T* element)
   {
-    add(element);
+    List<T>::add(element);
   }
   T* pop()
   {
@@ -61,7 +61,7 @@ public:
   {
     if (List<T>::p_length == 0)
       return 0;
-    return operator [] (List<T>::p_length - 1);
+    return List<T>::operator [] (List<T>::p_length - 1);
   }
 };
 

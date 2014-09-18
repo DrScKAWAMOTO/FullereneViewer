@@ -255,11 +255,6 @@ Fullerene::~Fullerene()
     delete p_distance_matrix;
 }
 
-bool Fullerene::operator == (const Fullerene& you) const
-{
-  return ((*p_representations) == (*you.p_representations));
-}
-
 int Fullerene::compare(const Fullerene* you) const
 {
   return p_representations->compare(you->p_representations);

@@ -18,18 +18,6 @@ Representations::~Representations()
 {
 }
 
-bool Representations::operator == (const Representation& you) const
-{
-  return (you == p_reps);
-}
-
-bool Representations::operator == (const Representations& you) const
-{
-  assert(p_reps.length() > 0);
-  assert(you.p_reps.length() > 0);
-  return (*(p_reps[0])) == (*(you.p_reps[0]));
-}
-
 int Representations::compare(const Representations* you) const
 {
   assert(p_reps.length() > 0);

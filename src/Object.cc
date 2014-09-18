@@ -17,8 +17,6 @@ Object::Object(int sequence_no)
 Object::Object(const Object& you)
   : p_sequence_no(you.p_sequence_no), p_link_counter(0)
 {
-  fprintf(stderr, "%s:%d: internal error dont use.\n", __FILE__, __LINE__);
-  exit(1);
 }
 
 Object::~Object()

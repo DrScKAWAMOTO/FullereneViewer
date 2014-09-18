@@ -6,6 +6,7 @@
  */
 
 #include <limits.h>
+#include <string.h>
 #include <stdio.h>
 #include <assert.h>
 #include "FullereneCharacteristic.h"
@@ -85,7 +86,10 @@ void FullereneCharacteristic::print_detail() const
   printf(")\n");
 }
 
-void FullereneCharacteristic::print_summary(FILE* fptr) const
+#define SUMMARY_BUFFER_LENGTH 900
+static char summary_buffer[SUMMARY_BUFFER_LENGTH];
+
+const char* FullereneCharacteristic::get_summary() const
 {
   int len = p_dvs.length();
   int max_dist = 0;
@@ -109,9 +113,25 @@ void FullereneCharacteristic::print_summary(FILE* fptr) const
           ++array[dist];
         }
     }
+  char* ptr = summary_buffer;
   for (int i = 0; i < max_dist; ++i)
-    fprintf(fptr, "%d,", array[i]);
-  fprintf(fptr, "%d\n", array[max_dist]);
+    {
+      sprintf(ptr, "%d;", array[i]);
+      ptr += strlen(ptr);
+      assert(ptr - summary_buffer < SUMMARY_BUFFER_LENGTH - 1);
+    }
+  sprintf(ptr, "%d", array[max_dist]);
+  ptr += strlen(ptr);
+  assert(ptr - summary_buffer < SUMMARY_BUFFER_LENGTH - 1);
+  delete[] array;
+  return summary_buffer;
+}
+
+void FullereneCharacteristic::print_summary(FILE* fptr) const
+{
+  const char* ptr;
+  ptr = get_summary();
+  fprintf(fptr, "%s\n", ptr);
 }
 
 DistanceVector* FullereneCharacteristic::get_distance_vector(int index)

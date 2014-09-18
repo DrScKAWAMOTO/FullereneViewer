@@ -30,8 +30,6 @@ public:
 
   // comparators
 public:
-  bool operator == (const Representation& you) const;
-  bool operator == (const Representations& you) const;
   int compare(const Representations* you) const;
 
   // I/O
