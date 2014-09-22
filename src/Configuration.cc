@@ -78,6 +78,8 @@ Configuration::Configuration(const char* home, const char* desktop)
     p_working_folder_name[length - 1] = '\0';
   strcat(p_working_folder_name, WORKING_FOLDER_NAME);
 
+  strcpy(p_povray_command_line, POVRAY_COMMAND_LINE);
+
   p_picture_quality = QUALITY_HIGH;
   p_motion_quality = QUALITY_HIGH;
 }
@@ -141,6 +143,10 @@ void Configuration::load()
         {
           read_path(word, p_working_folder_name);
         }
+      else if (word.equals_to("povray_command_line"))
+        {
+          read_path(word, p_povray_command_line);
+        }
       else if (word.equals_to("picture_quality"))
         {
           Quality quality;
@@ -179,6 +185,7 @@ void Configuration::save() const
   fprintf(fptr, "picture_quality = %s\n", quality_to_name(p_picture_quality));
   fprintf(fptr, "motion_quality = %s\n", quality_to_name(p_motion_quality));
   fprintf(fptr, "working_folder = %s\n", p_working_folder_name);
+  fprintf(fptr, "povray_command_line = %s\n", p_povray_command_line);
   fclose(fptr);
 }
 
@@ -247,6 +254,12 @@ void Configuration::set_working_folder_name(const char* path)
 {
   assert(strlen(path) < PATH_LENGTH);
   strcpy(p_working_folder_name, path);
+}
+
+void Configuration::set_povray_command_line(const char* command_line)
+{
+  assert(strlen(command_line) < PATH_LENGTH);
+  strcpy(p_povray_command_line, command_line);
 }
 
 /* Local Variables:	*/

@@ -12,6 +12,7 @@
 #include <assert.h>
 #include <stdlib.h>
 #include "Config.h"
+#include "Configuration.h"
 #include "CarbonAllotrope.h"
 #include "BoundaryCarbons.h"
 #include "RepresentationInfo.h"
@@ -1821,17 +1822,7 @@ void CarbonAllotrope::draw_six_views_by_POVRay(const char* file_name_base)
 
 void CarbonAllotrope::execute_POVRay(const char* pov_name)
 {
-  char command_line[400] = "bad command line";
-#ifdef _WIN32
-  sprintf(command_line, "\"C:\\Program Files\\POV-Ray\\v3.7\\bin\\"
-          "pvengine32-sse2.exe\" /RENDER +FN +UA %s /EXIT", pov_name);
-#endif
-#if defined(__APPLE__)
-  sprintf(command_line, "/usr/local/bin/povray -W1600 -H1200 +FN +UA %s", pov_name);
-#endif
-#if defined(__unix)
-  sprintf(command_line, "povray37 -W1600 -H1200 +FN +UA %s", pov_name);
-#endif
+  const char* command_line = configuration->get_povray_command_line();
   int result = system(command_line);
   if (result != 0)
     {

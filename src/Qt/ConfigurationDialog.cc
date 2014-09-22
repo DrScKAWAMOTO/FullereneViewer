@@ -29,6 +29,7 @@ ConfigurationDialog::ConfigurationDialog(QWidget *parent)
       break;
     }
   ui->workingFolderLineEdit->setText(QString(configuration->get_working_folder_name()));
+  ui->povrayCommandLineLineEdit->setText(QString(configuration->get_povray_command_line()));
 
   connect(ui->buttonBox, SIGNAL(accepted()), this, SLOT(slot_accept()));
   connect(ui->buttonBox, SIGNAL(rejected()), this, SLOT(slot_reject()));
@@ -52,6 +53,7 @@ void ConfigurationDialog::slot_accept()
   else
     configuration->set_motion_quality(QUALITY_LOW);
   configuration->set_working_folder_name(qPrintable(ui->workingFolderLineEdit->text()));
+  configuration->set_povray_command_line(qPrintable(ui->povrayCommandLineLineEdit->text()));
 
   configuration->save();
   configuration->reflect();

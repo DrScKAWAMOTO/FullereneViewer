@@ -11,6 +11,15 @@
 #define PATH_LENGTH 1024
 #define CONFIGURATION_FILE_NAME "/.FullereneViewer.conf"
 #define WORKING_FOLDER_NAME "/fullerene"
+#ifdef _WIN32
+# define POVRAY_COMMAND_LINE "\"C:\\Program Files\\POV-Ray\\v3.7\\bin\\pvengine32-sse2.exe\" /RENDER +FN +UA %s /EXIT"
+#elif defined(__APPLE__)
+# define POVRAY_COMMAND_LINE "/usr/local/bin/povray -W1600 -H1200 +FN +UA %s"
+#elif defined(__unix)
+# define POVRAY_COMMAND_LINE "povray37 -W1600 -H1200 +FN +UA %s"
+#else
+# define POVRAY_COMMAND_LINE "bad command line"
+#endif
 
 enum Quality {
   QUALITY_HIGH,
@@ -25,6 +34,7 @@ class Configuration {
 private:
   char p_configuration_file_name[PATH_LENGTH + 1];
   char p_working_folder_name[PATH_LENGTH + 1];
+  char p_povray_command_line[PATH_LENGTH + 1];
   Quality p_picture_quality;
   Quality p_motion_quality;
 
@@ -55,6 +65,8 @@ public:
   void set_motion_quality(Quality quality) { p_motion_quality = quality; }
   const char* get_working_folder_name() const { return p_working_folder_name; }
   void set_working_folder_name(const char* path);
+  const char* get_povray_command_line() const { return p_povray_command_line; }
+  void set_povray_command_line(const char* command_line);
 
 };
 
