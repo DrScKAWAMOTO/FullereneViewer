@@ -1,5 +1,5 @@
 # FullereneViewer(フラーレンビューア)
-## コンパイル方法 (FreeBSD 9.1)
+## コンパイル方法 (FreeBSD 10.0)
 ### 1) ポートのインストール
     home> su
     # cd /usr/ports
