@@ -19,7 +19,7 @@ void print_version(const char* program_name, FILE* output)
 
   fprintf(output, "%sCopyright (C) 2011-14 Dr.Sc.KAWAMOTO,Takuji (Ext)"
           " All Rights Reserved.\n", comment);
-  fprintf(output, "%s%s Ver 1.3.2", comment, program_name);
+  fprintf(output, "%s%s Ver 1.3.3", comment, program_name);
 #if defined(CONFIG_REFLECTED_IMAGE_IS_REGARDED_AS_ISOMORPHIC)
   fprintf(output, " (refleiso version)\n");
   fprintf(output, "%s   configured that mirror image is regarded as isomorphic.\n",
