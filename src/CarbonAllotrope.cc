@@ -1822,7 +1822,9 @@ void CarbonAllotrope::draw_six_views_by_POVRay(const char* file_name_base)
 
 void CarbonAllotrope::execute_POVRay(const char* pov_name)
 {
-  const char* command_line = configuration->get_povray_command_line();
+  const char* format = configuration->get_povray_command_line();
+  char command_line[1024];
+  sprintf(command_line, format, pov_name);
   int result = system(command_line);
   if (result != 0)
     {
