@@ -22,17 +22,17 @@
 <h4>1-1) 対称軸</h4>
 <h4>1-2) 五員環同士の距離分布</h4>
 <h4>1-3) 五員環同士の距離マトリックス</h4>
-<h3 id="ca-cmp">2) ca-cmp</h3>
-<p>　ファイルの内容を比較します。複数のファイル名を指定してください。これらファイル名のうち、内容が同じファイル名同士を一行に表示します。</p>
-<h3 id="ca-generator">3) ca-generator</h3>
+<h3 id="ca-generator">2) ca-generator</h3>
 <p>　指定条件に合うフラーレンを探索し、フラーレンの生成式を表示します。<br />　対称性のあるフラーレンを探索する場合は、オプション <code>--symmetric=[num]</code> を使用します。num で探索する最大の炭素数を指定して下さい。探索対象となる生成式は <code>S1-...</code> から <code>S4-...</code> までです。<br />　カーボンナノチューブを含むフラーレンを探索する場合は、オプション <code>--tube=[num]</code> を使用します。num で探索する最大の炭素数を指定して下さい。探索対象となる生成式は <code>Tn,m,h-...</code> という形です。ここで <code>(n,m)</code> はチューブのカイラル指数です。<code>h</code> はチューブの円筒の高さです。<br />　対称性の有無にとらわれずにフラーレンを探索する場合は、オプション <code>--ordinary=[num]</code> を使用します。num で探索する最大の炭素数を指定して下さい。探索対象となる生成式は <code>A1-...</code> です。対称性のあるフラーレンの探索のほうが高速です。</p>
 <p>　また、探索を開始する生成式を指定することができます。これの指定がなければ一番最初の生成式から探し出します。<br />　ca-generator は、一度生成したフラーレンの特性値を覚えておいて同一性チェックを行うことで、同じフラーレンを二重表示しないようにします。</p>
+<h3 id="ca-gentest">3) ca-gentest</h3>
+<p>　テスト用の生成式を表示します。</p>
 <h3 id="ca-loop">4) ca-loop</h3>
 <p>　前述の ca-generator のラッパープログラムです。<br />　ca-generator は開始生成式を指定して、メモリが許す限り、次々とフラーレンを検索してくれるのですが、メモリ不足などの問題が発生すると強制的に終了してしまいます。<br />　ca-loop は、開始生成式と、終了生成式を指定することで、開始生成式以上、終了生成式未満のフラーレンを ca-generator を使って全て検索します。<br />　ca-generator がメモリ不足で異常終了しても ca-generator を再起動することで継続してくれます。<br />　ca-generator がメモリ不足で異常終了した場合は、ca-generator の再起動をまたがった同一性チェックが効かないため、同一フラーレンを二重表示する場合があります。このため、出力情報は念のため ca-sort にかけた後更に ca-uniq にかけることをお勧めします。</p>
-<h3 id="ca-modeling">5) ca-modeling</h3>
-<h3 id="ca-sort">6) ca-sort</h3>
-<h3 id="ca-test">7) ca-test</h3>
-<h3 id="ca-uniq">8) ca-uniq</h3>
-<h3 id="ca-char-1">9) ca-char</h3>
+<h3 id="ca-mirror">5) ca-mirror</h3>
+<h3 id="ca-modeling">6) ca-modeling</h3>
+<h3 id="ca-sort">7) ca-sort</h3>
+<h3 id="ca-test">8) ca-test</h3>
+<h3 id="ca-uniq">9) ca-uniq</h3>
 </body>
 </html>

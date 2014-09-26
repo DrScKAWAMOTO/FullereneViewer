@@ -10,7 +10,11 @@
 <body>
 <h1 id="fullereneviewer">FullereneViewer(フラーレンビューア)</h1>
 <h2>リリースノート</h2>
-<h3 id="xx-version-1.3.1">2014/09/XX Version 1.3.1</h3>
+<h3 id="version-1.3.3">2014/09/26 Version 1.3.3</h3>
+<p>　doc/FreeBSD/HowToCompile-FreeBSD-10.0-ja.html 修正。<br />　POVRay起動コマンドラインを設定画面からひっぱってくる際のパラメータ設定間違い修正。</p>
+<h3 id="version-1.3.2">2014/09/22 Version 1.3.2</h3>
+<p>　鏡像もリストアップする版(新)と鏡像を略する版(従来)を Config.h で指定できるようにした。<br />　鏡像もリストアップする版の場合は、鏡像関係を出力するコマンド ca-mirror 追加。<br />　バイナリサーチを使って ca-generator / ca-uniq 高速化。<br />　距離計算のアルゴリズム改良で ca-generator / ca-uniq 高速化。<br />　パターン生成のステップアルゴリズム改良で ca-generator 高速化。<br />　ステップアルゴリズム --step-backward をデフォルトに。<br />　ca-loop / ca-generator は環境変数 CA_STEP_ALGORITHM 採用。<br />　ca-loop 引数省略可能にした。<br />　ca-char は Pdd= 属性、MirrorSymmetric 属性、Mirror= 属性を出力する機能追加。<br />　ca- シリーズで --help も使えるようにした。<br />　Qt pro ファイル整理。<br />　カーボンナノチューブは両方閉じるとパターンが多くなるので、半分だけ閉じたものをリストアップした。n+m&lt;=12。<br />　clang++ でもコンパイルできるようにした。<br />　generator-formulas フォルダは別リポジトリに分離した。<br />　povray コマンドラインを設定画面で指定できるようにした。</p>
+<h3 id="version-1.3.1">2014/09/10 Version 1.3.1</h3>
 <p>　FullereneViewer について画面追加。<br />　閉・開カーボンナノチューブの生成関連追加(Un,m,h-....)。<br />　「ジェネレータラベル」を「生成式」に改名。<br />　五員環同士の距離分布の出力フォーマット変更。<br />　生成式指定画面追加。<br />　各種リファクタリング<br />　半開状態の Fullerene でも generate/view できるようにした。<br />　ヘルプドキュメント更新。<br />　カーボンナノチューブの生成は、チューブ方向の長さが長くならない制限を付与。<br />　境界の不動性もチェックするようにし、筒の回転軸も表示できるようにした。<br />　カーボンナノチューブの生成スクリプト開発。<br />　n+m=10 高さ 3 のカーボンナノチューブのリストアップ。<br />　フラーレンの表現を改良(&quot;b&quot;追加+圧縮)し、ca-generator / ca-uniq の Warning を潰した。<br />　ca-uniq の効率化。<br />　src/Depend.mk を管理対象から外した。<br />　ca-char でファイル名を指定した場合に落ちるのを修正。<br />　samples 内の各種ログを更新。<br />　C90〜C100までのフラーレン指定メニューの不足分追加。</p>
 <h3 id="version-1.3.0">2014/08/14 Version 1.3.0</h3>
 <p>　Mac 版、mkdir 引数間違いと、povray 起動できない問題を修正。<br />　Webkit を使った HelpBrowser を実装し、markdown ファイルを html に変換したものを表示。</p>

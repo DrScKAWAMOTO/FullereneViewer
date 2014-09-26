@@ -1,0 +1,24 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+</head>
+<body>
+<h1 id="fullereneviewer">FullereneViewer(フラーレンビューア)</h1>
+<h2>リリースの仕方</h2>
+<h3 id="docreleasenote-ja.html-">1) <a href="ReleaseNote-ja.html">doc/ReleaseNote-ja.html</a> に記述</h3>
+<p>　リリース日の決定、リリースバージョンの決定、そのリリースでの修正項目のリストアップを行います。<br />　バージョン番号は３つの数字をピリオドで区切った形をしています。<br />　最初の数字はメジャー番号で、大きく機能がかわったりしてプログラムの見た目が変わったりした場合に更新します。<br />　次の数字はマイナー番号で、プログラムの見た目は変化がない程度の小さな仕様変更があった場合に更新します。<br />　最後の数字はバグフィックス番号で、不具合などを修正した場合に更新します。</p>
+<h3 id="srcversion.h-">2) <a href="../src/Version.h">src/Version.h</a> 修正</h3>
+<p>　決定したバージョン番号をマクロ <code>FULLERENE_VIEWER_VERSION</code> に記述してください。<br />　ここを修正すると、 <code>ca-</code> シリーズプログラムの <code>--version</code> オプションで出力されるバージョン番号が変更されます。また、FullereneViewer の「フラーレンビューアについて」画面に出力されるバージョン番号も変更されます。</p>
+<h3 id="srcqthelp-">3) <a href="../src/Qt/help">src/Qt/help</a> 内でメイク実施</h3>
+<p>　<a href="../src/Qt/help">src/Qt/help</a> 内で <code>make</code> すると、<a href="../README.html">README.html</a> や <a href=".">doc</a>フォルダ内のドキュメント類(拡張子が md)をhtmlベースのヘルプファイルに変換してくれます。<br />　メイクを実施するためには pandoc が必要です。それぞれのパッケージ管理ツールでインストールしてからメイクを実施して下さい。</p>
+<h3 id="github-">4) github にプッシュ</h3>
+<p>　具体的なプッシュの方法は github のドキュメント類を参照して下さい。</p>
+<h3 id="github-">5) github リリースタグ付与</h3>
+<p>　<a href="ReleaseNote-ja.html">doc/ReleaseNote-ja.html</a> に記述した修正項目を参考に github のリリースタグを付与します。具体的なリリースタグ付与の方法は github のドキュメント類を参照して下さい。</p>
+</body>
+</html>

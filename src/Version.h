@@ -10,6 +10,8 @@
 
 #include <stdio.h>
 
+#define FULLERENE_VIEWER_VERSION "1.3.3"
+
 extern void print_version(const char* program_name, FILE* output = 0);
 
 #endif /* __VERSION_H__ */

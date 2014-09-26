@@ -6,6 +6,7 @@
  */
 
 #include <QPainter>
+#include "Version.h"
 #include "AboutWindow.h"
 #include "ui_AboutWindow.h"
 
@@ -25,7 +26,7 @@ AboutWindow::~AboutWindow()
 
 void AboutWindow::paintEvent(QPaintEvent *)
 {
-    ui->label->setText("FullereneViewer Ver 1.3.0");
+    ui->label->setText("FullereneViewer Ver " FULLERENE_VIEWER_VERSION);
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing, true);
     painter.drawImage(0, 50, QImage(":/help/media/FullereneViewer.png"));
