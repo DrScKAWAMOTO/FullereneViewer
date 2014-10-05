@@ -33,11 +33,10 @@
 
 #define MAX_N 10
 
-#if defined(CONFIG_REFLECTED_IMAGE_IS_REGARDED_AS_ISOMORPHIC)
-bool CarbonAllotrope::s_need_representations_reflection = true;
-#else
+bool CarbonAllotrope::s_need_representations = false;
 bool CarbonAllotrope::s_need_representations_reflection = false;
-#endif
+bool CarbonAllotrope::s_need_all_axes = false;
+bool CarbonAllotrope::s_need_major_axes = false;
 
 void CarbonAllotrope::p_make_n_polygon(int n_members)
 {
@@ -46,6 +45,9 @@ void CarbonAllotrope::p_make_n_polygon(int n_members)
 
 void CarbonAllotrope::p_set_center()
 {
+#if defined(DEBUG_CARBON_ALLOTROPE_CONSTRUCTION)
+  printf("### p_set_center()\n");
+#endif
   p_centers = p_carbons;
 }
 
@@ -75,46 +77,40 @@ void CarbonAllotrope::p_list_most_inside_carbons_on_boundary(List<Carbon>& bound
             minimum_sequence_no = seq;
         }
     }
+#if defined(DEBUG_CARBON_ALLOTROPE_CONSTRUCTION)
+  printf("### p_list_most_inside_carbons_on_boundary() =\n");
+#endif
   if (minimum_sequence_no == INT_MAX)
-    return;
+    {
+#if defined(DEBUG_CARBON_ALLOTROPE_CONSTRUCTION)
+      printf(" none\n");
+#endif
+      assert(0);
+      return;
+    }
   Carbon* start = get_carbon_by_sequence_no(minimum_sequence_no);
   Carbon* carbon = start;
   assert(carbon);
-  Bond* bond0 = carbon->boundary_bond(0);
-  Bond* bond1 = carbon->boundary_bond(bond0);
-  Bond* bond;
-  if (bond0->get_carbon_beyond(carbon)->sequence_no() < 
-      bond1->get_carbon_beyond(carbon)->sequence_no())
-    bond = bond0;
-  else
-    bond = bond1;
-  bool connected = false;
-  Carbon* first_carbon = 0;
-  Bond* first_bond = 0;
+  Bond* bond = carbon->boundary_bond();
+  bond = carbon->boundary_bond(bond);
+  int minimum_sequence = INT_MAX;
   while (1)
-    {
-      if (carbon->distance_to_set() == minimum_distance)
-        {
-          first_carbon = carbon;
-          first_bond = bond;
-          connected = true;
-        }
-      else
+    { /* 逆向きに辿って minimum_distance なカーボンのうち左端を検索 */
+      Carbon* carbon2 = bond->get_carbon_beyond(carbon);
+      if (minimum_distance < carbon2->distance_to_set())
         break;
+      carbon = carbon2;
+      /* もしくはループしている場合は最小のシーケンス番号のものを検索 */
+      if (carbon->sequence_no() < minimum_sequence)
+        minimum_sequence = carbon->sequence_no();
+      else if (carbon->sequence_no() == minimum_sequence)
+        break;
+      bond = carbon->boundary_bond();
       bond = carbon->boundary_bond(bond);
-      carbon = bond->get_carbon_beyond(carbon);
-      if (carbon == start)
-        break;
     }
-  carbon = first_carbon;
+  bond = carbon->boundary_bond(0);
+  bool connected = false;
   start = carbon;
-  bond0 = carbon->boundary_bond(0);
-  bond1 = carbon->boundary_bond(bond0);
-  if (first_bond == bond0)
-    bond = bond1;
-  else
-    bond = bond0;
-  connected = false;
   while (1)
     {
       if (carbon->distance_to_set() == minimum_distance)
@@ -125,22 +121,25 @@ void CarbonAllotrope::p_list_most_inside_carbons_on_boundary(List<Carbon>& bound
         }
       else
         connected = false;
-      bond = carbon->boundary_bond(bond);
+      bond = carbon->boundary_bond();
       carbon = bond->get_carbon_beyond(carbon);
       if (carbon == start)
         break;
     }
-  p_calculate_distances_to_pentagons();
-#if defined(DEBUG_CARBON_ALLOTROPE_CONSTRUCTION)
   len = boundary.length();
+  assert((len == 1) || ((len % p_scrap_order) == 0));
+#if defined(CONFIG_SYMMETRIC_GENERATOR_DECIDES_NEXT_FILL_POINT_BY_DISTANCES_TO_PENTAGON)
+  p_calculate_distances_to_pentagons();
+#endif
+#if defined(DEBUG_CARBON_ALLOTROPE_CONSTRUCTION)
   for (int i = 0; i < len; ++i)
     {
       Carbon* carbon = boundary[i];
       int dist = carbon->distance_to_set();
       if (dist == INT_MAX)
-        printf("C%d(INF) ", carbon->sequence_no());
+        printf(" C%d(INF)", carbon->sequence_no());
       else
-        printf("C%d(%d) ", carbon->sequence_no(), dist);
+        printf(" C%d(%d)", carbon->sequence_no(), dist);
     }
   printf("\n");
 #endif
@@ -316,6 +315,7 @@ int CarbonAllotrope::p_calculate_period(const List<Carbon>& boundary, int& offse
 ErrorCode CarbonAllotrope::enlarge_cylinder_by_n_polygons(Pattern* n_pattern,
                                                           int& result_number)
 {
+  set_clockwise(+1);
   List<Carbon> boundary;
   list_newborn_connected_boundary(boundary);
   int len = boundary.length();
@@ -549,6 +549,8 @@ fill_n_polygons_around_carbons_closed_to_center_and_pentagons(int n_members,
   List<Carbon> boundary;
   p_list_most_inside_carbons_on_boundary(boundary);
   int len = boundary.length();
+#if defined(CONFIG_SYMMETRIC_GENERATOR_DECIDES_NEXT_FILL_POINT_BY_DISTANCES_TO_PENTAGON)
+  int step = 1;
   int min = INT_MAX;
   for (int i = 0; i < len; ++i)
     {
@@ -557,38 +559,51 @@ fill_n_polygons_around_carbons_closed_to_center_and_pentagons(int n_members,
       if (dist < min)
         min = dist;
     }
-  for (int i = 0; i < len; ++i)
+#else
+  int step = (len == 1) ? 1 : (len / p_scrap_order);
+#endif
+  for (int i = 0; i < len; i += step)
     {
       Carbon* carbon = boundary[i];
-      if (carbon->distance_to_set() == min)
-        {
-#if defined(DEBUG_CARBON_ALLOTROPE_CONSTRUCTION)
-          printf("Carbon(%d) ... %d-polygon\n", carbon->sequence_no(), n_members);
+#if defined(CONFIG_SYMMETRIC_GENERATOR_DECIDES_NEXT_FILL_POINT_BY_DISTANCES_TO_PENTAGON)
+      if (carbon->distance_to_set() > min)
+        continue;
 #endif
-          assert(carbon->number_of_rings() == 2);
-          Bond* end_bond;
-          int length;
-          ErrorCode result;
-          result = carbon->concave_boundary_segment(n_members, length, end_bond);
-          if (result != ERROR_CODE_OK)
-            return result;
-        }
+#if defined(DEBUG_CARBON_ALLOTROPE_CONSTRUCTION)
+      printf("====> Carbon(%d) %d-polygon\n", carbon->sequence_no(), n_members);
+#endif
+      assert(carbon->number_of_rings() == 2);
+      Bond* end_bond;
+      int length;
+      ErrorCode result;
+      result = carbon->concave_boundary_segment(n_members, length, end_bond);
+      if (result != ERROR_CODE_OK)
+        return result;
     }
   number_of_results = 0;
-  for (int i = 0; i < len; ++i)
+  for (int i = 0; i < len; i += step)
     {
       Carbon* carbon = boundary[i];
-      if ((carbon->distance_to_set() == min) && (carbon->number_of_rings() == 2))
+#if defined(CONFIG_SYMMETRIC_GENERATOR_DECIDES_NEXT_FILL_POINT_BY_DISTANCES_TO_PENTAGON)
+      if (carbon->distance_to_set() > min)
+        continue;
+#endif
+      if (carbon->number_of_rings() != 2) /* TODO こうなるケースをデバッグして対策する */
         {
-          Bond* end_bond;
-          int length;
-          ErrorCode result;
-          result = carbon->concave_boundary_segment(n_members, length, end_bond);
-          if (result != ERROR_CODE_OK)
-            return result;
-          new Ring(this, n_members, end_bond);
-          number_of_results++;
+#if defined(DEBUG_CARBON_ALLOTROPE_CONSTRUCTION)
+          printf("### Carbon(%d) is %d-ring !!\n", carbon->sequence_no(),
+                 carbon->number_of_rings());
+#endif
+          continue;
         }
+      Bond* end_bond;
+      int length;
+      ErrorCode result;
+      result = carbon->concave_boundary_segment(n_members, length, end_bond);
+      if (result != ERROR_CODE_OK)
+        return result;
+      new Ring(this, n_members, end_bond);
+      number_of_results++;
     }
   return ERROR_CODE_OK;
 }
@@ -597,7 +612,7 @@ ErrorCode CarbonAllotrope::fill_n_polygon_around_carbon(int n_members, Carbon* c
                                                         BoundaryCarbons& boundary)
 {
 #if defined(DEBUG_CARBON_ALLOTROPE_CONSTRUCTION)
-  printf("Carbon(%d) ... %d-polygon\n", carbon->sequence_no(), n_members);
+  printf("====> Carbon(%d) %d-polygon\n", carbon->sequence_no(), n_members);
 #endif
   Bond* end_bond;
   int length;
@@ -628,11 +643,15 @@ ErrorCode CarbonAllotrope::fill_n_polygon_around_carbon(int n_members, Carbon* c
 
 ErrorCode CarbonAllotrope::make_symmetric_scrap(int scrap_no)
 {
-  assert((scrap_no >= 1) && (scrap_no <= 4));
+#if defined(DEBUG_CARBON_ALLOTROPE_CONSTRUCTION)
+  printf("### make_symmetric_scrap(%d)\n", scrap_no);
+#endif
+  p_scrap_no = scrap_no;
   ErrorCode result;
   switch (scrap_no)
     {
     case 1: /* only one pentagon */
+      p_scrap_order = 5;
       p_make_n_polygon(5);
       p_set_center();
       result = fill_hexagons_around_n_polygons(5);
@@ -640,6 +659,7 @@ ErrorCode CarbonAllotrope::make_symmetric_scrap(int scrap_no)
         return result;
       break;
     case 2: /* only three pentagons */
+      p_scrap_order = 3;
       p_make_n_polygon(6);
       p_set_center();
       result = append_n_polygon_at_bond(5, 1);
@@ -655,7 +675,9 @@ ErrorCode CarbonAllotrope::make_symmetric_scrap(int scrap_no)
       if (result != ERROR_CODE_OK)
         return result;
       break;
-    case 3: /* only one hexagon */
+    case 3: /* only one hexagon, order = 6 */
+      p_scrap_order = 6;
+    only_one_hexagon:
       p_make_n_polygon(6);
       p_set_center();
       result = append_n_polygon_at_bond(6, 1);
@@ -677,7 +699,14 @@ ErrorCode CarbonAllotrope::make_symmetric_scrap(int scrap_no)
       if (result != ERROR_CODE_OK)
         return result;
       break;
-    case 4: /* only three hexagons */
+    case 4: /* only one hexagon, order = 3 */
+      p_scrap_order = 3;
+      goto only_one_hexagon;
+    case 5: /* only one hexagon, order = 2 */
+      p_scrap_order = 2;
+      goto only_one_hexagon;
+    case 6: /* only three hexagons */
+      p_scrap_order = 3;
       p_make_n_polygon(6);
       result = append_n_polygon_at_bond(6, 1);
       if (result != ERROR_CODE_OK)
@@ -699,7 +728,64 @@ ErrorCode CarbonAllotrope::make_symmetric_scrap(int scrap_no)
       if (result != ERROR_CODE_OK)
         return result;
       break;
+    case 7: /* only six hexagons */
+      p_scrap_order = 3;
+      p_make_n_polygon(6);
+      result = append_n_polygon_at_bond(6, 1);
+      if (result != ERROR_CODE_OK)
+        return result;
+      result = append_n_polygon_at_carbon(6, 2);
+      if (result != ERROR_CODE_OK)
+        return result;
+      p_set_center();
+      result = append_n_polygon_at_carbon(6, 1);
+      if (result != ERROR_CODE_OK)
+        return result;
+      result = append_n_polygon_at_carbon(6, 3);
+      if (result != ERROR_CODE_OK)
+        return result;
+      result = append_n_polygon_at_carbon(6, 7);
+      if (result != ERROR_CODE_OK)
+        return result;
+      break;
+    case 8: /* only two hexagons */
+      p_scrap_order = 2;
+      p_make_n_polygon(6);
+      result = append_n_polygon_at_bond(6, 1);
+      if (result != ERROR_CODE_OK)
+        return result;
+      p_set_center();
+      result = append_n_polygon_at_carbon(5, 1);
+      if (result != ERROR_CODE_OK)
+        return result;
+      result = append_n_polygon_at_carbon(5, 2);
+      if (result != ERROR_CODE_OK)
+        return result;
+      result = fill_hexagons_around_n_polygons(5);
+      if (result != ERROR_CODE_OK)
+        return result;
+      break;
+    case 9: /* only four hexagons */
+      p_scrap_order = 2;
+      p_make_n_polygon(6);
+      result = append_n_polygon_at_bond(6, 1);
+      if (result != ERROR_CODE_OK)
+        return result;
+      p_set_center();
+      result = append_n_polygon_at_carbon(6, 1);
+      if (result != ERROR_CODE_OK)
+        return result;
+      result = append_n_polygon_at_carbon(6, 2);
+      if (result != ERROR_CODE_OK)
+        return result;
+      break;
+    default:
+      assert((scrap_no >= 1) && (scrap_no <= 9));
+      break;
     }
+#if defined(DEBUG_CARBON_ALLOTROPE_CONSTRUCTION)
+  printf("### return from make_symmetric_scrap()\n");
+#endif
   return ERROR_CODE_OK;
 }
 
@@ -962,6 +1048,10 @@ void CarbonAllotrope::close_normally_once()
   while (1)
     {
       List<Carbon> boundary;
+#if defined(DEBUG_CARBON_ALLOTROPE_CONSTRUCTION)
+      print_detail();
+#endif
+      set_clockwise(+1);
       list_newborn_connected_boundary(boundary);
       int len = boundary.length();
       assert(len > 0);
@@ -1255,7 +1345,7 @@ void CarbonAllotrope::register_interactions()
                                  the_other, ACTION_LOCATION_CENTER);
         }
     }
-  set_clockwise(1);
+  set_clockwise(+1);
 #if defined(CONFIG_DRAW_PRINCIPAL_COMPONENT_AXES_IN_GURUGURU_MODE)
   ThreeViewNormal* first_axis = new ThreeViewNormal(this, 1);
   p_register_interaction(ORIGINAL_FORCE_TYPE_ORIGINAL, first_axis);
@@ -1264,26 +1354,28 @@ void CarbonAllotrope::register_interactions()
   ThreeViewNormal* third_axis = new ThreeViewNormal(this, 3);
   p_register_interaction(ORIGINAL_FORCE_TYPE_ORIGINAL, third_axis);
 #endif
-#if defined(CONFIG_DRAW_MAJOR_AXES_SYMMETRY_IN_GURUGURU_MODE)
-  List<SymmetryAxis> major_axes;
-  get_major_axes(major_axes);
-  int list_len = major_axes.length();
-  for (int j = 0; j < list_len; ++j)
+  if (s_need_major_axes)
     {
-      SymmetryAxis* major_axis = major_axes[j];
-      SymmetryAxisNormal* axis_normal = new SymmetryAxisNormal(this, major_axis);
-      p_register_interaction(ORIGINAL_FORCE_TYPE_ORIGINAL, axis_normal);
+      List<SymmetryAxis> major_axes;
+      get_major_axes(major_axes);
+      int list_len = major_axes.length();
+      for (int j = 0; j < list_len; ++j)
+        {
+          SymmetryAxis* major_axis = major_axes[j];
+          SymmetryAxisNormal* axis_normal = new SymmetryAxisNormal(this, major_axis);
+          p_register_interaction(ORIGINAL_FORCE_TYPE_ORIGINAL, axis_normal);
+        }
     }
-#endif
-#if defined(CONFIG_DRAW_ALL_AXES_SYMMETRY_IN_GURUGURU_MODE)
-  int len = number_of_axes();
-  for (int i = 0; i < len; ++i)
+  if (s_need_all_axes)
     {
-      SymmetryAxis* axis = get_axis(i);
-      SymmetryAxisNormal* axis_normal = new SymmetryAxisNormal(this, axis);
-      p_register_interaction(ORIGINAL_FORCE_TYPE_ORIGINAL, axis_normal);
+      int len = number_of_axes();
+      for (int i = 0; i < len; ++i)
+        {
+          SymmetryAxis* axis = get_axis(i);
+          SymmetryAxisNormal* axis_normal = new SymmetryAxisNormal(this, axis);
+          p_register_interaction(ORIGINAL_FORCE_TYPE_ORIGINAL, axis_normal);
+        }
     }
-#endif
 }
 
 void CarbonAllotrope::p_all_representations_half(Representations* results, int clockwise)
@@ -1410,11 +1502,8 @@ void CarbonAllotrope::count_carbons(int& number_of_carbons_with_one_ring,
 
 void CarbonAllotrope::print_detail()
 {
+  set_clockwise(+1);
   printf("* detail ***************************************\n");
-  {
-    List<Carbon> boundary;
-    p_list_most_inside_carbons_on_boundary(boundary);
-  }
   printf("number of bonds = %d\n", number_of_bonds());
   printf("number of carbons = %d\n", number_of_carbons());
   int num1, num2, num3;
@@ -1540,7 +1629,11 @@ void CarbonAllotrope::print_detail()
       printf("\n");
       already.add(boundary);
     }
+#if defined(CONFIG_SYMMETRIC_GENERATOR_DECIDES_NEXT_FILL_POINT_BY_DISTANCES_TO_PENTAGON)
   printf("distances to pentagons = ");
+#else
+  printf("distances to center carbons = ");
+#endif
   len = p_carbons.length();
   for (int i = 0; i < len; ++i)
     {
@@ -2065,11 +2158,10 @@ int CarbonAllotrope::list_oldest_connected_boundary(List<Carbon>& result) const
   if (!start)
     return 0;
   Carbon* carbon = start;
-  Bond* bond = carbon->boundary_bond();
   while (1)
     {
       result.add(carbon);
-      bond = carbon->boundary_bond(bond);
+      Bond* bond = carbon->boundary_bond();
       carbon = bond->get_carbon_beyond(carbon);
       if (carbon == start)
         return result.length();
@@ -2089,11 +2181,10 @@ int CarbonAllotrope::list_oldest_connected_boundary_carbons(BoundaryCarbons& res
   if (!start)
     return 0;
   Carbon* carbon = start;
-  Bond* bond = carbon->boundary_bond();
   while (1)
     {
       result.add(carbon);
-      bond = carbon->boundary_bond(bond);
+      Bond* bond = carbon->boundary_bond();
       carbon = bond->get_carbon_beyond(carbon);
       if (carbon == start)
         return result.length();
@@ -2113,11 +2204,10 @@ int CarbonAllotrope::list_newborn_connected_boundary(List<Carbon>& result) const
   if (!start)
     return 0;
   Carbon* carbon = start;
-  Bond* bond = carbon->boundary_bond();
   while (1)
     {
       result.add(carbon);
-      bond = carbon->boundary_bond(bond);
+      Bond* bond = carbon->boundary_bond();
       carbon = bond->get_carbon_beyond(carbon);
       if (carbon == start)
         return result.length();
@@ -2129,12 +2219,12 @@ int CarbonAllotrope::list_oldest_connected_boundary(List<Carbon>& result,
 {
   Carbon* start = 0;
   int len = number_of_carbons();
-  int alen = ignores.length();
+  int ignlen = ignores.length();
   for (int i = 0; i < len; ++i)
     if (p_carbons[i]->number_of_rings() <= 2)
       {
         start = p_carbons[i];
-        for (int j = 0; j < alen; ++j)
+        for (int j = 0; j < ignlen; ++j)
           {
             if (start == ignores[j])
               {
@@ -2148,11 +2238,10 @@ int CarbonAllotrope::list_oldest_connected_boundary(List<Carbon>& result,
   if (!start)
     return 0;
   Carbon* carbon = start;
-  Bond* bond = carbon->boundary_bond();
   while (1)
     {
       result.add(carbon);
-      bond = carbon->boundary_bond(bond);
+      Bond* bond = carbon->boundary_bond();
       carbon = bond->get_carbon_beyond(carbon);
       if (carbon == start)
         return result.length();

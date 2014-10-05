@@ -38,7 +38,7 @@ void Generator::p_glow(int value)
 }
 
 Generator::Generator(bool symmetric, int maximum_vertices_of_polygons)
-  : p_type(symmetric ? GENERATOR_TYPE_SYMMETRIC : GENERATOR_TYPE_ORDINARY),
+  : Object(), p_type(symmetric ? GENERATOR_TYPE_SYMMETRIC : GENERATOR_TYPE_ORDINARY),
     p_scrap_no(1), p_n(0), p_m(0), p_h(0), p_minimum_polygons(5),
     p_maximum_vertices_of_polygons(maximum_vertices_of_polygons),
     p_state(GENERATOR_STATE_START_FROM_MINIMUM),
@@ -48,8 +48,8 @@ Generator::Generator(bool symmetric, int maximum_vertices_of_polygons)
 }
 
 Generator::Generator(int n, int m, int h, int maximum_vertices_of_polygons)
-  : p_type(GENERATOR_TYPE_TUBE), p_scrap_no(0), p_n(n), p_m(m), p_h(h),
-    p_minimum_polygons(5),
+  : Object(), p_type(GENERATOR_TYPE_TUBE), p_scrap_no(0),
+    p_n(n), p_m(m), p_h(h), p_minimum_polygons(5),
     p_maximum_vertices_of_polygons(maximum_vertices_of_polygons),
     p_state(GENERATOR_STATE_START_FROM_MINIMUM),
     p_array_length(16), p_history_length(0), p_history_offset(0),
@@ -58,8 +58,8 @@ Generator::Generator(int n, int m, int h, int maximum_vertices_of_polygons)
 }
 
 Generator::Generator(const char* generator_formula, int maximum_vertices_of_polygons)
-  : p_type(GENERATOR_TYPE_ORDINARY), p_scrap_no(0), p_n(0), p_m(0), p_h(0),
-    p_minimum_polygons(5),
+  : Object(), p_type(GENERATOR_TYPE_ORDINARY), p_scrap_no(0),
+    p_n(0), p_m(0), p_h(0), p_minimum_polygons(5),
     p_maximum_vertices_of_polygons(maximum_vertices_of_polygons),
     p_state(GENERATOR_STATE_START_FROM_MINIMUM),
     p_array_length(16), p_history_length(0), p_history_offset(0),
@@ -106,7 +106,7 @@ Generator::Generator(const char* generator_formula, int maximum_vertices_of_poly
 }
 
 Generator::Generator(const Generator& you)
-  : p_type(you.p_type),
+  : Object(you), p_type(you.p_type),
     p_scrap_no(you.p_scrap_no), p_n(you.p_n), p_m(you.p_m), p_h(you.p_h),
     p_minimum_polygons(you.p_minimum_polygons),
     p_maximum_vertices_of_polygons(you.p_maximum_vertices_of_polygons),
@@ -116,11 +116,6 @@ Generator::Generator(const Generator& you)
 {
   for (int i = 0; i < p_array_length; ++i)
     p_history[i] = you.p_history[i];
-}
-
-Generator::~Generator()
-{
-  delete[] p_history;
 }
 
 Generator& Generator::operator = (const Generator& you)
@@ -147,6 +142,18 @@ Generator& Generator::operator = (const Generator& you)
   return *this;
 }
 
+Generator::~Generator()
+{
+  delete[] p_history;
+}
+
+void Generator::print_detail() const
+{
+  char buffer[1024];
+  get_generator_formula(buffer, 1024);
+  printf("%s\n", buffer);
+}
+
 int Generator::glow_step()
 {
   if (p_history_offset >= p_history_length - 1)
@@ -159,6 +166,8 @@ int Generator::glow_step()
 #if defined(DEBUG_CONSTRUCTION_ALGORITHM)
   printf("@@@ glow_step() = %d history_offset = %d\n", p_history[p_history_offset],
          p_history_offset);
+  printf("@@@ ");
+  print_detail();
   printf("@@@ now history_offset = %d\n", p_history_offset + 1);
 #endif
   return p_history[p_history_offset++];
@@ -252,7 +261,7 @@ bool Generator::next_by_rollback()
     }
 }
 
-void Generator::get_generator_formula(char* buffer, int length)
+void Generator::get_generator_formula(char* buffer, int length) const
 {
   if (p_type == GENERATOR_TYPE_TUBE)
     sprintf(buffer, "T%d,%d,%d-", p_n, p_m, p_h);

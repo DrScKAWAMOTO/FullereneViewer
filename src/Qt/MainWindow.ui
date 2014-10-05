@@ -34,6 +34,7 @@
     <property name="title">
      <string>フラーレン指定(&amp;C)</string>
     </property>
+    <addaction name="action_S"/>
     <addaction name="action_F"/>
    </widget>
    <widget class="QMenu" name="menu_M">
@@ -50,7 +51,7 @@
     <addaction name="action_M"/>
     <addaction name="action_R"/>
     <addaction name="action_6"/>
-    <addaction name="action_S"/>
+    <addaction name="action_O"/>
    </widget>
    <widget class="QMenu" name="menu_H">
     <property name="title">
@@ -125,15 +126,15 @@
     <string>6</string>
    </property>
   </action>
-  <action name="action_S">
+  <action name="action_O">
    <property name="text">
-    <string>スナップショット出力(&amp;S)</string>
+    <string>スナップショット出力(&amp;O)</string>
    </property>
    <property name="toolTip">
-    <string>スナップショット出力(S)</string>
+    <string>スナップショット出力(O)</string>
    </property>
    <property name="shortcut">
-    <string>S</string>
+    <string>O</string>
    </property>
   </action>
   <action name="action_C">
@@ -175,6 +176,17 @@
    </property>
    <property name="shortcut">
     <string>F</string>
+   </property>
+  </action>
+  <action name="action_S">
+   <property name="text">
+    <string>フラーレン選択...(&amp;S)</string>
+   </property>
+   <property name="toolTip">
+    <string>フラーレン選択(S)</string>
+   </property>
+   <property name="shortcut">
+    <string>S</string>
    </property>
   </action>
  </widget>

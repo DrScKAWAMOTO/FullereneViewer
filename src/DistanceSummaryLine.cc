@@ -11,6 +11,7 @@
 #include <string.h>
 #include <assert.h>
 #include "DistanceSummaryLine.h"
+#include "DebugMemory.h"
 
 int DistanceSummaryLine::s_next_sequence = 1;
 

@@ -96,7 +96,7 @@ const char* FullereneCharacteristic::get_summary() const
   for (int i = 0; i < len; ++i)
     {
       DistanceVector* dv = p_dvs[i];
-      int dist = (*dv)[11];
+      int dist = (*dv)[len - 1];
       if (dist > max_dist)
         max_dist = dist;
     }
@@ -106,7 +106,7 @@ const char* FullereneCharacteristic::get_summary() const
   for (int i = 0; i < len; ++i)
     {
       DistanceVector* dv = p_dvs[i];
-      for (int j = 0; j < 12; ++j)
+      for (int j = 0; j < len; ++j)
         {
           int dist = (*dv)[j];
           assert((dist >= 0) && (dist <= max_dist));

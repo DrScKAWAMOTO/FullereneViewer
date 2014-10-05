@@ -9,6 +9,7 @@
 #include "SymmetryAxisNormal.h"
 #include "CarbonAllotrope.h"
 #include "OpenGLUtil.h"
+#include "ShutUp.h"
 
 SymmetryAxisNormal::SymmetryAxisNormal(CarbonAllotrope* ca, SymmetryAxis* axis)
   : InteractiveRegularPolygon(ca, 0, 1.0, 2), p_ca(ca), p_axis(axis)
@@ -24,8 +25,8 @@ void SymmetryAxisNormal::reset_interaction()
   InteractiveRegularPolygon::reset_interaction();
 }
 
-void SymmetryAxisNormal::interaction_original(OriginalForceType force_type,
-                                              Interactives* interactives, double delta)
+void SymmetryAxisNormal::interaction_original(OriginalForceType UNUSED(force_type),
+                                              Interactives* UNUSED(interactives), double UNUSED(delta))
 {
   Vector3 north_location;
   Vector3 south_location;
@@ -156,7 +157,7 @@ void SymmetryAxisNormal::interaction_original(OriginalForceType force_type,
   fix_posture(Matrix3(Quaternion(Vector3(0.0, 0.0, 1.0), normal)));
 }
 
-void SymmetryAxisNormal::draw_opaque_by_OpenGL(bool selection) const
+void SymmetryAxisNormal::draw_opaque_by_OpenGL(bool UNUSED(selection)) const
 {
   Vector3 norm = get_normal();
   norm *= p_radius.length;

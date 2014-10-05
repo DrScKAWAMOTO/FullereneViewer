@@ -5,6 +5,7 @@
  * Create: 2012/01/18 00:37:23 JST
  */
 
+#include <stdlib.h>
 #include <limits.h>
 #include <assert.h>
 #include <stdio.h>
@@ -135,51 +136,19 @@ Fullerenes::Fullerenes(const char* generator_formula, int maximum_number_of_carb
                        bool symmetric, int maximum_vertices_of_polygons, int close,
                        StepAlgorithm step_algorithm)
 {
-  Fullerene::s_need_representations = true;
+  CarbonAllotrope::s_need_representations = true;
   Interactives::s_need_simulation = false;
   p_step_ei_yah(generator_formula, maximum_number_of_carbons,
                 symmetric, maximum_vertices_of_polygons, close, step_algorithm);
   if (symmetric)
     {
-      int specified = 0;
-      if (generator_formula)
+      int specified = atoi(generator_formula + 1) + 1;
+      while (specified <= 9)
         {
-          switch (generator_formula[1])
-            {
-            case '1':
-            default:
-              specified = 1;
-              break;
-            case '2':
-              specified = 2;
-              break;
-            case '3':
-              specified = 3;
-              break;
-            case '4':
-              specified = 4;
-              break;
-            }
-        }
-      else
-        specified = 1;
-      switch (specified)
-        {
-        case 1:
-          p_step_ei_yah("S2-", maximum_number_of_carbons, symmetric,
+          char next_formula[10];
+          sprintf(next_formula, "S%d-", specified++);
+          p_step_ei_yah(next_formula, maximum_number_of_carbons, symmetric,
                         maximum_vertices_of_polygons, close, step_algorithm);
-          /* continue to next case */
-        case 2:
-          p_step_ei_yah("S3-", maximum_number_of_carbons, symmetric,
-                        maximum_vertices_of_polygons, close, step_algorithm);
-          /* continue to next case */
-        case 3:
-          p_step_ei_yah("S4-", maximum_number_of_carbons, symmetric,
-                        maximum_vertices_of_polygons, close, step_algorithm);
-          /* continue to next case */
-        case 4:
-        default:
-          break;
         }
     }
 }
@@ -220,6 +189,7 @@ void Fullerenes::add_fullerene(Fullerene* pat)
 #endif
     }
   pat->p_carbon_allotrope = 0;
+  delete pat;
 }
 
 /* Local Variables:	*/

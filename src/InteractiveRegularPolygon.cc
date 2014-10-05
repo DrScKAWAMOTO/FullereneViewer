@@ -10,6 +10,7 @@
 #include "InteractiveRegularPolygon.h"
 #include "Utils.h"
 #include "OpenGLUtil.h"
+#include "ShutUp.h"
 
 Vector3 InteractiveRegularPolygon::p_get_vertex_location(int index) const
 {
@@ -35,7 +36,7 @@ int InteractiveRegularPolygon::number_of_vertices() const
 }
 
 Vector3 InteractiveRegularPolygon::
-get_nearest_point(const Vector3& by_your_location) const
+get_nearest_point(const Vector3& UNUSED(by_your_location)) const
 {
   return Vector3();
 }

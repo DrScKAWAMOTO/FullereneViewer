@@ -8,6 +8,7 @@
 #include <string.h>
 #include <assert.h>
 #include "StringPair.h"
+#include "DebugMemory.h"
 
 StringPair::StringPair(const char* my_string, const char* your_string)
   : p_my_string(0), p_your_string(0)

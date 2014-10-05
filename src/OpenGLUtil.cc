@@ -31,6 +31,7 @@
 #include "OpenGLUtil.h"
 #include "DebugMemory.h"
 #include "Debug.h"
+#include "ShutUp.h"
 
 // control slice
 #define INITIAL_FARNESS_OF_VIEW_PORT 40
@@ -466,7 +467,7 @@ void OpenGLUtil::draw_cylinder(double radius, const Vector3& from, const Vector3
   glPopMatrix();
 }
 
-void OpenGLUtil::draw_ring(bool frontface, const Ring* ring)
+void OpenGLUtil::draw_ring(bool UNUSED(frontface), const Ring* ring)
 {
   int num = ring->number_of_carbons();
   Vector3 center = Vector3();
@@ -758,6 +759,19 @@ OpenGLUtil::change_fullerene(const char* fullerene_name, const char* generator_f
   p_last_real_motion = Vector3();
   resume_drawing();
   return true;
+}
+
+bool OpenGLUtil::rebuild_fullerene()
+{
+  if (!fullerene)
+    return false;
+  if (fullerene->error_code() != ERROR_CODE_OK)
+    return false;
+  char fullerene_name[1024];
+  strcpy(fullerene_name, fullerene->get_fullerene_name());
+  char generator_formula[1024];
+  strcpy(generator_formula, fullerene->get_generator_formula());
+  return change_fullerene(fullerene_name, generator_formula);
 }
 
 int OpenGLUtil::find_unused_file_number(const char* file_name_base)

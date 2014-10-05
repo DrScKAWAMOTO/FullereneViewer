@@ -1,6 +1,14 @@
+/*
+ * Project: FullereneViewer
+ * Version: 1.0
+ * Copyright: (C) 2011-14 Dr.Sc.KAWAMOTO,Takuji (Ext)
+ * Create: 2011/10/16 16:57:28 JST
+ */
+
 #include "ConfigurationDialog.h"
 #include "ui_ConfigurationDialog.h"
 #include "Configuration.h"
+#include "OpenGLUtil.h"
 
 ConfigurationDialog::ConfigurationDialog(QWidget *parent)
   : QDialog(parent), ui(new Ui::ConfigurationDialog)
@@ -28,6 +36,18 @@ ConfigurationDialog::ConfigurationDialog(QWidget *parent)
       ui->motionLowRadioButton->setChecked(true);
       break;
     }
+  switch (configuration->get_display_symmetry_axes())
+    {
+    case DISPLAY_ALL_AXES:
+      ui->displayAllAxesButton->setChecked(true);
+      break;
+    case DISPLAY_MAJOR_AXES:
+      ui->displayMajorAxesButton->setChecked(true);
+      break;
+    case DISPLAY_NO_AXES:
+      ui->displayNoAxesButton->setChecked(true);
+      break;
+    }
   ui->workingFolderLineEdit->setText(QString(configuration->get_working_folder_name()));
   ui->povrayCommandLineLineEdit->setText(QString(configuration->get_povray_command_line()));
 
@@ -52,11 +72,18 @@ void ConfigurationDialog::slot_accept()
     configuration->set_motion_quality(QUALITY_MIDDLE);
   else
     configuration->set_motion_quality(QUALITY_LOW);
+  if (ui->displayAllAxesButton->isChecked())
+    configuration->set_display_symmetry_axes(DISPLAY_ALL_AXES);
+  else if (ui->displayMajorAxesButton->isChecked())
+    configuration->set_display_symmetry_axes(DISPLAY_MAJOR_AXES);
+  else
+    configuration->set_display_symmetry_axes(DISPLAY_NO_AXES);
   configuration->set_working_folder_name(qPrintable(ui->workingFolderLineEdit->text()));
   configuration->set_povray_command_line(qPrintable(ui->povrayCommandLineLineEdit->text()));
 
   configuration->save();
   configuration->reflect();
+  OpenGLUtil::rebuild_fullerene();
   accept();
 }
 
@@ -64,3 +91,7 @@ void ConfigurationDialog::slot_reject()
 {
   reject();
 }
+
+/* Local Variables:	*/
+/* mode: c++		*/
+/* End:			*/

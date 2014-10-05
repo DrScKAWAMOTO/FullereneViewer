@@ -9,8 +9,9 @@
 #include <assert.h>
 #include "InteractiveLine.h"
 #include "OpenGLUtil.h"
+#include "ShutUp.h"
 
-Vector3 InteractiveLine::p_get_vertex_location(int index) const
+Vector3 InteractiveLine::p_get_vertex_location(int UNUSED(index)) const
 {
   const char there_are_no_vertices = 0;
   assert(there_are_no_vertices);

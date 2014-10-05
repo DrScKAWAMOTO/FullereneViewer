@@ -13,7 +13,9 @@
 #include "CarbonAllotrope.h"
 #include "OpenGLUtil.h"
 #include "AvoidBugs.h"
+#include "Debug.h"
 #include "DebugMemory.h"
+#include "ShutUp.h"
 
 static int index = 0;
 static int five_membered_ring_colors[12] = {
@@ -53,9 +55,15 @@ void Ring::p_make_carbons(CarbonAllotrope* ca, Bond* bond_connection)
     }
   int i = 0;
   p_carbons.add(carbon);
+#if defined(DEBUG_CARBON_ALLOTROPE_CONSTRUCTION)
+  printf("make ring C(%d)", carbon->sequence_no());
+#endif
   i++;
   carbon = bond->get_carbon_beyond(carbon);
   p_carbons.add(carbon);
+#if defined(DEBUG_CARBON_ALLOTROPE_CONSTRUCTION)
+  printf("-C(%d)", carbon->sequence_no());
+#endif
   i++;
   while (i < p_number_of_carbons)
     {
@@ -66,6 +74,9 @@ void Ring::p_make_carbons(CarbonAllotrope* ca, Bond* bond_connection)
       bond = result;
       carbon = bond->get_carbon_beyond(carbon);
       p_carbons.add(carbon);
+#if defined(DEBUG_CARBON_ALLOTROPE_CONSTRUCTION)
+      printf("-C(%d)", carbon->sequence_no());
+#endif
       i++;
     }
   while (i < p_number_of_carbons)
@@ -74,8 +85,14 @@ void Ring::p_make_carbons(CarbonAllotrope* ca, Bond* bond_connection)
       carbon->connect_to(ca, carbon2);
       carbon = carbon2;
       p_carbons.add(carbon);
+#if defined(DEBUG_CARBON_ALLOTROPE_CONSTRUCTION)
+      printf("-c(%d)", carbon->sequence_no());
+#endif
       i++;
     }
+#if defined(DEBUG_CARBON_ALLOTROPE_CONSTRUCTION)
+  printf("\n");
+#endif
   if (!closed)
     p_carbons[0]->connect_to(ca, p_carbons[p_number_of_carbons - 1]);
   for (int i = 0; i < p_number_of_carbons; ++i)
@@ -97,11 +114,28 @@ void Ring::p_make_carbons(CarbonAllotrope* ca, const int* carbon_sequence_nos)
         {
           carbon = ca->get_carbon_by_sequence_no(carbon_sequence_nos[i]);
           assert(carbon->number_of_rings() == 1);
+#if defined(DEBUG_CARBON_ALLOTROPE_CONSTRUCTION)
+          if (i == 0)
+            printf("make ring C(%d)", carbon->sequence_no());
+          else
+            printf("-C(%d)", carbon->sequence_no());
+#endif
         }
       else
-        carbon = new Carbon(ca);
+        {
+          carbon = new Carbon(ca);
+#if defined(DEBUG_CARBON_ALLOTROPE_CONSTRUCTION)
+          if (i == 0)
+            printf("make ring c(%d)", carbon->sequence_no());
+          else
+            printf("-c(%d)", carbon->sequence_no());
+#endif
+        }
       p_carbons.add(carbon);
     }
+#if defined(DEBUG_CARBON_ALLOTROPE_CONSTRUCTION)
+  printf("\n");
+#endif
   for (int i = 0; i < p_number_of_carbons; ++i)
     {
       Carbon* carbon1 = p_carbons[i];
@@ -183,7 +217,18 @@ Ring::Ring(CarbonAllotrope* ca, int number_of_carbons)
   if (index == 12)
     index = 0;
   for (int i = 0; i < p_number_of_carbons; ++i)
-    p_carbons.add(new Carbon(ca));
+    {
+      p_carbons.add(new Carbon(ca));
+#if defined(DEBUG_CARBON_ALLOTROPE_CONSTRUCTION)
+      if (i == 0)
+        printf("make ring c(%d)", p_carbons[i]->sequence_no());
+      else
+        printf("-c(%d)", p_carbons[i]->sequence_no());
+#endif
+    }
+#if defined(DEBUG_CARBON_ALLOTROPE_CONSTRUCTION)
+  printf("\n");
+#endif
   for (int i = 0; i < p_number_of_carbons; ++i)
     {
       int j = (i + 1) % p_number_of_carbons;
@@ -342,7 +387,7 @@ void Ring::print_structure(int indent, bool deep) const
     }
 }
 
-void Ring::print_POVRay_scene_description(const CarbonAllotrope* ca, FILE* fptr) const
+void Ring::print_POVRay_scene_description(const CarbonAllotrope* UNUSED(ca), FILE* fptr) const
 {
   int num = number_of_carbons();
   if (num != 6)
@@ -366,7 +411,7 @@ void Ring::print_POVRay_scene_description(const CarbonAllotrope* ca, FILE* fptr)
     }
 }
 
-void Ring::print_POVRay_scene_description(const CarbonAllotrope* ca, FILE* fptr,
+void Ring::print_POVRay_scene_description(const CarbonAllotrope* UNUSED(ca), FILE* fptr,
                                           const Matrix3& rot, const Vector3& move,
                                           bool clipped_by_Z_non_negative) const
 {
@@ -404,7 +449,7 @@ void Ring::print_POVRay_scene_description(const CarbonAllotrope* ca, FILE* fptr,
     }
 }
 
-void Ring::draw_semitransparent_by_OpenGL(bool selection, bool frontface) const
+void Ring::draw_semitransparent_by_OpenGL(bool UNUSED(selection), bool frontface) const
 {
   int num = number_of_carbons();
   if (num != 6)

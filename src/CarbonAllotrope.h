@@ -26,11 +26,16 @@ class CarbonAllotrope : public Interactives {
 
   // members
 public:
+  static bool s_need_representations;
   static bool s_need_representations_reflection;
+  static bool s_need_all_axes;
+  static bool s_need_major_axes;
 
 private:
   List<Ring> p_rings;
   List<Carbon> p_carbons;
+  int p_scrap_no;
+  int p_scrap_order;
   List<Carbon> p_centers;
   List<Bond> p_bonds;
   List<ConnectedBoundary> p_boundaries;

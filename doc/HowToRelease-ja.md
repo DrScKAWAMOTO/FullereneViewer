@@ -1,5 +1,5 @@
 # FullereneViewer(フラーレンビューア)
-## リリースの仕方
+## リリース手順書
 
 ### 1) [doc/ReleaseNote-ja.md](ReleaseNote-ja.md) に記述
 　リリース日の決定、リリースバージョンの決定、そのリリースでの修正項目のリストアップを行います。  
@@ -16,8 +16,12 @@
 　[src/Qt/help](../src/Qt/help) 内で `make` すると、[README.md](../README.md) や [doc](.)フォルダ内のドキュメント類(拡張子が md)をhtmlベースのヘルプファイルに変換してくれます。  
 　メイクを実施するためには pandoc が必要です。それぞれのパッケージ管理ツールでインストールしてからメイクを実施して下さい。
 
-### 4) github にプッシュ
+### 4) Windows版/Mac版 のインストーラ作成確認と動作確認
+　Windows 版インストーラは、リポジトリ `CreateInstall-free` を使用します。  
+　Mac 版インストーラは、リポジトリ `qt-Mac-installer` を使用します。
+
+### 5) github にプッシュ
 　具体的なプッシュの方法は github のドキュメント類を参照して下さい。
 
-### 5) github リリースタグ付与
+### 6) github リリースタグ付与
 　[doc/ReleaseNote-ja.md](ReleaseNote-ja.md) に記述した修正項目を参考に github のリリースタグを付与します。具体的なリリースタグ付与の方法は github のドキュメント類を参照して下さい。

@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include "Statistics.h"
 #include "Matrix3.h"
+#include "ShutUp.h"
 
 Statistics::Statistics()
   : p_sum(0), p_sum_of_yzs(0.0), p_sum_of_zxs(0.0), p_sum_of_xys(0.0)
@@ -19,7 +20,7 @@ Statistics::~Statistics()
 {
 }
 
-Statistics& Statistics::operator = (const Statistics& that)
+Statistics& Statistics::operator = (const Statistics& UNUSED(that))
 {
   fprintf(stderr, "%s:%d: internal error dont use.\n", __FILE__, __LINE__);
   exit(1);

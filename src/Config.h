@@ -20,12 +20,6 @@
 /* FullereneViewer のぐるぐるモードで3方向線(長径・中径・短径)を表示する。 */
 // #define CONFIG_DRAW_PRINCIPAL_COMPONENT_AXES_IN_GURUGURU_MODE 1
 
-/* FullereneViewer のぐるぐるモードで主要対象軸を表示する。 */
-// #define CONFIG_DRAW_MAJOR_AXES_SYMMETRY_IN_GURUGURU_MODE 1
-
-/* FullereneViewer のぐるぐるモードで全対象軸を表示する。 */
-// #define CONFIG_DRAW_ALL_AXES_SYMMETRY_IN_GURUGURU_MODE 1
-
 /* FullereneViewer の POVRay スナップショットの背景を透明色にする。 */
 // #define CONFIG_PAINT_TRANSPARENT_COLOR_TO_BACKGROUND_IN_POVRAY_SNAPSHOT 1
 
@@ -39,11 +33,10 @@
 /* 値は 1 から 99 までの整数値 */
 #define CONFIG_VIEWER_CPU_USAGE_TARGET_RATE 80
 
-/* ca-generator / ca-uniq / NoA計算で、鏡像もリストアップするかどうか。 */
-/* 鏡像もリストアップする＝＝鏡像は同型とみなさない。 */
-/* 以下にコメントをつけると、鏡像を同型とみなさない＝＝鏡像をリストアップする。 */
-/* 以下のコメントを外すと、鏡像を同型とみなす＝＝鏡像はリストアップしない。 */
-// #define CONFIG_REFLECTED_IMAGE_IS_REGARDED_AS_ISOMORPHIC 1
+/* 以下のマクロ定義を有効化すると、 */
+/* ca-generator の対称フラーレン生成は、五員環への距離を元に次の生成箇所を決定する。 */
+// #define CONFIG_SYMMETRIC_GENERATOR_DECIDES_NEXT_FILL_POINT_BY_DISTANCES_TO_PENTAGON 1
+/* scrap_order を元に次の生成箇所を決定する場合は上記マクロをコメントアウトする。 */
 
 #endif /* __CONFIG_H__ */
 

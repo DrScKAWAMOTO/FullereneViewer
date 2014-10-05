@@ -17,6 +17,7 @@
 #include "OpenGLUtil.h"
 #include "Debug.h"
 #include "DebugMemory.h"
+#include "ShutUp.h"
 
 Carbon::Carbon(CarbonAllotrope* ca)
   : InteractiveRegularPolygon(ca, ca->carbon_next_sequence++, 1.0, 3),
@@ -127,7 +128,7 @@ bool Carbon::connect_to(CarbonAllotrope* ca, Carbon* carbon)
   return false;
 }
 
-bool Carbon::connect_to(CarbonAllotrope* ca, Bond* bond)
+bool Carbon::connect_to(CarbonAllotrope* UNUSED(ca), Bond* bond)
 {
   if (connected_with(bond))
     return true;
@@ -396,63 +397,63 @@ void Carbon::write_representation(Representation& representation, Bond* from)
   if (get_done())
     return;
   set_done();
-  Bond* first = 0;
-  Bond* second = 0;
+  Bond* first_left = 0;
+  Bond* second_right = 0;
   if (p_bond_0 == from)
     {
       if (p_normal.clockwise > 0)
         {
-          first = p_bond_1;
-          second = p_bond_2;
+          first_left = p_bond_1;
+          second_right = p_bond_2;
         }
       else
         {
-          first = p_bond_2;
-          second = p_bond_1;
+          first_left = p_bond_2;
+          second_right = p_bond_1;
         }
     }
   else if (p_bond_1 == from)
     {
       if (p_normal.clockwise > 0)
         {
-          first = p_bond_2;
-          second = p_bond_0;
+          first_left = p_bond_2;
+          second_right = p_bond_0;
         }
       else
         {
-          first = p_bond_0;
-          second = p_bond_2;
+          first_left = p_bond_0;
+          second_right = p_bond_2;
         }
     }
   else if (p_bond_2 == from)
     {
       if (p_normal.clockwise > 0)
         {
-          first = p_bond_0;
-          second = p_bond_1;
+          first_left = p_bond_0;
+          second_right = p_bond_1;
         }
       else
         {
-          first = p_bond_1;
-          second = p_bond_0;
+          first_left = p_bond_1;
+          second_right = p_bond_0;
         }
     }
-  if (first)
+  if (first_left)
     {
-      Carbon* carbon = first->get_carbon_beyond(this);
+      Carbon* carbon = first_left->get_carbon_beyond(this);
       if (!carbon->get_done())
         {
-          representation.set_step('F');
-          carbon->write_representation(representation, first);
+          representation.set_step('L');
+          carbon->write_representation(representation, first_left);
         }
     }
-  if (second)
+  if (second_right)
     {
-      Carbon* carbon = second->get_carbon_beyond(this);
+      Carbon* carbon = second_right->get_carbon_beyond(this);
       if (!carbon->get_done())
         {
-          representation.set_step('S');
-          carbon->write_representation(representation, second);
+          representation.set_step('R');
+          carbon->write_representation(representation, second_right);
         }
     }
   representation.set_step('b');
@@ -463,59 +464,57 @@ void Carbon::write_automorphism(Automorphism& automorphism, Bond* from)
   if (get_done())
     return;
   set_done();
-  Bond* first = 0;
-  Bond* second = 0;
+  Bond* first_left = 0;
+  Bond* second_right = 0;
   if (p_bond_0 == from)
     {
       if (p_normal.clockwise > 0)
         {
-          first = p_bond_1;
-          second = p_bond_2;
+          first_left = p_bond_1;
+          second_right = p_bond_2;
         }
       else
         {
-          first = p_bond_2;
-          second = p_bond_1;
+          first_left = p_bond_2;
+          second_right = p_bond_1;
         }
     }
   else if (p_bond_1 == from)
     {
       if (p_normal.clockwise > 0)
         {
-          first = p_bond_2;
-          second = p_bond_0;
+          first_left = p_bond_2;
+          second_right = p_bond_0;
         }
       else
         {
-          first = p_bond_0;
-          second = p_bond_2;
+          first_left = p_bond_0;
+          second_right = p_bond_2;
         }
     }
   else if (p_bond_2 == from)
     {
       if (p_normal.clockwise > 0)
         {
-          first = p_bond_0;
-          second = p_bond_1;
+          first_left = p_bond_0;
+          second_right = p_bond_1;
         }
       else
         {
-          first = p_bond_1;
-          second = p_bond_0;
+          first_left = p_bond_1;
+          second_right = p_bond_0;
         }
     }
   automorphism.set_step(sequence_no());
-  if (first)
+  if (first_left)
     {
-      Carbon* carbon = first->get_carbon_beyond(this);
-      if (!carbon->get_done())
-        carbon->write_automorphism(automorphism, first);
+      Carbon* carbon = first_left->get_carbon_beyond(this);
+      carbon->write_automorphism(automorphism, first_left);
     }
-  if (second)
+  if (second_right)
     {
-      Carbon* carbon = second->get_carbon_beyond(this);
-      if (!carbon->get_done())
-        carbon->write_automorphism(automorphism, second);
+      Carbon* carbon = second_right->get_carbon_beyond(this);
+      carbon->write_automorphism(automorphism, second_right);
     }
 }
 
@@ -583,7 +582,7 @@ void Carbon::print_POVRay_scene_description(const CarbonAllotrope* ca, FILE* fpt
 #endif
 }
 
-void Carbon::print_POVRay_scene_description(const CarbonAllotrope* ca, FILE* fptr,
+void Carbon::print_POVRay_scene_description(const CarbonAllotrope* UNUSED(ca), FILE* fptr,
                                             const Matrix3& rot, const Vector3& move,
                                             bool clipped_by_Z_non_negative) const
 {
@@ -893,32 +892,62 @@ Bond* Carbon::boundary_bond(Bond* bond) const
           if (!p_ring_12)
             return p_ring_01 ? p_bond_1 : p_bond_0;
         }
+      return 0;
     }
-  else
+  else if (p_normal.clockwise == +1)
     {
-      if (!p_ring_01)
+      /* boundary_bond は、開を左手に見て閉を右手に見る境界ボンドを検索する */
+      int rings = number_of_rings();
+      if (rings == 0)
+        return 0;
+      else if (rings == 1)
         {
-          if (p_bond_0)
-            return p_bond_0;
-          if (p_bond_1)
+          if (p_ring_01)
             return p_bond_1;
-        }
-      if (!p_ring_12)
-        {
-          if (p_bond_1)
-            return p_bond_1;
-          if (p_bond_2)
+          else if (p_ring_12)
             return p_bond_2;
-        }
-      if (!p_ring_20)
-        {
-          if (p_bond_2)
-            return p_bond_2;
-          if (p_bond_0)
+          else
             return p_bond_0;
         }
+      else if (rings == 2)
+        {
+          if (!p_ring_01)
+            return p_bond_0;
+          else if (!p_ring_12)
+            return p_bond_1;
+          else
+            return p_bond_2;
+        }
+      else
+        return 0;
     }
-  return 0;
+  else /* clockwise == -1 */
+    {
+      /* clockwise == -1 なので、clockwise == +1 の時の逆 */
+      int rings = number_of_rings();
+      if (rings == 0)
+        return 0;
+      else if (rings == 1)
+        {
+          if (p_ring_01)
+            return p_bond_0;
+          else if (p_ring_12)
+            return p_bond_1;
+          else
+            return p_bond_2;
+        }
+      else if (rings == 2)
+        {
+          if (!p_ring_01)
+            return p_bond_1;
+          else if (!p_ring_12)
+            return p_bond_2;
+          else
+            return p_bond_0;
+        }
+      else
+        return 0;
+    }
 }
 
 Bond* Carbon::inner_bond() const

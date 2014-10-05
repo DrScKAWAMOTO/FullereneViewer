@@ -36,7 +36,7 @@ int main(int argc, char* argv[])
   if (argc != 1)
     usage(argv[0]);
   setvbuf(stdout, 0, _IONBF, 0);
-  Fullerene::s_need_representations = true;
+  CarbonAllotrope::s_need_representations = true;
   Interactives::s_need_simulation = false;
   Set<MinimumRepresentation> patterns;
   int last_number_of_carbons = -1;
@@ -104,6 +104,11 @@ int main(int argc, char* argv[])
       if ((line_count % 10000) == 0)
         fprintf(stderr, "%d lines proceeded.\n", line_count);
       Fullerene* fullerene = new Fullerene(name);
+      if (fullerene->error_code() != ERROR_CODE_OK)
+        {
+          fprintf(stderr, "fullerene `%s' is not able to be constructed !!\n", name);
+          exit(1);
+        }
       MinimumRepresentation* min_rep = new MinimumRepresentation(fullerene);
       if (patterns.search_else_add(min_rep))
         delete min_rep;

@@ -11,6 +11,7 @@
 #include "Interactive.h"
 #include "Interactives.h"
 #include "Random.h"
+#include "ShutUp.h"
 
 Vector3 Interactive::s_attractive_force(const Vector3& you, const Vector3& me,
                                         double delta)
@@ -188,8 +189,8 @@ void Interactive::interaction_to_normal_by_location(const Vector3& your_location
     p_center.next_force += my_normal * cos * delta * 5.0;
 }
 
-void Interactive::interaction_original(OriginalForceType force_type,
-                                       Interactives* interactives, double delta)
+void Interactive::interaction_original(OriginalForceType UNUSED(force_type),
+                                       Interactives* UNUSED(interactives), double UNUSED(delta))
 {
   assert(0);
 }
@@ -241,11 +242,11 @@ void Interactive::move_by(const Vector3& a)
   p_center.location += a;
 }
 
-void Interactive::draw_opaque_by_OpenGL(bool selection) const
+void Interactive::draw_opaque_by_OpenGL(bool UNUSED(selection)) const
 {
 }
 
-void Interactive::draw_semitransparent_by_OpenGL(bool selection, bool frontface) const
+void Interactive::draw_semitransparent_by_OpenGL(bool UNUSED(selection), bool UNUSED(frontface)) const
 {
 }
 
@@ -308,7 +309,7 @@ Vector3 Interactive::get_normal() const
   return Vector3(0.0, 0.0, (double)p_normal.clockwise) * p_posture.posture;
 }
 
-Vector3 Interactive::get_normal(const Vector3& by_your_location) const
+Vector3 Interactive::get_normal(const Vector3& UNUSED(by_your_location)) const
 {
   return get_normal();
 }

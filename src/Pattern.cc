@@ -6,6 +6,7 @@
  */
 
 #include "Pattern.h"
+#include "DebugMemory.h"
 
 Pattern::Pattern(int length, int* values)
   : p_length(length), p_offset(0), p_pattern(new int[p_length])

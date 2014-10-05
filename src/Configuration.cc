@@ -12,6 +12,7 @@
 #include <unistd.h>
 #include "Configuration.h"
 #include "OpenGLUtil.h"
+#include "CarbonAllotrope.h"
 
 #define LINE_LENGTH 1024
 
@@ -82,6 +83,7 @@ Configuration::Configuration(const char* home, const char* desktop)
 
   p_picture_quality = QUALITY_HIGH;
   p_motion_quality = QUALITY_HIGH;
+  p_display_symmetry_axes = DISPLAY_NO_AXES;
 }
 
 Configuration::~Configuration()
@@ -127,6 +129,32 @@ static bool name_to_quality(Word& word, Quality& result)
   return false;
 }
 
+static bool name_to_dsa(Word& word, DisplaySymmetryAxes& result)
+{
+  if (word.next())
+    return false;
+  if (word.equals_to("=") == false)
+    return false;
+  if (word.next())
+    return false;
+  if (word.equals_to("all"))
+    {
+      result = DISPLAY_ALL_AXES;
+      return true;
+    }
+  else if (word.equals_to("major"))
+    {
+      result = DISPLAY_MAJOR_AXES;
+      return true;
+    }
+  else if (word.equals_to("none"))
+    {
+      result = DISPLAY_NO_AXES;
+      return true;
+    }
+  return false;
+}
+
 void Configuration::load()
 {
   FILE* fptr = fopen(p_configuration_file_name, "r");
@@ -161,6 +189,13 @@ void Configuration::load()
             continue;
           p_motion_quality = quality;
         }
+      else if (word.equals_to("display_symmetry_axes"))
+        {
+          DisplaySymmetryAxes dsa;
+          if (name_to_dsa(word, dsa) == false)
+            continue;
+          p_display_symmetry_axes = dsa;
+        }
     }
   fclose(fptr);
 }
@@ -179,11 +214,26 @@ static const char* quality_to_name(Quality quality)
     }
 }
 
+static const char* dsa_to_name(DisplaySymmetryAxes dsa)
+{
+  switch (dsa)
+    {
+    case DISPLAY_ALL_AXES:
+      return "all";
+    case DISPLAY_MAJOR_AXES:
+      return "major";
+    case DISPLAY_NO_AXES:
+    default:
+      return "none";
+    }
+}
+
 void Configuration::save() const
 {
   FILE* fptr = fopen(p_configuration_file_name, "w");
   fprintf(fptr, "picture_quality = %s\n", quality_to_name(p_picture_quality));
   fprintf(fptr, "motion_quality = %s\n", quality_to_name(p_motion_quality));
+  fprintf(fptr, "display_symmetry_axes = %s\n", dsa_to_name(p_display_symmetry_axes));
   fprintf(fptr, "working_folder = %s\n", p_working_folder_name);
   fprintf(fptr, "povray_command_line = %s\n", p_povray_command_line);
   fclose(fptr);
@@ -235,6 +285,25 @@ void Configuration::reflect() const
       break;
     case QUALITY_LOW:
       OpenGLUtil::config_viewer_target_fps = 20;
+      break;
+    }
+  switch (p_display_symmetry_axes)
+    {
+    case DISPLAY_ALL_AXES:
+      CarbonAllotrope::s_need_representations = true;
+      CarbonAllotrope::s_need_all_axes = true;
+      CarbonAllotrope::s_need_major_axes = false;
+      break;
+    case DISPLAY_MAJOR_AXES:
+      CarbonAllotrope::s_need_representations = true;
+      CarbonAllotrope::s_need_all_axes = false;
+      CarbonAllotrope::s_need_major_axes = true;
+      break;
+    case DISPLAY_NO_AXES:
+    default:
+      CarbonAllotrope::s_need_representations = false;
+      CarbonAllotrope::s_need_all_axes = false;
+      CarbonAllotrope::s_need_major_axes = false;
       break;
     }
   if (OpenGLUtil::interval_timer_setup_callback)

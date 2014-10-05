@@ -22,6 +22,7 @@ static void usage(const char* arg0)
   fprintf(stderr, "usage: %s [options] [generator-formula]\n", arg0);
   fprintf(stderr, "    generator-formula .... if specified, list up from this formula,\n");
   fprintf(stderr, "options:\n");
+  fprintf(stderr, "    default options are --symmetric=100 --step-backward,\n");
   fprintf(stderr, "    --symmetric=[num] .... list up all symmetric fullerenes up to [num] carbons,\n");
   fprintf(stderr, "            generator-formula looks like 'S1-5b6b...',\n");
   fprintf(stderr, "    --ordinary=[num] ..... list up all ordinary fullerenes up to [num] carbons,\n");
@@ -42,7 +43,7 @@ static void usage(const char* arg0)
 
 int main(int argc, char *argv[])
 {
-  int symmetric = -1;
+  int symmetric = 100;
   int ordinary = -1;
   int tube = -1;
   int close = INT_MAX;
@@ -61,8 +62,6 @@ int main(int argc, char *argv[])
         step_algorithm = STEP_ALGORITHM_BACKWARD;
     }
 
-  if (argc == 1)
-    usage(arg0);
   argc--;
   argv++;
   while (argc > 0)
@@ -79,18 +78,24 @@ int main(int argc, char *argv[])
       else if (strncmp(argv[0], "--symmetric=", 12) == 0)
         {
           symmetric = atoi(argv[0] + 12);
+          ordinary = -1;
+          tube = -1;
           argc--;
           argv++;
         }
       else if (strncmp(argv[0], "--ordinary=", 11) == 0)
         {
           ordinary = atoi(argv[0] + 11);
+          symmetric = -1;
+          tube = -1;
           argc--;
           argv++;
         }
       else if (strncmp(argv[0], "--tube=", 7) == 0)
         {
           tube = atoi(argv[0] + 7);
+          symmetric = -1;
+          ordinary = -1;
           argc--;
           argv++;
         }
@@ -135,10 +140,10 @@ int main(int argc, char *argv[])
     {
       if (symmetric < 60)
         symmetric = 60;
-      if (generator_formula && ((generator_formula[0] != 'S') ||
-                                (generator_formula[1] < '1') ||
-                                (generator_formula[1] > '4') ||
-                                (generator_formula[2] != '-')))
+      if (!generator_formula)
+        generator_formula = "S1-";
+      if ((generator_formula[0] != 'S') || (generator_formula[1] < '1') ||
+          (generator_formula[1] > '9') || (generator_formula[2] != '-'))
         usage(arg0);
       Fullerenes ap = Fullerenes(generator_formula, symmetric, true,
                                  MAXIMUM_VERTICES_OF_POLYGON, close, step_algorithm);
@@ -147,9 +152,10 @@ int main(int argc, char *argv[])
     {
       if (ordinary < 60)
         ordinary = 60;
-      if (generator_formula && ((generator_formula[0] != 'A') ||
-                                (generator_formula[1] != '1') ||
-                                (generator_formula[2] != '-')))
+      if (!generator_formula)
+        generator_formula = "A1-";
+      if ((generator_formula[0] != 'A') || (generator_formula[1] != '1') ||
+          (generator_formula[2] != '-'))
         usage(arg0);
       Fullerenes ap = Fullerenes(generator_formula, ordinary, false,
                                  MAXIMUM_VERTICES_OF_POLYGON, close, step_algorithm);

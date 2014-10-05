@@ -28,7 +28,7 @@ static void usage(const char* arg0)
   fprintf(stderr, "    --symmetric=[num] .... list up all symmetric fullerenes up to [num] carbons,\n");
   fprintf(stderr, "            <generator-formula>s look like 'S1-5b6b...',\n");
   fprintf(stderr, "            default <start generator-formulas> is 'S1-',\n");
-  fprintf(stderr, "            default <ending generator-formulas> is 'S4-*',\n");
+  fprintf(stderr, "            default <ending generator-formulas> is 'S7-*',\n");
   fprintf(stderr, "    --ordinary=[num] ..... list up all ordinary fullerenes up to [num] carbons,\n");
   fprintf(stderr, "            <generator-formula>s look like 'A1-5b6b...',\n");
   fprintf(stderr, "            default <start generator-formulas> is 'A1-',\n");
@@ -199,7 +199,7 @@ int main(int argc, char *argv[])
       if (start_generator_formula[0] == '\0')
         strcpy(start_generator_formula, "S1-");
       if (ending_generator_formula[0] == '\0')
-        strcpy(ending_generator_formula, "S4-*");
+        strcpy(ending_generator_formula, "S9-*");
       if (start_generator_formula[0] != 'S')
         usage(arg0);
       if (ending_generator_formula[0] != 'S')

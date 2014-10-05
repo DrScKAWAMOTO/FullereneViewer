@@ -27,7 +27,7 @@ HEADERS += ../Automorphism.h ../Automorphisms.h ../AvoidBugs.h ../Bond.h \
            ../BoundaryCarbons.h ../Carbon.h ../CarbonAllotrope.h ../Center.h \
            ../Configuration.h ../Config.h ../Debug.h ../DebugMemory.h \
            ../DistanceMatrix.h ../ConnectedBoundary.h ../DistanceVector.h ../ErrorCode.h \
-           ../Fullerene.h ../FullereneCharacteristic.h ../FullereneMenu.h ../Generator.h \
+           ../Fullerene.h ../FullereneCharacteristic.h ../Generator.h \
            ../Interactive.h ../InteractiveLine.h ../InteractiveOperation.h \
            ../InteractivePlane.h ../InteractivePoint.h ../InteractiveRegularPolygon.h \
            ../Interactives.h ../List.h ../Set.h ../Matrix3.h ../MenuEntry.h ../Normal.h \
@@ -36,9 +36,11 @@ HEADERS += ../Automorphism.h ../Automorphisms.h ../AvoidBugs.h ../Bond.h \
            ../Representations.h ../Ring.h ../SortedList.h ../Statistics.h \
            ../SymmetryAxis.h ../SymmetryAxisNormal.h ../ThreeViewNormal.h ../Utils.h \
            ../Vector3.h ../Version.h \
-           QtFullereneMenu.h ConfigurationDialog.h MainWindow.h Guruguru.h \
-           HelpBrowser.h AboutWindow.h GeneratorFormulaDialog.h
-FORMS += MainWindow.ui ConfigurationDialog.ui AboutWindow.ui GeneratorFormulaDialog.ui
+           ConfigurationDialog.h MainWindow.h Guruguru.h \
+           HelpBrowser.h AboutWindow.h GeneratorFormulaDialog.h \
+           TreeItem.h TreeModel.h SelectFullereneDialog.h
+FORMS += MainWindow.ui ConfigurationDialog.ui AboutWindow.ui GeneratorFormulaDialog.ui \
+    SelectFullereneDialog.ui
 SOURCES += ../Automorphism.cc ../Automorphisms.cc ../Bond.cc ../BoundaryCarbons.cc \
            ../Carbon.cc ../CarbonAllotrope.cc ../Configuration.cc \
            ../ConnectedBoundary.cc ../DebugMemory.cc ../DistanceVector.cc \
@@ -51,8 +53,10 @@ SOURCES += ../Automorphism.cc ../Automorphisms.cc ../Bond.cc ../BoundaryCarbons.
            ../Representations.cc ../Ring.cc ../Statistics.cc ../SymmetryAxis.cc \
            ../SymmetryAxisNormal.cc ../ThreeViewNormal.cc ../Utils.cc ../Vector3.cc \
            ../Version.cc \
-           QtFullereneMenu.cc ConfigurationDialog.cc main.cc MainWindow.cc Guruguru.cc \
-           HelpBrowser.cc AboutWindow.cc GeneratorFormulaDialog.cc
+           ConfigurationDialog.cc main.cc MainWindow.cc Guruguru.cc \
+           HelpBrowser.cc AboutWindow.cc GeneratorFormulaDialog.cc \
+           TreeItem.cc RingItem.cc CarbonItem.cc BondItem.cc TubeItem.cc MergedItem.cc \
+           TreeModel.cc SelectFullereneDialog.cc
 
 OTHER_FILES +=
 

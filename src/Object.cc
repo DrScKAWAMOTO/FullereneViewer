@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "Object.h"
+#include "ShutUp.h"
 
 Object::Object(int sequence_no)
   : p_sequence_no(sequence_no), p_link_counter(0)
@@ -23,7 +24,7 @@ Object::~Object()
 {
 }
 
-Object& Object::operator = (const Object& you)
+Object& Object::operator = (const Object& UNUSED(you))
 {
   fprintf(stderr, "%s:%d: internal error dont use.\n", __FILE__, __LINE__);
   exit(1);

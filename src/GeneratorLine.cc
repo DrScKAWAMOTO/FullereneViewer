@@ -21,8 +21,6 @@ bool GeneratorLine::p_get_number_NoA_isS_isT_and_isA(int& number, int& NoA,
 {
   char* ptr = p_line + 1;
   number = strtol(ptr, &ptr, 10);
-  if (number < 60)
-    return false;
   if (strncmp(ptr, " (NoA=", 6) != 0)
     return false;
   ptr += 6;
@@ -87,7 +85,7 @@ bool GeneratorLine::p_get_scrap(int& scrap) const
   scrap = strtol(ptr, &ptr, 10);
   if (symmetric)
     {
-      if ((scrap < 1) || (scrap > 4))
+      if ((scrap < 1) || (scrap > 9))
         return false;
     }
   else

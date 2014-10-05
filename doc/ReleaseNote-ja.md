@@ -1,6 +1,30 @@
 # FullereneViewer(フラーレンビューア)
 ## リリースノート
 
+### 2014/09/XX Version 1.4.0
+　FreeBSD 10.0 用の howToCompile ファイルの修正漏れ対応。  
+　半開カーボンナノチューブで ca-char した時落ちるのを修正。  
+　ca-char では引数に生成式を指定する方法をやめて、*.gf ファイル指定方法のみにした。  
+　デバッグ表示修正。  
+　境界探索で、探索方向を固定化した。  
+　デバッグ時のログを増やした。  
+　ca-generator のデフォルトを --symmetric=100 --step-backward にした。  
+　ca-generator --symmetric 時のスクラップを「S1(五員環中心)」「S2/S3/S4/S5(六員環中心)」「S6/S7(カーボン中心)」「S8/S9(ボンド中心)」に変更。  
+　scrap_order 導入。  
+　p_list_most_inside_carbons_on_boundary() などのリストアップ順番を一定方向に統一。  
+　生成式で S1-566566 のような非圧縮形式も許すように拡張。  
+　povray 起動コマンドライン間違い修正。  
+　refleiso 版は削除。  
+　ca-generator の対称フラーレン生成は、五員環への距離を元に次の生成箇所を決定する版と、scrap_order を元に次の生成箇所を決定する版とに分離。コンフィギュレーションで指定。  
+　set_clockwise(-1) は必要とする箇所の直前で実施。  
+　メモリリークテスト実施。  
+　フラーレンメニューをツリービューベースに変更。  
+　ツリービュー実体は自動生成。  
+　unused parameter のウォーニングを黙らせるマクロ導入。  
+　Tube は径の太いものもピックアップ。  
+　リリース手順書作成。  
+　対称軸表示の設定を、静的設定(Config.h)から動的設定(Configuration.h)へ移動した。
+
 ### 2014/09/26 Version 1.3.3
 　doc/FreeBSD/HowToCompile-FreeBSD-10.0-ja.md 修正。  
 　POVRay起動コマンドラインを設定画面からひっぱってくる際のパラメータ設定間違い修正。

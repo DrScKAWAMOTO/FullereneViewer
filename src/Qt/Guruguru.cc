@@ -148,3 +148,7 @@ void Guruguru::paintGL()
 {
   OpenGLUtil::display();
 }
+
+/* Local Variables:	*/
+/* mode: c++		*/
+/* End:			*/

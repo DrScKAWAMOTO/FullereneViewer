@@ -24,8 +24,6 @@
 #include "Debug.h"
 #include "DebugMemory.h"
 
-bool Fullerene::s_need_representations = false;
-bool Fullerene::s_need_axes = false;
 bool Fullerene::s_need_fullerene_characteristic = false;
 bool Fullerene::s_need_distance_matrix = false;
 
@@ -169,6 +167,7 @@ Fullerene::Fullerene(const char* generator_formula)
             {
               ca->make_equator_by_chiral_characteristic(p_n, p_m, p_h);
               // TODO ca->close_force();
+              ca->set_clockwise(+1);
 #if defined(DEBUG_CARBON_ALLOTROPE_CONSTRUCTION)
               ca->print_detail();
 #endif
@@ -188,6 +187,7 @@ Fullerene::Fullerene(const char* generator_formula)
         ca->make_equator_by_chiral_characteristic(gen.n(), gen.m(), gen.h());
       else
         ca->make_symmetric_scrap(gen.scrap_no());
+      ca->set_clockwise(+1);
       BoundaryCarbons boundary;
       bool symmetric = (gen.type() == GENERATOR_TYPE_SYMMETRIC);
       if (!symmetric)
@@ -221,6 +221,7 @@ Fullerene::Fullerene(const char* generator_formula)
               ca = 0;
               goto do_nothing;
             }
+          ca->set_clockwise(+1);
 #if defined(DEBUG_CARBON_ALLOTROPE_CONSTRUCTION)
           ca->print_detail();
 #endif
@@ -263,11 +264,7 @@ int Fullerene::compare(const Fullerene* you) const
 void Fullerene::set_carbon_allotrope(CarbonAllotrope* carbon_allotrope)
 {
   p_carbon_allotrope = carbon_allotrope;
-#if defined(CONFIG_DRAW_MAJOR_AXES_SYMMETRY_IN_GURUGURU_MODE) || defined(CONFIG_DRAW_ALL_AXES_SYMMETRY_IN_GURUGURU_MODE)
-  s_need_representations = true;
-  s_need_axes = true;
-#endif
-  if (p_carbon_allotrope && s_need_representations)
+  if (p_carbon_allotrope && CarbonAllotrope::s_need_representations)
     {
       int len;
 #if defined(DEBUG_FULLERENE_CONSTRUCTION)
@@ -284,7 +281,7 @@ void Fullerene::set_carbon_allotrope(CarbonAllotrope* carbon_allotrope)
         }
       printf("************************************************\n");
 #endif
-      if (s_need_axes)
+      if (CarbonAllotrope::s_need_all_axes || CarbonAllotrope::s_need_major_axes)
         {
           Automorphisms ams = Automorphisms(this);
           p_carbon_allotrope->all_boundaries();
@@ -300,7 +297,7 @@ void Fullerene::set_carbon_allotrope(CarbonAllotrope* carbon_allotrope)
               int fixed_bonds = am->fixed_bonds(seq2, seq3);
               int fixed_rings = am->fixed_rings(seq4, seq5);
               int fixed_boundaries = am->fixed_boundaries(seq6, seq7);
-              AxisType type;
+              AxisType type = AXIS_TYPE_CENTER_OF_TWO_CARBONS;
               if ((fixed_carbons == 2) && (fixed_bonds == 0) &&
                   (fixed_rings == 0) && (fixed_boundaries == 0))
                 type = AXIS_TYPE_CENTER_OF_TWO_CARBONS;

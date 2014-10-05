@@ -19,9 +19,7 @@ Automorphisms::Automorphisms(Fullerene* fullerene)
   reps->number_of_automorphisms();
   const Representation* rep = reps->get_representation(0);
   const RepresentationInfo* from_info = rep->get_info(0);
-#if ! defined(CONFIG_REFLECTED_IMAGE_IS_REGARDED_AS_ISOMORPHIC)
   assert(from_info->clockwise == 1);
-#endif
   CarbonAllotrope* ca = fullerene->get_carbon_allotrope();
   Carbon* from_carbon = ca->get_carbon_by_sequence_no(from_info->carbon_sequence_no);
   Bond* from_bond = ca->get_bond_by_sequence_no(from_info->bond_sequence_no);

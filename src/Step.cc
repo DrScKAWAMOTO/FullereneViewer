@@ -37,6 +37,7 @@ Step::Step(Generator& gen, int maximum_number_of_carbons, bool symmetric, int cl
     }
   else
     p_ca->make_symmetric_scrap(p_gen->scrap_no());
+  p_ca->set_clockwise(+1);
   if (!p_symmetric)
     {
       p_boundary.clean();
@@ -94,6 +95,7 @@ bool Step::construction_step(Fullerene*& fullerene)
   int No = p_gen->glow_step();
   int num;
   ErrorCode result;
+  p_ca->set_clockwise(+1);
   if (p_symmetric)
     result =
       p_ca->fill_n_polygons_around_carbons_closed_to_center_and_pentagons(No, num);
@@ -107,6 +109,7 @@ bool Step::construction_step(Fullerene*& fullerene)
       assert(carbon);
       result = p_ca->fill_n_polygon_around_carbon(No, carbon, p_boundary);
     }
+  p_ca->set_clockwise(+1);
 #if defined(DEBUG_CARBON_ALLOTROPE_CONSTRUCTION)
   p_ca->print_detail();
 #endif

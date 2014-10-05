@@ -9,6 +9,7 @@
 #include "ThreeViewNormal.h"
 #include "CarbonAllotrope.h"
 #include "OpenGLUtil.h"
+#include "ShutUp.h"
 
 int ThreeViewNormal::p_get_nth() const
 {
@@ -30,8 +31,8 @@ void ThreeViewNormal::reset_interaction()
   p_ca->reset_three_axes();
 }
 
-void ThreeViewNormal::interaction_original(OriginalForceType force_type,
-                                           Interactives* interactives, double delta)
+void ThreeViewNormal::interaction_original(OriginalForceType UNUSED(force_type),
+                                           Interactives* UNUSED(interactives), double UNUSED(delta))
 {
   p_ca->calculate_three_axes();
   double Eigenvalue;
@@ -54,7 +55,7 @@ void ThreeViewNormal::interaction_original(OriginalForceType force_type,
   fix_posture(Matrix3(Quaternion(Vector3(0.0, 0.0, 1.0), Eigenvector)));
 }
 
-void ThreeViewNormal::draw_opaque_by_OpenGL(bool selection) const
+void ThreeViewNormal::draw_opaque_by_OpenGL(bool UNUSED(selection)) const
 {
   Vector3 norm = get_normal();
   norm *= p_radius.length;

@@ -38,3 +38,7 @@ void GeneratorFormulaDialog::slot_reject()
 {
   reject();
 }
+
+/* Local Variables:	*/
+/* mode: c++		*/
+/* End:			*/

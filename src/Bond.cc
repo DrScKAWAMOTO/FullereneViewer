@@ -10,6 +10,7 @@
 #include "Bond.h"
 #include "CarbonAllotrope.h"
 #include "OpenGLUtil.h"
+#include "ShutUp.h"
 
 Bond::Bond(CarbonAllotrope* ca)
   : InteractiveRegularPolygon(ca, ca->bond_next_sequence++, 1.0, 2),
@@ -112,7 +113,7 @@ void Bond::print_POVRay_scene_description(const CarbonAllotrope* ca, FILE* fptr)
     }
 }
 
-void Bond::print_POVRay_scene_description(const CarbonAllotrope* ca, FILE* fptr,
+void Bond::print_POVRay_scene_description(const CarbonAllotrope* UNUSED(ca), FILE* fptr,
                                           const Matrix3& rot, const Vector3& move,
                                           bool clipped_by_Z_non_negative) const
 {
@@ -140,7 +141,7 @@ void Bond::print_POVRay_scene_description(const CarbonAllotrope* ca, FILE* fptr,
     }
 }
 
-void Bond::draw_opaque_by_OpenGL(bool selection) const
+void Bond::draw_opaque_by_OpenGL(bool UNUSED(selection)) const
 {
   Vector3 loc0 = get_left_carbon()->carbon_location();
   Vector3 loc1 = get_right_carbon()->carbon_location();

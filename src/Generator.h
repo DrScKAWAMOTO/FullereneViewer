@@ -56,6 +56,8 @@ public:
   ~Generator();
 
   // I/O
+public:
+  void print_detail() const;
 
   // member accessing methods
 public:
@@ -71,7 +73,7 @@ public:
   bool next_tree();
   bool next_by_rollback();
   void initialize_next_sequences();
-  void get_generator_formula(char* buffer, int length);
+  void get_generator_formula(char* buffer, int length) const;
 
 };
 

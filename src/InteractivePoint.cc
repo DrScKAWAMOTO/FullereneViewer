@@ -8,8 +8,9 @@
 #include <float.h>
 #include <assert.h>
 #include "InteractivePoint.h"
+#include "ShutUp.h"
 
-Vector3 InteractivePoint::p_get_vertex_location(int index) const
+Vector3 InteractivePoint::p_get_vertex_location(int UNUSED(index)) const
 {
   const char there_are_no_vertices = 0;
   assert(there_are_no_vertices);
@@ -31,7 +32,7 @@ int InteractivePoint::number_of_vertices() const
   return 0;
 }
 
-Vector3 InteractivePoint::get_nearest_point(const Vector3& by_your_location) const
+Vector3 InteractivePoint::get_nearest_point(const Vector3& UNUSED(by_your_location)) const
 {
   return get_center_location();
 }

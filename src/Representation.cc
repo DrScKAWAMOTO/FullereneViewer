@@ -26,12 +26,10 @@ Representation::~Representation()
 
 int Representation::compare(const Representation* you) const
 {
-#if ! defined(CONFIG_REFLECTED_IMAGE_IS_REGARDED_AS_ISOMORPHIC)
   RepresentationInfo* my_info = get_info(0);
   RepresentationInfo* your_info = you->get_info(0);
   if (my_info->clockwise != your_info->clockwise)
     return your_info->clockwise - my_info->clockwise;
-#endif
   return strcmp(p_array, you->p_array);
 }
 

@@ -78,6 +78,8 @@ int digits26x7_to_No(const char*& buffer)
       ++buffer;
       return -1;
     }
+  if ((*buffer < 'a') || (*buffer > 'z'))
+    return 1;
   int result = 0;
   while ((*buffer >= 'a') && (*buffer <= 'z'))
     {

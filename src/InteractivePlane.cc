@@ -8,8 +8,9 @@
 #include <float.h>
 #include <assert.h>
 #include "InteractivePlane.h"
+#include "ShutUp.h"
 
-Vector3 InteractivePlane::p_get_vertex_location(int index) const
+Vector3 InteractivePlane::p_get_vertex_location(int UNUSED(index)) const
 {
   const char there_are_no_vertices = 0;
   assert(there_are_no_vertices);

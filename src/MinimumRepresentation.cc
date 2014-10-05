@@ -26,13 +26,11 @@ MinimumRepresentation::MinimumRepresentation(const Fullerene* fullerene)
   assert(len > 0);
   const Representation* rep = reps->get_representation(0);
   assert(rep);
-#if ! defined(CONFIG_REFLECTED_IMAGE_IS_REGARDED_AS_ISOMORPHIC)
   int num_infos = rep->number_of_infos();
   assert(num_infos > 0);
   const RepresentationInfo* repinfo = rep->get_info(0);
   assert(repinfo);
   assert(repinfo->clockwise == 1);
-#endif
   const char* array = rep->get_array();
   int array_length = strlen(array) + 1;
   p_array = new char[array_length];

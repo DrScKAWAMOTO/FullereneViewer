@@ -1,5 +1,12 @@
-#ifndef ABOUTWINDOW_H
-#define ABOUTWINDOW_H
+/*
+ * Project: FullereneViewer
+ * Version: 1.0
+ * Copyright: (C) 2011-14 Dr.Sc.KAWAMOTO,Takuji (Ext)
+ * Create: 2011/10/16 16:57:28 JST
+ */
+
+#ifndef __ABOUTWINDOW_H__
+#define __ABOUTWINDOW_H__
 
 #include <QMainWindow>
 
@@ -26,4 +33,8 @@ private:
     Ui::AboutWindow *ui;
 };
 
-#endif // ABOUTWINDOW_H
+#endif /* __ABOUTWINDOW_H__ */
+
+/* Local Variables:	*/
+/* mode: c++		*/
+/* End:			*/

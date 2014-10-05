@@ -45,31 +45,17 @@ void print_pattern(const Set<ReflectionPair>& patterns)
     }
 }
 
-int main(int argc, char* argv[])
+void do_mirror()
 {
-#if defined(CONFIG_REFLECTED_IMAGE_IS_REGARDED_AS_ISOMORPHIC)
-  fprintf(stderr, "``Ca-mirror'' is not supported,\n"
-          "because mirror images don't need to list up !!\n\n");
-  print_version("ca-mirror");
-  exit(1);
-#endif
-  if ((argc == 2) &&
-      ((strcmp(argv[1], "-v") == 0) || (strcmp(argv[1], "--version") == 0)))
-    {
-      print_version("ca-mirror");
-      exit(0);
-    }
-  if (argc != 1)
-    usage(argv[0]);
   setvbuf(stdout, 0, _IONBF, 0);
-  Fullerene::s_need_representations = true;
+  CarbonAllotrope::s_need_representations = true;
   CarbonAllotrope::s_need_representations_reflection = true;
   Interactives::s_need_simulation = false;
-  Set<ReflectionPair> patterns;
   print_version("ca-mirror", stdout);
   int last_number_of_carbons = -1;
   int last_number_of_automorphisms = -1;
   int line_count = 0;
+  Set<ReflectionPair> patterns;
   while (1)
     {
       char buffer[1024];
@@ -148,6 +134,19 @@ int main(int argc, char* argv[])
       delete fullerene;
     }
   print_pattern(patterns);
+}
+
+int main(int argc, char* argv[])
+{
+  if ((argc == 2) &&
+      ((strcmp(argv[1], "-v") == 0) || (strcmp(argv[1], "--version") == 0)))
+    {
+      print_version("ca-mirror");
+      exit(0);
+    }
+  if (argc != 1)
+    usage(argv[0]);
+  do_mirror();
   return 0;
 }
 

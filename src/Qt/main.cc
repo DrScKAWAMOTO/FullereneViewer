@@ -54,3 +54,7 @@ int main(int argc, char *argv[])
   w.showMaximized();
   return a.exec();
 }
+
+/* Local Variables:	*/
+/* mode: c++		*/
+/* End:			*/

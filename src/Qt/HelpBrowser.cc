@@ -39,3 +39,6 @@ void HelpBrowser::closeEvent(QCloseEvent *event)
   QMainWindow::closeEvent(event);
 }
 
+/* Local Variables:	*/
+/* mode: c++		*/
+/* End:			*/

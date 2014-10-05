@@ -27,6 +27,12 @@ enum Quality {
   QUALITY_LOW
 };
 
+enum DisplaySymmetryAxes {
+  DISPLAY_ALL_AXES,
+  DISPLAY_MAJOR_AXES,
+  DISPLAY_NO_AXES
+};
+
 class Configuration {
   // friend classes & functions
 
@@ -37,6 +43,7 @@ private:
   char p_povray_command_line[PATH_LENGTH + 1];
   Quality p_picture_quality;
   Quality p_motion_quality;
+  DisplaySymmetryAxes p_display_symmetry_axes;
 
   // private tools
 
@@ -63,6 +70,10 @@ public:
   void set_picture_quality(Quality quality) { p_picture_quality = quality; }
   Quality get_motion_quality() const { return p_motion_quality; }
   void set_motion_quality(Quality quality) { p_motion_quality = quality; }
+  DisplaySymmetryAxes get_display_symmetry_axes() const
+  { return p_display_symmetry_axes; }
+  void set_display_symmetry_axes(DisplaySymmetryAxes display_symmetry_axes)
+  { p_display_symmetry_axes = display_symmetry_axes; }
   const char* get_working_folder_name() const { return p_working_folder_name; }
   void set_working_folder_name(const char* path);
   const char* get_povray_command_line() const { return p_povray_command_line; }

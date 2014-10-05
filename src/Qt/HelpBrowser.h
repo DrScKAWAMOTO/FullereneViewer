@@ -5,8 +5,8 @@
  * Create: 2011/10/16 16:57:28 JST
  */
 
-#ifndef HELPBROWSER_H
-#define HELPBROWSER_H
+#ifndef __HELPBROWSER_H__
+#define __HELPBROWSER_H__
 
 #include <QtWidgets>
 
@@ -30,4 +30,8 @@ private:
   QWebView *view;
 };
 
-#endif // HELPBROWSER_H
+#endif /* __HELPBROWSER_H__ */
+
+/* Local Variables:	*/
+/* mode: c++		*/
+/* End:			*/

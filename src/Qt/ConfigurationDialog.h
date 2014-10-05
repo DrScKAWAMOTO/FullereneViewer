@@ -1,5 +1,12 @@
-#ifndef CONFIGURATIONDIALOG_H
-#define CONFIGURATIONDIALOG_H
+/*
+ * Project: FullereneViewer
+ * Version: 1.0
+ * Copyright: (C) 2011-14 Dr.Sc.KAWAMOTO,Takuji (Ext)
+ * Create: 2011/10/16 16:57:28 JST
+ */
+
+#ifndef __CONFIGURATIONDIALOG_H__
+#define __CONFIGURATIONDIALOG_H__
 
 #include <QDialog>
 
@@ -23,4 +30,8 @@ private:
   Ui::ConfigurationDialog *ui;
 };
 
-#endif // CONFIGURATIONDIALOG_H
+#endif /* __CONFIGURATIONDIALOG_H__ */
+
+/* Local Variables:	*/
+/* mode: c++		*/
+/* End:			*/

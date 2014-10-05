@@ -24,8 +24,6 @@ class Fullerene : public Object {
 
   // members
 public:
-  static bool s_need_representations;
-  static bool s_need_axes;
   static bool s_need_fullerene_characteristic;
   static bool s_need_distance_matrix;
 

@@ -19,15 +19,7 @@ void print_version(const char* program_name, FILE* output)
 
   fprintf(output, "%sCopyright (C) 2011-14 Dr.Sc.KAWAMOTO,Takuji (Ext)"
           " All Rights Reserved.\n", comment);
-  fprintf(output, "%s%s Ver " FULLERENE_VIEWER_VERSION, comment, program_name);
-#if defined(CONFIG_REFLECTED_IMAGE_IS_REGARDED_AS_ISOMORPHIC)
-  fprintf(output, " (refleiso version)\n");
-  fprintf(output, "%s   configured that mirror image is regarded as isomorphic.\n",
-          comment);
-#else
-  fprintf(output, " (mirror version)\n");
-  fprintf(output, "%s   configured that mirror image is also list up.\n", comment);
-#endif
+  fprintf(output, "%s%s Ver " FULLERENE_VIEWER_VERSION "\n", comment, program_name);
   fprintf(output, "%s\n", comment);
   if (output == stderr)
     {

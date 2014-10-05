@@ -5,10 +5,11 @@
  * Create: 2011/10/16 16:57:28 JST
  */
 
-#ifndef GURUGURU_H
-#define GURUGURU_H
+#ifndef __GURUGURU_H__
+#define __GURUGURU_H__
 
 #include <QGLWidget>
+
 class QBasicTimer;
 class QElapsedTimer;
 
@@ -38,4 +39,8 @@ private:
   QElapsedTimer* etimer;
 };
 
-#endif // GURUGURU_H
+#endif /* __GURUGURU_H__ */
+
+/* Local Variables:	*/
+/* mode: c++		*/
+/* End:			*/

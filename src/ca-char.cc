@@ -18,14 +18,11 @@
 #include "Interactives.h"
 #include "DistanceMatrix.h"
 #include "ReflectionPair.h"
-#if ! defined(CONFIG_REFLECTED_IMAGE_IS_REGARDED_AS_ISOMORPHIC)
 #include <stdio.h>
 #include "StringPair.h"
-#endif
 #include "Random.h"
 #include "DebugMemory.h"
 
-#if ! defined(CONFIG_REFLECTED_IMAGE_IS_REGARDED_AS_ISOMORPHIC)
 static void read_in(Set<StringPair>& pair, const char* pair_file)
 {
   FILE* fptr = fopen(pair_file, "r");
@@ -57,20 +54,15 @@ static void read_in(Set<StringPair>& pair, const char* pair_file)
     }
   fclose(fptr);
 }
-#endif
 
 static void usage(const char* arg0)
 {
-  fprintf(stderr, "usage: %s [options] <generator-formula|generator-formula-list-file]\n",
-          arg0);
-  fprintf(stderr, "    generator-formula ............ generator-formula for fullerene,\n");
-  fprintf(stderr, "    generator-formula-list-file .. file name which contains generator-formulas,\n");
+  fprintf(stderr, "usage: %s [options] [file-name.gf]\n", arg0);
+  fprintf(stderr, "    file-name.gf ................. gf file name,\n");
   fprintf(stderr, "options:\n");
   fprintf(stderr, "    --axes-summary ............... show axes summary (default),\n");
   fprintf(stderr, "    --pentagon-distances ......... show distances between pentagons,\n");
-#if ! defined(CONFIG_REFLECTED_IMAGE_IS_REGARDED_AS_ISOMORPHIC)
   fprintf(stderr, "    --pair=<pair file> ........... option --pentagon-distances allow to specify pair file,\n");
-#endif
   fprintf(stderr, "    --pentagon-matrix ............ show distance matrix between pentagons,\n");
   fprintf(stderr, "    -v (--version) ............... show version,\n");
   fprintf(stderr, "    -h (--help) .................. show this message.\n");
@@ -84,9 +76,7 @@ int main(int argc, char *argv[])
   bool pentagon_distances = false;
   bool pentagon_matrix = false;
   char extension[5] = "";
-#if ! defined(CONFIG_REFLECTED_IMAGE_IS_REGARDED_AS_ISOMORPHIC)
   char* pair_file = 0;
-#endif
   const char* arg0 = argv[0];
   if (argc == 1)
     usage(arg0);
@@ -120,14 +110,12 @@ int main(int argc, char *argv[])
           argc--;
           argv++;
         }
-#if ! defined(CONFIG_REFLECTED_IMAGE_IS_REGARDED_AS_ISOMORPHIC)
       else if (strncmp(argv[0], "--pair=", 7) == 0)
         {
           pair_file = argv[0] + 7;
           argc--;
           argv++;
         }
-#endif
       else if (strcmp(argv[0], "--pentagon-matrix") == 0)
         {
           axes_summary = false;
@@ -149,10 +137,8 @@ int main(int argc, char *argv[])
         usage(arg0);
     }
 
-#if ! defined(CONFIG_REFLECTED_IMAGE_IS_REGARDED_AS_ISOMORPHIC)
   if (pair_file && (pentagon_distances == false))
     usage(arg0);
-#endif
   setvbuf(stdout, 0, _IONBF, 0);
   Random::initialize();
   CarbonAllotrope* ca = 0;
@@ -160,46 +146,38 @@ int main(int argc, char *argv[])
   FILE* fptr = 0;
   char buffer[1024];
 
-  if (!name)
-    fptr = stdin;
-  else if (((name[0] == 'S') || (name[0] == 'A')) &&
-           (name[1] != '\0') && (name[2] == '-'))
-    strcpy(buffer, name);
-  else if ((name[0] == 'T') && (name[1] != '\0'))
-    strcpy(buffer, name);
-  else
+  if (name)
     fptr = fopen(name, "r");
+  else
+    fptr = stdin;
 
-  if (fptr && extension[0])
+  if (extension[0])
     mkdir(extension, 0755);
 
   if (pentagon_distances)
     {
       Fullerene::s_need_fullerene_characteristic = true;
-      Fullerene::s_need_representations = true;
+      CarbonAllotrope::s_need_representations = true;
       CarbonAllotrope::s_need_representations_reflection = true;
     }
   else if (pentagon_matrix)
     Fullerene::s_need_distance_matrix = true;
   else
     {
-      Fullerene::s_need_representations = true;
-      Fullerene::s_need_axes = true;
+      CarbonAllotrope::s_need_representations = true;
+      CarbonAllotrope::s_need_all_axes = true;
     }
-  if (fptr)
-    Fullerene::s_need_representations = true;
+  CarbonAllotrope::s_need_representations = true;
   if (extension[0] == '\0')
     print_version("ca-char", stdout);
   Interactives::s_need_simulation = false;
 
-#if ! defined(CONFIG_REFLECTED_IMAGE_IS_REGARDED_AS_ISOMORPHIC)
   Set<StringPair> pair;
   if (pair_file)
     read_in(pair, pair_file);
-#endif
   while (1)
     {
-      if (fptr && (fgets(buffer, 1024, fptr) == NULL))
+      if (fgets(buffer, 1024, fptr) == NULL)
         break;
       char* ptr = buffer;
       if (*ptr == '#')
@@ -219,7 +197,7 @@ int main(int argc, char *argv[])
       fullerene = new Fullerene(ptr);
       ca = fullerene->get_carbon_allotrope();
       FILE* fout = stdout;
-      if (fptr && extension[0])
+      if (extension[0])
         {
           char filename[1024];
           sprintf(filename, "%s/C%d=%s.%s", extension, ca->number_of_carbons(),
@@ -238,7 +216,6 @@ int main(int argc, char *argv[])
                    fullerene->get_generator_formula());
           else
             {
-#if ! defined(CONFIG_REFLECTED_IMAGE_IS_REGARDED_AS_ISOMORPHIC)
               const char* gf = fullerene->get_generator_formula();
               StringPair* work = new StringPair(gf, gf);
               StringPair* sp = pair.search(work);
@@ -253,7 +230,6 @@ int main(int argc, char *argv[])
                          fullerene->get_generator_formula());
                 }
               else
-#endif
                 printf("C%d (NoA=%d,Pdd=%s) %s\n",
                        fullerene->get_carbon_allotrope()->number_of_carbons(),
                        fullerene->get_representations()->number_of_automorphisms(),
@@ -269,10 +245,8 @@ int main(int argc, char *argv[])
       if (fout != stdout)
         fclose(fout);
       delete fullerene;
-      if (!fptr)
-        break;
     }
-  if (fptr && extension[0])
+  if (extension[0])
     printf("generated files into folder `%s'\n", extension);
   return 0;
 }

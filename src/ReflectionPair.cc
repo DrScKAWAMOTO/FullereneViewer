@@ -10,6 +10,7 @@
 #include "ReflectionPair.h"
 #include "Representations.h"
 #include "Fullerene.h"
+#include "DebugMemory.h"
 
 ReflectionPair::ReflectionPair(const char* generator_formula, const Fullerene* fullerene)
   : p_symmetric(true), p_my_array(0), p_my_generator_formula(0),
@@ -49,7 +50,6 @@ ReflectionPair::ReflectionPair(const char* generator_formula, const Fullerene* f
       p_symmetric = false;
       int length = strlen(array2) + 1;
       char *ptr = new char[length];
-      ptr = new char[length];
       strcpy(ptr, array2);
       p_my_array = ptr;
       p_my_generator_formula = 0;

@@ -11,9 +11,9 @@
 #include "CarbonAllotrope.h"
 #include "Fullerene.h"
 #include "Guruguru.h"
-#include "QtFullereneMenu.h"
 #include "ConfigurationDialog.h"
 #include "GeneratorFormulaDialog.h"
+#include "SelectFullereneDialog.h"
 #include "ui_MainWindow.h"
 #include "HelpBrowser.h"
 #include "AboutWindow.h"
@@ -31,15 +31,15 @@ MainWindow::MainWindow(QWidget *parent)
   ui->setupUi(this);
   setCentralWidget(new Guruguru(this));
   setWindowTitle(OpenGLUtil::window_title);
-  make_qt_fullerene_menu(this, ui->menu_C);
   connect(ui->action_Z, SIGNAL(triggered()), this, SLOT(setGuruguruMode()));
   connect(ui->action_X, SIGNAL(triggered()), this, SLOT(setPickingMode()));
   connect(ui->action_M, SIGNAL(triggered()), this, SLOT(memoryShape()));
   connect(ui->action_R, SIGNAL(triggered()), this, SLOT(recallShape()));
   connect(ui->action_6, SIGNAL(triggered()), this, SLOT(drawSixViews()));
-  connect(ui->action_S, SIGNAL(triggered()), this, SLOT(drawSnapshot()));
+  connect(ui->action_O, SIGNAL(triggered()), this, SLOT(drawSnapshot()));
   connect(ui->action_C, SIGNAL(triggered()), this, SLOT(setupDialog()));
   connect(ui->action_F, SIGNAL(triggered()), this, SLOT(formulaDialog()));
+  connect(ui->action_S, SIGNAL(triggered()), this, SLOT(selectFullereneDialog()));
   connect(ui->action_H, SIGNAL(triggered()), this, SLOT(showHelp()));
   connect(ui->action_A, SIGNAL(triggered()), this, SLOT(showAbout()));
   OpenGLUtil::alert_dialog_callback = alert_dialog;
@@ -124,6 +124,13 @@ void MainWindow::formulaDialog()
   delete formula;
 }
 
+void MainWindow::selectFullereneDialog()
+{
+  SelectFullereneDialog *select = new SelectFullereneDialog(this);
+  select->exec();
+  delete select;
+}
+
 void MainWindow::showHelp()
 {
   HelpBrowser::showHelp();
@@ -141,3 +148,7 @@ void MainWindow::fullereneSelected()
                                    qPrintable(action->statusTip())))
     setWindowTitle(OpenGLUtil::window_title);
 }
+
+/* Local Variables:	*/
+/* mode: c++		*/
+/* End:			*/
