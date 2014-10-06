@@ -334,10 +334,8 @@ void Carbon::reset_distance_to_set()
   p_distance_to_set = INT_MAX;
 }
 
-bool Carbon::set_clockwise(Carbon* from, Carbon* to)
+int Carbon::p_calc_clockwise(Carbon* from, Carbon* to)
 {
-  // TODO assert(number_of_rings() == 3);
-  // TODO assert(number_of_bonds() == 3);
   Bond* from_bond = bond_between(from);
   Bond* to_bond = bond_between(to);
   assert(from_bond);
@@ -364,32 +362,47 @@ bool Carbon::set_clockwise(Carbon* from, Carbon* to)
       else if (to_bond == p_bond_1)
         clockwise = -1;
     }
+  return clockwise;
+}
+
+bool Carbon::check_clockwise(Carbon* from, Carbon* to)
+{
+  int clockwise = p_calc_clockwise(from, to);
+  assert(clockwise);
+  assert(p_normal.clockwise);
+  return (p_normal.clockwise == clockwise);
+}
+
+void Carbon::set_clockwise(Carbon* from, Carbon* to, bool locally)
+{
+  int clockwise = p_calc_clockwise(from, to);
   assert(clockwise);
   if (p_normal.clockwise)
-    return (p_normal.clockwise == clockwise);
+    {
+      assert(p_normal.clockwise == clockwise);
+      return;
+    }
   p_normal.clockwise = clockwise;
+  if (locally)
+    return;
   if (p_normal.clockwise > 0)
     {
-      if (!p_ring_01 ||
-          p_ring_01->set_clockwise(this, p_bond_0->get_carbon_beyond(this)))
-        if (!p_ring_12 ||
-            p_ring_12->set_clockwise(this, p_bond_1->get_carbon_beyond(this)))
-          if (!p_ring_20 ||
-              p_ring_20->set_clockwise(this, p_bond_2->get_carbon_beyond(this)))
-            return true;
+      if (p_ring_01)
+        p_ring_01->set_clockwise(this, p_bond_0->get_carbon_beyond(this));
+      if (p_ring_12)
+        p_ring_12->set_clockwise(this, p_bond_1->get_carbon_beyond(this));
+      if (p_ring_20)
+        p_ring_20->set_clockwise(this, p_bond_2->get_carbon_beyond(this));
     }
   else
     {
-      if (!p_ring_01 ||
-          p_ring_01->set_clockwise(this, p_bond_1->get_carbon_beyond(this)))
-        if (!p_ring_12 ||
-            p_ring_12->set_clockwise(this, p_bond_2->get_carbon_beyond(this)))
-          if (!p_ring_20 ||
-              p_ring_20->set_clockwise(this, p_bond_0->get_carbon_beyond(this)))
-            return true;
+      if (p_ring_01)
+        p_ring_01->set_clockwise(this, p_bond_1->get_carbon_beyond(this));
+      if (p_ring_12)
+        p_ring_12->set_clockwise(this, p_bond_2->get_carbon_beyond(this));
+      if (p_ring_20)
+        p_ring_20->set_clockwise(this, p_bond_0->get_carbon_beyond(this));
     }
-  assert(0);
-  return false;
 }
 
 void Carbon::write_representation(Representation& representation, Bond* from)
@@ -522,12 +535,18 @@ void Carbon::print_structure(int indent, bool deep) const
 {
   for (int i = 0; i < indent; ++i)
     printf("  ");
-  printf("Carbon(%d)", sequence_no());
+  printf("Carbon(%d)%c", sequence_no(),
+         (p_normal.clockwise > 0) ? '+' : ((p_normal.clockwise < 0) ? '-' : '0'));
   if (deep)
     {
       printf("\n");
       if (p_bond_0)
-        p_bond_0->print_structure(indent + 1, true);
+        {
+          p_bond_0->print_structure(indent + 1, false);
+          printf("[");
+          p_bond_0->get_carbon_beyond(this)->print_structure(0, false);
+          printf("]\n");
+        }
       if (p_ring_01)
         {
           for (int i = 0; i < indent + 1; ++i)
@@ -537,7 +556,12 @@ void Carbon::print_structure(int indent, bool deep) const
           printf("]\n");
         }
       if (p_bond_1)
-        p_bond_1->print_structure(indent + 1, true);
+        {
+          p_bond_1->print_structure(indent + 1, false);
+          printf("[");
+          p_bond_1->get_carbon_beyond(this)->print_structure(0, false);
+          printf("]\n");
+        }
       if (p_ring_12)
         {
           for (int i = 0; i < indent + 1; ++i)
@@ -547,7 +571,12 @@ void Carbon::print_structure(int indent, bool deep) const
           printf("]\n");
         }
       if (p_bond_2)
-        p_bond_2->print_structure(indent + 1, true);
+        {
+          p_bond_2->print_structure(indent + 1, false);
+          printf("[");
+          p_bond_2->get_carbon_beyond(this)->print_structure(0, false);
+          printf("]\n");
+        }
       if (p_ring_20)
         {
           for (int i = 0; i < indent + 1; ++i)

@@ -326,17 +326,40 @@ void Ring::reset_clockwise()
   p_clockwise = 0;
 }
 
-bool Ring::set_clockwise(Carbon* from, Carbon* to)
+void Ring::set_clockwise_locally()
+{
+  int len = p_carbons.length();
+  assert(len >= 3);
+  for (int i = 0; i < len; ++i)
+    {
+      Carbon* my_this = p_carbons[(i + 1) % len];
+      if (my_this->get_clockwise() == 0)
+        continue;
+      Carbon* my_from = p_carbons[i];
+      Carbon* my_to = p_carbons[(i + 2) % len];
+      if (my_this->check_clockwise(my_to, my_from))
+        set_clockwise(my_this, my_to, true);
+      else
+        set_clockwise(my_this, my_from, true);
+      return;
+    }
+  set_clockwise(p_carbons[0], p_carbons[1], true);
+}
+
+void Ring::set_clockwise(Carbon* from, Carbon* to, bool locally)
 {
   int len = p_carbons.length();
   int clockwise = 0;
+  /* p_carbons 配列には from, to の順番で格納されている場合は clockwise = +1 とする。 */
+  /* p_carbons 配列には to, from の順番で格納されている場合は clockwise = -1 とする。 */
+  /* ただし、p_carbons 配列は循環しているものとみなす。 */
   for (int i = 0; i < len; ++i)
     {
       Carbon* my_from = p_carbons[i];
       Carbon* my_to = p_carbons[(i + 1) % len];
       if ((my_from == from) && (my_to == to))
         {
-          clockwise = 1;
+          clockwise = +1;
           break;
         }
       else if ((my_from == to) && (my_to == from))
@@ -346,39 +369,45 @@ bool Ring::set_clockwise(Carbon* from, Carbon* to)
         }
     }
   assert(clockwise);
+  /* 既に p_clockwise が設定されている場合は、clockwise と一致しているかどうか返す。 */
   if (p_clockwise)
-    return (p_clockwise == clockwise);
+    {
+      assert(p_clockwise == clockwise);
+      return;
+    }
   p_clockwise = clockwise;
   if (p_clockwise > 0)
     {
+      /* p_carbons 配列には from, to の順番で格納されている場合。 */
       for (int i = 0; i < len; ++i)
         {
           Carbon* carbon0 = p_carbons[i];
           Carbon* carbon1 = p_carbons[(i + 1) % len];
           Carbon* carbon2 = p_carbons[(i + 2) % len];
-          if (!carbon1->set_clockwise(carbon2, carbon0))
-            return false;
+          /* 逆順にしなければならない */
+          carbon1->set_clockwise(carbon2, carbon0, locally);
         }
     }
   else
     {
+      /* p_carbons 配列には to, from の順番で格納されている場合。 */
       for (int i = 0; i < len; ++i)
         {
           Carbon* carbon0 = p_carbons[i];
           Carbon* carbon1 = p_carbons[(i + 1) % len];
           Carbon* carbon2 = p_carbons[(i + 2) % len];
-          if (!carbon1->set_clockwise(carbon0, carbon2))
-            return false;
+          /* 逆順にしなければならない */
+          carbon1->set_clockwise(carbon0, carbon2, locally);
         }
     }
-  return true;
 }
 
 void Ring::print_structure(int indent, bool deep) const
 {
   for (int i = 0; i < indent; ++i)
     printf("  ");
-  printf("%d-membered ring(%d)", p_number_of_carbons, sequence_no());
+  printf("%d-membered ring(%d)%c", p_number_of_carbons, sequence_no(),
+         (p_clockwise > 0) ? '+' : ((p_clockwise < 0) ? '-' : '0'));
   if (deep)
     {
       printf("\n");

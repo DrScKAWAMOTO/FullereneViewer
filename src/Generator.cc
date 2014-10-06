@@ -154,6 +154,16 @@ void Generator::print_detail() const
   printf("%s\n", buffer);
 }
 
+void Generator::print_progress(int length) const
+{
+  if (p_history_offset <= length)
+    {
+      char buffer[1024];
+      get_generator_formula(buffer, 1024);
+      printf("pg$ %s\n", buffer);
+    }
+}
+
 int Generator::glow_step()
 {
   if (p_history_offset >= p_history_length - 1)

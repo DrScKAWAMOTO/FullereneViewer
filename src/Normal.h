@@ -15,7 +15,7 @@ public:
   
   // constructors & the destructor
 public:
-  Normal() : clockwise(+1) { }
+  Normal() : clockwise(0) { }
   ~Normal() { }
   Normal& operator = (const Normal& you); /* dont use */
 

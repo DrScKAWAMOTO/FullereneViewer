@@ -315,7 +315,6 @@ int CarbonAllotrope::p_calculate_period(const List<Carbon>& boundary, int& offse
 ErrorCode CarbonAllotrope::enlarge_cylinder_by_n_polygons(Pattern* n_pattern,
                                                           int& result_number)
 {
-  set_clockwise(+1);
   List<Carbon> boundary;
   list_newborn_connected_boundary(boundary);
   int len = boundary.length();
@@ -1051,7 +1050,6 @@ void CarbonAllotrope::close_normally_once()
 #if defined(DEBUG_CARBON_ALLOTROPE_CONSTRUCTION)
       print_detail();
 #endif
-      set_clockwise(+1);
       list_newborn_connected_boundary(boundary);
       int len = boundary.length();
       assert(len > 0);
@@ -1277,7 +1275,6 @@ void CarbonAllotrope::set_clockwise(int clockwise)
     p_carbons[i]->reset_clockwise();
   len = p_rings.length();
   assert(len > 0);
-#if 1 // TODO 005 どっちが正しい？
   for (int i = 0; i < len; ++i)
     p_rings[i]->reset_clockwise();
   Ring* ring0 = p_rings[0];
@@ -1286,18 +1283,6 @@ void CarbonAllotrope::set_clockwise(int clockwise)
     ring0->set_clockwise(ring0->get_carbon(0), ring0->get_carbon(1));
   else
     ring0->set_clockwise(ring0->get_carbon(1), ring0->get_carbon(0));
-#else
-  for (int i = 0; i < len; ++i)
-    {
-      Ring* ringi = p_rings[i];
-      ringi->reset_clockwise();
-      assert(ringi->number_of_carbons() >= 2);
-      if (clockwise > 0)
-        ringi->set_clockwise(ringi->get_carbon(0), ringi->get_carbon(1));
-      else
-        ringi->set_clockwise(ringi->get_carbon(1), ringi->get_carbon(0));
-    }
-#endif
 }
 
 void CarbonAllotrope::reset_done()
@@ -1345,7 +1330,6 @@ void CarbonAllotrope::register_interactions()
                                  the_other, ACTION_LOCATION_CENTER);
         }
     }
-  set_clockwise(+1);
 #if defined(CONFIG_DRAW_PRINCIPAL_COMPONENT_AXES_IN_GURUGURU_MODE)
   ThreeViewNormal* first_axis = new ThreeViewNormal(this, 1);
   p_register_interaction(ORIGINAL_FORCE_TYPE_ORIGINAL, first_axis);
@@ -1502,7 +1486,6 @@ void CarbonAllotrope::count_carbons(int& number_of_carbons_with_one_ring,
 
 void CarbonAllotrope::print_detail()
 {
-  set_clockwise(+1);
   printf("* detail ***************************************\n");
   printf("number of bonds = %d\n", number_of_bonds());
   printf("number of carbons = %d\n", number_of_carbons());
@@ -1652,6 +1635,59 @@ void CarbonAllotrope::print_detail()
     }
   printf("\n");
   printf("************************************************\n");
+}
+
+void CarbonAllotrope::print_boundary_representations()
+{
+  bool print_header_already = false;
+  List<Carbon> already;
+  while (1)
+    {
+      List<Carbon> boundary;
+      list_oldest_connected_boundary(boundary, already);
+      int len = boundary.length();
+      if (len == 0)
+        break;
+      bool has_pentagon = false;
+      for (int i = 0; i < len; ++i)
+        {
+          Carbon* carbon = boundary[i];
+          if (carbon->number_of_rings() == 1)
+            {
+              Ring* ring = carbon->get_ring(0);
+              if (ring->number_of_carbons() == 5)
+                {
+                  has_pentagon = true;
+                  break;
+                }
+            }
+        }
+      if (has_pentagon == false)
+        {
+          if (print_header_already == false)
+            printf("* boundary_representations =");
+          print_header_already = true;
+          int edges = 0;
+          printf(" ");
+          for (int i = 0; i < len; ++i)
+            {
+              Carbon* carbon = boundary[i];
+              if (carbon->number_of_rings() == 2)
+                {
+                  if (edges > 0)
+                    printf("%1d", edges);
+                  edges = 1;
+                }
+              else
+                edges++;
+            }
+          if (edges > 0)
+            printf("%1d", edges);
+        }
+      already.add(boundary);
+    }
+  if (print_header_already)
+    printf("\n");
 }
 
 void CarbonAllotrope::print_axes() const
@@ -2073,6 +2109,7 @@ void CarbonAllotrope::recall_shape(const char* file_name_base)
 
 void CarbonAllotrope::register_ring(Ring* ring)
 {
+  ring->set_clockwise_locally();
   p_rings.add(ring);
 }
 

@@ -9,6 +9,7 @@
 #define __STEP_H__
 
 #include <limits.h>
+#include <pthread.h>
 #include "Generator.h"
 #include "BoundaryCarbons.h"
 #include "Object.h"
@@ -21,6 +22,8 @@ class Step : public Object {
 
   // members
 private:
+  static int s_progress_level;
+  static pthread_mutex_t s_mutex;
   bool p_symmetric;
   int p_close;
   bool p_is_tube;
@@ -54,8 +57,11 @@ public:
   void next_branch();
   void rollback();
 
-  // member accessing methods
+  // progress level
 public:
+  static void initiate_progress_level(int level);
+  static int get_progress_level();
+  static void set_progress_level(int level);
 
 };
 

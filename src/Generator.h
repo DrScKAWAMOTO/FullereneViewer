@@ -58,6 +58,7 @@ public:
   // I/O
 public:
   void print_detail() const;
+  void print_progress(int length) const;
 
   // member accessing methods
 public:

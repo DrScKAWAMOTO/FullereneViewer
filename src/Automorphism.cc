@@ -25,7 +25,7 @@ Automorphism::Automorphism(CarbonAllotrope* ca, Bond* from_bond, Carbon* from_ca
 {
   int len = p_ca->number_of_carbons();
   p_carbon_map = new int[len];
-  p_ca->set_clockwise(1);
+  p_ca->set_clockwise(+1);
   p_ca->reset_done();
   from_carbon->write_automorphism(*this, from_bond);
   int* from_map = p_carbon_map;

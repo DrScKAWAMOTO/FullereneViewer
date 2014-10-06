@@ -57,7 +57,8 @@ public:
   // determining normal vector
 public:
   void reset_clockwise();
-  bool set_clockwise(Carbon* from, Carbon* to);
+  void set_clockwise(Carbon* from, Carbon* to, bool locally = false);
+  void set_clockwise_locally();
 
   // interactions
 

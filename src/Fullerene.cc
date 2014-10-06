@@ -167,7 +167,6 @@ Fullerene::Fullerene(const char* generator_formula)
             {
               ca->make_equator_by_chiral_characteristic(p_n, p_m, p_h);
               // TODO ca->close_force();
-              ca->set_clockwise(+1);
 #if defined(DEBUG_CARBON_ALLOTROPE_CONSTRUCTION)
               ca->print_detail();
 #endif
@@ -187,7 +186,6 @@ Fullerene::Fullerene(const char* generator_formula)
         ca->make_equator_by_chiral_characteristic(gen.n(), gen.m(), gen.h());
       else
         ca->make_symmetric_scrap(gen.scrap_no());
-      ca->set_clockwise(+1);
       BoundaryCarbons boundary;
       bool symmetric = (gen.type() == GENERATOR_TYPE_SYMMETRIC);
       if (!symmetric)
@@ -221,7 +219,6 @@ Fullerene::Fullerene(const char* generator_formula)
               ca = 0;
               goto do_nothing;
             }
-          ca->set_clockwise(+1);
 #if defined(DEBUG_CARBON_ALLOTROPE_CONSTRUCTION)
           ca->print_detail();
 #endif

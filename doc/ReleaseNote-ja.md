@@ -23,7 +23,9 @@
 　unused parameter のウォーニングを黙らせるマクロ導入。  
 　Tube は径の太いものもピックアップ。  
 　リリース手順書作成。  
-　対称軸表示の設定を、静的設定(Config.h)から動的設定(Configuration.h)へ移動した。
+　対称軸表示の設定を、静的設定(Config.h)から動的設定(Configuration.h)へ移動した。  
+　時計回り管理をリング生成時に行うように修正し、ca-generator の高速化。  
+　設定ファイルの読み込みが出来なくなっていたのを修正。
 
 ### 2014/09/26 Version 1.3.3
 　doc/FreeBSD/HowToCompile-FreeBSD-10.0-ja.md 修正。  

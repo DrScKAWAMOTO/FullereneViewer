@@ -160,6 +160,7 @@ public:
   // I/O
 public:
   void print_detail();
+  void print_boundary_representations();
   void print_axes() const;
   void print_axes_summary(FILE* fptr = stdout) const;
   void draw_by_POVRay(const char* file_name_base, double delta, int steps, int divisions);

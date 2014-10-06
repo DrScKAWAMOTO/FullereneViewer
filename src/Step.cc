@@ -6,11 +6,15 @@
  */
 
 #include <assert.h>
+#include <stdlib.h>
 #include "Step.h"
 #include "Fullerene.h"
 #include "CarbonAllotrope.h"
 #include "Debug.h"
 #include "DebugMemory.h"
+
+int Step::s_progress_level = 0;
+pthread_mutex_t Step::s_mutex;
 
 Step::Step()
   : p_symmetric(false), p_close(false), p_is_tube(false),
@@ -37,7 +41,6 @@ Step::Step(Generator& gen, int maximum_number_of_carbons, bool symmetric, int cl
     }
   else
     p_ca->make_symmetric_scrap(p_gen->scrap_no());
-  p_ca->set_clockwise(+1);
   if (!p_symmetric)
     {
       p_boundary.clean();
@@ -95,7 +98,9 @@ bool Step::construction_step(Fullerene*& fullerene)
   int No = p_gen->glow_step();
   int num;
   ErrorCode result;
-  p_ca->set_clockwise(+1);
+  int progress_level = get_progress_level();
+  if (progress_level > 0)
+    p_gen->print_progress(progress_level);
   if (p_symmetric)
     result =
       p_ca->fill_n_polygons_around_carbons_closed_to_center_and_pentagons(No, num);
@@ -109,9 +114,11 @@ bool Step::construction_step(Fullerene*& fullerene)
       assert(carbon);
       result = p_ca->fill_n_polygon_around_carbon(No, carbon, p_boundary);
     }
-  p_ca->set_clockwise(+1);
 #if defined(DEBUG_CARBON_ALLOTROPE_CONSTRUCTION)
   p_ca->print_detail();
+#endif
+#if defined(DEBUG_BOUNDARY_REPRESENTATIONS)
+  p_ca->print_boundary_representations();
 #endif
   int number_of_carbons = p_ca->number_of_carbons();
   if (p_symmetric)
@@ -228,6 +235,47 @@ void Step::rollback()
          p_ring_next_sequence, p_carbon_next_sequence, p_bond_next_sequence);
 #endif
   p_ca->rollback(p_ring_next_sequence, p_carbon_next_sequence, p_bond_next_sequence);
+}
+
+void Step::initiate_progress_level(int level)
+{
+  if (pthread_mutex_init(&s_mutex, 0) != 0)
+    {
+      fprintf(stderr, "pthread_mutex_init() error\n");
+      exit(1);
+    }
+  set_progress_level(level);
+}
+
+int Step::get_progress_level()
+{
+  if (pthread_mutex_lock(&s_mutex) != 0)
+    {
+      fprintf(stderr, "pthread_mutex_lock() error\n");
+      exit(1);
+    }
+  int result = s_progress_level;
+  if (pthread_mutex_unlock(&s_mutex) != 0)
+    {
+      fprintf(stderr, "pthread_mutex_unlock() error\n");
+      exit(1);
+    }
+  return result;
+}
+
+void Step::set_progress_level(int level)
+{
+  if (pthread_mutex_lock(&s_mutex) != 0)
+    {
+      fprintf(stderr, "pthread_mutex_lock() error\n");
+      exit(1);
+    }
+  s_progress_level = level;
+  if (pthread_mutex_unlock(&s_mutex) != 0)
+    {
+      fprintf(stderr, "pthread_mutex_unlock() error\n");
+      exit(1);
+    }
 }
 
 /* Local Variables:	*/

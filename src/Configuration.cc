@@ -105,7 +105,7 @@ static bool read_path(Word& word, char* path)
 
 static bool name_to_quality(Word& word, Quality& result)
 {
-  if (word.next())
+  if (word.next() == false)
     return false;
   if (word.equals_to("=") == false)
     return false;
@@ -131,7 +131,7 @@ static bool name_to_quality(Word& word, Quality& result)
 
 static bool name_to_dsa(Word& word, DisplaySymmetryAxes& result)
 {
-  if (word.next())
+  if (word.next() == false)
     return false;
   if (word.equals_to("=") == false)
     return false;

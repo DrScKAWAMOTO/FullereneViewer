@@ -9,8 +9,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <limits.h>
+#include <pthread.h>
 #include "Version.h"
 #include "Fullerenes.h"
+#include "Step.h"
 #include "Random.h"
 #include "DebugMemory.h"
 #include <new>
@@ -31,6 +33,7 @@ static void usage(const char* arg0)
   fprintf(stderr, "            generator-formula looks like 'T10,0,1-5b6b...', has to be specified,\n");
   fprintf(stderr, "    --close=[num] ........ close [num] connected boundary component(s),\n");
   fprintf(stderr, "            default is infinity,\n");
+  fprintf(stderr, "    --parallel=[level] ... special use of invoked from ca-parallel,\n");
   fprintf(stderr, "    --step-copy-branch ... use ``step copy branch'' algorithm,\n");
   fprintf(stderr, "    --step-forward ....... use ``step forward'' algorithm,\n");
   fprintf(stderr, "    --step-backward ...... use ``step backward'' algorithm (default),\n");
@@ -41,12 +44,33 @@ static void usage(const char* arg0)
   exit(0);
 }
 
+static void* command_routine(void *arg)
+{
+  while (1)
+    {
+      char command_line[1024];
+      if (fgets(command_line, 1024, stdin) == NULL)
+        exit(2);
+      int len = strlen(command_line);
+      if ((len > 0) && (command_line[len - 1] == '\n'))
+        command_line[len - 1] = '\0';
+      if (strncmp(command_line, "level=", 6) == 0)
+        {
+          int progress_level = atoi(command_line + 6);
+          Step::set_progress_level(progress_level);
+        }
+      else if (strcmp(command_line, "exit") == 0)
+        exit(0);
+    }
+}
+
 int main(int argc, char *argv[])
 {
   int symmetric = 100;
   int ordinary = -1;
   int tube = -1;
   int close = INT_MAX;
+  int parallel_level = 0;
   StepAlgorithm step_algorithm = STEP_ALGORITHM_BACKWARD;
   const char* arg0 = argv[0];
   const char* generator_formula = 0;
@@ -105,6 +129,12 @@ int main(int argc, char *argv[])
           argc--;
           argv++;
         }
+      else if (strncmp(argv[0], "--parallel=", 11) == 0)
+        {
+          parallel_level = atoi(argv[0] + 11);
+          argc--;
+          argv++;
+        }
       else if (strcmp(argv[0], "--step-copy-branch") == 0)
         {
           step_algorithm = STEP_ALGORITHM_COPY_BRANCH;
@@ -133,6 +163,18 @@ int main(int argc, char *argv[])
         usage(arg0);
     }
 
+  if (parallel_level > 0)
+    {
+      pthread_t thread;
+      Step::initiate_progress_level(parallel_level);
+      int result;
+      result = pthread_create(&thread, 0, command_routine, 0);
+      if (result != 0)
+        {
+          fprintf(stderr, "%s: pthread_create() error\n", arg0);
+          exit(1);
+        }
+    }
   setvbuf(stdout, 0, _IONBF, 0);
   Random::initialize();
   print_version("ca-generator", stdout);

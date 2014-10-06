@@ -38,6 +38,8 @@ private:
   int p_distance_to_set;
 
   // private tools
+private:
+  int p_calc_clockwise(Carbon* from, Carbon* to);
 
   // constructors & the destructor
 public:
@@ -64,7 +66,8 @@ public:
 
   // determining normal vector
 public:
-  bool set_clockwise(Carbon* from, Carbon* to);
+  bool check_clockwise(Carbon* from, Carbon* to);
+  void set_clockwise(Carbon* from, Carbon* to, bool locally);
 
   // interactions
 
