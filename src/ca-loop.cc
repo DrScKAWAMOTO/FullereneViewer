@@ -2,7 +2,6 @@
  * Project: FullereneViewer
  * Version: 1.0
  * Copyright: (C) 2011-14 Dr.Sc.KAWAMOTO,Takuji (Ext)
- * Create: 2014/08/24 20:00:00 JST
  */
 
 #include <stdio.h>

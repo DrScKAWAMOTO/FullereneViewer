@@ -2,7 +2,6 @@
  * Project: FullereneViewer
  * Version: 1.0
  * Copyright: (C) 2011-14 Dr.Sc.KAWAMOTO,Takuji (Ext)
- * Create: 2014/07/17 08:08:13 JST
  */
 
 #ifndef __CONFIGURATION_H__
@@ -52,18 +51,12 @@ public:
   Configuration(const char* home, const char* desktop);
   ~Configuration();
 
-  // type converters
-
   // comparators
-
-  // math operators
 
   // I/O
   void load();
   void save() const;
   void reflect() const;
-
-  // class decision
 
   // member accessing methods
   Quality get_picture_quality() const { return p_picture_quality; }

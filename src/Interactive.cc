@@ -2,7 +2,6 @@
  * Project: FullereneViewer
  * Version: 1.0
  * Copyright: (C) 2011-14 Dr.Sc.KAWAMOTO,Takuji (Ext)
- * Create: 2011/12/31 17:00:49 JST
  */
 
 #define _CRT_SECURE_NO_WARNINGS

@@ -2,7 +2,6 @@
  * Project: FullereneViewer
  * Version: 1.0
  * Copyright: (C) 2011-14 Dr.Sc.KAWAMOTO,Takuji (Ext)
- * Create: 2011/10/16 16:57:28 JST
  */
 
 #include <QString>
@@ -29,7 +28,7 @@ void GeneratorFormulaDialog::slot_accept()
 {
   QString formula = ui->generatorFormulaLineEdit->text();
   formula.remove(QRegExp("[\n\r\t]"));
-  if (OpenGLUtil::change_fullerene("", qPrintable(formula)))
+  if (OpenGLUtil::change_fullerene(0, qPrintable(formula)))
     setWindowTitle(OpenGLUtil::window_title);
   accept();
 }

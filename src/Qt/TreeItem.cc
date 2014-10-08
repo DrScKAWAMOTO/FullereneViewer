@@ -2,7 +2,6 @@
  * Project: FullereneViewer
  * Version: 1.0
  * Copyright: (C) 2011-14 Dr.Sc.KAWAMOTO,Takuji (Ext)
- * Create: 2011/10/16 16:57:28 JST
  */
 
 #include "TreeItem.h"
@@ -15,8 +14,8 @@ TreeItem root_mtis[] = {
   TreeItem( 3, root_mtis, 1, tube_mtis, "カーボン・ナノ・チューブ(筒長4)" ),
   TreeItem( 4, root_mtis, 1, merged_mtis, "全フラーレン(C100まで)" ),
   TreeItem( 5, root_mtis, 1, root_mtis + 7, "特殊フラーレン" ),
-  TreeItem( 0, root_mtis + 6, 1, root_mtis + 8, "Y分岐フラーレン" ),
-  TreeItem( 0, root_mtis + 7, 0, root_mtis, "Y" )
+  TreeItem( 0, root_mtis + 6, 1, root_mtis + 8, "C474 (Y分岐フラーレン)" ),
+  TreeItem( 0, root_mtis + 7, 0, root_mtis, "(NoA=6M) Y" )
 };
 
 TreeItem* TreeItem::top_item()

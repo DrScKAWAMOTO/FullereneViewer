@@ -2,7 +2,6 @@
  * Project: FullereneViewer
  * Version: 1.0
  * Copyright: (C) 2011-14 Dr.Sc.KAWAMOTO,Takuji (Ext)
- * Create: 2012/01/21 07:07:09 JST
  */
 
 #ifndef __INTERACTIVEREGULARPOLYGON_H__

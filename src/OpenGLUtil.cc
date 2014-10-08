@@ -2,7 +2,6 @@
  * Project: FullereneViewer
  * Version: 1.0
  * Copyright: (C) 2011-14 Dr.Sc.KAWAMOTO,Takuji (Ext)
- * Create: 2012/01/24 15:35:29 JST
  */
 
 #define _CRT_SECURE_NO_WARNINGS
@@ -24,6 +23,7 @@
 #include "Matrix3.h"
 #include "Quaternion.h"
 #include "CarbonAllotrope.h"
+#include "Representations.h"
 #include "Fullerene.h"
 #include "Ring.h"
 #include "Utils.h"
@@ -135,7 +135,7 @@ void OpenGLUtil::initialize_pre(int argc, char *argv[])
 {
   if (argc == 1)
     {
-      strcpy(fullerene_name, "C60 (NoA=120)");
+      strcpy(fullerene_name, "C60 (NoA=60M)");
       strcpy(generator_formula, "S1-5b6c5b6b5b");
     }
   else if (argc == 2)
@@ -233,7 +233,7 @@ void OpenGLUtil::initialize_post()
         (*alert_dialog_callback)(message);
       else
         fprintf(stderr, "%s\n", message);
-      strcpy(fullerene_name, "C60 (NoA=120)");
+      strcpy(fullerene_name, "C60 (NoA=60M)");
       strcpy(generator_formula, "S1-5b6c5b6b5b");
       fullerene = new Fullerene(generator_formula);
     }
@@ -733,7 +733,12 @@ Vector3 OpenGLUtil::un_project(int win_x, int win_y)
 bool
 OpenGLUtil::change_fullerene(const char* fullerene_name, const char* generator_formula)
 {
+  char fullerene_name2[100];
+  if (fullerene_name == 0)
+    CarbonAllotrope::s_need_representations = true;
   Fullerene* new_fullerene = new Fullerene(generator_formula);
+  if (fullerene_name == 0)
+    CarbonAllotrope::s_need_representations = false;
   if (new_fullerene->error_code() != ERROR_CODE_OK)
     {
       delete new_fullerene;
@@ -748,6 +753,13 @@ OpenGLUtil::change_fullerene(const char* fullerene_name, const char* generator_f
   if (fullerene)
     delete fullerene;
   fullerene = new_fullerene;
+  if (fullerene_name == 0)
+    {
+      sprintf(fullerene_name2, "C%d (NoA=%d)",
+              fullerene->get_carbon_allotrope()->number_of_carbons(),
+              fullerene->get_representations()->number_of_automorphisms());
+      fullerene_name = fullerene_name2;
+    }
   fullerene->set_fullerene_name(fullerene_name);
   sprintf(window_title, "%s %s %s", WINDOW_TITLE,
           fullerene->get_fullerene_name(), fullerene->get_generator_formula());

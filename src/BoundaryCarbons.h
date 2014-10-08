@@ -2,7 +2,6 @@
  * Project: FullereneViewer
  * Version: 1.0
  * Copyright: (C) 2011-14 Dr.Sc.KAWAMOTO,Takuji (Ext)
- * Create: 2014/09/12 22:29:05 JST
  */
 
 #ifndef __BOUNDARYCARBONS_H__
@@ -28,15 +27,9 @@ public:
   ~BoundaryCarbons();
   BoundaryCarbons& operator = (const BoundaryCarbons& you); /* dont use */
 
-  // type converters
-
   // comparators
 
-  // math operators
-
   // I/O
-
-  // class decision
 
   // member accessing methods
   // attributes

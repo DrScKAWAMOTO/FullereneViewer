@@ -2,7 +2,6 @@
  * Project: FullereneViewer
  * Version: 1.0
  * Copyright: (C) 2011-14 Dr.Sc.KAWAMOTO,Takuji (Ext)
- * Create: 2012/01/17 12:55:55 JST
  */
 
 #define _CRT_SECURE_NO_WARNINGS
@@ -170,6 +169,14 @@ int compare_sub_generator_formula(const char* base_formula, const char* target_f
           return base_No1 - target_No1;
         }
     }
+}
+
+char* copy_string(const char* from)
+{
+  int len = strlen(from);
+  char* ptr = new char[len + 1];
+  strcpy(ptr, from);
+  return ptr;
 }
 
 /* Local Variables:	*/

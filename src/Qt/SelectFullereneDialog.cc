@@ -2,7 +2,6 @@
  * Project: FullereneViewer
  * Version: 1.0
  * Copyright: (C) 2011-14 Dr.Sc.KAWAMOTO,Takuji (Ext)
- * Create: 2011/10/16 16:57:28 JST
  */
 
 #include <QTreeView>
@@ -36,9 +35,20 @@ void SelectFullereneDialog::slot_accept()
   const TreeItem *item = static_cast<const TreeItem*>(index.internalPointer());
   QString formula = item->data_as_string();
   formula.remove("(鏡像)");
-  formula.remove(QRegExp("\\(NoA=\\d+\\)"));
+  formula.remove(QRegExp("\\(NoA=\\d+M?\\)"));
   formula.remove(QRegExp("[ \n\r\t]"));
-  if (OpenGLUtil::change_fullerene("", qPrintable(formula)))
+  QString noa = item->data_as_string();
+  if (!noa.contains("(NoA="))
+    {
+      item = item->parent();
+      noa = item->data_as_string();
+    }
+  noa.remove(QRegExp(" .+$"));
+  const TreeItem *cnitem = item->parent();
+  QString cn = cnitem->data_as_string();
+  cn.remove(QRegExp(" .+$"));
+  QString name = cn + " " + noa;
+  if (OpenGLUtil::change_fullerene(qPrintable(name), qPrintable(formula)))
     setWindowTitle(OpenGLUtil::window_title);
   accept();
 }

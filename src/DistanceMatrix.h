@@ -2,7 +2,6 @@
  * Project: FullereneViewer
  * Version: 1.0
  * Copyright: (C) 2011-14 Dr.Sc.KAWAMOTO,Takuji (Ext)
- * Create: 2012/02/05 07:28:45 JST
  */
 
 #ifndef __DISTANCEMATRIX_H__
@@ -47,14 +46,10 @@ public:
 
   // comparators
 
-  // math operators
-
   // I/O
 public:
   void print_as_table(FILE* fptr = stdout) const;
   void print_as_line(FILE* fptr = stdout) const;
-
-  // class decision
 
   // member accessing methods
 public:

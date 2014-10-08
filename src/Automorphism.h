@@ -2,7 +2,6 @@
  * Project: FullereneViewer
  * Version: 1.0
  * Copyright: (C) 2011-14 Dr.Sc.KAWAMOTO,Takuji (Ext)
- * Create: 2012/01/19 21:05:58 JST
  */
 
 #ifndef __AUTOMORPHISM_H__
@@ -37,8 +36,6 @@ public:
   void initialize(int from_seq, int to_seq);
   virtual ~Automorphism();
   Automorphism& operator = (const Automorphism& you); /* dont use */
-
-  // type converters
 
   // comparators
   friend bool operator == (const Automorphism& one, const Automorphism& the_other);

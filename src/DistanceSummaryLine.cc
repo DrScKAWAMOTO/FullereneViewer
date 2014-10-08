@@ -2,7 +2,6 @@
  * Project: FullereneViewer
  * Version: 1.0
  * Copyright: (C) 2011-14 Dr.Sc.KAWAMOTO,Takuji (Ext)
- * Create: 2012/02/06 15:42:58 JST
  */
 
 #include <stdio.h>
@@ -12,6 +11,7 @@
 #include <assert.h>
 #include "DistanceSummaryLine.h"
 #include "DebugMemory.h"
+#include "Utils.h"
 
 int DistanceSummaryLine::s_next_sequence = 1;
 
@@ -32,9 +32,7 @@ DistanceSummaryLine::DistanceSummaryLine(const char* line)
 {
   assert(line);
   assert(line[0]);
-  int len = strlen(line) + 1;
-  p_line = new char[len];
-  strcpy(p_line, line);
+  p_line = copy_string(line);
 }
 
 DistanceSummaryLine::~DistanceSummaryLine()

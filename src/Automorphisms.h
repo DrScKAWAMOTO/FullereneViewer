@@ -2,7 +2,6 @@
  * Project: FullereneViewer
  * Version: 1.0
  * Copyright: (C) 2011-14 Dr.Sc.KAWAMOTO,Takuji (Ext)
- * Create: 2012/01/19 21:44:19 JST
  */
 
 #ifndef __AUTOMORPHISMS_H__
@@ -27,17 +26,11 @@ public:
   Automorphisms(Fullerene* fullerene);
   ~Automorphisms();
 
-  // type converters
-
   // comparators
-
-  // math operators
 
   // I/O
 public:
   void print_out() const;
-
-  // class decision
 
   // member accessing methods
 public:

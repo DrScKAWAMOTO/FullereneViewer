@@ -2,7 +2,6 @@
  * Project: FullereneViewer
  * Version: 1.0
  * Copyright: (C) 2011-14 Dr.Sc.KAWAMOTO,Takuji (Ext)
- * Create: 2011/12/26 18:06:18 JST
  */
 
 #ifndef __SYMMETRYAXISNORMAL_H__

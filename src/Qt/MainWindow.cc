@@ -2,7 +2,6 @@
  * Project: FullereneViewer
  * Version: 1.0
  * Copyright: (C) 2011-14 Dr.Sc.KAWAMOTO,Takuji (Ext)
- * Create: 2011/10/16 16:57:28 JST
  */
 
 #include <QMessageBox>
@@ -139,14 +138,6 @@ void MainWindow::showHelp()
 void MainWindow::showAbout()
 {
   AboutWindow::showAbout();
-}
-
-void MainWindow::fullereneSelected()
-{
-  QAction* action = qobject_cast<QAction *>(sender());
-  if (OpenGLUtil::change_fullerene(qPrintable(action->text()),
-                                   qPrintable(action->statusTip())))
-    setWindowTitle(OpenGLUtil::window_title);
 }
 
 /* Local Variables:	*/

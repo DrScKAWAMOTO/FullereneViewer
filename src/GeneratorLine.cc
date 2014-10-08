@@ -2,7 +2,6 @@
  * Project: FullereneViewer
  * Version: 1.0
  * Copyright: (C) 2011-14 Dr.Sc.KAWAMOTO,Takuji (Ext)
- * Create: 2012/02/15 10:35:57 JST
  */
 
 #include <stdlib.h>
@@ -99,9 +98,7 @@ bool GeneratorLine::p_get_scrap(int& scrap) const
 GeneratorLine::GeneratorLine(const char* line)
   : Object(s_next_sequence++)
 {
-  int len = strlen(line) + 1;
-  p_line = new char[len];
-  strcpy(p_line, line);
+  p_line = copy_string(line);
 }
 
 GeneratorLine::~GeneratorLine()

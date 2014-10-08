@@ -2,7 +2,6 @@
  * Project: FullereneViewer
  * Version: 1.0
  * Copyright: (C) 2011-14 Dr.Sc.KAWAMOTO,Takuji (Ext)
- * Create: 2012/01/17 22:30:13 JST
  */
 
 #define _CRT_SECURE_NO_WARNINGS
@@ -16,6 +15,7 @@
 #include "RepresentationInfo.h"
 #include "DebugMemory.h"
 #include "Config.h"
+#include "Utils.h"
 
 MinimumRepresentation::MinimumRepresentation(const Fullerene* fullerene)
   : p_array(0)
@@ -31,10 +31,7 @@ MinimumRepresentation::MinimumRepresentation(const Fullerene* fullerene)
   const RepresentationInfo* repinfo = rep->get_info(0);
   assert(repinfo);
   assert(repinfo->clockwise == 1);
-  const char* array = rep->get_array();
-  int array_length = strlen(array) + 1;
-  p_array = new char[array_length];
-  strcpy(p_array, array);
+  p_array = copy_string(rep->get_array());
 }
 
 MinimumRepresentation::~MinimumRepresentation()

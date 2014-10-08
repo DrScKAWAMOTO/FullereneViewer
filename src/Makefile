@@ -2,10 +2,17 @@
 # Project: FullereneViewer
 # Version: 1.0
 # Copyright: (C) 2011-14 Dr.Sc.KAWAMOTO,Takuji (Ext)
-# Create: 2012/04/25 17:05:47 JST
 #
 
 SYSTEM= $(shell uname)
+CLANGTEST= $(shell which clang)
+ifeq ($(CLANGTEST),)
+  CC= gcc
+  CXX= g++
+else
+  CC= clang
+  CXX= clang++
+endif
 
 SOURCES= $(wildcard [A-Z]*.cc)
 OBJECTS= $(subst .cc,.o,$(SOURCES))
@@ -15,7 +22,6 @@ TARGETS= $(subst .cc,,$(MAINS))
 
 QMAKE= qmake
 
-CXX= g++
 INCLUDES= -I/usr/local/include -I/usr/local/include/drm
 CXXFLAGS= -g -Wall -Wno-unused-parameter -D_THREAD_SAFE $(INCLUDES)
 LDFLAGS= -L/usr/local/lib -L/usr/X11/lib

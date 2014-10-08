@@ -2,7 +2,6 @@
  * Project: FullereneViewer
  * Version: 1.0
  * Copyright: (C) 2011-14 Dr.Sc.KAWAMOTO,Takuji (Ext)
- * Create: 2014/09/11 20:46:28 JST
  */
 
 #include <string.h>
@@ -11,6 +10,7 @@
 #include "Representations.h"
 #include "Fullerene.h"
 #include "DebugMemory.h"
+#include "Utils.h"
 
 ReflectionPair::ReflectionPair(const char* generator_formula, const Fullerene* fullerene)
   : p_symmetric(true), p_my_array(0), p_my_generator_formula(0),
@@ -32,35 +32,17 @@ ReflectionPair::ReflectionPair(const char* generator_formula, const Fullerene* f
   if (result < 0)
     {
       p_symmetric = false;
-      int length = strlen(array1) + 1;
-      char *ptr = new char[length];
-      strcpy(ptr, array1);
-      p_my_array = ptr;
-      length = strlen(generator_formula) + 1;
-      ptr = new char[length];
-      strcpy(ptr, generator_formula);
-      p_my_generator_formula = ptr;
-      length = strlen(array2) + 1;
-      ptr = new char[length];
-      strcpy(ptr, array2);
-      p_your_array = ptr;
+      p_my_array = copy_string(array1);
+      p_my_generator_formula = copy_string(generator_formula);
+      p_your_array = copy_string(array2);
     }
   else if (result > 0)
     {
       p_symmetric = false;
-      int length = strlen(array2) + 1;
-      char *ptr = new char[length];
-      strcpy(ptr, array2);
-      p_my_array = ptr;
+      p_my_array = copy_string(array2);
       p_my_generator_formula = 0;
-      length = strlen(array1) + 1;
-      ptr = new char[length];
-      strcpy(ptr, array1);
-      p_your_array = ptr;
-      length = strlen(generator_formula) + 1;
-      ptr = new char[length];
-      strcpy(ptr, generator_formula);
-      p_your_generator_formula = ptr;
+      p_your_array = copy_string(array1);
+      p_your_generator_formula = copy_string(generator_formula);
     }
 }
 
@@ -88,19 +70,9 @@ void ReflectionPair::merge(const ReflectionPair* with)
   assert(strcmp(p_my_array, with->p_my_array) == 0);
   assert(strcmp(p_your_array, with->p_your_array) == 0);
   if (!p_my_generator_formula && with->p_my_generator_formula)
-    {
-      int length = strlen(with->p_my_generator_formula) + 1;
-      char* ptr = new char [length];
-      strcpy(ptr, with->p_my_generator_formula);
-      p_my_generator_formula = ptr;
-    }
+    p_my_generator_formula = copy_string(with->p_my_generator_formula);
   else if (!p_your_generator_formula && with->p_your_generator_formula)
-    {
-      int length = strlen(with->p_your_generator_formula) + 1;
-      char* ptr = new char [length];
-      strcpy(ptr, with->p_your_generator_formula);
-      p_your_generator_formula = ptr;
-    }
+    p_your_generator_formula = copy_string(with->p_your_generator_formula);
 }
 
 /* Local Variables:	*/

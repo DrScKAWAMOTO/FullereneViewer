@@ -2,7 +2,6 @@
  * Project: FullereneViewer
  * Version: 1.0
  * Copyright: (C) 2011-14 Dr.Sc.KAWAMOTO,Takuji (Ext)
- * Create: 2012/02/06 15:42:58 JST
  */
 
 #ifndef __DISTANCESUMMARYLINE_H__
@@ -28,19 +27,13 @@ public:
   DistanceSummaryLine(const char* line);
   ~DistanceSummaryLine();
 
-  // type converters
-
   // comparators
 public:
   int compare(const DistanceSummaryLine* you) const;
 
-  // math operators
-
   // I/O
 public:
   void print() const;
-
-  // class decision
 
   // member accessing methods
 

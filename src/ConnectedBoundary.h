@@ -2,7 +2,6 @@
  * Project: FullereneViewer
  * Version: 1.0
  * Copyright: (C) 2011-14 Dr.Sc.KAWAMOTO,Takuji (Ext)
- * Create: 2014/09/06 08:04:09 JST
  */
 
 #ifndef __CONNECTEDBOUNDARY_H__
@@ -29,15 +28,9 @@ public:
   ~ConnectedBoundary();
   ConnectedBoundary& operator = (const ConnectedBoundary& you); /* dont use */
 
-  // type converters
-
   // comparators
 
-  // math operators
-
   // I/O
-
-  // class decision
 
   // member accessing methods
   // attributes

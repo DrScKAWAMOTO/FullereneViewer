@@ -2,7 +2,6 @@
  * Project: FullereneViewer
  * Version: 1.0
  * Copyright: (C) 2011-14 Dr.Sc.KAWAMOTO,Takuji (Ext)
- * Create: 2011/10/16 16:57:28 JST
  */
 
 #ifndef __SET_H__
@@ -95,6 +94,7 @@ public:
     if (!p_search(element, result_index))
       return false;
     --List<T>::p_length;
+    element = List<T>::p_container[result_index];
     for ( ; result_index < List<T>::p_length; ++result_index)
       List<T>::p_container[result_index] = List<T>::p_container[result_index + 1];
     element->link_down();

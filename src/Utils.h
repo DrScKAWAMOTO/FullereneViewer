@@ -2,7 +2,6 @@
  * Project: FullereneViewer
  * Version: 1.0
  * Copyright: (C) 2011-14 Dr.Sc.KAWAMOTO,Takuji (Ext)
- * Create: 2012/01/17 12:55:55 JST
  */
 
 #ifndef __UTILS_H__
@@ -19,6 +18,7 @@ int digits10x10_to_No(const char*& buffer);
 void No_No_to_digits10x10_digits26x7(int No1, int No2, char*& buffer);
 int compare_generator_formula(const char* base_formula, const char* target_formula);
 int compare_sub_generator_formula(const char* base_formula, const char* target_formula);
+char* copy_string(const char* from);
 
 #endif /* __UTILS_H__ */
 

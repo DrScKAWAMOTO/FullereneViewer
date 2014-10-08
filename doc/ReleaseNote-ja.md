@@ -25,7 +25,14 @@
 　リリース手順書作成。  
 　対称軸表示の設定を、静的設定(Config.h)から動的設定(Configuration.h)へ移動した。  
 　時計回り管理をリング生成時に行うように修正し、ca-generator の高速化。  
-　設定ファイルの読み込みが出来なくなっていたのを修正。
+　設定ファイルの読み込みが出来なくなっていたのを修正。  
+　メモリリーク退治。  
+　clang 対応。  
+　フラーレン選択ツリーで名前を付けるようにした。  
+　OpenGLUtil::change_fullerene() で fullerene_name がなくてもいいように自分で生成する。  
+　鏡映対称フラーレンは (NoA=60M) などと表示するように変更。  
+　Yフラーレンが C474 (NoA=6M) を表示するようにした。  
+　copy_string() へ移行
 
 ### 2014/09/26 Version 1.3.3
 　doc/FreeBSD/HowToCompile-FreeBSD-10.0-ja.md 修正。  
