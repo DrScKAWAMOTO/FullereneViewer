@@ -10,6 +10,7 @@
 #include "Object.h"
 #include "List.h"
 #include "RepresentationInfo.h"
+#include "MyString.h"
 
 class Representation : public Object {
   // friend classes & functions
@@ -19,9 +20,7 @@ private:
   List<RepresentationInfo> p_infos;
   char p_last_char;
   int p_last_count;
-  int p_array_length;
-  int p_offset;
-  char* p_array;
+  MyString p_repres;
 
   // private tools
 private:
@@ -48,7 +47,7 @@ public:
   RepresentationInfo* get_info(int index) const;
   void set_step(char step);
   void finish_step();
-  const char* get_array() const { return p_array; }
+  operator const char*() const { return p_repres; }
 
 };
 

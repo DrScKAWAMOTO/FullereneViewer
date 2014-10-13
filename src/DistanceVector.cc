@@ -44,7 +44,7 @@ int DistanceVector::compare(const DistanceVector* you) const
       if (diff != 0)
         return diff;
     }
-  return 0;
+  return you - this;
 }
 
 void DistanceVector::print() const

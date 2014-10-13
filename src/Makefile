@@ -4,16 +4,6 @@
 # Copyright: (C) 2011-14 Dr.Sc.KAWAMOTO,Takuji (Ext)
 #
 
-SYSTEM= $(shell uname)
-CLANGTEST= $(shell which clang)
-ifeq ($(CLANGTEST),)
-  CC= gcc
-  CXX= g++
-else
-  CC= clang
-  CXX= clang++
-endif
-
 SOURCES= $(wildcard [A-Z]*.cc)
 OBJECTS= $(subst .cc,.o,$(SOURCES))
 MAINS= $(wildcard [a-z]*-*.cc)
@@ -29,12 +19,22 @@ LOADLIBES= -lGLU -lGL
 INSTALL= install
 INSTALLDIR= ~/bin/$(shell uname -s).$(shell uname -m)
 
+SYSTEM= $(shell uname)
+CLANGTEST= $(shell which clang)
+ifeq ($(CLANGTEST),)
+  CC= gcc
+  CXX= g++
+else
+  CC= clang
+  CXX= clang++
+endif
+
 .PHONY:	all Qtmakefile Qt install depend tags dist clean Qtclean distclean
 
 all: depend $(TARGETS)
 
 $(TARGETS): %: %.o $(OBJECTS)
-	$(LINK.cpp) $^ $(LOADLIBES) $(LDLIBS) -o $@
+	$(LINK.cc) $^ $(LOADLIBES) $(LDLIBS) -o $@
 
 Qtmakefile:
 	cd Qt; $(QMAKE) FullereneViewer.pro

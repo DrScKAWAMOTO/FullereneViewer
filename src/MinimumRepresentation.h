@@ -8,6 +8,7 @@
 #define __MINIMUMREPRESENTATION_H__
 
 #include "Object.h"
+#include "MyString.h"
 
 class Fullerene;
 
@@ -16,7 +17,7 @@ class MinimumRepresentation : public Object {
 
   // members
 private:
-  char* p_array;
+  MyString p_repres;
 
   // private tools
 

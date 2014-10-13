@@ -96,15 +96,12 @@ bool GeneratorLine::p_get_scrap(int& scrap) const
 }
 
 GeneratorLine::GeneratorLine(const char* line)
-  : Object(s_next_sequence++)
+  : Object(s_next_sequence++), p_line(line)
 {
-  p_line = copy_string(line);
 }
 
 GeneratorLine::~GeneratorLine()
 {
-  if (p_line)
-    delete[] p_line;
 }
 
 int GeneratorLine::compare(const GeneratorLine* you) const
@@ -119,9 +116,12 @@ int GeneratorLine::compare(const GeneratorLine* you) const
   bool yourS;
   bool yourT;
   bool yourA;
-  assert(p_get_number_NoA_isS_isT_and_isA(mynumber, myNoA, myS, myT, myA));
-  assert(you->p_get_number_NoA_isS_isT_and_isA(yournumber, yourNoA,
-                                               yourS, yourT, yourA));
+  bool result;
+  result = p_get_number_NoA_isS_isT_and_isA(mynumber, myNoA, myS, myT, myA);
+  assert(result);
+  result = you->p_get_number_NoA_isS_isT_and_isA(yournumber, yourNoA,
+                                                 yourS, yourT, yourA);
+  assert(result);
   if (mynumber != yournumber)
     return mynumber - yournumber;
   if (myNoA != yourNoA)
@@ -151,14 +151,16 @@ int GeneratorLine::compare(const GeneratorLine* you) const
     {
       int myscrap;
       int yourscrap;
-      assert(p_get_scrap(myscrap));
-      assert(you->p_get_scrap(yourscrap));
+      result = p_get_scrap(myscrap);
+      assert(result);
+      result = you->p_get_scrap(yourscrap);
+      assert(result);
       if (myscrap != yourscrap)
         return myscrap - yourscrap;
     }
-  int result = compare_generator_formula(p_line, you->p_line);
-  if (result != 0)
-    return result;
+  int comp_result = compare_generator_formula(p_line, you->p_line);
+  if (comp_result != 0)
+    return comp_result;
   int mySequenceNo = sequence_no();
   int yourSequenceNo = you->sequence_no();
   return mySequenceNo - yourSequenceNo;
@@ -166,7 +168,7 @@ int GeneratorLine::compare(const GeneratorLine* you) const
 
 void GeneratorLine::print() const
 {
-  printf("%s\n", p_line);
+  printf("%s\n", (char*)p_line);
 }
 
 /* Local Variables:	*/

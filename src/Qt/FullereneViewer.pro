@@ -30,10 +30,10 @@ HEADERS += ../Automorphism.h ../Automorphisms.h ../AvoidBugs.h ../Bond.h \
            ../Fullerene.h ../FullereneCharacteristic.h ../Generator.h \
            ../Interactive.h ../InteractiveLine.h ../InteractiveOperation.h \
            ../InteractivePlane.h ../InteractivePoint.h ../InteractiveRegularPolygon.h \
-           ../Interactives.h ../List.h ../Set.h ../Matrix3.h ../MenuEntry.h ../Normal.h \
-           ../Object.h ../OpenGLUtil.h ../Pattern.h ../Posture.h ../Quaternion.h \
-           ../Radius.h ../Random.h ../Representation.h ../RepresentationInfo.h \
-           ../Representations.h ../Ring.h ../SortedList.h ../Statistics.h \
+           ../Interactives.h ../List.h ../Set.h ../Matrix3.h \
+           ../MyString.h ../Normal.h ../Object.h ../OpenGLUtil.h ../Pattern.h \
+           ../Posture.h ../Quaternion.h ../Radius.h ../Random.h ../Representation.h \
+           ../RepresentationInfo.h ../Representations.h ../Ring.h ../Statistics.h \
            ../SymmetryAxis.h ../SymmetryAxisNormal.h ../ThreeViewNormal.h ../Utils.h \
            ../Vector3.h ../Version.h \
            ConfigurationDialog.h MainWindow.h Guruguru.h \
@@ -48,8 +48,8 @@ SOURCES += ../Automorphism.cc ../Automorphisms.cc ../Bond.cc ../BoundaryCarbons.
            ../FullereneCharacteristic.cc ../Generator.cc ../Interactive.cc \
            ../InteractiveLine.cc ../InteractiveOperation.cc ../InteractivePlane.cc \
            ../InteractivePoint.cc ../InteractiveRegularPolygon.cc ../Interactives.cc \
-           ../Matrix3.cc ../Object.cc ../OpenGLUtil.cc ../Pattern.cc ../Quaternion.cc \
-           ../Random.cc ../Representation.cc ../RepresentationInfo.cc \
+           ../Matrix3.cc ../MyString.cc ../Object.cc ../OpenGLUtil.cc ../Pattern.cc \
+           ../Quaternion.cc ../Random.cc ../Representation.cc ../RepresentationInfo.cc \
            ../Representations.cc ../Ring.cc ../Statistics.cc ../SymmetryAxis.cc \
            ../SymmetryAxisNormal.cc ../ThreeViewNormal.cc ../Utils.cc ../Vector3.cc \
            ../Version.cc \

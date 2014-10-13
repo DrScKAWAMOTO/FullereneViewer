@@ -8,6 +8,7 @@
 #define __GENERATOR_H__
 
 #include "Object.h"
+#include "MyString.h"
 
 enum GeneratorType {
   GENERATOR_TYPE_SYMMETRIC = 1,
@@ -35,14 +36,12 @@ private:
   int p_minimum_polygons;
   int p_maximum_vertices_of_polygons;
   GeneratorState p_state;
-  int p_array_length;
   int p_history_length;
   int p_history_offset;
-  char* p_history;
+  MyString p_history;
 
   // private tools
 private:
-  void p_enlarge();
   void p_glow(int value);
 
   // constructors & the destructor
@@ -73,7 +72,7 @@ public:
   bool next_tree();
   bool next_by_rollback();
   void initialize_next_sequences();
-  void get_generator_formula(char* buffer, int length) const;
+  void get_generator_formula(MyString& buffer, bool compress = true) const;
 
 };
 

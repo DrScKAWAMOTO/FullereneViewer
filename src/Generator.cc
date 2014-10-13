@@ -5,35 +5,25 @@
  */
 
 #include <stdio.h>
-#include <assert.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/types.h>
+#include <sys/time.h>
+#include <sys/resource.h>
 #include "Generator.h"
 #include "Utils.h"
 #include "Debug.h"
 #include "DebugMemory.h"
 
-void Generator::p_enlarge()
-{
-  if (p_history_length == p_array_length)
-    {
-      char* new_history = new char[p_array_length * 2];
-      for (int i = 0; i < p_array_length; ++i)
-        new_history[i] = p_history[i];
-      delete[] p_history;
-      p_history = new_history;
-      p_array_length *= 2;
-    }
-}
-
 void Generator::p_glow(int value)
 {
   if (p_history_offset == p_history_length)
     {
-      p_enlarge();
+      if (p_history_length == p_history.length())
+        p_history.resize(p_history_length + 1);
       ++p_history_length;
     }
-  p_history[p_history_offset++] = value;
+  p_history.set_char_at(p_history_offset++, value);
 }
 
 Generator::Generator(bool symmetric, int maximum_vertices_of_polygons)
@@ -41,8 +31,7 @@ Generator::Generator(bool symmetric, int maximum_vertices_of_polygons)
     p_scrap_no(1), p_n(0), p_m(0), p_h(0), p_minimum_polygons(5),
     p_maximum_vertices_of_polygons(maximum_vertices_of_polygons),
     p_state(GENERATOR_STATE_START_FROM_MINIMUM),
-    p_array_length(16), p_history_length(0), p_history_offset(0),
-    p_history(new char[p_array_length])
+    p_history_length(0), p_history_offset(0)
 {
 }
 
@@ -51,8 +40,7 @@ Generator::Generator(int n, int m, int h, int maximum_vertices_of_polygons)
     p_n(n), p_m(m), p_h(h), p_minimum_polygons(5),
     p_maximum_vertices_of_polygons(maximum_vertices_of_polygons),
     p_state(GENERATOR_STATE_START_FROM_MINIMUM),
-    p_array_length(16), p_history_length(0), p_history_offset(0),
-    p_history(new char[p_array_length])
+    p_history_length(0), p_history_offset(0)
 {
 }
 
@@ -61,8 +49,7 @@ Generator::Generator(const char* generator_formula, int maximum_vertices_of_poly
     p_n(0), p_m(0), p_h(0), p_minimum_polygons(5),
     p_maximum_vertices_of_polygons(maximum_vertices_of_polygons),
     p_state(GENERATOR_STATE_START_FROM_MINIMUM),
-    p_array_length(16), p_history_length(0), p_history_offset(0),
-    p_history(new char[p_array_length])
+    p_history_length(0), p_history_offset(0)
 {
   const char* ptr = generator_formula;
   switch (*ptr++)
@@ -110,11 +97,9 @@ Generator::Generator(const Generator& you)
     p_minimum_polygons(you.p_minimum_polygons),
     p_maximum_vertices_of_polygons(you.p_maximum_vertices_of_polygons),
     p_state(you.p_state),
-    p_array_length(you.p_array_length), p_history_length(you.p_history_length),
-    p_history_offset(you.p_history_offset), p_history(new char[p_array_length])
+    p_history_length(you.p_history_length), p_history_offset(you.p_history_offset),
+    p_history(you.p_history)
 {
-  for (int i = 0; i < p_array_length; ++i)
-    p_history[i] = you.p_history[i];
 }
 
 Generator& Generator::operator = (const Generator& you)
@@ -129,37 +114,46 @@ Generator& Generator::operator = (const Generator& you)
       p_minimum_polygons = you.p_minimum_polygons;
       p_maximum_vertices_of_polygons = you.p_maximum_vertices_of_polygons;
       p_state = you.p_state;
-      p_array_length = you.p_array_length;
       p_history_length = you.p_history_length;
       p_history_offset = you.p_history_offset;
-
-      delete[] p_history;
-      p_history = new char[p_array_length];
-      for (int i = 0; i < p_array_length; ++i)
-        p_history[i] = you.p_history[i];
+      p_history = you.p_history;
     }
   return *this;
 }
 
 Generator::~Generator()
 {
-  delete[] p_history;
 }
 
 void Generator::print_detail() const
 {
-  char buffer[1024];
-  get_generator_formula(buffer, 1024);
-  printf("%s\n", buffer);
+  MyString buffer;
+  get_generator_formula(buffer);
+  printf("%s\n", (char*)buffer);
 }
 
 void Generator::print_progress(int length) const
 {
   if (p_history_offset <= length)
     {
-      char buffer[1024];
-      get_generator_formula(buffer, 1024);
-      printf("pg$ %s\n", buffer);
+      MyString buffer;
+      get_generator_formula(buffer, false);
+      struct rusage ru;
+      if (getrusage(RUSAGE_SELF, &ru) == 0)
+        {
+          int sec;
+          int usec;
+          sec = ru.ru_utime.tv_sec + ru.ru_stime.tv_sec;
+          usec = ru.ru_utime.tv_usec + ru.ru_stime.tv_usec;
+          if (usec >= 1000000)
+            {
+              sec++;
+              usec -= 1000000;
+            }
+          printf("pg$ %s %f\n", (char*)buffer, sec + (double)usec / 1000000.0);
+        }
+      else
+        printf("pg$ %s\n", (char*)buffer);
     }
 }
 
@@ -167,7 +161,8 @@ int Generator::glow_step()
 {
   if (p_history_offset >= p_history_length - 1)
     {
-      p_enlarge();
+      if (p_history_length == p_history.length())
+        p_history.resize(p_history_length + 1);
       p_state = GENERATOR_STATE_START_FROM_MINIMUM;
     }
   else
@@ -208,7 +203,7 @@ void Generator::next_branch()
     case GENERATOR_STATE_START_SPECIFIED:
       break;
     case GENERATOR_STATE_START_FROM_MINIMUM:
-      p_history[p_history_offset] = p_minimum_polygons;
+      p_history.set_char_at(p_history_offset, p_minimum_polygons);
       p_history_length = p_history_offset + 1;
       break;
     case GENERATOR_STATE_RUNNING:
@@ -270,39 +265,53 @@ bool Generator::next_by_rollback()
     }
 }
 
-void Generator::get_generator_formula(char* buffer, int length) const
+void Generator::get_generator_formula(MyString& buffer, bool compress) const
 {
   if (p_type == GENERATOR_TYPE_TUBE)
-    sprintf(buffer, "T%d,%d,%d-", p_n, p_m, p_h);
-  else if (p_type == GENERATOR_TYPE_SYMMETRIC)
-    sprintf(buffer, "S%d-", p_scrap_no);
-  else
-    sprintf(buffer, "A%d-", p_scrap_no);
-  int len = strlen(buffer);
-  length -= len;
-  buffer += len;
-  assert(length > p_history_length + 1);
-#if defined(DEBUG_CONSTRUCTION_ALGORITHM)
-  for (int i = 0; i < p_history_length; ++i)
-    *buffer++ = p_history[i] + '0';
-  *buffer = '\0';
-#else
-  int current_No = 0;
-  int count = 0;
-  for (int i = 0; i < p_history_length; ++i)
     {
-      if (current_No == p_history[i])
-        ++count;
-      else
-        {
-          if (count)
-            No_No_to_digits10x10_digits26x7(current_No, count, buffer);
-          current_No = p_history[i];
-          count = 1;
-        }
+      buffer = "T";
+      buffer.append_int(p_n);
+      buffer.append_char(',');
+      buffer.append_int(p_m);
+      buffer.append_char(',');
+      buffer.append_int(p_h);
+      buffer.append_char('-');
     }
-  No_No_to_digits10x10_digits26x7(current_No, count, buffer);
-#endif
+  else if (p_type == GENERATOR_TYPE_SYMMETRIC)
+    {
+      buffer = "S";
+      buffer.append_int(p_scrap_no);
+      buffer.append_char('-');
+    }
+  else
+    {
+      buffer = "A";
+      buffer.append_int(p_scrap_no);
+      buffer.append_char('-');
+    }
+  if (compress)
+    {
+      int current_No = 0;
+      int count = 0;
+      for (int i = 0; i < p_history_length; ++i)
+        {
+          if (current_No == p_history[i])
+            ++count;
+          else
+            {
+              if (count)
+                No_No_to_digits10x10_digits26x7(current_No, count, buffer);
+              current_No = p_history[i];
+              count = 1;
+            }
+        }
+      No_No_to_digits10x10_digits26x7(current_No, count, buffer);
+    }
+  else
+    {
+      for (int i = 0; i < p_history_length; ++i)
+        buffer.append_char(p_history[i] + '0');
+    }
 }
 
 /* Local Variables:	*/

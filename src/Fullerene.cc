@@ -30,7 +30,6 @@ Fullerene::Fullerene()
   : p_carbon_allotrope(0), p_error_code(ERROR_CODE_OK), p_n(0), p_m(0), p_h(0),
     p_representations(0), p_characteristic(0), p_distance_matrix(0)
 {
-  strcpy(p_generator_formula, "");
 }
 
 Fullerene::Fullerene(const char* generator_formula)
@@ -68,7 +67,7 @@ Fullerene::Fullerene(const char* generator_formula)
       ca = 0;
       goto do_nothing;
     }
-  strcpy(p_generator_formula, generator_formula);
+  p_generator_formula = generator_formula;
   if (strcmp(p_generator_formula, "Y") == 0)
     {
       ca->make_equator_by_chiral_characteristic(6, 6, 5);
@@ -154,7 +153,7 @@ Fullerene::Fullerene(const char* generator_formula)
     {
       if (p_generator_formula[0] == 'T')
         {
-          const char *ptr = p_generator_formula + 1;
+          const char *ptr = (char*)p_generator_formula + 1;
           p_n = strtol(ptr, (char**)&ptr, 10);
           if (*ptr == ',')
             ++ptr;
@@ -165,7 +164,6 @@ Fullerene::Fullerene(const char* generator_formula)
           if (*ptr == '\0')
             {
               ca->make_equator_by_chiral_characteristic(p_n, p_m, p_h);
-              // TODO ca->close_force();
 #if defined(DEBUG_CARBON_ALLOTROPE_CONSTRUCTION)
               ca->print_detail();
 #endif
@@ -402,14 +400,12 @@ void Fullerene::set_carbon_allotrope(CarbonAllotrope* carbon_allotrope)
 
 void Fullerene::set_fullerene_name(const char* fullerene_name)
 {
-  assert(strlen(fullerene_name) <= NAME_MAX_SIZE);
-  strcpy(p_fullerene_name, fullerene_name);
+  p_fullerene_name = fullerene_name;
 }
 
 void Fullerene::set_generator_formula(const char* generator_formula)
 {
-  assert(strlen(generator_formula) <= NAME_MAX_SIZE);
-  strcpy(p_generator_formula, generator_formula);
+  p_generator_formula = generator_formula;
 }
 
 /* Local Variables:	*/

@@ -8,6 +8,7 @@
 #define __GENERATORLINE_H__
 
 #include "Object.h"
+#include "MyString.h"
 
 class GeneratorLine : public Object {
   // friend classes & functions
@@ -16,7 +17,7 @@ class GeneratorLine : public Object {
 private:
   static int s_next_sequence;
 private:
-  char* p_line;
+  MyString p_line;
 
   // private tools
 private:

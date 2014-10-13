@@ -30,19 +30,8 @@ public:
   // comparators
 public:
   int compare(const DistanceVector* you) const;
-  bool operator > (const DistanceVector& you) const
-  { return (compare(&you) > 0); }
-  bool operator < (const DistanceVector& you) const
-  { return (compare(&you) < 0); }
-  bool operator <= (const DistanceVector& you) const
-  { return (compare(&you) <= 0); }
-  bool operator >= (const DistanceVector& you) const
-  { return (compare(&you) >= 0); }
   bool operator == (const DistanceVector& you) const
   { return (compare(&you) == 0); }
-  bool operator != (const DistanceVector& you) const
-  { return (compare(&you) != 0); }
-
   // math operators
 
   // I/O

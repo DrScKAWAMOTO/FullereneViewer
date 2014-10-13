@@ -35,6 +35,8 @@
 /src/ca-loop
 /src/ca-mirror
 /src/ca-modeling
+/src/ca-parallel
+/src/ca-server
 /src/ca-sort
 /src/ca-test
 /src/ca-uniq

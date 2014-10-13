@@ -9,6 +9,7 @@
 #include <string.h>
 #include "Version.h"
 #include "Utils.h"
+#include "MyString.h"
 
 enum Type {
   TYPE_TERMINATE = 1,
@@ -26,7 +27,7 @@ public:
   ~Test();
   bool next();
   void print() const;
-  void compressed(char* buffer) const;
+  void compressed(MyString& buffer) const;
   void compressed_print() const;
 };
 
@@ -83,10 +84,9 @@ void Test::print() const
     }
 }
 
-void Test::compressed(char* buffer) const
+void Test::compressed(MyString& buffer) const
 {
-  sprintf(buffer, "C100 (NoA=10) T10,0,3-");
-  char *ptr = buffer + strlen(buffer);
+  buffer = "C100 (NoA=10) T10,0,3-";
   for (int i = 0; i < p_length; ++i)
     {
       int No;
@@ -105,18 +105,17 @@ void Test::compressed(char* buffer) const
           else
             break;
         }
-      No_to_digits10x10(No, ptr);
-      No_to_digits26x7(length, ptr);
+      No_to_digits10x10(No, buffer);
+      No_to_digits26x7(length, buffer);
       i = j - 1;
     }
-  *ptr++ = '\0';
 }
 
 void Test::compressed_print() const
 {
-  char buffer[100];
+  MyString buffer;
   compressed(buffer);
-  fprintf(stdout, "%s\n", buffer);
+  fprintf(stdout, "%s\n", (char*)buffer);
 }
 
 static void usage(const char* arg0)
@@ -138,7 +137,7 @@ static void usage(const char* arg0)
 int main(int argc, char *argv[])
 {
   const char* arg0 = argv[0];
-  const char* generator_formula = 0;
+  MyString generator_formula;
   if (argc == 1)
     usage(arg0);
   argc--;
@@ -159,7 +158,7 @@ int main(int argc, char *argv[])
           argc--;
           argv++;
         }
-      else if (!generator_formula)
+      else if (generator_formula.length() == 0)
         {
           generator_formula = argv[0];
           argc--;
@@ -168,25 +167,25 @@ int main(int argc, char *argv[])
       else
         usage(arg0);
     }
-  if (!generator_formula)
+  if (generator_formula.length() == 0)
     usage(arg0);
 
   Test test;
   bool start = false;
-  if (strcmp(generator_formula, "T10,0,3-") == 0)
+  if (strcmp((char*)generator_formula, "T10,0,3-") == 0)
     start = true;
   print_version("ca-gentest", stdout);
   while (1)
     {
-      char buffer[100];
+      MyString buffer;
       test.compressed(buffer);
       if (start == false)
         {
-          if (strcmp(buffer + 14, generator_formula) == 0)
+          if (strcmp((char*)buffer + 14, (char*)generator_formula) == 0)
             start = true;
         }
       if (start)
-        fprintf(stdout, "%s\n", buffer);
+        fprintf(stdout, "%s\n", (char*)buffer);
       if (test.next() == false)
         return 0;
     }

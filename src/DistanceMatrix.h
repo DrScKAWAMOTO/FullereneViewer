@@ -59,7 +59,7 @@ public:
 
 };
 
-#endif /* __DISTANCEVECTOR_H__ */
+#endif /* __DISTANCEMATRIX_H__ */
 
 /* Local Variables:	*/
 /* mode: c++		*/

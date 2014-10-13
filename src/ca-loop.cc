@@ -12,6 +12,7 @@
 #include "Fullerenes.h"
 #include "Version.h"
 #include "Utils.h"
+#include "MyString.h"
 
 #define BUFFER_SIZE 1000
 
@@ -65,18 +66,20 @@ int main(int argc, char *argv[])
   StepAlgorithm step_algorithm = STEP_ALGORITHM_BACKWARD;
   bool except_ending = false;
   const char* arg0 = argv[0];
-  char start_generator_formula[BUFFER_SIZE] = "";
-  char ending_generator_formula[BUFFER_SIZE] = "";
-  const char* gf_file_name = 0;
-  const char* env_value = getenv("CA_STEP_ALGORITHM");
-
-  if (env_value)
+  MyString start_generator_formula;
+  MyString ending_generator_formula;
+  MyString gf_file_name;
+  MyString env_value;
+  char* foo = getenv("CA_STEP_ALGORITHM");
+  if (foo)
+    env_value = foo;
+  if (env_value.length() > 0)
     {
-      if (strcmp(env_value, "--step-copy-branch") == 0)
+      if (env_value.compare("--step-copy-branch") == 0)
         step_algorithm = STEP_ALGORITHM_COPY_BRANCH;
-      else if (strcmp(env_value, "--step-forward") == 0)
+      else if (env_value.compare("--step-forward") == 0)
         step_algorithm = STEP_ALGORITHM_FORWARD;
-      else if (strcmp(env_value, "--step-backward") == 0)
+      else if (env_value.compare("--step-backward") == 0)
         step_algorithm = STEP_ALGORITHM_BACKWARD;
     }
 
@@ -161,17 +164,15 @@ int main(int argc, char *argv[])
           argc--;
           argv++;
         }
-      else if (start_generator_formula[0] == '\0')
+      else if (start_generator_formula.length() == 0)
         {
-          assert(strlen(argv[0]) < BUFFER_SIZE);
-          strcpy(start_generator_formula, argv[0]);
+          start_generator_formula = argv[0];
           argc--;
           argv++;
         }
-      else if (ending_generator_formula[0] == '\0')
+      else if (ending_generator_formula.length() == 0)
         {
-          assert(strlen(argv[0]) < BUFFER_SIZE);
-          strcpy(ending_generator_formula, argv[0]);
+          ending_generator_formula = argv[0];
           argc--;
           argv++;
         }
@@ -180,13 +181,13 @@ int main(int argc, char *argv[])
     }
 
   FILE* fptr = stdout;
-  if (gf_file_name)
+  if (gf_file_name.length() > 0)
     {
-      fptr = fopen(gf_file_name, "w");
+      fptr = fopen((char*)gf_file_name, "w");
       if (fptr == 0)
         {
           fprintf(stderr, "%s: can not open generator formula file ``%s''\n",
-                  arg0, gf_file_name);
+                  arg0, (char*)gf_file_name);
           exit(1);
         }
     }
@@ -195,10 +196,10 @@ int main(int argc, char *argv[])
     {
       if (symmetric < 60)
         symmetric = 60;
-      if (start_generator_formula[0] == '\0')
-        strcpy(start_generator_formula, "S1-");
-      if (ending_generator_formula[0] == '\0')
-        strcpy(ending_generator_formula, "S9-*");
+      if (start_generator_formula.length() == 0)
+        start_generator_formula = "S1-";
+      if (ending_generator_formula.length() == 0)
+        ending_generator_formula = "S9-*";
       if (start_generator_formula[0] != 'S')
         usage(arg0);
       if (ending_generator_formula[0] != 'S')
@@ -211,10 +212,10 @@ int main(int argc, char *argv[])
     {
       if (ordinary < 60)
         ordinary = 60;
-      if (start_generator_formula[0] == '\0')
-        strcpy(start_generator_formula, "A1-");
-      if (ending_generator_formula[0] == '\0')
-        strcpy(ending_generator_formula, "A1-*");
+      if (start_generator_formula.length() == 0)
+        start_generator_formula = "A1-";
+      if (ending_generator_formula.length() == 0)
+        ending_generator_formula = "A1-*";
       if (start_generator_formula[0] != 'A')
         usage(arg0);
       if (ending_generator_formula[0] != 'A')
@@ -227,10 +228,10 @@ int main(int argc, char *argv[])
     {
       if (tube < 60)
         tube = 60;
-      if (start_generator_formula[0] == '\0')
-        strcpy(start_generator_formula, "T10,0,3-");
-      if (ending_generator_formula[0] == '\0')
-        strcpy(ending_generator_formula, "T10,0,3-*");
+      if (start_generator_formula.length() == 0)
+        start_generator_formula = "T10,0,3-";
+      if (ending_generator_formula.length() == 0)
+        ending_generator_formula = "T10,0,3-*";
       if (start_generator_formula[0] != 'T')
         usage(arg0);
       if (ending_generator_formula[0] != 'T')
@@ -241,10 +242,10 @@ int main(int argc, char *argv[])
     }
   else if (test >= 1)
     {
-      if (start_generator_formula[0] == '\0')
-        strcpy(start_generator_formula, "T10,0,3-");
-      if (ending_generator_formula[0] == '\0')
-        strcpy(ending_generator_formula, "T10,0,3-*");
+      if (start_generator_formula.length() == 0)
+        start_generator_formula = "T10,0,3-";
+      if (ending_generator_formula.length() == 0)
+        ending_generator_formula = "T10,0,3-*";
       if (start_generator_formula[0] != 'T')
         usage(arg0);
       if (ending_generator_formula[0] != 'T')
@@ -263,43 +264,49 @@ int main(int argc, char *argv[])
   print_version("ca-loop", fptr);
   while (1)
     {
-      char command[BUFFER_SIZE];
-      char *ptr = command;
+      MyString command;
       if (test > 0)
-        sprintf(ptr, "ca-gentest");
+        command.append_string("ca-gentest");
       else
-        sprintf(ptr, "ca-generator");
-      ptr += strlen(ptr);
+        command.append_string("ca-generator");
       if (symmetric > 0)
-        sprintf(ptr, " --symmetric=%d", symmetric);
+        {
+          command.append_string(" --symmetric=");
+          command.append_int(symmetric);
+        }
       else if (ordinary > 0)
-        sprintf(ptr, " --ordinary=%d", ordinary);
+        {
+          command.append_string(" --ordinary=");
+          command.append_int(ordinary);
+        }
       else if (tube > 0)
-        sprintf(ptr, " --tube=%d", tube);
+        {
+          command.append_string(" --tube=");
+          command.append_int(tube);
+        }
       else if (test > 0)
-        sprintf(ptr, " --test");
-      ptr += strlen(ptr);
+        command.append_string(" --test");
       if (close != INT_MAX)
         {
-          sprintf(ptr, " --close=%d", close);
-          ptr += strlen(ptr);
+          command.append_string(" --close=");
+          command.append_int(close);
         }
       switch (step_algorithm)
         {
         case STEP_ALGORITHM_COPY_BRANCH:
-          sprintf(ptr, " --step-copy-branch");
+          command.append_string(" --step-copy-branch");
           break;
         case STEP_ALGORITHM_FORWARD:
-          sprintf(ptr, " --step-forward");
+          command.append_string(" --step-forward");
           break;
         case STEP_ALGORITHM_BACKWARD:
-          sprintf(ptr, " --step-backward");
+          command.append_string(" --step-backward");
           break;
         }
-      ptr += strlen(ptr);
-      sprintf(ptr, " %s", start_generator_formula);
-      fprintf(stderr, "%s\n", command);
-      FILE* generator = popen(command, "r");
+      command.append_char(' ');
+      command.append_string(start_generator_formula);
+      fprintf(stderr, "%s\n", (char*)command);
+      FILE* generator = popen((char*)command, "r");
       if (generator == 0)
         {
           fprintf(stderr, "%s: fork/pipe/memory error\n", arg0);
@@ -347,7 +354,7 @@ int main(int argc, char *argv[])
               fclose(fptr);
               exit(0);
             }
-          strcpy(start_generator_formula, sptr);
+          start_generator_formula = sptr;
           fputs(buffer, fptr);
           fputc('\n', fptr);
         }

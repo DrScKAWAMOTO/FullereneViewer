@@ -15,6 +15,7 @@
 #   include <GL/glu.h>
 #endif
 #include "Quaternion.h"
+#include "MyString.h"
 
 #define WINDOW_TITLE "Fullerene Viewer [--f--%---]"
 #define WINDOW_TITLE_STATUS_FPS 0
@@ -28,7 +29,6 @@
 class Vector3;
 class CarbonAllotrope;
 class Fullerene;
-struct MenuEntry;
 class Ring;
 
 class OpenGLUtil {
@@ -44,10 +44,10 @@ public:
   static Quaternion rotation_sub;
   static CarbonAllotrope* ca;
   static Fullerene* fullerene;
-  static char fullerene_name[1024];
-  static char generator_formula[1024];
-  static char window_title[3072];
-  static char* const window_title_status;
+  static MyString fullerene_name;
+  static MyString generator_formula;
+  static MyString window_title;
+  static char* get_window_title_status();
   static int view;
 
   // picking simulation drawing

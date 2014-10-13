@@ -64,21 +64,19 @@ Configuration::Configuration(const char* home, const char* desktop)
 {
   int length = strlen(home);
   assert(length > 0);
-  assert(length + strlen(CONFIGURATION_FILE_NAME) < PATH_LENGTH);
-  strcpy(p_configuration_file_name, home);
+  p_configuration_file_name = home;
   if (p_configuration_file_name[length - 1] == '/')
-    p_configuration_file_name[length - 1] = '\0';
-  strcat(p_configuration_file_name, CONFIGURATION_FILE_NAME);
+    p_configuration_file_name.resize(length - 1);
+  p_configuration_file_name.append_string(CONFIGURATION_FILE_NAME);
 
   length = strlen(desktop);
   assert(length > 0);
-  assert(length + strlen(WORKING_FOLDER_NAME) < PATH_LENGTH);
-  strcpy(p_working_folder_name, desktop);
+  p_working_folder_name = desktop;
   if (p_working_folder_name[length - 1] == '/')
-    p_working_folder_name[length - 1] = '\0';
-  strcat(p_working_folder_name, WORKING_FOLDER_NAME);
+    p_working_folder_name.resize(length - 1);
+  p_working_folder_name.append_string(WORKING_FOLDER_NAME);
 
-  strcpy(p_povray_command_line, POVRAY_COMMAND_LINE);
+  p_povray_command_line = POVRAY_COMMAND_LINE;
 
   p_picture_quality = QUALITY_HIGH;
   p_motion_quality = QUALITY_HIGH;
@@ -233,8 +231,8 @@ void Configuration::save() const
   fprintf(fptr, "picture_quality = %s\n", quality_to_name(p_picture_quality));
   fprintf(fptr, "motion_quality = %s\n", quality_to_name(p_motion_quality));
   fprintf(fptr, "display_symmetry_axes = %s\n", dsa_to_name(p_display_symmetry_axes));
-  fprintf(fptr, "working_folder = %s\n", p_working_folder_name);
-  fprintf(fptr, "povray_command_line = %s\n", p_povray_command_line);
+  fprintf(fptr, "working_folder = %s\n", (char*)p_working_folder_name);
+  fprintf(fptr, "povray_command_line = %s\n", (char*)p_povray_command_line);
   fclose(fptr);
 }
 
@@ -254,16 +252,14 @@ static void make_folder_recursive(const char *path)
 #endif
   if (result == 0)
     return;
-  char parent[PATH_LENGTH + 1];
-  assert(strlen(path) <= PATH_LENGTH);
-  strcpy(parent, path);
+  MyString parent = path;
   char* delimiter;
   delimiter = strrchr(parent, '/');
   if (delimiter == NULL)
     delimiter = strrchr(parent, '\\');
   if (delimiter == NULL)
     return;
-  *delimiter = '\0';
+  parent.resize(delimiter - (char*)parent);
   make_folder_recursive(parent);
 #if defined(__unix) || defined(__APPLE__)
   mkdir(path, 0755);
@@ -308,26 +304,22 @@ void Configuration::reflect() const
   if (OpenGLUtil::interval_timer_setup_callback)
     (*OpenGLUtil::interval_timer_setup_callback)();
 
-  int length = strlen(configuration->p_working_folder_name);
-  assert(length <= PATH_LENGTH);
-  char path[PATH_LENGTH + 1];
-  strcpy(path, configuration->p_working_folder_name);
+  MyString path = configuration->p_working_folder_name;
+  int length = path.length();
   if ((length >= 1) && ((path[length - 1] == '/') || (path[length - 1] == '\\')))
-    path[length - 1] = '\0';
+    path.resize(length - 1);
   make_folder_recursive(path);
   chdir(path);
 }
 
 void Configuration::set_working_folder_name(const char* path)
 {
-  assert(strlen(path) < PATH_LENGTH);
-  strcpy(p_working_folder_name, path);
+  p_working_folder_name = path;
 }
 
 void Configuration::set_povray_command_line(const char* command_line)
 {
-  assert(strlen(command_line) < PATH_LENGTH);
-  strcpy(p_povray_command_line, command_line);
+  p_povray_command_line = command_line;
 }
 
 /* Local Variables:	*/

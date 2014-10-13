@@ -32,14 +32,14 @@ void print_pattern(const Set<ReflectionPair>& patterns)
       ReflectionPair* ref_pai = patterns[i];
       const char* ones_formula = ref_pai->ones_generator_formula();
       const char* the_others_formula = ref_pai->the_others_generator_formula();
-      if (ones_formula)
+      if (ones_formula[0])
         {
-          if (the_others_formula)
+          if (the_others_formula[0])
             printf("%s %s\n", ones_formula, the_others_formula);
           else
             printf("%s <not-listed>\n", ones_formula);
         }
-      else if (the_others_formula)
+      else if (the_others_formula[0])
         printf("%s <not-listed>\n", the_others_formula);
     }
 }

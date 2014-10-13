@@ -43,7 +43,8 @@ static void check_test(Queue<Test>& queue, int& expect_value, int n)
       Test* work = queue.dequeue();
       assert(work->p_value == expect_value++);
     }
-  assert(queue.dequeue() == 0);
+  Test* result = queue.dequeue();
+  assert(result == 0);
 }
 
 static void test_1_sub(int pre, int n, int count)

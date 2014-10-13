@@ -32,13 +32,11 @@ DistanceSummaryLine::DistanceSummaryLine(const char* line)
 {
   assert(line);
   assert(line[0]);
-  p_line = copy_string(line);
+  p_line = line;
 }
 
 DistanceSummaryLine::~DistanceSummaryLine()
 {
-  if (p_line)
-    delete[] p_line;
 }
 
 int DistanceSummaryLine::compare(const DistanceSummaryLine* you) const
@@ -60,7 +58,7 @@ int DistanceSummaryLine::compare(const DistanceSummaryLine* you) const
 
 void DistanceSummaryLine::print() const
 {
-  printf("%s\n", p_line);
+  printf("%s\n", (char*)p_line);
 }
 
 /* Local Variables:	*/

@@ -15,6 +15,7 @@
 #include "Bond.h"
 #include "ConnectedBoundary.h"
 #include "SymmetryAxis.h"
+#include "MyString.h"
 
 class Representations;
 class Pattern;
@@ -162,22 +163,24 @@ public:
   void print_boundary_representations();
   void print_axes() const;
   void print_axes_summary(FILE* fptr = stdout) const;
-  void draw_by_POVRay(const char* file_name_base, double delta, int steps, int divisions);
-  void OpenGL_to_POVRay(const char* file_name_base, int view, const Quaternion& rotation);
-  void draw_six_views_by_POVRay(const char* file_name_base);
-  static void execute_POVRay(const char* pov_name);
-  void draw_force_to_circle_by_POVRay(const char* file_name_base,
+  void draw_by_POVRay(const MyString& file_name_base, double delta, int steps,
+                      int divisions);
+  void OpenGL_to_POVRay(const MyString& file_name_base, int view,
+                        const Quaternion& rotation);
+  void draw_six_views_by_POVRay(const MyString& file_name_base);
+  static void execute_POVRay(const MyString& pov_name);
+  void draw_force_to_circle_by_POVRay(const MyString& file_name_base,
                                       List<Carbon>& cutend_list,
                                       double delta, int steps, int divisions);
-  void draw_force_to_circle_by_POVRay(const char* file_name_base,
+  void draw_force_to_circle_by_POVRay(const MyString& file_name_base,
                                       double delta, int steps, int divisions);
-  void draw_development_view_by_POVRay(const char* file_name_base, Ring* cutend_ring,
+  void draw_development_view_by_POVRay(const MyString& file_name_base, Ring* cutend_ring,
                                        double delta, int steps, int divisions);
   void print_POVRay_scene_description(FILE* fptr) const;
   void print_POVRay_scene_description(FILE* fptr, const Matrix3& rot, const Vector3& move,
                                       bool clipped_by_Z_non_negative) const;
-  void memory_shape(const char* file_name_base) const;
-  void recall_shape(const char* file_name_base);
+  void memory_shape(const MyString& file_name_base) const;
+  void recall_shape(const MyString& file_name_base);
 
   // member accessing methods
 public:

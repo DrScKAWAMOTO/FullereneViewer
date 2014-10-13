@@ -76,11 +76,12 @@ void Guruguru::update_window_status()
     title_status[WINDOW_TITLE_STATUS_RESOLUTION] = 'M';
   else
     title_status[WINDOW_TITLE_STATUS_RESOLUTION] = 'L';
-  if (strncmp(title_status, OpenGLUtil::window_title_status,
+  if (strncmp(title_status, OpenGLUtil::get_window_title_status(),
               WINDOW_TITLE_STATUS_SIZE) != 0)
     {
-      strncpy(OpenGLUtil::window_title_status, title_status, WINDOW_TITLE_STATUS_SIZE);
-      parentWidget()->setWindowTitle(OpenGLUtil::window_title);
+      strncpy(OpenGLUtil::get_window_title_status(), title_status,
+              WINDOW_TITLE_STATUS_SIZE);
+      parentWidget()->setWindowTitle((char*)OpenGLUtil::window_title);
     }
 }
 

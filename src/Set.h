@@ -57,15 +57,7 @@ public:
     return *this;
   }
 
-  // type converters
-
-  // comparators
-
-  // math operators
-
   // I/O
-
-  // class decision
 
   // member accessing methods
 public:

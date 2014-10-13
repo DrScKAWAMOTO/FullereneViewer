@@ -11,7 +11,7 @@
 #include "Version.h"
 #include "GeneratorLine.h"
 #include "DistanceSummaryLine.h"
-#include "SortedList.h"
+#include "Set.h"
 #include "DebugMemory.h"
 
 void usage(char* argv0)
@@ -44,14 +44,15 @@ int main(int argc, char* argv[])
     }
   if (buffer[0] == 'C')
     {
-      SortedList<GeneratorLine> lines;
+      Set<GeneratorLine> lines;
       while (1)
         {
           buffer[strlen(buffer) - 1] = '\0';
           if (buffer[0] != '#')
             {
               GeneratorLine* gtl = new GeneratorLine(buffer);
-              lines.add(gtl);
+              GeneratorLine* result = lines.search_else_add(gtl);
+              assert(result == 0);
             }
           if (fgets(buffer, 1024, stdin) != buffer)
             break;
@@ -62,14 +63,15 @@ int main(int argc, char* argv[])
     }
   else
     {
-      SortedList<DistanceSummaryLine> lines;
+      Set<DistanceSummaryLine> lines;
       while (1)
         {
           buffer[strlen(buffer) - 1] = '\0';
           if (buffer[0] != '#')
             {
               DistanceSummaryLine* dsl = new DistanceSummaryLine(buffer);
-              lines.add(dsl);
+              DistanceSummaryLine* result = lines.search_else_add(dsl);
+              assert(result == 0);
             }
           if (fgets(buffer, 1024, stdin) != buffer)
             break;

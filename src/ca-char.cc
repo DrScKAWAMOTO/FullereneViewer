@@ -70,11 +70,11 @@ static void usage(const char* arg0)
 
 int main(int argc, char *argv[])
 {
-  const char *name = 0;
+  MyString name;
   bool axes_summary = true;
   bool pentagon_distances = false;
   bool pentagon_matrix = false;
-  char extension[5] = "";
+  MyString extension;
   char* pair_file = 0;
   const char* arg0 = argv[0];
   if (argc == 1)
@@ -97,7 +97,7 @@ int main(int argc, char *argv[])
           axes_summary = true;
           pentagon_distances = false;
           pentagon_matrix = false;
-          strcpy(extension, "axes");
+          extension = "axes";
           argc--;
           argv++;
         }
@@ -120,13 +120,13 @@ int main(int argc, char *argv[])
           axes_summary = false;
           pentagon_distances = false;
           pentagon_matrix = true;
-          strcpy(extension, "dmat");
+          extension = "dmat";
           argc--;
           argv++;
         }
       else if (argv[0][0] == '-')
         usage(arg0);
-      else if (!name)
+      else if (name.length() == 0)
         {
           name = argv[0];
           argc--;
@@ -145,13 +145,13 @@ int main(int argc, char *argv[])
   FILE* fptr = 0;
   char buffer[1024];
 
-  if (name)
-    fptr = fopen(name, "r");
+  if (name.length() > 0)
+    fptr = fopen((char*)name, "r");
   else
     fptr = stdin;
 
-  if (extension[0])
-    mkdir(extension, 0755);
+  if (extension.length() > 0)
+    mkdir((char*)extension, 0755);
 
   if (pentagon_distances)
     {
@@ -167,7 +167,7 @@ int main(int argc, char *argv[])
       CarbonAllotrope::s_need_all_axes = true;
     }
   CarbonAllotrope::s_need_representations = true;
-  if (extension[0] == '\0')
+  if (extension.length() == 0)
     print_version("ca-char", stdout);
   Interactives::s_need_simulation = false;
 
@@ -196,12 +196,17 @@ int main(int argc, char *argv[])
       fullerene = new Fullerene(ptr);
       ca = fullerene->get_carbon_allotrope();
       FILE* fout = stdout;
-      if (extension[0])
+      if (extension.length() > 0)
         {
-          char filename[1024];
-          sprintf(filename, "%s/C%d=%s.%s", extension, ca->number_of_carbons(),
-                  fullerene->get_generator_formula(), extension);
-          fout = fopen(filename, "w");
+          MyString filename;
+          filename.append_string(extension);
+          filename.append_string("/C");
+          filename.append_int(ca->number_of_carbons());
+          filename.append_char('=');
+          filename.append_string(fullerene->get_generator_formula());
+          filename.append_char('.');
+          filename.append_string(extension);
+          fout = fopen((char*)filename, "w");
           print_version("ca-char", fout);
         }
       if (pentagon_distances)
@@ -245,8 +250,8 @@ int main(int argc, char *argv[])
         fclose(fout);
       delete fullerene;
     }
-  if (extension[0])
-    printf("generated files into folder `%s'\n", extension);
+  if (extension.length() > 0)
+    printf("generated files into folder `%s'\n", (char*)extension);
   return 0;
 }
 

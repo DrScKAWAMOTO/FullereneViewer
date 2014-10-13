@@ -1765,18 +1765,19 @@ void CarbonAllotrope::print_axes_summary(FILE* fptr) const
     }
 }
 
-void CarbonAllotrope::draw_by_POVRay(const char* file_name_base,
+void CarbonAllotrope::draw_by_POVRay(const MyString& file_name_base,
                                      double delta, int steps, int divisions)
 {
   assert(steps > 0);
   assert(divisions > 0);
 
   register_interactions();
-  char work[100];
-  if (!file_name_base)
-    file_name_base = "test";
-  sprintf(work, "%s.pov", file_name_base);
-  FILE* fptr = fopen(work, "w");
+  MyString file_name_base_test("test");
+  if (file_name_base.length() > 0)
+    file_name_base_test = file_name_base;
+  MyString work(file_name_base_test);
+  work.append_string(".pov");
+  FILE* fptr = fopen((char*)work, "w");
 
   fprintf(fptr, "#include \"colors.inc\"\n");
   fprintf(fptr, "#include \"stones.inc\"\n");
@@ -1800,40 +1801,47 @@ void CarbonAllotrope::draw_by_POVRay(const char* file_name_base,
     }
   fclose(fptr);
 
-  sprintf(work, "%s.ini", file_name_base);
   fptr = fopen("carbons.ini", "w");
   fprintf(fptr, "-KFI0\n");
   fprintf(fptr, "-KFF%d\n", steps - 1);
   fprintf(fptr, "-KI0.0\n");
   fprintf(fptr, "-KF%d.0\n", steps - 1);
-  fprintf(fptr, "%s.pov\n", file_name_base);
+  fprintf(fptr, "%s.pov\n", (char*)file_name_base_test);
   fclose(fptr);
 
-  sprintf(work, "%s.ini", file_name_base);
-  fptr = fopen(work, "w");
+  work = file_name_base_test;
+  work.append_string(".ini");
+  fptr = fopen((char*)work, "w");
   fprintf(fptr, "-K%d.0\n", steps - 1);
   fprintf(fptr, "-H960\n");
   fprintf(fptr, "-W1280\n");
-  fprintf(fptr, "%s.pov\n", file_name_base);
+  fprintf(fptr, "%s.pov\n", (char*)file_name_base_test);
   fclose(fptr);
 }
 
-void CarbonAllotrope::OpenGL_to_POVRay(const char* file_name_base,
+void CarbonAllotrope::OpenGL_to_POVRay(const MyString& file_name_base,
                                        int view, const Quaternion& rotation)
 {
   Matrix3 mosv = rotation;
   Vector3 minimum;
   Vector3 maximum;
   get_range_of_six_views(mosv, minimum, maximum);
-  char work[1000];
-  if (file_name_base)
-    sprintf(work, "%s-snapshot", file_name_base);
+  MyString work;
+  if (file_name_base.length() > 0)
+    work = file_name_base;
   else
-    sprintf(work, "C%d-test-snapshot", number_of_carbons());
-  char pov_name[1000];
+    {
+      work = "C";
+      work.append_int(number_of_carbons());
+      work.append_string("-test");
+    }
+  work.append_string("-snapshot");
+  MyString pov_name(work);
+  pov_name.append_char('-');
   int number = OpenGLUtil::find_unused_file_number(work);
-  sprintf(pov_name, "%s-%d.pov", work, number);
-  FILE* fptr = fopen(pov_name, "w");
+  pov_name.append_int(number);
+  pov_name.append_string(".pov");
+  FILE* fptr = fopen((char*)pov_name, "w");
 
   fprintf(fptr, "#include \"colors.inc\"\n");
   fprintf(fptr, "#include \"stones.inc\"\n");
@@ -1863,22 +1871,29 @@ void CarbonAllotrope::OpenGL_to_POVRay(const char* file_name_base,
   execute_POVRay(pov_name);
 }
 
-void CarbonAllotrope::draw_six_views_by_POVRay(const char* file_name_base)
+void CarbonAllotrope::draw_six_views_by_POVRay(const MyString& file_name_base)
 {
   Matrix3 mosv = generate_matrix_of_six_views();
   Vector3 minimum;
   Vector3 maximum;
   get_range_of_six_views(mosv, minimum, maximum);
 
-  char work[1000];
-  if (file_name_base)
-    sprintf(work, "%s-six-views", file_name_base);
+  MyString work;
+  if (file_name_base.length() > 0)
+    work = file_name_base;
   else
-    sprintf(work, "C%d-test-six-views", number_of_carbons());
-  char pov_name[1000];
+    {
+      work = "C";
+      work.append_int(number_of_carbons());
+      work.append_string("-test");
+    }
+  work.append_string("-six-view");
+  MyString pov_name(work);
+  pov_name.append_char('-');
   int number = OpenGLUtil::find_unused_file_number(work);
-  sprintf(pov_name, "%s-%d.pov", work, number);
-  FILE* fptr = fopen(pov_name, "w");
+  pov_name.append_int(number);
+  pov_name.append_string(".pov");
+  FILE* fptr = fopen((char*)pov_name, "w");
 
   fprintf(fptr, "#include \"colors.inc\"\n");
   fprintf(fptr, "#include \"stones.inc\"\n");
@@ -1948,25 +1963,29 @@ void CarbonAllotrope::draw_six_views_by_POVRay(const char* file_name_base)
   execute_POVRay(pov_name);
 }
 
-void CarbonAllotrope::execute_POVRay(const char* pov_name)
+void CarbonAllotrope::execute_POVRay(const MyString& pov_name)
 {
   const char* format = configuration->get_povray_command_line();
   char command_line[1024];
-  sprintf(command_line, format, pov_name);
+  sprintf(command_line, format, (char*)pov_name);
   int result = system(command_line);
   if (result != 0)
     {
-      char message[500];
-      sprintf(message, "%s:%d: execution error `%s'", __FILE__, __LINE__, command_line);
+      MyString message(__FILE__);
+      message.append_char(':');
+      message.append_int(__LINE__);
+      message.append_string(": execution error `");
+      message.append_string(command_line);
+      message.append_string("'");
       if (OpenGLUtil::alert_dialog_callback)
-        (*OpenGLUtil::alert_dialog_callback)(message);
+        (*OpenGLUtil::alert_dialog_callback)((char*)message);
       else
-        fprintf(stderr, "%s\n", message);
+        fprintf(stderr, "%s\n", (char*)message);
     }
 }
 
 void CarbonAllotrope::
-draw_force_to_circle_by_POVRay(const char* file_name_base, List<Carbon>& cutend_list,
+draw_force_to_circle_by_POVRay(const MyString& file_name_base, List<Carbon>& cutend_list,
                                double delta, int steps, int divisions)
 {
   int count = cutend_list.length();
@@ -2018,7 +2037,7 @@ draw_force_to_circle_by_POVRay(const char* file_name_base, List<Carbon>& cutend_
 }
 
 void CarbonAllotrope::
-draw_force_to_circle_by_POVRay(const char* file_name_base,
+draw_force_to_circle_by_POVRay(const MyString& file_name_base,
                                double delta, int steps, int divisions)
 {
   List<Carbon> cutend_list;
@@ -2027,7 +2046,7 @@ draw_force_to_circle_by_POVRay(const char* file_name_base,
 }
 
 void CarbonAllotrope::
-draw_development_view_by_POVRay(const char* file_name_base, Ring* cutend_ring,
+draw_development_view_by_POVRay(const MyString& file_name_base, Ring* cutend_ring,
                                 double delta, int steps, int divisions)
 {
   List<Carbon> cutend_list;
@@ -2070,11 +2089,14 @@ void CarbonAllotrope::print_POVRay_scene_description(FILE* fptr, const Matrix3& 
 
 }
 
-void CarbonAllotrope::memory_shape(const char* file_name_base) const
+void CarbonAllotrope::memory_shape(const MyString& file_name_base) const
 {
-  char file_name[1000];
-  sprintf(file_name, "C%d-%s.shape", number_of_carbons(), file_name_base);
-  FILE* fptr = fopen(file_name, "w");
+  MyString file_name("C");
+  file_name.append_int(number_of_carbons());
+  file_name.append_char('-');
+  file_name.append_string(file_name_base);
+  file_name.append_string(".shape");
+  FILE* fptr = fopen((char*)file_name, "w");
   if (!fptr)
     return;
   int len = number_of_carbons();
@@ -2087,11 +2109,14 @@ void CarbonAllotrope::memory_shape(const char* file_name_base) const
   fclose(fptr);
 }
 
-void CarbonAllotrope::recall_shape(const char* file_name_base)
+void CarbonAllotrope::recall_shape(const MyString& file_name_base)
 {
-  char file_name[1000];
-  sprintf(file_name, "C%d-%s.shape", number_of_carbons(), file_name_base);
-  FILE* fptr = fopen(file_name, "r");
+  MyString file_name("C");
+  file_name.append_int(number_of_carbons());
+  file_name.append_char('-');
+  file_name.append_string(file_name_base);
+  file_name.append_string(".shape");
+  FILE* fptr = fopen((char*)file_name, "r");
   if (!fptr)
     return;
   int len = number_of_carbons();

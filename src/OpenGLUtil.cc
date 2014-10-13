@@ -27,7 +27,6 @@
 #include "Fullerene.h"
 #include "Ring.h"
 #include "Utils.h"
-#include "MenuEntry.h"
 #include "OpenGLUtil.h"
 #include "DebugMemory.h"
 #include "Debug.h"
@@ -88,10 +87,9 @@ bool OpenGLUtil::p_carbon_picking_mode = false;
 int OpenGLUtil::p_carbon_picking_sequence_no = 0;
 Vector3 OpenGLUtil::p_carbon_picking_point = Vector3();
 Vector3 OpenGLUtil::p_last_real_motion = Vector3();
-char OpenGLUtil::fullerene_name[1024];
-char OpenGLUtil::generator_formula[1024];
-char OpenGLUtil::window_title[3072];
-char* const OpenGLUtil::window_title_status = OpenGLUtil::window_title + 18;
+MyString OpenGLUtil::fullerene_name;
+MyString OpenGLUtil::generator_formula;
+MyString OpenGLUtil::window_title;
 void (*OpenGLUtil::alert_dialog_callback)(const char* message) = NULL;
 void (*OpenGLUtil::interval_timer_setup_callback)() = NULL;
 
@@ -135,8 +133,8 @@ void OpenGLUtil::initialize_pre(int argc, char *argv[])
 {
   if (argc == 1)
     {
-      strcpy(fullerene_name, "C60 (NoA=60M)");
-      strcpy(generator_formula, "S1-5b6c5b6b5b");
+      fullerene_name = "C60 (NoA=60M)";
+      generator_formula = "S1-5b6c5b6b5b";
     }
   else if (argc == 2)
     {
@@ -153,8 +151,10 @@ void OpenGLUtil::initialize_pre(int argc, char *argv[])
             if (*ptr == '=')
               {
                 ++ptr;
-                sprintf(fullerene_name, "C%d (NoA=XXX)", num);
-                strcpy(generator_formula, ptr);
+                fullerene_name = "C";
+                fullerene_name.append_int(num);
+                fullerene_name.append_string(" (NoA=XXX)");
+                generator_formula = ptr;
               }
             else
               {
@@ -163,20 +163,19 @@ void OpenGLUtil::initialize_pre(int argc, char *argv[])
                   ++ptr;
                 if (!*ptr)
                   usage(argv[0]);
-                strncpy(fullerene_name, argv[1], ptr - argv[1]);
-                fullerene_name[ptr - argv[1]] = '\0';
-                strcpy(generator_formula, ptr + 1);
+                fullerene_name.set_value(argv[1], ptr - argv[1]);
+                generator_formula = ptr + 1;
               }
           }
           break;
         case 'A':
         case 'S':
-          strcpy(fullerene_name, "CXX (NoA=XXX)");
-          strcpy(generator_formula, argv[1]);
+          fullerene_name = "CXX (NoA=XXX)";
+          generator_formula = argv[1];
           break;
         case 'T':
-          strcpy(fullerene_name, "CXX (NoA=XXX)");
-          strcpy(generator_formula, argv[1]);
+          fullerene_name = "CXX (NoA=XXX)";
+          generator_formula = argv[1];
           break;
         default:
           usage(argv[0]);
@@ -185,7 +184,12 @@ void OpenGLUtil::initialize_pre(int argc, char *argv[])
     }
   else
     usage(argv[0]);
-  sprintf(window_title, "%s %s %s", WINDOW_TITLE, fullerene_name, generator_formula);
+
+  window_title = WINDOW_TITLE;
+  window_title.append_char(' ');
+  window_title.append_string(fullerene_name);
+  window_title.append_char(' ');
+  window_title.append_string(generator_formula);
 
   assert((CONFIG_VIEWER_CPU_USAGE_TARGET_RATE >= 1) &&
          (CONFIG_VIEWER_CPU_USAGE_TARGET_RATE <= 100));
@@ -212,6 +216,11 @@ void OpenGLUtil::initialize_pre(int argc, char *argv[])
 #endif
 }
 
+char* OpenGLUtil::get_window_title_status()
+{
+  return (char*)window_title + 18;
+}
+
 void OpenGLUtil::initialize_post()
 {
   glClearColor((GLclampf)0.2, (GLclampf)0.2, (GLclampf)0.4, (GLclampf)1.0);
@@ -227,18 +236,19 @@ void OpenGLUtil::initialize_post()
   if (fullerene->error_code() != ERROR_CODE_OK)
     {
       delete fullerene;
-      char message[1024];
-      sprintf(message, "illegal generator formula `%s'", generator_formula);
+      MyString message("illegal generator formula `");
+      message.append_string(generator_formula);
+      message.append_string("'");
       if (alert_dialog_callback)
-        (*alert_dialog_callback)(message);
+        (*alert_dialog_callback)((char*)message);
       else
-        fprintf(stderr, "%s\n", message);
-      strcpy(fullerene_name, "C60 (NoA=60M)");
-      strcpy(generator_formula, "S1-5b6c5b6b5b");
+        fprintf(stderr, "%s\n", (char*)message);
+      fullerene_name = "C60 (NoA=60M)";
+      generator_formula = "S1-5b6c5b6b5b";
       fullerene = new Fullerene(generator_formula);
     }
   ca = fullerene->get_carbon_allotrope();
-  fullerene->set_fullerene_name(fullerene_name);
+  fullerene->set_fullerene_name((char*)fullerene_name);
   ca->register_interactions();
   resume_drawing();
 }
@@ -733,7 +743,6 @@ Vector3 OpenGLUtil::un_project(int win_x, int win_y)
 bool
 OpenGLUtil::change_fullerene(const char* fullerene_name, const char* generator_formula)
 {
-  char fullerene_name2[100];
   if (fullerene_name == 0)
     CarbonAllotrope::s_need_representations = true;
   Fullerene* new_fullerene = new Fullerene(generator_formula);
@@ -742,27 +751,36 @@ OpenGLUtil::change_fullerene(const char* fullerene_name, const char* generator_f
   if (new_fullerene->error_code() != ERROR_CODE_OK)
     {
       delete new_fullerene;
-      char message[1024];
-      sprintf(message, "illegal generator formula `%s'", generator_formula);
+      MyString message("illegal generator formula `");
+      message.append_string(generator_formula);
+      message.append_string("'");
       if (alert_dialog_callback)
-        (*alert_dialog_callback)(message);
+        (*alert_dialog_callback)((char*)message);
       else
-        fprintf(stderr, "%s\n", message);
+        fprintf(stderr, "%s\n", (char*)message);
       return false;
     }
   if (fullerene)
     delete fullerene;
   fullerene = new_fullerene;
+  MyString fullerene_name2("C");
   if (fullerene_name == 0)
     {
-      sprintf(fullerene_name2, "C%d (NoA=%d)",
-              fullerene->get_carbon_allotrope()->number_of_carbons(),
-              fullerene->get_representations()->number_of_automorphisms());
-      fullerene_name = fullerene_name2;
+      fullerene_name2.append_int(fullerene->get_carbon_allotrope()->number_of_carbons());
+      fullerene_name2.append_string(" (NoA=");
+      fullerene_name2.append_int(fullerene->get_representations()->
+                                 number_of_automorphisms());
+      fullerene_name2.append_char(')');
+      fullerene_name = (char*)fullerene_name2;
     }
   fullerene->set_fullerene_name(fullerene_name);
-  sprintf(window_title, "%s %s %s", WINDOW_TITLE,
-          fullerene->get_fullerene_name(), fullerene->get_generator_formula());
+
+  window_title = WINDOW_TITLE;
+  window_title.append_char(' ');
+  window_title.append_string(fullerene->get_fullerene_name());
+  window_title.append_char(' ');
+  window_title.append_string(fullerene->get_generator_formula());
+
   ca = fullerene->get_carbon_allotrope();
   ca->register_interactions();
   rotation = Quaternion(1.0, 0.0, 0.0, 0.0);
@@ -779,11 +797,10 @@ bool OpenGLUtil::rebuild_fullerene()
     return false;
   if (fullerene->error_code() != ERROR_CODE_OK)
     return false;
-  char fullerene_name[1024];
-  strcpy(fullerene_name, fullerene->get_fullerene_name());
-  char generator_formula[1024];
-  strcpy(generator_formula, fullerene->get_generator_formula());
-  return change_fullerene(fullerene_name, generator_formula);
+  /* change_fullerene の中で開放しているので、テンポラリ的にデータを保持する。*/
+  MyString fullerene_name(fullerene->get_fullerene_name());
+  MyString generator_formula(fullerene->get_generator_formula());
+  return change_fullerene((char*)fullerene_name, (char*)generator_formula);
 }
 
 int OpenGLUtil::find_unused_file_number(const char* file_name_base)
@@ -798,7 +815,9 @@ int OpenGLUtil::find_unused_file_number(const char* file_name_base)
     {
       struct dirent entry;
       struct dirent* result;
-      assert(readdir_r(dirp, &entry, &result) == 0);
+      int osresult;
+      osresult = readdir_r(dirp, &entry, &result);
+      assert(osresult == 0);
       if (!result)
         {
           closedir(dirp);

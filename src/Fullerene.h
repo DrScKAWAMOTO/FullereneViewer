@@ -9,13 +9,12 @@
 
 #include "Object.h"
 #include "ErrorCode.h"
+#include "MyString.h"
 
 class CarbonAllotrope;
 class Representations;
 class FullereneCharacteristic;
 class DistanceMatrix;
-
-#define NAME_MAX_SIZE 1024
 
 class Fullerene : public Object {
   // friend classes & functions
@@ -29,8 +28,8 @@ public:
 private:
   CarbonAllotrope* p_carbon_allotrope;
   ErrorCode p_error_code;
-  char p_fullerene_name[NAME_MAX_SIZE + 1];
-  char p_generator_formula[NAME_MAX_SIZE + 1];
+  MyString p_fullerene_name;
+  MyString p_generator_formula;
   int p_n, p_m, p_h;
   Representations* p_representations;
   FullereneCharacteristic* p_characteristic;

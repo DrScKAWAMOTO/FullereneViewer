@@ -29,7 +29,7 @@ void GeneratorFormulaDialog::slot_accept()
   QString formula = ui->generatorFormulaLineEdit->text();
   formula.remove(QRegExp("[\n\r\t]"));
   if (OpenGLUtil::change_fullerene(0, qPrintable(formula)))
-    setWindowTitle(OpenGLUtil::window_title);
+    setWindowTitle((char*)OpenGLUtil::window_title);
   accept();
 }
 

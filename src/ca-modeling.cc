@@ -28,7 +28,7 @@ static void usage(const char* arg0)
 
 int main(int argc, char *argv[])
 {
-  const char *name = 0;
+  MyString name;
   bool development_view = false;
   bool print_out_sequence_no = false;
 
@@ -60,7 +60,7 @@ int main(int argc, char *argv[])
           argc--;
           argv++;
         }
-      else if (!name)
+      else if (name.length() == 0)
         {
           name = argv[0];
           argc--;
@@ -75,7 +75,7 @@ int main(int argc, char *argv[])
   CarbonAllotrope* ca = 0;
   Fullerene* fullerene = 0;
 
-  if (!name)
+  if (name.length() == 0)
     usage(arg0);
 
   if (!(((name[0] == 'S') || (name[0] == 'A')) && (name[1] != '\0') && (name[2] == '-')))

@@ -8,14 +8,15 @@
 #define __STRINGPAIR_H__
 
 #include "Object.h"
+#include "MyString.h"
 
 class StringPair : public Object {
   // friend classes & functions
 
   // members
 private:
-  const char* p_my_string;
-  const char* p_your_string;
+  MyString p_my_string;
+  MyString p_your_string;
 
   // private tools
 

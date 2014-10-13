@@ -13,8 +13,7 @@
 #include "Utils.h"
 
 ReflectionPair::ReflectionPair(const char* generator_formula, const Fullerene* fullerene)
-  : p_symmetric(true), p_my_array(0), p_my_generator_formula(0),
-    p_your_array(0), p_your_generator_formula(0)
+  : p_symmetric(true)
 {
   const Representations* reps = fullerene->get_representations();
   assert(reps);
@@ -24,55 +23,49 @@ ReflectionPair::ReflectionPair(const char* generator_formula, const Fullerene* f
   assert(rep1);
   const Representation* rep2 = reps->get_representation(len / 2);
   assert(rep2);
-  const char* array1 = rep1->get_array();
+  const char* array1 = (const char*)*rep1;
   assert(array1);
-  const char* array2 = rep2->get_array();
+  const char* array2 = (const char*)*rep2;
   assert(array2);
   int result = strcmp(array1, array2);
   if (result < 0)
     {
       p_symmetric = false;
-      p_my_array = copy_string(array1);
-      p_my_generator_formula = copy_string(generator_formula);
-      p_your_array = copy_string(array2);
+      p_my_repres = array1;
+      p_my_generator_formula = generator_formula;
+      p_your_repres = array2;
     }
   else if (result > 0)
     {
       p_symmetric = false;
-      p_my_array = copy_string(array2);
-      p_my_generator_formula = 0;
-      p_your_array = copy_string(array1);
-      p_your_generator_formula = copy_string(generator_formula);
+      p_my_repres = array2;
+      p_my_generator_formula = "";
+      p_your_repres = array1;
+      p_your_generator_formula = generator_formula;
     }
 }
 
 ReflectionPair::~ReflectionPair()
 {
-  if (p_my_array)
-    delete[] p_my_array;
-  if (p_my_generator_formula)
-    delete[] p_my_generator_formula;
-  if (p_your_array)
-    delete[] p_your_array;
-  if (p_your_generator_formula)
-    delete[] p_your_generator_formula;
 }
 
 int ReflectionPair::compare(const ReflectionPair* you) const
 {
-  return strcmp(p_my_array, you->p_my_array);
+  return strcmp((char*)p_my_repres, (char*)you->p_my_repres);
 }
 
 void ReflectionPair::merge(const ReflectionPair* with)
 {
   assert(!p_symmetric);
   assert(!with->p_symmetric);
-  assert(strcmp(p_my_array, with->p_my_array) == 0);
-  assert(strcmp(p_your_array, with->p_your_array) == 0);
-  if (!p_my_generator_formula && with->p_my_generator_formula)
-    p_my_generator_formula = copy_string(with->p_my_generator_formula);
-  else if (!p_your_generator_formula && with->p_your_generator_formula)
-    p_your_generator_formula = copy_string(with->p_your_generator_formula);
+  assert(strcmp((char*)p_my_repres, (char*)with->p_my_repres) == 0);
+  assert(strcmp((char*)p_your_repres, (char*)with->p_your_repres) == 0);
+  if ((p_my_generator_formula.length() == 0) &&
+      (with->p_my_generator_formula.length() > 0))
+    p_my_generator_formula = with->p_my_generator_formula;
+  else if ((p_your_generator_formula.length() == 0) &&
+           (with->p_your_generator_formula.length() > 0))
+    p_your_generator_formula = with->p_your_generator_formula;
 }
 
 /* Local Variables:	*/

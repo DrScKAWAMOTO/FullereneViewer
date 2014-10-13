@@ -72,16 +72,18 @@ int main(int argc, char *argv[])
   int parallel_level = 0;
   StepAlgorithm step_algorithm = STEP_ALGORITHM_BACKWARD;
   const char* arg0 = argv[0];
-  const char* generator_formula = 0;
-  const char* env_value = getenv("CA_STEP_ALGORITHM");
-
-  if (env_value)
+  MyString generator_formula;
+  MyString env_value;
+  char* foo = getenv("CA_STEP_ALGORITHM");
+  if (foo)
+    env_value = foo;
+  if (env_value.length() > 0)
     {
-      if (strcmp(env_value, "--step-copy-branch") == 0)
+      if (env_value.compare("--step-copy-branch") == 0)
         step_algorithm = STEP_ALGORITHM_COPY_BRANCH;
-      else if (strcmp(env_value, "--step-forward") == 0)
+      else if (env_value.compare("--step-forward") == 0)
         step_algorithm = STEP_ALGORITHM_FORWARD;
-      else if (strcmp(env_value, "--step-backward") == 0)
+      else if (env_value.compare("--step-backward") == 0)
         step_algorithm = STEP_ALGORITHM_BACKWARD;
     }
 
@@ -152,7 +154,7 @@ int main(int argc, char *argv[])
           argc--;
           argv++;
         }
-      else if (!generator_formula)
+      else if (generator_formula.length() == 0)
         {
           generator_formula = argv[0];
           argc--;
@@ -181,7 +183,7 @@ int main(int argc, char *argv[])
     {
       if (symmetric < 60)
         symmetric = 60;
-      if (!generator_formula)
+      if (generator_formula.length() == 0)
         generator_formula = "S1-";
       if ((generator_formula[0] != 'S') || (generator_formula[1] < '1') ||
           (generator_formula[1] > '9') || (generator_formula[2] != '-'))
@@ -193,7 +195,7 @@ int main(int argc, char *argv[])
     {
       if (ordinary < 60)
         ordinary = 60;
-      if (!generator_formula)
+      if (generator_formula.length() == 0)
         generator_formula = "A1-";
       if ((generator_formula[0] != 'A') || (generator_formula[1] != '1') ||
           (generator_formula[2] != '-'))
@@ -205,9 +207,9 @@ int main(int argc, char *argv[])
     {
       if (tube < 60)
         tube = 60;
-      if (!generator_formula || (generator_formula[0] != 'T'))
+      if ((generator_formula.length() == 0) || (generator_formula[0] != 'T'))
         usage(arg0);
-      const char *ptr = generator_formula + 1;
+      const char *ptr = (char*)generator_formula + 1;
       while ((*ptr >= '0') && (*ptr <= '9'))
         ++ptr;
       if (*ptr++ != ',')

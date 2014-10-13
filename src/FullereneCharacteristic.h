@@ -9,7 +9,7 @@
 
 #include <stdio.h>
 #include "DistanceVector.h"
-#include "SortedList.h"
+#include "Set.h"
 #include "Object.h"
 
 class CarbonAllotrope;
@@ -19,7 +19,7 @@ class FullereneCharacteristic : public Object {
 
   // members
 private:
-  SortedList<DistanceVector> p_dvs;
+  Set<DistanceVector> p_dvs;
 
   // private tools
 

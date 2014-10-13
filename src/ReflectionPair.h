@@ -8,6 +8,7 @@
 #define __REFLECTIONPAIR_H__
 
 #include "Object.h"
+#include "MyString.h"
 
 class Fullerene;
 
@@ -17,10 +18,10 @@ class ReflectionPair : public Object {
   // members
 private:
   bool p_symmetric;
-  const char* p_my_array;
-  const char* p_my_generator_formula;
-  const char* p_your_array;
-  const char* p_your_generator_formula;
+  MyString p_my_repres;
+  MyString p_my_generator_formula;
+  MyString p_your_repres;
+  MyString p_your_generator_formula;
 
   // private tools
 
@@ -30,17 +31,11 @@ public:
   virtual ~ReflectionPair();
   ReflectionPair& operator = (const ReflectionPair& you); /* dont use */
 
-  // type converters
-
   // comparators
 public:
   int compare(const ReflectionPair* you) const;
 
-  // math operators
-
   // I/O
-
-  // class decision
 
   // member accessing methods
   void merge(const ReflectionPair* with);

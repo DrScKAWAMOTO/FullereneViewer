@@ -11,6 +11,7 @@
 #include "FullereneCharacteristic.h"
 #include "CarbonAllotrope.h"
 #include "DebugMemory.h"
+#include "MyString.h"
 
 FullereneCharacteristic::FullereneCharacteristic(CarbonAllotrope* ca)
 {
@@ -45,7 +46,8 @@ FullereneCharacteristic::FullereneCharacteristic(CarbonAllotrope* ca)
             }
           dv->append(min_dist);
         }
-      p_dvs.add(dv);
+      DistanceVector* result = p_dvs.search_else_add(dv);
+      assert(result == 0);
     }
 }
 
@@ -85,8 +87,7 @@ void FullereneCharacteristic::print_detail() const
   printf(")\n");
 }
 
-#define SUMMARY_BUFFER_LENGTH 900
-static char summary_buffer[SUMMARY_BUFFER_LENGTH];
+static MyString summary_buffer;
 
 const char* FullereneCharacteristic::get_summary() const
 {
@@ -112,18 +113,15 @@ const char* FullereneCharacteristic::get_summary() const
           ++array[dist];
         }
     }
-  char* ptr = summary_buffer;
+  summary_buffer = "";
   for (int i = 0; i < max_dist; ++i)
     {
-      sprintf(ptr, "%d;", array[i]);
-      ptr += strlen(ptr);
-      assert(ptr - summary_buffer < SUMMARY_BUFFER_LENGTH - 1);
+      summary_buffer.append_int(array[i]);
+      summary_buffer.append_char(';');
     }
-  sprintf(ptr, "%d", array[max_dist]);
-  ptr += strlen(ptr);
-  assert(ptr - summary_buffer < SUMMARY_BUFFER_LENGTH - 1);
+  summary_buffer.append_int(array[max_dist]);
   delete[] array;
-  return summary_buffer;
+  return (char*)summary_buffer;
 }
 
 void FullereneCharacteristic::print_summary(FILE* fptr) const

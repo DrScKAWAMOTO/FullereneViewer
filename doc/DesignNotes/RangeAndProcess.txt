@@ -1,0 +1,26 @@
+* Range と Process と PipeHandler の関係
+
+Range に Process を割り当てると、PipeHandler が new される。
+PipeHandler を delete することで Range と Process の割り当てが終了させられる。
+
+* 割り当て開始:
+
+Range::assign_process(Process*) を呼ぶと、Process::assign_range(Range*) が呼ばれ、
+PipeHandler が生成されて Parallel に登録される。
+
+
+* 割り当て終了:
+
+ReadSelecter::defect(ReadHandler*) が呼ばれて PipeHandler を削除すると、
+Range::unassign_process() が呼ばれ、Process::unassign_range() が呼ばれる。
+
+* 注意:
+
+Range::delete_PipeHandler_then_unassign_process() を呼んでも
+ReadSelecter::defect(ReadHandler*) が呼ばれて割り当ては終了する。
+
+Process::delete_PipeHandler_then_unassign_range() を呼んでも
+ReadSelecter::defect(ReadHandler*) が呼ばれて割り当ては終了する。
+
+Range::set_progress_formula() がprogree完了を検知してから割り当てを終了させた場合は、
+Rangeは RANGE_STATE_COLLECT_DONE に遷移する。

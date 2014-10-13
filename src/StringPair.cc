@@ -11,18 +11,12 @@
 #include "Utils.h"
 
 StringPair::StringPair(const char* my_string, const char* your_string)
-  : p_my_string(0), p_your_string(0)
+  : p_my_string(my_string), p_your_string(your_string)
 {
-  p_my_string = copy_string(my_string);
-  p_your_string = copy_string(your_string);
 }
 
 StringPair::~StringPair()
 {
-  if (p_my_string)
-    delete[] p_my_string;
-  if (p_your_string)
-    delete[] p_your_string;
 }
 
 int StringPair::compare(const StringPair* you) const

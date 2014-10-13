@@ -18,7 +18,6 @@
 #include "Utils.h"
 
 MinimumRepresentation::MinimumRepresentation(const Fullerene* fullerene)
-  : p_array(0)
 {
   const Representations* reps = fullerene->get_representations();
   assert(reps);
@@ -31,23 +30,21 @@ MinimumRepresentation::MinimumRepresentation(const Fullerene* fullerene)
   const RepresentationInfo* repinfo = rep->get_info(0);
   assert(repinfo);
   assert(repinfo->clockwise == 1);
-  p_array = copy_string(rep->get_array());
+  p_repres = *rep;
 }
 
 MinimumRepresentation::~MinimumRepresentation()
 {
-  if (p_array)
-    delete[] p_array;
 }
 
 int MinimumRepresentation::compare(const MinimumRepresentation* you) const
 {
-  return strcmp(p_array, you->p_array);
+  return strcmp(p_repres, you->p_repres);
 }
 
 void MinimumRepresentation::print() const
 {
-  printf("%s\n", p_array);
+  printf("%s\n", (char*)p_repres);
 }
 
 /* Local Variables:	*/

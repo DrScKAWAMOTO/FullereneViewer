@@ -129,6 +129,24 @@ void Fullerenes::p_step_ei_yah(const char* generator_formula,
       p_step_copy_branch(gen, maximum_number_of_carbons, symmetric, close, true);
       break;
     }
+  if (Step::get_progress_level() > 0)
+    {
+      MyString finished;
+      if (generator_formula)
+        {
+          const char* src = generator_formula;
+          while (*src && (*src != '-'))
+            finished.append_char(*src++);
+        }
+      else if (symmetric)
+        finished = "S9";
+      else
+        finished = "A1";
+      finished.append_char('-');
+      finished.append_int(maximum_vertices_of_polygons + 1);
+      Generator finishedGen(finished, maximum_vertices_of_polygons + 1);
+      finishedGen.print_progress(INT_MAX);
+    }
 }
 
 Fullerenes::Fullerenes(const char* generator_formula, int maximum_number_of_carbons,
@@ -139,14 +157,15 @@ Fullerenes::Fullerenes(const char* generator_formula, int maximum_number_of_carb
   Interactives::s_need_simulation = false;
   p_step_ei_yah(generator_formula, maximum_number_of_carbons,
                 symmetric, maximum_vertices_of_polygons, close, step_algorithm);
-  if (symmetric)
+  if (symmetric && (Step::get_progress_level() == 0))
     {
       int specified = atoi(generator_formula + 1) + 1;
       while (specified <= 9)
         {
-          char next_formula[10];
-          sprintf(next_formula, "S%d-", specified++);
-          p_step_ei_yah(next_formula, maximum_number_of_carbons, symmetric,
+          MyString next_formula("S");
+          next_formula.append_int(specified++);
+          next_formula.append_char('-');
+          p_step_ei_yah((char*)next_formula, maximum_number_of_carbons, symmetric,
                         maximum_vertices_of_polygons, close, step_algorithm);
         }
     }

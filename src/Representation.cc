@@ -13,14 +13,12 @@
 #include "Config.h"
 
 Representation::Representation()
-  : p_last_char(0), p_last_count(0),
-    p_array_length(16), p_offset(0), p_array(new char[p_array_length])
+  : p_last_char(0), p_last_count(0)
 {
 }
 
 Representation::~Representation()
 {
-  delete[] p_array;
 }
 
 int Representation::compare(const Representation* you) const
@@ -29,7 +27,7 @@ int Representation::compare(const Representation* you) const
   RepresentationInfo* your_info = you->get_info(0);
   if (my_info->clockwise != your_info->clockwise)
     return your_info->clockwise - my_info->clockwise;
-  return strcmp(p_array, you->p_array);
+  return strcmp((char*)p_repres, (char*)you->p_repres);
 }
 
 void Representation::print() const
@@ -37,7 +35,7 @@ void Representation::print() const
   RepresentationInfo* info = get_info(0);
   printf("Clockwise(%d) Carbon(%d) Bond(%d) Same(%d) %s\n",
          info->clockwise, info->carbon_sequence_no, info->bond_sequence_no,
-         number_of_infos(), p_array);
+         number_of_infos(), (char*)p_repres);
 }
 
 int Representation::number_of_infos() const
@@ -58,25 +56,11 @@ RepresentationInfo* Representation::get_info(int index) const
 
 void Representation::p_flush_step()
 {
-  char work[100];
   if (p_last_count <= 0)
     return;
+  p_repres.append_char(p_last_char);
   if (p_last_count >= 2)
-    sprintf(work, "%c%d", p_last_char, p_last_count);
-  else
-    sprintf(work, "%c", p_last_char);
-  int length = strlen(work);
-  if (p_array_length <= p_offset + length)
-    {
-      int new_length = p_array_length * 2;
-      char* new_array = new char[new_length];
-      strcpy(new_array, p_array);
-      delete[] p_array;
-      p_array = new_array;
-      p_array_length = new_length;
-    }
-  strcpy(p_array + p_offset, work);
-  p_offset += length;
+    p_repres.append_int(p_last_count);
   p_last_char = 0;
   p_last_count = 0;
 }

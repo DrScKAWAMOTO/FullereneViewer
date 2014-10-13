@@ -49,7 +49,7 @@ void SelectFullereneDialog::slot_accept()
   cn.remove(QRegExp(" .+$"));
   QString name = cn + " " + noa;
   if (OpenGLUtil::change_fullerene(qPrintable(name), qPrintable(formula)))
-    setWindowTitle(OpenGLUtil::window_title);
+    setWindowTitle((char*)OpenGLUtil::window_title);
   accept();
 }
 

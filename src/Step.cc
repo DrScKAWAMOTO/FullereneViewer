@@ -143,15 +143,15 @@ bool Step::construction_step(Fullerene*& fullerene)
       (p_is_tube && p_all_pentagons && (p_number_of_rest_pentagons <= 0)) ||
       (number_of_carbons_in_boundary == 0))
     {
-      char buffer[1024];
+      MyString buffer;
 #if defined(DEBUG_ERRORS)
       printf("************************************************\n");
 #endif
-      p_gen->get_generator_formula(buffer, 1024);
+      p_gen->get_generator_formula(buffer);
       if (result != ERROR_CODE_OK)
         {
 #if defined(DEBUG_ERRORS) || defined(DEBUG_CONSTRUCTION_ALGORITHM)
-          printf("* ERROR %s ", buffer);
+          printf("* ERROR %s ", (char*)buffer);
           error_handler(result);
 #endif
 #if defined(DEBUG_ERRORS)
@@ -163,7 +163,7 @@ bool Step::construction_step(Fullerene*& fullerene)
       else if (number_of_carbons > p_maximum_number_of_carbons)
         {
 #if defined(DEBUG_ERRORS) || defined(DEBUG_CONSTRUCTION_ALGORITHM)
-          printf("* ERROR %s Too many carbons %d\n", buffer, number_of_carbons);
+          printf("* ERROR %s Too many carbons %d\n", (char*)buffer, number_of_carbons);
 #endif
 #if defined(DEBUG_ERRORS)
           printf("************************************************\n");
@@ -174,7 +174,7 @@ bool Step::construction_step(Fullerene*& fullerene)
       else if (p_is_tube && p_all_pentagons && (p_number_of_rest_pentagons <= 0))
         {
 #if defined(DEBUG_ERRORS) || defined(DEBUG_CONSTRUCTION_ALGORITHM)
-          printf("* ERROR %s Tube height is enlarged\n", buffer);
+          printf("* ERROR %s Tube height is enlarged\n", (char*)buffer);
 #endif
 #if defined(DEBUG_ERRORS)
           printf("************************************************\n");
@@ -185,7 +185,7 @@ bool Step::construction_step(Fullerene*& fullerene)
       else if (number_of_carbons_in_boundary > 0)
         {
 #if defined(DEBUG_ERRORS) || defined(DEBUG_CONSTRUCTION_ALGORITHM)
-          printf("* ERROR %s Unknown error\n", buffer);
+          printf("* ERROR %s Unknown error\n", (char*)buffer);
 #endif
 #if defined(DEBUG_ERRORS)
           printf("************************************************\n");
@@ -196,14 +196,14 @@ bool Step::construction_step(Fullerene*& fullerene)
       else
         {
 #if defined(DEBUG_ERRORS) || defined(DEBUG_CONSTRUCTION_ALGORITHM)
-          printf("* OK    %s generated carbons %d\n", buffer, number_of_carbons);
+          printf("* OK    %s generated carbons %d\n", (char*)buffer, number_of_carbons);
 #endif
 #if defined(DEBUG_ERRORS)
           printf("************************************************\n");
 #endif
           fullerene = new Fullerene();
           fullerene->set_carbon_allotrope(p_ca);
-          fullerene->set_generator_formula(buffer);
+          fullerene->set_generator_formula((char*)buffer);
           return false;
         }
     }

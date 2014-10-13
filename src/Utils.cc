@@ -28,13 +28,13 @@ int character_to_No(char character)
   return -1;
 }
 
-void No_to_digits26x7(int No, char*& buffer)
+void No_to_digits26x7(int No, MyString& buffer)
 {
   char work[8];
   int index;
   if (No < 0)
     {
-      strcpy(buffer, "X");
+      buffer = "X";
       return;
     }
   for (index = 0; index < 7; ++index)
@@ -45,17 +45,16 @@ void No_to_digits26x7(int No, char*& buffer)
       No /= 26;
     }
   while (--index >= 0)
-    *buffer++ = work[index];
-  *buffer = '\0';
+    buffer.append_char(work[index]);
 }
 
-void No_to_digits10x10(int No, char*& buffer)
+void No_to_digits10x10(int No, MyString& buffer)
 {
   char work[11];
   int index;
   if (No < 0)
     {
-      strcpy(buffer, "X");
+      buffer = "X";
       return;
     }
   for (index = 0; index < 10; ++index)
@@ -66,8 +65,13 @@ void No_to_digits10x10(int No, char*& buffer)
       No /= 10;
     }
   while (--index >= 0)
-    *buffer++ = work[index];
-  *buffer = '\0';
+    buffer.append_char(work[index]);
+}
+
+void No_No_to_digits10x10_digits26x7(int No1, int No2, MyString& buffer)
+{
+  No_to_digits10x10(No1, buffer);
+  No_to_digits26x7(No2, buffer);
 }
 
 int digits26x7_to_No(const char*& buffer)
@@ -104,26 +108,20 @@ int digits10x10_to_No(const char*& buffer)
   return result;
 }
 
-void No_No_to_digits10x10_digits26x7(int No1, int No2, char*& buffer)
-{
-  No_to_digits10x10(No1, buffer);
-  No_to_digits26x7(No2, buffer);
-}
-
 int compare_generator_formula(const char* base_formula, const char* target_formula)
 {
-  while (*base_formula && *target_formula)
+  while (base_formula[0] && target_formula[0])
     {
-      if (*base_formula != *target_formula)
-        return *base_formula - *target_formula;
-      if (*base_formula == '-')
+      if (base_formula[0] != target_formula[0])
+        return base_formula[0] - target_formula[0];
+      if (base_formula[0] == '-')
         break;
       ++base_formula;
       ++target_formula;
     }
-  if (*base_formula == '\0')
+  if (base_formula[0] == '\0')
     return 0;
-  if (*target_formula == '\0')
+  if (target_formula[0] == '\0')
     return 1;
   return compare_sub_generator_formula(base_formula + 1, target_formula + 1);
 }
@@ -171,12 +169,16 @@ int compare_sub_generator_formula(const char* base_formula, const char* target_f
     }
 }
 
-char* copy_string(const char* from)
+void print_elapsed_sec(FILE* output, double elapsed_sec)
 {
-  int len = strlen(from);
-  char* ptr = new char[len + 1];
-  strcpy(ptr, from);
-  return ptr;
+  if (elapsed_sec < 60.0)
+    fprintf(output, "%6.2fs", elapsed_sec);
+  else if (elapsed_sec < 3600.0)
+    fprintf(output, "%6.2fm", elapsed_sec / 60.0);
+  else if (elapsed_sec < 86400.0)
+    fprintf(output, "%6.2fh", elapsed_sec / 3600.0);
+  else
+    fprintf(output, "%6.2fd", elapsed_sec / 86400.0);
 }
 
 /* Local Variables:	*/

@@ -7,7 +7,8 @@
 #ifndef __CONFIGURATION_H__
 #define __CONFIGURATION_H__
 
-#define PATH_LENGTH 1024
+#include "MyString.h"
+
 #define CONFIGURATION_FILE_NAME "/.FullereneViewer.conf"
 #define WORKING_FOLDER_NAME "/fullerene"
 #ifdef _WIN32
@@ -37,9 +38,9 @@ class Configuration {
 
   // members
 private:
-  char p_configuration_file_name[PATH_LENGTH + 1];
-  char p_working_folder_name[PATH_LENGTH + 1];
-  char p_povray_command_line[PATH_LENGTH + 1];
+  MyString p_configuration_file_name;
+  MyString p_working_folder_name;
+  MyString p_povray_command_line;
   Quality p_picture_quality;
   Quality p_motion_quality;
   DisplaySymmetryAxes p_display_symmetry_axes;

@@ -29,7 +29,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
   ui->setupUi(this);
   setCentralWidget(new Guruguru(this));
-  setWindowTitle(OpenGLUtil::window_title);
+  setWindowTitle((char*)OpenGLUtil::window_title);
   connect(ui->action_Z, SIGNAL(triggered()), this, SLOT(setGuruguruMode()));
   connect(ui->action_X, SIGNAL(triggered()), this, SLOT(setPickingMode()));
   connect(ui->action_M, SIGNAL(triggered()), this, SLOT(memoryShape()));
