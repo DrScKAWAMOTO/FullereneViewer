@@ -11,7 +11,7 @@
 #include "Object.h"
 #include "MyString.h"
 
-class Search;
+class Collector;
 class Process;
 
 enum RangeState {
@@ -25,9 +25,10 @@ class Range : public Object {
 
   // members
 private:
-  Search* p_search;
+  Collector* p_collector;
   MyString p_start_formula;
   MyString p_generator_formula;
+  MyString p_last_formula;
   MyString p_progress_formula;
   MyString p_ending_formula;
   MyString p_check_formula;
@@ -44,14 +45,13 @@ private:
 
   // constructors & the destructor
 public:
-  Range(Search* search, const char* start_formula, const char* ending_formula);
+  Range(Collector* collector, const char* start_formula, const char* ending_formula);
   ~Range();
 
   // scheduling
 public:
   void assign_process(Process* process);
   void unassign_process();
-  void delete_PipeHandler_then_unassign_process();
   Range* divide();
 
   // comparators
@@ -60,13 +60,15 @@ public:
 
   // I/O
 public:
-  void print(FILE* output) const;
+  void print(FILE* output, bool verbose = true) const;
 
   // member accessing methods
 public:
-  Search* get_search() const { return p_search; }
+  Collector* get_collector() const { return p_collector; }
   const char* get_start_formula() const { return p_start_formula; }
   const char* get_generator_formula() const { return p_generator_formula; }
+  bool set_last_formula(const char* buffer);
+  const char* get_last_formula() const { return p_last_formula; }
   bool set_progress_formula(const char* progress_formula);
   const char* get_progress_formula() const { return p_progress_formula; }
   const char* get_ending_formula() const { return p_ending_formula; }

@@ -13,7 +13,7 @@
 
 class CarbonAllotrope;
 class Representations;
-class FullereneCharacteristic;
+class Characteristic;
 class DistanceMatrix;
 
 class Fullerene : public Object {
@@ -32,7 +32,7 @@ private:
   MyString p_generator_formula;
   int p_n, p_m, p_h;
   Representations* p_representations;
-  FullereneCharacteristic* p_characteristic;
+  Characteristic* p_characteristic;
   DistanceMatrix* p_distance_matrix;
 
   // private tools
@@ -67,7 +67,7 @@ public:
   const char* get_generator_formula() const { return p_generator_formula; }
   Representations* get_representations() { return p_representations; }
   const Representations* get_representations() const { return p_representations; }
-  FullereneCharacteristic* get_characteristic() { return p_characteristic; }
+  Characteristic* get_characteristic() { return p_characteristic; }
   DistanceMatrix* get_distance_matrix() { return p_distance_matrix; }
   int get_n() const { return p_n; }
   int get_m() const { return p_m; }

@@ -309,7 +309,7 @@ void Generator::get_generator_formula(MyString& buffer, bool compress) const
     }
   else
     {
-      for (int i = 0; i < p_history_length; ++i)
+      for (int i = 0; i < p_history_offset; ++i)
         buffer.append_char(p_history[i] + '0');
     }
 }

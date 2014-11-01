@@ -11,17 +11,11 @@
 #include "List.h"
 #include "Host.h"
 #include "Process.h"
-#include "Search.h"
+#include "Collector.h"
 #include "MyString.h"
 
 class ReadSelector;
 class ReadHandler;
-
-enum ParallelErrorCode {
-  PARALLEL_ERROR_CODE_OK = 0,
-  PARALLEL_ERROR_CODE_ALREADY_ADD = -1,
-  PARALLEL_ERROR_CODE_OUTPUT_FILE_OPEN_ERROR = -2,
-};
 
 class Parallel {
   // friend classes & functions
@@ -36,14 +30,14 @@ private:
   Set<Host> p_hosts;
   Set<Process> p_processes;
   Set<Process> p_unassigned_processes;
-  List<Search> p_searches;
+  List<Collector> p_collectors;
   ReadSelector* p_selector;
 
   // private tools
 private:
-  AssignProcessResult p_assign_process(Process* process);
-  UnassignProcessResult p_unassign_process(Process* process);
-  void p_remove_processes(Host* searched_host, int from, int to);
+  AssignProcessResult p_assign_process(Process* process, bool force = true);
+  void p_enable_processes(Host* searched_host, int from, int to);
+  void p_disable_processes(Host* searched_host, int from, int to);
 
   // constructors & the destructor
 public:
@@ -52,19 +46,19 @@ public:
 
   // scheduling
 public:
-  bool assign_processes();
+  bool assign_processes(bool force = true);
   void manage_unassigned_process(Process* process);
 
   // I/O
 public:
   bool join(ReadHandler* rhandler);
-  bool defect(ReadHandler* rhandler);
   void command_loop();
   void print_hosts(FILE* output) const;
-  bool print_ranges(FILE* output, int index, int indent) const;
+  bool print_ranges(FILE* output, int index) const;
+  bool print_ranges(FILE* output, Collector* collector) const;
   bool print_processes(FILE* output, int host_index);
   void print_processes(FILE* output);
-  void print_searches(FILE* output, bool ranges_too) const;
+  void print_collectors(FILE* output, bool ranges_too) const;
 
   // member accessing methods
 public:
@@ -74,13 +68,15 @@ public:
   bool remove_host(const char* host_name);
   Host* search_host(const char* host_name);
   const Set<Host>& get_hosts() const { return p_hosts; }
-  bool add_processes(const char* host_name, int number);
-  bool remove_processes(const char* host_name, int number);
+  bool enable_processes(const char* host_name, int number);
+  void disable_all_processes();
   Process* search_process(Host* host, int process_id);
   const Set<Process>& get_processes() const { return p_processes; }
-  ParallelErrorCode add_search(Search* search);
-  bool remove_search(int index);
-  const List<Search>& get_searches() const { return p_searches; }
+  bool add_collector(Collector* collector);
+  int search_collector(const char* output_filename);
+  bool remove_collector(int index);
+  bool remove_collector(const char* output_filename);
+  const List<Collector>& get_collectors() const { return p_collectors; }
   const char* get_server_pipe_name() const { return p_server_pipe_name; }
   const char* get_client_pipe_base() const { return p_client_pipe_base; }
 

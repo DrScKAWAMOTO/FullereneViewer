@@ -12,7 +12,7 @@
 #include "PipeHandler.h"
 #include "Process.h"
 #include "Range.h"
-#include "Search.h"
+#include "Collector.h"
 
 bool PipeHandler::p_receive()
 {
@@ -53,8 +53,8 @@ PipeHandler::PipeHandler(Process* process)
   p_readfd = p_process->get_readfd();
   p_assigned_range = p_process->get_assigned_range();
   assert(p_assigned_range);
-  p_assigned_search = p_assigned_range->get_search();
-  assert(p_assigned_search);
+  p_assigned_collector = p_assigned_range->get_collector();
+  assert(p_assigned_collector);
 }
 
 PipeHandler::~PipeHandler()
@@ -67,11 +67,11 @@ ReadHandlerResult PipeHandler::call()
   if (p_receive() == false)
     {
       printf("pipe disconnected\n");
-      return READ_HANDLER_RESULT_TERMINATE;
+      return READ_HANDLER_RESULT_SCHEDULE_AND_TERMINATE;
     }
   while (p_read_line())
     {
-      if ((p_assigned_search == 0) || (p_assigned_range == 0) || (p_process == 0))
+      if ((p_assigned_collector == 0) || (p_assigned_range == 0) || (p_process == 0))
         {
           printf("ignored over(or under)-running !!\n");
           continue;
@@ -85,11 +85,12 @@ ReadHandlerResult PipeHandler::call()
           printf("  pid(%d) %s\n", p_process->get_forkpid(), p_buffer + p_line_top + 4);
           p_assigned_range->set_elapsed_sec(elapsed);
           if (p_assigned_range->set_progress_formula(progress) == false)
-            return READ_HANDLER_RESULT_TERMINATE;
+            return READ_HANDLER_RESULT_SCHEDULE_AND_TERMINATE;
         }
       else
         {
-          p_assigned_search->collect(p_buffer + p_line_top, p_line_len);
+          if (p_assigned_range->set_last_formula(p_buffer + p_line_top))
+            p_assigned_collector->collect(p_buffer + p_line_top, p_line_len);
         }
     }
   return READ_HANDLER_RESULT_CONTINUED;

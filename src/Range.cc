@@ -9,7 +9,8 @@
 #include "Range.h"
 #include "Utils.h"
 #include "Process.h"
-#include "Search.h"
+#include "Collector.h"
+#include "Host.h"
 
 void Range::p_decide_generator_check_and_level()
 {
@@ -73,8 +74,8 @@ void Range::p_decide_generator_check_and_level()
   set_progress_formula(p_start_formula);
 }
 
-Range::Range(Search* search, const char* start_formula, const char* ending_formula)
-  : p_search(search),
+Range::Range(Collector* collector, const char* start_formula, const char* ending_formula)
+  : p_collector(collector),
     p_level(0), p_range_state(RANGE_STATE_PROCESS_UNASSIGNED),
     p_assigned_process(0), p_occupation_rate(1.0), p_progress(0.0), p_elapsed_sec(0.0)
 {
@@ -83,6 +84,7 @@ Range::Range(Search* search, const char* start_formula, const char* ending_formu
   assert(ending_formula);
   p_ending_formula = ending_formula;
   p_decide_generator_check_and_level();
+  p_last_formula = p_generator_formula;
 }
 
 Range::~Range()
@@ -99,7 +101,6 @@ void Range::assign_process(Process* process)
 
 void Range::unassign_process()
 {
-  printf("Range::unassign_process()\n");
   assert(p_assigned_process);
   p_assigned_process->unassign_range();
   p_assigned_process = 0;
@@ -109,11 +110,6 @@ void Range::unassign_process()
       p_decide_generator_check_and_level();
       p_progress = 0.0;
     }
-}
-
-void Range::delete_PipeHandler_then_unassign_process()
-{
-  p_assigned_process->delete_PipeHandler_then_unassign_range();
 }
 
 Range* Range::divide()
@@ -129,11 +125,12 @@ Range* Range::divide()
         { /* progress is under the middle_formula */
           p_occupation_rate /= 2.0;
           double progress_save = 2.0 * p_progress;
-          Range* new_range = new Range(p_search, p_start_formula, p_ending_formula);
+          Range* new_range = new Range(p_collector, p_start_formula, p_ending_formula);
           p_ending_formula = p_start_formula;
           p_start_formula.append_char('5');
           p_ending_formula.append_char('6');
           p_decide_generator_check_and_level();
+          p_last_formula = p_generator_formula;
           p_assigned_process->send_level_command(p_level);
           p_progress = progress_save;
           new_range->p_start_formula.append_char('6');
@@ -142,22 +139,25 @@ Range* Range::divide()
           new_range->p_occupation_rate = p_occupation_rate;
           new_range->p_decide_generator_check_and_level();
           new_range->p_progress = 0.0;
+          new_range->p_last_formula = new_range->p_generator_formula;
           return new_range;
         }
       else
         { /* progress is over the middle_formula */
           p_occupation_rate /= 2.0;
           double progress_save = 2.0 * p_progress - 1.0;
-          Range* new_range = new Range(p_search, p_start_formula, p_start_formula);
+          Range* new_range = new Range(p_collector, p_start_formula, p_start_formula);
           new_range->p_start_formula.append_char('5');
           new_range->p_ending_formula.append_char('6');
           new_range->p_range_state = RANGE_STATE_COLLECT_DONE;
           new_range->p_occupation_rate = p_occupation_rate;
           new_range->p_decide_generator_check_and_level();
+          new_range->p_last_formula = new_range->p_generator_formula;
           new_range->p_progress = 1.0;
           p_start_formula.append_char('6');
           p_ending_formula.append_char('5');
           p_decide_generator_check_and_level();
+          p_last_formula = p_generator_formula;
           p_assigned_process->send_level_command(p_level);
           p_progress = progress_save;
           return new_range;
@@ -166,16 +166,18 @@ Range* Range::divide()
   else
     {
       p_occupation_rate /= 2.0;
-      Range* new_range = new Range(p_search, p_start_formula, p_start_formula);
+      Range* new_range = new Range(p_collector, p_start_formula, p_start_formula);
       new_range->p_start_formula.append_char('5');
       new_range->p_ending_formula.append_char('6');
       new_range->p_range_state = RANGE_STATE_PROCESS_UNASSIGNED;
       new_range->p_occupation_rate = p_occupation_rate;
       new_range->p_decide_generator_check_and_level();
+      new_range->p_last_formula = new_range->p_generator_formula;
       new_range->p_progress = 0.0;
       p_start_formula.append_char('6');
       p_ending_formula.append_char('5');
       p_decide_generator_check_and_level();
+      p_last_formula = p_generator_formula;
       p_progress = 0.0;
       return new_range;
     }
@@ -183,30 +185,59 @@ Range* Range::divide()
 
 int Range::compare(const Range* you) const
 {
-  if (p_search != you->p_search)
-    return p_search->compare(you->p_search);
+  if (p_collector != you->p_collector)
+    return p_collector->compare(you->p_collector);
   return p_start_formula.compare(&you->p_start_formula);
 }
 
-void Range::print(FILE* output) const
+void Range::print(FILE* output, bool verbose) const
 {
   if (p_range_state == RANGE_STATE_COLLECT_DONE)
     {
       assert(p_progress == 1.0);
-      fprintf(output, "  <DONE>");
+      fprintf(output, " <DONE>");
     }
   else if (p_range_state == RANGE_STATE_PROCESS_ASSIGNED)
-    fprintf(output, " %6.2f%%", p_progress * 100.0);
+    fprintf(output, "%6.2f%%", p_progress * 100.0);
   else
     {
       assert(p_progress == 0.0);
-      fprintf(output, "<UNASGN>");
+      fprintf(output, " ------");
     }
   fprintf(output, " in %5.2f%%", p_occupation_rate * 100.0);
   print_elapsed_sec(output, p_elapsed_sec);
-  fprintf(output, " level=%d %s(%s) %s(%s)\n", p_level,
-          (char*)p_start_formula, (char*)p_generator_formula,
-          (char*)p_ending_formula, (char*)p_check_formula);
+  fprintf(output, " level=%d %s", p_level, (char*)p_start_formula);
+  if (verbose)
+    {
+      fprintf(output, "(%s/%s) %s %s(%s)", (char*)p_generator_formula,
+              (char*)p_last_formula, (char*)p_progress_formula,
+              (char*)p_ending_formula, (char*)p_check_formula);
+    }
+  if (p_assigned_process)
+    fprintf(output, " %s", p_assigned_process->get_host()->get_host_name());
+  fprintf(output, "\n");
+}
+
+bool Range::set_last_formula(const char* buffer)
+{
+  if (*buffer != 'C')
+    return false;
+  while (*buffer && (*buffer != ' '))
+    ++buffer;
+  if (*buffer++ != ' ')
+    return false;
+  if (*buffer != '(')
+    return false;
+  while (*buffer && (*buffer != ')'))
+    ++buffer;
+  if (*buffer++ != ')')
+    return false;
+  if (*buffer++ != ' ')
+    return false;
+  p_last_formula = "";
+  while (*buffer != '\n')
+    p_last_formula.append_char(*buffer++);
+  return true;
 }
 
 bool Range::set_progress_formula(const char* progress_formula)
@@ -236,7 +267,8 @@ bool Range::set_progress_formula(const char* progress_formula)
     return true;
   p_range_state = RANGE_STATE_COLLECT_DONE;
   p_progress = 1.0;
-  assert(p_progress == 1.0);
+  if (p_collector)
+    p_collector->check_done_and_call_done_waiters();
   return false;
 }
 

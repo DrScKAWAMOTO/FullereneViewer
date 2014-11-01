@@ -116,7 +116,7 @@ void Fullerenes::p_step_ei_yah(const char* generator_formula,
     gen = Generator(generator_formula, maximum_vertices_of_polygons);
   else
     gen = Generator(symmetric, maximum_vertices_of_polygons);
-  gen.link_up(); /* delete §µ§Ï§ §§§Ë§¶ ›∏± */
+  gen.link_up(); /* delete „Åï„Çå„Å™„ÅÑ„Çà„ÅÜ‰øùÈô∫ */
   switch (step_algorithm)
     {
     case STEP_ALGORITHM_COPY_BRANCH:
@@ -145,6 +145,7 @@ void Fullerenes::p_step_ei_yah(const char* generator_formula,
       finished.append_char('-');
       finished.append_int(maximum_vertices_of_polygons + 1);
       Generator finishedGen(finished, maximum_vertices_of_polygons + 1);
+      finishedGen.glow_step();
       finishedGen.print_progress(INT_MAX);
     }
 }

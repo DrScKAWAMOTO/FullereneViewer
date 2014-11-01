@@ -27,7 +27,7 @@ HEADERS += ../Automorphism.h ../Automorphisms.h ../AvoidBugs.h ../Bond.h \
            ../BoundaryCarbons.h ../Carbon.h ../CarbonAllotrope.h ../Center.h \
            ../Configuration.h ../Config.h ../Debug.h ../DebugMemory.h \
            ../DistanceMatrix.h ../ConnectedBoundary.h ../DistanceVector.h ../ErrorCode.h \
-           ../Fullerene.h ../FullereneCharacteristic.h ../Generator.h \
+           ../Fullerene.h ../Characteristic.h ../Generator.h \
            ../Interactive.h ../InteractiveLine.h ../InteractiveOperation.h \
            ../InteractivePlane.h ../InteractivePoint.h ../InteractiveRegularPolygon.h \
            ../Interactives.h ../List.h ../Set.h ../Matrix3.h \
@@ -45,7 +45,7 @@ SOURCES += ../Automorphism.cc ../Automorphisms.cc ../Bond.cc ../BoundaryCarbons.
            ../Carbon.cc ../CarbonAllotrope.cc ../Configuration.cc \
            ../ConnectedBoundary.cc ../DebugMemory.cc ../DistanceVector.cc \
            ../DistanceMatrix.cc ../ErrorCode.cc ../Fullerene.cc \
-           ../FullereneCharacteristic.cc ../Generator.cc ../Interactive.cc \
+           ../Characteristic.cc ../Generator.cc ../Interactive.cc \
            ../InteractiveLine.cc ../InteractiveOperation.cc ../InteractivePlane.cc \
            ../InteractivePoint.cc ../InteractiveRegularPolygon.cc ../Interactives.cc \
            ../Matrix3.cc ../MyString.cc ../Object.cc ../OpenGLUtil.cc ../Pattern.cc \

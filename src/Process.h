@@ -23,18 +23,18 @@ enum ProcessState {
 };
 
 enum AssignProcessResult {
-  /* ¥×¥í¥»¥¹³ä¤êÅö¤ÆÀ®¸ù */
+  /* ãƒ—ãƒ­ã‚»ã‚¹å‰²ã‚Šå½“ã¦æˆåŠŸ */
   ASSIGN_PROCESS_RESULT_SUCCESS,
-  /* ¼ı½¸Ãæ¤À¤¬¥×¥í¥»¥¹³ä¤êÅö¤Æ¼ºÇÔ */
+  /* åé›†ä¸­ã ãŒãƒ—ãƒ­ã‚»ã‚¹å‰²ã‚Šå½“ã¦å¤±æ•— */
   ASSIGN_PROCESS_RESULT_FAIL,
-  /* ¼ı½¸´°Î»¤Ç¡¢¥×¥í¥»¥¹¤ò³ä¤êÅö¤Æ¤Ê¤«¤Ã¤¿ */
+  /* åé›†å®Œäº†ã§ã€ãƒ—ãƒ­ã‚»ã‚¹ã‚’å‰²ã‚Šå½“ã¦ãªã‹ã£ãŸ */
   ASSIGN_PROCESS_RESULT_COLLECT_DONE
 };
 
 enum UnassignProcessResult {
-  /* ¥×¥í¥»¥¹²ò½üÀ®¸ù */
+  /* ãƒ—ãƒ­ã‚»ã‚¹è§£é™¤æˆåŠŸ */
   UNASSIGN_PROCESS_RESULT_SUCCESS,
-  /* ¤½¤Î¥×¥í¥»¥¹¤Ï¤É¤Î¥ì¥ó¥¸¤Ë¤â³ä¤êÅö¤¿¤Ã¤Æ¤¤¤Ê¤¤ */
+  /* ãã®ãƒ—ãƒ­ã‚»ã‚¹ã¯ã©ã®ãƒ¬ãƒ³ã‚¸ã«ã‚‚å‰²ã‚Šå½“ãŸã£ã¦ã„ãªã„ */
   UNASSIGN_PROCESS_RESULT_FAIL
 };
 
@@ -49,6 +49,7 @@ private:
   MyString p_command_line;
   PipeHandler* p_pipe_handler;
   ProcessState p_process_state;
+  bool p_disabled;
   Range* p_assigned_range;
   pid_t p_forkpid;
   int p_readfd;
@@ -66,7 +67,8 @@ public:
   // scheduling
   bool assign_range(Range* range);
   void unassign_range();
-  void delete_PipeHandler_then_unassign_range();
+  void disable();
+  void enable();
 
   // comparators
 public:
@@ -82,9 +84,11 @@ public:
   Range* get_assigned_range() { return p_assigned_range; }
   int process_id() const { return p_process_id; }
   ProcessState get_process_state() const { return p_process_state; }
+  bool is_disabled() const { return p_disabled; }
   pid_t get_forkpid() const { return p_forkpid; }
   int get_readfd() const { return p_readfd; }
   void send_level_command(int level);
+  void send_exit_command();
 
 };
 

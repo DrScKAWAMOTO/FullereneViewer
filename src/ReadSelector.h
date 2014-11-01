@@ -31,9 +31,10 @@ public:
 
   // member accessing methods
 public:
+  int get_number_of_handlers() const { return p_handlers.length(); }
   virtual bool join(ReadHandler* handler);
   virtual bool defect(ReadHandler* handler);
-  virtual void defect_all();
+  virtual void defect_listen_handler();
   virtual ReadHandlerResult select(int timeout);
 
 };

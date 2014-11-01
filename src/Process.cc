@@ -13,7 +13,7 @@
 #include "Host.h"
 #include "Range.h"
 #include "List.h"
-#include "Search.h"
+#include "Collector.h"
 #include "PipeHandler.h"
 #include "Parallel.h"
 
@@ -35,7 +35,7 @@ void Process::p_kill_process()
 
 Process::Process(Host* host, int process_id, Parallel* manager)
   : p_host(host), p_process_id(process_id), p_manager(manager), p_pipe_handler(0),
-    p_process_state(PROCESS_STATE_RANGE_UNASSIGNED),
+    p_process_state(PROCESS_STATE_RANGE_UNASSIGNED), p_disabled(false),
     p_assigned_range(0), p_forkpid(-1), p_readfd(-1), p_writefd(-1)
 {
   if (p_manager)
@@ -66,7 +66,7 @@ bool Process::assign_range(Range* range)
   assert(get_host());
   const char* hostname = get_host()->get_host_name();
   assert(hostname);
-  assert(range->get_search());
+  assert(range->get_collector());
   assert(range->get_start_formula());
   p_command_line = "";
   if (strcmp(hostname, "local") != 0)
@@ -75,8 +75,8 @@ bool Process::assign_range(Range* range)
       p_command_line.append_string(hostname);
       p_command_line.append_char(' ');
     }
-  p_command_line.append_string("ca-generator");
-  const List<ObjectString>& options = range->get_search()->get_options();
+  p_command_line.append_string("ca-collector");
+  const List<ObjectString>& options = range->get_collector()->get_options();
   int len = options.length();
   for (int i = 0; i < len; ++i)
     {
@@ -86,7 +86,7 @@ bool Process::assign_range(Range* range)
   p_command_line.append_string(" --parallel=");
   p_command_line.append_int(range->get_level() + 4);
   p_command_line.append_char(' ');
-  p_command_line.append_string(range->get_generator_formula());
+  p_command_line.append_string(range->get_last_formula());
 
   p_forkpid = fork();
   if (p_forkpid < 0)
@@ -129,7 +129,6 @@ bool Process::assign_range(Range* range)
 
 void Process::unassign_range()
 {
-  printf("Process::unassign_range()\n");
   assert(p_process_state == PROCESS_STATE_RANGE_ASSIGNED);
   p_kill_process();
   p_process_state = PROCESS_STATE_RANGE_UNASSIGNED;
@@ -139,16 +138,15 @@ void Process::unassign_range()
     p_manager->manage_unassigned_process(this);
 }
 
-void Process::delete_PipeHandler_then_unassign_range()
+void Process::disable()
 {
-  assert(p_process_state == PROCESS_STATE_RANGE_ASSIGNED);
-  assert(p_pipe_handler);
-  if (p_manager)
-    {
-      bool result = p_manager->defect(p_pipe_handler);
-      assert(result == true);
-    }
-  p_pipe_handler = 0;
+  p_disabled = true;
+  send_exit_command();
+}
+
+void Process::enable()
+{
+  p_disabled = false;
 }
 
 int Process::compare(const Process* you) const
@@ -162,9 +160,20 @@ int Process::compare(const Process* you) const
 void Process::print(FILE* output) const
 {
   if (p_process_state == PROCESS_STATE_RANGE_UNASSIGNED)
-    fprintf(output, "<UNASSIGNED>\n");
+    {
+      if (p_disabled)
+        fprintf(output, "<DISABLED>\n");
+      else
+        fprintf(output, "<RESTING>\n");
+    }
   else
-    fprintf(output, "pid(%d) `%s'\n", (int)p_forkpid, (char*)p_command_line);
+    {
+      if (p_disabled)
+        fprintf(output, "pid(%d) disabling `%s'\n", (int)p_forkpid, (char*)p_command_line);
+      else
+        fprintf(output, "pid(%d) `%s'\n", (int)p_forkpid, (char*)p_command_line);
+    }
+
 }
 
 void Process::send_level_command(int level)
@@ -172,6 +181,12 @@ void Process::send_level_command(int level)
   MyString command("level=");
   command.append_int(level + 4);
   command.append_char('\n');
+  write(p_writefd, (char*)command, command.length());
+}
+
+void Process::send_exit_command()
+{
+  MyString command("exit\n");
   write(p_writefd, (char*)command, command.length());
 }
 

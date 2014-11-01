@@ -158,7 +158,21 @@ int GeneratorLine::compare(const GeneratorLine* you) const
       if (myscrap != yourscrap)
         return myscrap - yourscrap;
     }
-  int comp_result = compare_generator_formula(p_line, you->p_line);
+  char* ptr = p_line;
+  while (*ptr != ')')
+    ++ptr;
+  if (*ptr == ')')
+    ++ptr;
+  if (*ptr == ' ')
+    ++ptr;
+  char* yptr = you->p_line;
+  while (*yptr != ')')
+    ++yptr;
+  if (*yptr == ')')
+    ++yptr;
+  if (*yptr == ' ')
+    ++yptr;
+  int comp_result = compare_generator_formula(ptr, yptr);
   if (comp_result != 0)
     return comp_result;
   int mySequenceNo = sequence_no();
@@ -166,9 +180,34 @@ int GeneratorLine::compare(const GeneratorLine* you) const
   return mySequenceNo - yourSequenceNo;
 }
 
-void GeneratorLine::print() const
+bool GeneratorLine::same_number_NoA(const GeneratorLine* you) const
 {
-  printf("%s\n", (char*)p_line);
+  int mynumber;
+  int myNoA;
+  bool myS;
+  bool myT;
+  bool myA;
+  int yournumber;
+  int yourNoA;
+  bool yourS;
+  bool yourT;
+  bool yourA;
+  bool result;
+  result = p_get_number_NoA_isS_isT_and_isA(mynumber, myNoA, myS, myT, myA);
+  assert(result);
+  result = you->p_get_number_NoA_isS_isT_and_isA(yournumber, yourNoA,
+                                                 yourS, yourT, yourA);
+  assert(result);
+  if (mynumber != yournumber)
+    return false;
+  if (myNoA != yourNoA)
+    return false;
+  return true;
+}
+
+void GeneratorLine::print(FILE* output) const
+{
+  fprintf(output, "%s\n", (char*)p_line);
 }
 
 /* Local Variables:	*/

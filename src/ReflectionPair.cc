@@ -34,6 +34,7 @@ ReflectionPair::ReflectionPair(const char* generator_formula, const Fullerene* f
       p_my_repres = array1;
       p_my_generator_formula = generator_formula;
       p_your_repres = array2;
+      p_your_generator_formula = "";
     }
   else if (result > 0)
     {

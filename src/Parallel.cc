@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <signal.h>
 #include <fcntl.h>
 #include <time.h>
 #include <limits.h>
@@ -20,13 +21,13 @@
 #include "DebugMemory.h"
 #include "Utils.h"
 
-AssignProcessResult Parallel::p_assign_process(Process* process)
+AssignProcessResult Parallel::p_assign_process(Process* process, bool force)
 {
-  int len = p_searches.length();
+  int len = p_collectors.length();
   AssignProcessResult result = ASSIGN_PROCESS_RESULT_COLLECT_DONE;
   for (int i = 0; i < len; ++i)
     {
-      AssignProcessResult result2 = p_searches[i]->assign_process(process);
+      AssignProcessResult result2 = p_collectors[i]->assign_process(process, force);
       if (result2 == ASSIGN_PROCESS_RESULT_SUCCESS)
         return result2;
       if (result2 == ASSIGN_PROCESS_RESULT_FAIL)
@@ -35,31 +36,25 @@ AssignProcessResult Parallel::p_assign_process(Process* process)
   return result;
 }
 
-UnassignProcessResult Parallel::p_unassign_process(Process* process)
-{
-  int len = p_searches.length();
-  for (int i = 0; i < len; ++i)
-    {
-      UnassignProcessResult result = p_searches[i]->unassign_process(process);
-      if (result == UNASSIGN_PROCESS_RESULT_SUCCESS)
-        return result;
-    }
-  return UNASSIGN_PROCESS_RESULT_FAIL;
-}
-
-void Parallel::p_remove_processes(Host* searched_host, int from, int to)
+void Parallel::p_enable_processes(Host* searched_host, int from, int to)
 {
   for (int i = from; i < to; ++i)
     {
       Process* searched_process = search_process(searched_host, i);
       assert(searched_process);
-      if (searched_process->get_process_state()  == PROCESS_STATE_RANGE_ASSIGNED)
-        {
-          UnassignProcessResult result = p_unassign_process(searched_process);
-          assert(result == UNASSIGN_PROCESS_RESULT_SUCCESS);
-        }
-      bool result = p_processes.remove(searched_process);
-      assert(result == true);
+      searched_process->enable();
+      manage_unassigned_process(searched_process);
+    }
+}
+
+void Parallel::p_disable_processes(Host* searched_host, int from, int to)
+{
+  for (int i = from; i < to; ++i)
+    {
+      Process* searched_process = search_process(searched_host, i);
+      assert(searched_process);
+      searched_process->disable();
+      manage_unassigned_process(searched_process);
     }
 }
 
@@ -85,6 +80,7 @@ Parallel::Parallel(const MyString& home)
   p_server_lockfile_name.append_string("/ca-lockfile");
   p_server_logfile_name.append_string("/ca-server.log");
 
+  signal(SIGPIPE, SIG_IGN);
   bool lockfile_locked = true;
   for (int count = 0; count < 5; ++count)
     {
@@ -140,7 +136,7 @@ Parallel::~Parallel()
   unlink(p_server_pipe_name);
 }
 
-bool Parallel::assign_processes()
+bool Parallel::assign_processes(bool force)
 {
   int count = 0;
   while (1)
@@ -149,26 +145,36 @@ bool Parallel::assign_processes()
       if (len == 0)
         return true;
       Process* process = p_unassigned_processes[len - 1];
-      AssignProcessResult result = p_assign_process(process);
+      AssignProcessResult result = p_assign_process(process, force);
       if (result == ASSIGN_PROCESS_RESULT_COLLECT_DONE)
         return true;
-      if (result == ASSIGN_PROCESS_RESULT_FAIL)
-        ++count;
+      if (result == ASSIGN_PROCESS_RESULT_SUCCESS)
+        continue;
+      if (force == false)
+        return false;
+      ++count;
       assert(count < 10);
     }
 }
 
 void Parallel::manage_unassigned_process(Process* process)
 {
-  if (process->get_process_state() == PROCESS_STATE_RANGE_ASSIGNED)
+  if (process->is_disabled())
     {
-      bool result = p_unassigned_processes.remove(process);
-      assert(result == true);
+      p_unassigned_processes.remove(process);
     }
   else
     {
-      Process* searched_process = p_unassigned_processes.search_else_add(process);
-      assert(searched_process == 0);
+      if (process->get_process_state() == PROCESS_STATE_RANGE_ASSIGNED)
+        {
+          bool result = p_unassigned_processes.remove(process);
+          assert(result == true);
+        }
+      else
+        {
+          Process* searched_process = p_unassigned_processes.search_else_add(process);
+          assert(searched_process == 0);
+        }
     }
 }
 
@@ -180,8 +186,18 @@ void Parallel::command_loop()
   ScheduleHandler* shandler = new ScheduleHandler();
   bresult = join(shandler);
   assert(bresult);
+  bool exit_required = false;
   while (1)
     {
+      if (exit_required)
+        {
+          int number = p_selector->get_number_of_handlers();
+          if (number == 0)
+            {
+              printf("ca-server is exited\n");
+              return;
+            }
+        }
       ReadHandlerResult result = p_selector->select(INT_MAX);
       if (result == READ_HANDLER_RESULT_CONTINUED)
         /* succeeded and continue loop */;
@@ -191,7 +207,9 @@ void Parallel::command_loop()
           assert(0);
         }
       else if (result == READ_HANDLER_RESULT_SCHEDULE)
-        assign_processes();
+        assign_processes(false);
+      else if (result == READ_HANDLER_RESULT_SCHEDULE_FORCE)
+        assign_processes(true);
       else if (result == READ_HANDLER_RESULT_SCHEDULE_AND_TERMINATE)
         {
           /* this enum never returned */
@@ -204,9 +222,11 @@ void Parallel::command_loop()
         }
       else if (result == READ_HANDLER_RESULT_EXIT)
         {
-          p_selector->defect_all();
-          printf("ca-server is exited\n");
-          return;
+          p_selector->defect(shandler);
+          p_selector->defect_listen_handler();
+          disable_all_processes();
+          exit_required = true;
+          continue;
         }
       else
         {
@@ -226,21 +246,24 @@ void Parallel::print_hosts(FILE* output) const
     }
 }
 
-bool Parallel::print_ranges(FILE* output, int index, int indent) const
+bool Parallel::print_ranges(FILE* output, int index) const
 {
-  int len = p_searches.length();
+  int len = p_collectors.length();
   if (index < 0)
     return false;
   if (index >= len)
     return false;
-  const Search* search = p_searches[index];
-  len = search->number_of_ranges();
+  Collector* collector = p_collectors[index];
+  return print_ranges(output, collector);
+}
+
+bool Parallel::print_ranges(FILE* output, Collector* collector) const
+{
+  int len = collector->number_of_ranges();
   for (int i = 0; i < len; ++i)
     {
-      for (int j = 0; j < indent; ++j)
-        fprintf(output, " ");
-      fprintf(output, "range[%d] = ", i);
-      search->get_range(i)->print(output);
+      fprintf(output, "   range[%3d] =", i);
+      collector->get_range(i)->print(output);
     }
   return true;
 }
@@ -276,27 +299,22 @@ void Parallel::print_processes(FILE* output)
     }
 }
 
-void Parallel::print_searches(FILE* output, bool ranges_too) const
+void Parallel::print_collectors(FILE* output, bool ranges_too) const
 {
-  int len = p_searches.length();
+  int len = p_collectors.length();
   for (int i = 0; i < len; ++i)
     {
-      fprintf(output, "search[%1d] = ", i);
-      const Search* search = p_searches[i];
-      search->print(output);
+      fprintf(output, "collector[%1d] = ", i);
+      const Collector* collector = p_collectors[i];
+      collector->print(output);
       if (ranges_too)
-        print_ranges(output, i, 4);
+        print_ranges(output, i);
     }
 }
 
 bool Parallel::join(ReadHandler* rhandler)
 {
   return p_selector->join(rhandler);
-}
-
-bool Parallel::defect(ReadHandler* rhandler)
-{
-  return p_selector->defect(rhandler);
 }
 
 void Parallel::set_client_cwd(const char* client_cwd)
@@ -321,56 +339,41 @@ bool Parallel::add_host(const char* host_name, int process_num)
   return true;
 }
 
-bool Parallel::remove_host(const char* host_name)
-{
-  Host* searched_host = search_host(host_name);
-  if (!searched_host)
-    return false;
-  int len = searched_host->number_of_processes();
-  p_remove_processes(searched_host, 0, len);
-  return p_hosts.remove(searched_host);
-}
-
 Host* Parallel::search_host(const char* host_name)
 {
   Host searching_host = Host(host_name, 1);
   return p_hosts.search(&searching_host);
 }
 
-bool Parallel::add_processes(const char* host_name, int number)
+bool Parallel::enable_processes(const char* host_name, int number)
 {
-  if (number <= 0)
+  if (number < 0)
     return false;
   Host* searched_host = search_host(host_name);
   if (!searched_host)
     return false;
-  int last_number = searched_host->number_of_processes();
-  searched_host->add_process(number);
-  int curr_number = searched_host->number_of_processes();
-  for (int i = last_number; i < curr_number; ++i)
-    {
-      Process* new_process = new Process(searched_host, i, this);
-      Process* searched_process = p_processes.search_else_add(new_process);
-      assert(searched_process == 0);
-    }
+  int last_number = searched_host->number_of_enabled_processes();
+  if (searched_host->enable_processes(number) == false)
+    return false;
+  int next_number = searched_host->number_of_enabled_processes();
+  if (last_number == next_number)
+    return true;
+  if (last_number < next_number)
+    p_enable_processes(searched_host, last_number, next_number);
+  else
+    p_disable_processes(searched_host, next_number, last_number);
   return true;
 }
 
-bool Parallel::remove_processes(const char* host_name, int number)
+void Parallel::disable_all_processes()
 {
-  if (number <= 0)
-    return false;
-  Host* searched_host = search_host(host_name);
-  if (!searched_host)
-    return false;
-  int last_number = searched_host->number_of_processes();
-  if (last_number == number)
-    return remove_host(host_name);
-  if (searched_host->remove_process(number) == false)
-    return false;
-  int curr_number = searched_host->number_of_processes();
-  p_remove_processes(searched_host, curr_number, last_number);
-  return true;
+  int len = p_processes.length();
+  for (int i = 0; i < len; ++i)
+    {
+      Process* process = p_processes[i];
+      assert(process);
+      process->disable();
+    }
 }
 
 Process* Parallel::search_process(Host* host, int process_id)
@@ -379,23 +382,45 @@ Process* Parallel::search_process(Host* host, int process_id)
   return p_processes.search(&searching_process);
 }
 
-ParallelErrorCode Parallel::add_search(Search* search)
+bool Parallel::add_collector(Collector* collector)
 {
-  int len = p_searches.length();
+  int len = p_collectors.length();
   for (int i = 0; i < len; ++i)
     {
-      if (p_searches[i]->compare(search) == 0)
-        return PARALLEL_ERROR_CODE_ALREADY_ADD;
+      if (p_collectors[i]->compare(collector) == 0)
+        return false;
     }
-  p_searches.add(search);
-  if (search->setup() == false)
-    return PARALLEL_ERROR_CODE_OUTPUT_FILE_OPEN_ERROR;
-  return PARALLEL_ERROR_CODE_OK;
+  p_collectors.add(collector);
+  return true;
 }
 
-bool Parallel::remove_search(int index)
+int Parallel::search_collector(const char* output_filename)
 {
-  return p_searches.remove(index);
+  int len = p_collectors.length();
+  for (int i = 0; i < len; ++i)
+    {
+      Collector* searched_collector = p_collectors[i];
+      if (strcmp(searched_collector->get_output_filename(), output_filename) == 0)
+        return i;
+    }
+  return -1;
+}
+
+bool Parallel::remove_collector(int index)
+{
+  return p_collectors.remove(index);
+}
+
+bool Parallel::remove_collector(const char* output_filename)
+{
+  int len = p_collectors.length();
+  for (int i = 0; i < len; ++i)
+    {
+      Collector* searched_collector = p_collectors[i];
+      if (strcmp(searched_collector->get_output_filename(), output_filename) == 0)
+        return p_collectors.remove(i);
+    }
+  return false;
 }
 
 /* Local Variables:	*/

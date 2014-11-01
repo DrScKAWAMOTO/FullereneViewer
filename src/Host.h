@@ -10,6 +10,8 @@
 #include <stdio.h>
 #include "Object.h"
 #include "MyString.h"
+#include "List.h"
+#include "ObjectInt2.h"
 
 class Host : public Object {
   // friend classes & functions
@@ -18,8 +20,12 @@ class Host : public Object {
 private:
   MyString p_host_name;
   int p_number_of_processes;
+  int p_number_of_enabled_processes;
+  List<ObjectInt2> p_enable_waiters;
 
   // private tools
+private:
+  void p_search_and_call_enable_waiters(int num);
 
   // constructors & the destructor
 public:
@@ -38,8 +44,9 @@ public:
 public:
   const char* get_host_name() const { return p_host_name; }
   int number_of_processes() const { return p_number_of_processes; }
-  void add_process(int num);
-  bool remove_process(int num);
+  int number_of_enabled_processes() const { return p_number_of_enabled_processes; }
+  bool enable_processes(int num);
+  void enter_enabled_waiter(int num, int pid);
 
 };
 

@@ -7,6 +7,7 @@
 #ifndef __GENERATORLINE_H__
 #define __GENERATORLINE_H__
 
+#include <stdio.h>
 #include "Object.h"
 #include "MyString.h"
 
@@ -36,12 +37,13 @@ public:
   // comparators
 public:
   int compare(const GeneratorLine* you) const;
+  bool same_number_NoA(const GeneratorLine* you) const;
 
   // math operators
 
   // I/O
 public:
-  void print() const;
+  void print(FILE* output) const;
 
   // class decision
 

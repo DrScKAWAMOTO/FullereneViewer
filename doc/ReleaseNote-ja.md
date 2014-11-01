@@ -1,6 +1,24 @@
 # FullereneViewer(フラーレンビューア)
 ## リリースノート
 
+### 2014/??/?? Version 1.4.1
+　ca-server ca-parallel 実装。  
+　ca-generator をパラレル実行させることができる。  
+　assert() に副作用のあるコードを書かないようにした。  
+　ObjectString と MyString クラス実装。  
+　SortedList.h 廃止。  
+　セグメントを複数指定できるように修正 プロセス割り当ては、「未割り当て」は即座に割り当てるが、「割り当て済みを分割」は、30秒タイマで遅延させる。  
+　コールバック用ソケットはあらかじめ作っておく。  
+　ca-parallel wait 実装。  
+　ca-parallel: 分割基準を「残りが多いもの」に変更。  
+　ca-parallel: FreeBSD 9.x でコールバックが待てないのを修正。  
+　ca-parallel: search を collector に変更。  
+　ca-collector のプログレス表示バグ修正。  
+　ca-uniq ca-mirror ca-char を一つのプログラム(ca-char)にまとめた。  
+　ca-char: ヘッダ出力無し対応。  
+　ca-sort: 出力分割対応。  
+　ca-mirror 削除。
+
 ### 2014/10/13 Version 1.4.0
 　FreeBSD 10.0 用の howToCompile ファイルの修正漏れ対応。  
 　半開カーボンナノチューブで ca-char した時落ちるのを修正。  

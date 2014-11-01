@@ -10,7 +10,7 @@
 #include "Version.h"
 #include "CarbonAllotrope.h"
 #include "Fullerene.h"
-#include "FullereneCharacteristic.h"
+#include "Characteristic.h"
 #include "DistanceMatrix.h"
 #include "Random.h"
 #include "DebugMemory.h"

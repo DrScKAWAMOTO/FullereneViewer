@@ -13,7 +13,7 @@
 
 class Process;
 class Range;
-class Search;
+class Collector;
 
 class PipeHandler : public ReadHandler {
   // friend classes & functions
@@ -26,7 +26,7 @@ private:
   int p_line_len;
   Process* p_process;
   Range* p_assigned_range;
-  Search* p_assigned_search;
+  Collector* p_assigned_collector;
 
   // private tools
 private:

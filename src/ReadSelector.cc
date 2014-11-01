@@ -35,13 +35,17 @@ bool ReadSelector::defect(ReadHandler* handler)
   return result;
 }
 
-void ReadSelector::defect_all()
+void ReadSelector::defect_listen_handler()
 {
   int len = p_handlers.length();
-  for (int i = len - 1; i >= 0; --i)
+  for (int i = 0; i < len; ++i)
     {
-      ReadHandler* rhandler = p_handlers[i];
-      p_handlers.remove(rhandler);
+      ReadHandler* handler = p_handlers[i];
+      if (handler->is_listen_handler())
+        {
+          defect(handler);
+          return;
+        }
     }
 }
 
@@ -98,6 +102,10 @@ ReadHandlerResult ReadSelector::select(int timeout)
             {
               defect(searched_handler);
               result = READ_HANDLER_RESULT_SCHEDULE;
+            }
+          else if (result == READ_HANDLER_RESULT_EXIT)
+            {
+              defect(searched_handler);
             }
           return result;
         }

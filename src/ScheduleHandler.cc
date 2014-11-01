@@ -64,7 +64,7 @@ ScheduleHandler::~ScheduleHandler()
 ReadHandlerResult ScheduleHandler::call()
 {
   p_receive();
-  return READ_HANDLER_RESULT_SCHEDULE;
+  return READ_HANDLER_RESULT_SCHEDULE_FORCE;
 }
 
 /* Local Variables:	*/

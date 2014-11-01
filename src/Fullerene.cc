@@ -15,7 +15,7 @@
 #include "BoundaryCarbons.h"
 #include "Representations.h"
 #include "Automorphisms.h"
-#include "FullereneCharacteristic.h"
+#include "Characteristic.h"
 #include "Generator.h"
 #include "DistanceMatrix.h"
 #include "Pattern.h"
@@ -393,7 +393,7 @@ void Fullerene::set_carbon_allotrope(CarbonAllotrope* carbon_allotrope)
         }
     }
   if (p_carbon_allotrope && s_need_fullerene_characteristic)
-    p_characteristic = new FullereneCharacteristic(p_carbon_allotrope);
+    p_characteristic = new Characteristic(p_carbon_allotrope);
   if (p_carbon_allotrope && s_need_distance_matrix)
     p_distance_matrix = new DistanceMatrix(p_carbon_allotrope);
 }

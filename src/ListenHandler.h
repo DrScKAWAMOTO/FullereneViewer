@@ -26,6 +26,8 @@ public:
   // comparators
 
   // member accessing methods
+public:
+  virtual bool is_listen_handler() const { return true; }
 protected:
   virtual ReadHandlerResult call();
 

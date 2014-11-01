@@ -1,26 +1,26 @@
-* Range ¤È Process ¤È PipeHandler ¤Î´Ø·¸
+* Range ã¨ Process ã¨ PipeHandler ã®é–¢ä¿‚
 
-Range ¤Ë Process ¤ò³ä¤êÅö¤Æ¤ë¤È¡¢PipeHandler ¤¬ new ¤µ¤ì¤ë¡£
-PipeHandler ¤ò delete ¤¹¤ë¤³¤È¤Ç Range ¤È Process ¤Î³ä¤êÅö¤Æ¤¬½ªÎ»¤µ¤»¤é¤ì¤ë¡£
+Range ã« Process ã‚’å‰²ã‚Šå½“ã¦ã‚‹ã¨ã€PipeHandler ãŒ new ã•ã‚Œã‚‹ã€‚
+PipeHandler ã‚’ delete ã™ã‚‹ã“ã¨ã§ Range ã¨ Process ã®å‰²ã‚Šå½“ã¦ãŒçµ‚äº†ã•ã›ã‚‰ã‚Œã‚‹ã€‚
 
-* ³ä¤êÅö¤Æ³«»Ï:
+* å‰²ã‚Šå½“ã¦é–‹å§‹:
 
-Range::assign_process(Process*) ¤ò¸Æ¤Ö¤È¡¢Process::assign_range(Range*) ¤¬¸Æ¤Ğ¤ì¡¢
-PipeHandler ¤¬À¸À®¤µ¤ì¤Æ Parallel ¤ËÅĞÏ¿¤µ¤ì¤ë¡£
+Range::assign_process(Process*) ã‚’å‘¼ã¶ã¨ã€Process::assign_range(Range*) ãŒå‘¼ã°ã‚Œã€
+PipeHandler ãŒç”Ÿæˆã•ã‚Œã¦ Parallel ã«ç™»éŒ²ã•ã‚Œã‚‹ã€‚
 
 
-* ³ä¤êÅö¤Æ½ªÎ»:
+* å‰²ã‚Šå½“ã¦çµ‚äº†:
 
-ReadSelecter::defect(ReadHandler*) ¤¬¸Æ¤Ğ¤ì¤Æ PipeHandler ¤òºï½ü¤¹¤ë¤È¡¢
-Range::unassign_process() ¤¬¸Æ¤Ğ¤ì¡¢Process::unassign_range() ¤¬¸Æ¤Ğ¤ì¤ë¡£
+ReadSelecter::defect(ReadHandler*) ãŒå‘¼ã°ã‚Œã¦ PipeHandler ã‚’å‰Šé™¤ã™ã‚‹ã¨ã€
+Range::unassign_process() ãŒå‘¼ã°ã‚Œã€Process::unassign_range() ãŒå‘¼ã°ã‚Œã‚‹ã€‚
 
-* Ãí°Õ:
+* æ³¨æ„:
 
-Range::delete_PipeHandler_then_unassign_process() ¤ò¸Æ¤ó¤Ç¤â
-ReadSelecter::defect(ReadHandler*) ¤¬¸Æ¤Ğ¤ì¤Æ³ä¤êÅö¤Æ¤Ï½ªÎ»¤¹¤ë¡£
+Range::delete_PipeHandler_then_unassign_process() ã‚’å‘¼ã‚“ã§ã‚‚
+ReadSelecter::defect(ReadHandler*) ãŒå‘¼ã°ã‚Œã¦å‰²ã‚Šå½“ã¦ã¯çµ‚äº†ã™ã‚‹ã€‚
 
-Process::delete_PipeHandler_then_unassign_range() ¤ò¸Æ¤ó¤Ç¤â
-ReadSelecter::defect(ReadHandler*) ¤¬¸Æ¤Ğ¤ì¤Æ³ä¤êÅö¤Æ¤Ï½ªÎ»¤¹¤ë¡£
+Process::delete_PipeHandler_then_unassign_range() ã‚’å‘¼ã‚“ã§ã‚‚
+ReadSelecter::defect(ReadHandler*) ãŒå‘¼ã°ã‚Œã¦å‰²ã‚Šå½“ã¦ã¯çµ‚äº†ã™ã‚‹ã€‚
 
-Range::set_progress_formula() ¤¬progree´°Î»¤ò¸¡ÃÎ¤·¤Æ¤«¤é³ä¤êÅö¤Æ¤ò½ªÎ»¤µ¤»¤¿¾ì¹ç¤Ï¡¢
-Range¤Ï RANGE_STATE_COLLECT_DONE ¤ËÁ«°Ü¤¹¤ë¡£
+Range::set_progress_formula() ãŒprogreeå®Œäº†ã‚’æ¤œçŸ¥ã—ã¦ã‹ã‚‰å‰²ã‚Šå½“ã¦ã‚’çµ‚äº†ã•ã›ãŸå ´åˆã¯ã€
+Rangeã¯ RANGE_STATE_COLLECT_DONE ã«é·ç§»ã™ã‚‹ã€‚

@@ -86,6 +86,7 @@ static void generate_pipe(const char* pipe_name)
 
 static MyString cmd_pipe_name;
 static MyString rst_pipe_name;
+static MyString cal_pipe_name;
 
 static int start_communication(const MyString& home)
 {
@@ -122,7 +123,7 @@ static int start_communication(const MyString& home)
         {
           struct timespec ts;
           ts.tv_sec = 0;
-          ts.tv_nsec = 10000000;
+          ts.tv_nsec = 100000000;
           nanosleep(&ts, 0);
           continue;
         }
@@ -156,17 +157,64 @@ static void send_command(int argc, char *argv[])
   fclose(fptr);
 }
 
-static void recv_result(int fd)
+static bool recv_result(int fd)
 {
   FILE* fptr = fdopen(fd, "r");
+  bool callback = false;
   while (1)
     {
       char buffer[1024];
       if (fgets(buffer, 1024, fptr) == 0)
         break;
+      if (strcmp(buffer, "ca-server: callback\n") == 0)
+        {
+          callback = true;
+          break;
+        }
       if (strcmp(buffer, "ca-server: terminate\n") == 0)
         break;
       printf("%s", buffer);
+    }
+  fclose(fptr);
+  return callback;
+}
+
+static int make_callback(const MyString& home)
+{
+  int len = home.length();
+  pid_t pid = getpid();
+  cal_pipe_name = home;
+  if (home[len - 1] != '/')
+    cal_pipe_name.append_char('/');
+  cal_pipe_name.append_string("tmp/ca-cal.");
+  cal_pipe_name.append_int((int)pid);
+  generate_pipe(cal_pipe_name);
+  int calfd = open((char*)cal_pipe_name, O_RDONLY | O_NONBLOCK);
+  assert(calfd > -1);
+  return calfd;
+}
+
+static void recv_callback(int calfd)
+{
+  FILE* fptr = fdopen(calfd, "r");
+  while (1)
+    {
+      int nfds = calfd + 1;
+      fd_set readfds[FD_SETSIZE];
+      int num;
+      char buffer[1024];
+
+      FD_ZERO(readfds);
+      FD_SET(calfd, readfds);
+      num = select(nfds, readfds, 0, 0, 0);
+      if (num == 1)
+        {
+          if (fgets(buffer, 1024, fptr) == 0)
+            break;
+          if (strcmp(buffer, "ca-server: callback\n") == 0)
+            break;
+          printf("%s", buffer);
+        }
     }
   fclose(fptr);
 }
@@ -175,6 +223,7 @@ static void term_communication()
 {
   unlink(cmd_pipe_name);
   unlink(rst_pipe_name);
+  unlink(cal_pipe_name);
 }
 
 int main(int argc, char *argv[])
@@ -205,8 +254,14 @@ int main(int argc, char *argv[])
   MyString home = home_env;
   fork_server(home);
   int rstfd = start_communication(home);
+  int calfd = -1;
+  if ((argc > 0) && (strcmp(argv[0], "wait") == 0))
+    calfd = make_callback(home);
   send_command(argc, argv);
-  recv_result(rstfd);
+  if (recv_result(rstfd))
+    recv_callback(calfd);
+  else if (calfd != -1)
+    close(calfd);
   term_communication();
   return 0;
 }

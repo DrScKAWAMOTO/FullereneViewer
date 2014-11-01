@@ -13,9 +13,10 @@ enum ReadHandlerResult {
   READ_HANDLER_RESULT_CONTINUED = 0,
   READ_HANDLER_RESULT_TERMINATE = -1,
   READ_HANDLER_RESULT_SCHEDULE = -2,
-  READ_HANDLER_RESULT_SCHEDULE_AND_TERMINATE = -3,
-  READ_HANDLER_RESULT_TIMEOUT = -4,
-  READ_HANDLER_RESULT_EXIT = -5
+  READ_HANDLER_RESULT_SCHEDULE_FORCE = -3,
+  READ_HANDLER_RESULT_SCHEDULE_AND_TERMINATE = -4,
+  READ_HANDLER_RESULT_TIMEOUT = -5,
+  READ_HANDLER_RESULT_EXIT = -6,
 };
 
 class ReadHandler : public Object {
@@ -36,6 +37,8 @@ public:
   int compare(const ReadHandler* you) const;
 
   // member accessing methods
+public:
+  virtual bool is_listen_handler() const { return false; }
 protected:
   virtual ReadHandlerResult call();
 

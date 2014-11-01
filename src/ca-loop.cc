@@ -268,7 +268,7 @@ int main(int argc, char *argv[])
       if (test > 0)
         command.append_string("ca-gentest");
       else
-        command.append_string("ca-generator");
+        command.append_string("ca-collector");
       if (symmetric > 0)
         {
           command.append_string(" --symmetric=");
