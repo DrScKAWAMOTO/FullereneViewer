@@ -37,14 +37,38 @@ ConfigurationDialog::ConfigurationDialog(QWidget *parent)
     }
   switch (configuration->get_display_symmetry_axes())
     {
-    case DISPLAY_ALL_AXES:
-      ui->displayAllAxesButton->setChecked(true);
+    case DISPLAY_ALL_SYMMETRY_AXES:
+      ui->displayAllSymmetryAxesButton->setChecked(true);
       break;
-    case DISPLAY_MAJOR_AXES:
-      ui->displayMajorAxesButton->setChecked(true);
+    case DISPLAY_MAJOR_SYMMETRY_AXES:
+      ui->displayMajorSymmetryAxesButton->setChecked(true);
       break;
-    case DISPLAY_NO_AXES:
-      ui->displayNoAxesButton->setChecked(true);
+    case DISPLAY_NO_SYMMETRY_AXES:
+      ui->displayNoSymmetryAxesButton->setChecked(true);
+      break;
+    }
+  switch (configuration->get_display_principal_component_axes())
+    {
+    case DISPLAY_ALL_PRINCIPAL_COMPONENT_AXES:
+      ui->displayAllPrincipalComponentAxesButton->setChecked(true);
+      break;
+    case DISPLAY_NO_PRINCIPAL_COMPONENT_AXES:
+      ui->displayNoPrincipalComponentAxesButton->setChecked(true);
+      break;
+    }
+  switch (configuration->get_draw_pentagon_cellophanes())
+    {
+    case DRAW_PENTAGON_STRONG_CELLOPHANES:
+      ui->drawPentagonStrongCellophanesButton->setChecked(true);
+      break;
+    case DRAW_PENTAGON_TINT_CELLOPHANES:
+      ui->drawPentagonTintCellophanesButton->setChecked(true);
+      break;
+    case DRAW_PENTAGON_MONO_CHROME_CELLOPHANES:
+      ui->drawPentagonMonoChromeCellophanesButton->setChecked(true);
+      break;
+    case DRAW_PENTAGON_TRANSPARENT:
+      ui->drawPentagonTransparentButton->setChecked(true);
       break;
     }
   ui->workingFolderLineEdit->setText(QString(configuration->get_working_folder_name()));
@@ -71,12 +95,24 @@ void ConfigurationDialog::slot_accept()
     configuration->set_motion_quality(QUALITY_MIDDLE);
   else
     configuration->set_motion_quality(QUALITY_LOW);
-  if (ui->displayAllAxesButton->isChecked())
-    configuration->set_display_symmetry_axes(DISPLAY_ALL_AXES);
-  else if (ui->displayMajorAxesButton->isChecked())
-    configuration->set_display_symmetry_axes(DISPLAY_MAJOR_AXES);
+  if (ui->displayAllSymmetryAxesButton->isChecked())
+    configuration->set_display_symmetry_axes(DISPLAY_ALL_SYMMETRY_AXES);
+  else if (ui->displayMajorSymmetryAxesButton->isChecked())
+    configuration->set_display_symmetry_axes(DISPLAY_MAJOR_SYMMETRY_AXES);
   else
-    configuration->set_display_symmetry_axes(DISPLAY_NO_AXES);
+    configuration->set_display_symmetry_axes(DISPLAY_NO_SYMMETRY_AXES);
+  if (ui->displayAllPrincipalComponentAxesButton->isChecked())
+    configuration->set_display_principal_component_axes(DISPLAY_ALL_PRINCIPAL_COMPONENT_AXES);
+  else
+    configuration->set_display_principal_component_axes(DISPLAY_NO_PRINCIPAL_COMPONENT_AXES);
+  if (ui->drawPentagonStrongCellophanesButton->isChecked())
+    configuration->set_draw_pentagon_cellophanes(DRAW_PENTAGON_STRONG_CELLOPHANES);
+  else if (ui->drawPentagonTintCellophanesButton->isChecked())
+    configuration->set_draw_pentagon_cellophanes(DRAW_PENTAGON_TINT_CELLOPHANES);
+  else if (ui->drawPentagonMonoChromeCellophanesButton->isChecked())
+    configuration->set_draw_pentagon_cellophanes(DRAW_PENTAGON_MONO_CHROME_CELLOPHANES);
+  else
+    configuration->set_draw_pentagon_cellophanes(DRAW_PENTAGON_TRANSPARENT);
   configuration->set_working_folder_name(qPrintable(ui->workingFolderLineEdit->text()));
   configuration->set_povray_command_line(qPrintable(ui->povrayCommandLineLineEdit->text()));
 

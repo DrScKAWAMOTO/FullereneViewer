@@ -9,7 +9,7 @@
 
 #include <stdio.h>
 
-#define FULLERENE_VIEWER_VERSION "1.4.0"
+#define FULLERENE_VIEWER_VERSION "1.4.1"
 
 extern void print_version(const char* program_name, FILE* output = 0);
 

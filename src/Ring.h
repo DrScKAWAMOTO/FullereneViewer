@@ -11,6 +11,11 @@
 #include "List.h"
 #include "Carbon.h"
 
+extern int *pentagon_cellophane_colors;
+extern int pentagon_strong_cellophane_colors[];
+extern int pentagon_tint_cellophane_colors[];
+extern int pentagon_mono_chrome_cellophane_colors[];
+
 class Bond;
 class CarbonAllotrope;
 

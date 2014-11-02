@@ -9,7 +9,9 @@
 #include <string.h>
 #include <sys/types.h>
 #include <sys/time.h>
+#if defined(__FreeBSD__) || defined(__MACH__) || defined(__linux__)
 #include <sys/resource.h>
+#endif
 #include "Generator.h"
 #include "Utils.h"
 #include "Debug.h"
@@ -138,6 +140,7 @@ void Generator::print_progress(int length) const
     {
       MyString buffer;
       get_generator_formula(buffer, false);
+#if defined(__FreeBSD__) || defined(__MACH__) || defined(__linux__)
       struct rusage ru;
       if (getrusage(RUSAGE_SELF, &ru) == 0)
         {
@@ -153,6 +156,7 @@ void Generator::print_progress(int length) const
           printf("pg$ %s %f\n", (char*)buffer, sec + (double)usec / 1000000.0);
         }
       else
+#endif
         printf("pg$ %s\n", (char*)buffer);
     }
 }

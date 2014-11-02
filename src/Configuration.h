@@ -28,9 +28,21 @@ enum Quality {
 };
 
 enum DisplaySymmetryAxes {
-  DISPLAY_ALL_AXES,
-  DISPLAY_MAJOR_AXES,
-  DISPLAY_NO_AXES
+  DISPLAY_ALL_SYMMETRY_AXES,
+  DISPLAY_MAJOR_SYMMETRY_AXES,
+  DISPLAY_NO_SYMMETRY_AXES
+};
+
+enum DisplayPrincipalComponentAxes {
+  DISPLAY_ALL_PRINCIPAL_COMPONENT_AXES,
+  DISPLAY_NO_PRINCIPAL_COMPONENT_AXES
+};
+
+enum DrawPentagonCellophanes {
+  DRAW_PENTAGON_STRONG_CELLOPHANES,
+  DRAW_PENTAGON_TINT_CELLOPHANES,
+  DRAW_PENTAGON_MONO_CHROME_CELLOPHANES,
+  DRAW_PENTAGON_TRANSPARENT
 };
 
 class Configuration {
@@ -44,6 +56,8 @@ private:
   Quality p_picture_quality;
   Quality p_motion_quality;
   DisplaySymmetryAxes p_display_symmetry_axes;
+  DisplayPrincipalComponentAxes p_display_principal_component_axes;
+  DrawPentagonCellophanes p_draw_pentagon_cellophanes;
 
   // private tools
 
@@ -68,6 +82,15 @@ public:
   { return p_display_symmetry_axes; }
   void set_display_symmetry_axes(DisplaySymmetryAxes display_symmetry_axes)
   { p_display_symmetry_axes = display_symmetry_axes; }
+  DisplayPrincipalComponentAxes get_display_principal_component_axes() const
+  { return p_display_principal_component_axes; }
+  void set_display_principal_component_axes(DisplayPrincipalComponentAxes
+                                            display_principal_component_axes)
+  { p_display_principal_component_axes = display_principal_component_axes; }
+  DrawPentagonCellophanes get_draw_pentagon_cellophanes() const
+  { return p_draw_pentagon_cellophanes; }
+  void set_draw_pentagon_cellophanes(DrawPentagonCellophanes draw_pentagon_cellophanes)
+  { p_draw_pentagon_cellophanes = draw_pentagon_cellophanes; }
   const char* get_working_folder_name() const { return p_working_folder_name; }
   void set_working_folder_name(const char* path);
   const char* get_povray_command_line() const { return p_povray_command_line; }

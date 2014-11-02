@@ -36,6 +36,7 @@ bool CarbonAllotrope::s_need_representations = false;
 bool CarbonAllotrope::s_need_representations_reflection = false;
 bool CarbonAllotrope::s_need_all_axes = false;
 bool CarbonAllotrope::s_need_major_axes = false;
+bool CarbonAllotrope::s_need_principal_component_axes = false;
 
 void CarbonAllotrope::p_make_n_polygon(int n_members)
 {
@@ -1329,14 +1330,15 @@ void CarbonAllotrope::register_interactions()
                                  the_other, ACTION_LOCATION_CENTER);
         }
     }
-#if defined(CONFIG_DRAW_PRINCIPAL_COMPONENT_AXES_IN_GURUGURU_MODE)
-  ThreeViewNormal* first_axis = new ThreeViewNormal(this, 1);
-  p_register_interaction(ORIGINAL_FORCE_TYPE_ORIGINAL, first_axis);
-  ThreeViewNormal* second_axis = new ThreeViewNormal(this, 2);
-  p_register_interaction(ORIGINAL_FORCE_TYPE_ORIGINAL, second_axis);
-  ThreeViewNormal* third_axis = new ThreeViewNormal(this, 3);
-  p_register_interaction(ORIGINAL_FORCE_TYPE_ORIGINAL, third_axis);
-#endif
+  if (s_need_principal_component_axes)
+    {
+      ThreeViewNormal* first_axis = new ThreeViewNormal(this, 1);
+      p_register_interaction(ORIGINAL_FORCE_TYPE_ORIGINAL, first_axis);
+      ThreeViewNormal* second_axis = new ThreeViewNormal(this, 2);
+      p_register_interaction(ORIGINAL_FORCE_TYPE_ORIGINAL, second_axis);
+      ThreeViewNormal* third_axis = new ThreeViewNormal(this, 3);
+      p_register_interaction(ORIGINAL_FORCE_TYPE_ORIGINAL, third_axis);
+    }
   if (s_need_major_axes)
     {
       List<SymmetryAxis> major_axes;

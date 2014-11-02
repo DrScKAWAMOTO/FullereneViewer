@@ -17,7 +17,10 @@
 　ca-uniq ca-mirror ca-char を一つのプログラム(ca-char)にまとめた。  
 　ca-char: ヘッダ出力無し対応。  
 　ca-sort: 出力分割対応。  
-　ca-mirror 削除。
+　ca-mirror 削除。  
+　主成分軸の表示・非表示を設定画面で指定できるようにした。  
+　主成分軸の長さは sqrt にした。  
+　五員環セロファンの表示・非表示を設定画面で指定できるようにした。
 
 ### 2014/10/13 Version 1.4.0
 　FreeBSD 10.0 用の howToCompile ファイルの修正漏れ対応。  

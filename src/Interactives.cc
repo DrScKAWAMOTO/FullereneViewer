@@ -12,6 +12,7 @@
 #include "Debug.h"
 
 bool Interactives::s_need_simulation = true;
+bool Interactives::s_need_draw_pentagon_cellophanes = false;
 
 void Interactives::p_calculate_interaction(LocationForceType force_type, double delta,
                                            Interactive* one, int one_index,
@@ -176,22 +177,23 @@ void Interactives::draw_by_OpenGL(bool selection) const
       Interactive* interactive = p_interactives[i];
       interactive->draw_opaque_by_OpenGL(selection);
     }
-#if defined(CONFIG_PUT_COLORED_CELLOPHANE_IN_5_MEMBER_RING)
-  OpenGLUtil::semitransparent_mode();
-  OpenGLUtil::backface_mode();
-  for (int i = 0; i < len; ++i)
+  if (s_need_draw_pentagon_cellophanes)
     {
-      Interactive* interactive = p_interactives[i];
-      interactive->draw_semitransparent_by_OpenGL(selection, false);
+      OpenGLUtil::semitransparent_mode();
+      OpenGLUtil::backface_mode();
+      for (int i = 0; i < len; ++i)
+        {
+          Interactive* interactive = p_interactives[i];
+          interactive->draw_semitransparent_by_OpenGL(selection, false);
+        }
+      OpenGLUtil::frontface_mode();
+      for (int i = 0; i < len; ++i)
+        {
+          Interactive* interactive = p_interactives[i];
+          interactive->draw_semitransparent_by_OpenGL(selection, true);
+        }
+      OpenGLUtil::opaque_mode();
     }
-  OpenGLUtil::frontface_mode();
-  for (int i = 0; i < len; ++i)
-    {
-      Interactive* interactive = p_interactives[i];
-      interactive->draw_semitransparent_by_OpenGL(selection, true);
-    }
-  OpenGLUtil::opaque_mode();
-#endif
 }
 
 /* Local Variables:	*/

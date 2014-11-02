@@ -17,13 +17,27 @@
 #include "ShutUp.h"
 
 static int index = 0;
-static int five_membered_ring_colors[12] = {
-#if defined(CONFIG_COLORED_CELLOPHANE_IS_TINT)
-  0xff8080, 0xffc080, 0xffff80, 0xc0ff80, 0x80ff80, 0x80ffc0,
-  0x80ffff, 0x80c0ff, 0x8080ff, 0xc080ff, 0xff80ff, 0xff80c0
-#else
+int *pentagon_cellophane_colors = 0;
+int pentagon_strong_cellophane_colors[12] = {
   0xff0000, 0xc04000, 0x808000, 0x40c000, 0x00ff00, 0x00c040,
   0x008080, 0x0040c0, 0x0000ff, 0x4000c0, 0x800080, 0xc00040
+};
+
+int pentagon_tint_cellophane_colors[12] = {
+  0xff8080, 0xffc080, 0xffff80, 0xc0ff80, 0x80ff80, 0x80ffc0,
+  0x80ffff, 0x80c0ff, 0x8080ff, 0xc080ff, 0xff80ff, 0xff80c0
+};
+
+int pentagon_mono_chrome_cellophane_colors[12] = {
+#if 0
+  0xffa0a0, 0xffa0a0, 0xffa0a0, 0xffa0a0, 0xffa0a0, 0xffa0a0,
+  0xffa0a0, 0xffa0a0, 0xffa0a0, 0xffa0a0, 0xffa0a0, 0xffa0a0
+#elif 1
+  0xff8090, 0xff9080, 0xff8080, 0xff8090, 0xff9080, 0xff8080,
+  0xff90a0, 0xffa090, 0xff9090, 0xff90a0, 0xffa090, 0xff9090
+#else
+  0xff90a0, 0xffa090, 0xff9090, 0xff90a0, 0xffa090, 0xff9090,
+  0xff90a0, 0xffa090, 0xff9090, 0xff90a0, 0xffa090, 0xff9090
 #endif
 };
 
@@ -197,7 +211,7 @@ void Ring::p_print_POVRay_semitransparent_clipped_by_Z_non_negative(FILE* fptr,
 Ring::Ring(int number_of_carbons, CarbonAllotrope* ca)
  : InteractiveRegularPolygon(ca, ca->ring_next_sequence++, 1.0, number_of_carbons),
     p_number_of_carbons(number_of_carbons), p_clockwise(0),
-    p_ring_color(five_membered_ring_colors[index])
+    p_ring_color(pentagon_cellophane_colors[index])
 {
   if (number_of_carbons != 6)
     ++index;
@@ -209,7 +223,7 @@ Ring::Ring(int number_of_carbons, CarbonAllotrope* ca)
 Ring::Ring(CarbonAllotrope* ca, int number_of_carbons)
   : InteractiveRegularPolygon(ca, ca->ring_next_sequence++, 1.0, number_of_carbons),
     p_number_of_carbons(number_of_carbons), p_clockwise(0),
-    p_ring_color(five_membered_ring_colors[index])
+    p_ring_color(pentagon_cellophane_colors[index])
 {
   if (number_of_carbons != 6)
     ++index;
@@ -247,7 +261,7 @@ Ring::Ring(CarbonAllotrope* ca, int number_of_carbons)
 Ring::Ring(CarbonAllotrope* ca, int number_of_carbons, Bond* bond_connection)
   : InteractiveRegularPolygon(ca, ca->ring_next_sequence++, 1.0, number_of_carbons),
     p_number_of_carbons(number_of_carbons), p_clockwise(0),
-    p_ring_color(five_membered_ring_colors[index])
+    p_ring_color(pentagon_cellophane_colors[index])
 {
   if (number_of_carbons != 6)
     ++index;
@@ -260,7 +274,7 @@ Ring::Ring(CarbonAllotrope* ca, int number_of_carbons, Bond* bond_connection)
 Ring::Ring(CarbonAllotrope* ca, int number_of_carbons, Carbon* carbon_connection)
   : InteractiveRegularPolygon(ca, ca->ring_next_sequence++, 1.0, number_of_carbons),
     p_number_of_carbons(number_of_carbons), p_clockwise(0),
-    p_ring_color(five_membered_ring_colors[index])
+    p_ring_color(pentagon_cellophane_colors[index])
 {
   if (number_of_carbons != 6)
     ++index;
@@ -280,7 +294,7 @@ Ring::Ring(CarbonAllotrope* ca, int number_of_carbons, Carbon* carbon_connection
 Ring::Ring(CarbonAllotrope* ca, int number_of_carbons, const int* carbon_sequence_nos)
   : InteractiveRegularPolygon(ca, ca->ring_next_sequence++, 1.0, number_of_carbons),
     p_number_of_carbons(number_of_carbons), p_clockwise(0),
-    p_ring_color(five_membered_ring_colors[index])
+    p_ring_color(pentagon_cellophane_colors[index])
 {
   if (number_of_carbons != 6)
     ++index;

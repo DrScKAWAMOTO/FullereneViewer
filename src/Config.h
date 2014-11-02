@@ -16,17 +16,8 @@
 /* FullereneViewer のぐるぐるモードで法線を表示する。 */
 // #define CONFIG_DRAW_NORMAL_VECTOR_IN_GURUGURU_MODE 1
 
-/* FullereneViewer のぐるぐるモードで3方向線(長径・中径・短径)を表示する。 */
-// #define CONFIG_DRAW_PRINCIPAL_COMPONENT_AXES_IN_GURUGURU_MODE 1
-
 /* FullereneViewer の POVRay スナップショットの背景を透明色にする。 */
 // #define CONFIG_PAINT_TRANSPARENT_COLOR_TO_BACKGROUND_IN_POVRAY_SNAPSHOT 1
-
-/* FullereneViewer/ca-modeling で五員環にセロファンを貼る。 */
-#define CONFIG_PUT_COLORED_CELLOPHANE_IN_5_MEMBER_RING 1
-
-/* FullereneViewer/ca-modeling での五員環セロファンは淡い色。 */
-// #define CONFIG_COLORED_CELLOPHANE_IS_TINT 1
 
 /* FullereneViewer のぐるぐるモードでの目標CPU使用率(単位は%)を設定する。 */
 /* 値は 1 から 99 までの整数値 */

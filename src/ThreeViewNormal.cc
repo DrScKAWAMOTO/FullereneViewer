@@ -50,7 +50,7 @@ void ThreeViewNormal::interaction_original(OriginalForceType UNUSED(force_type),
     }
   p_normal.clockwise = 1;
   fix_center_location(p_ca->get_center_location());
-  fix_radius_length(Eigenvalue * 0.5);
+  fix_radius_length(sqrt(Eigenvalue) * 2.0);
   fix_posture(Matrix3(Quaternion(Vector3(0.0, 0.0, 1.0), Eigenvector)));
 }
 
@@ -61,13 +61,13 @@ void ThreeViewNormal::draw_opaque_by_OpenGL(bool UNUSED(selection)) const
   switch (p_get_nth())
     {
     case 1:
-      OpenGLUtil::set_color(0xff80b0);
+      OpenGLUtil::set_color(0xff0000);
       break;
     case 2:
-      OpenGLUtil::set_color(0xb0ff80);
+      OpenGLUtil::set_color(0x00ff00);
       break;
     default:
-      OpenGLUtil::set_color(0x80b0ff);
+      OpenGLUtil::set_color(0x0000ff);
       break;
     }
   OpenGLUtil::draw_cylinder(0.1, get_center_location() - norm,

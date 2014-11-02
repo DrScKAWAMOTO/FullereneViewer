@@ -30,6 +30,7 @@ public:
   static bool s_need_representations_reflection;
   static bool s_need_all_axes;
   static bool s_need_major_axes;
+  static bool s_need_principal_component_axes;
 
 private:
   List<Ring> p_rings;

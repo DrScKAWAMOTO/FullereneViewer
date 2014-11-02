@@ -26,6 +26,7 @@ class Interactives : public Object {
   // members
 public:
   static bool s_need_simulation;
+  static bool s_need_draw_pentagon_cellophanes;
 
 private:
   List<InteractiveOperation> p_operations;
