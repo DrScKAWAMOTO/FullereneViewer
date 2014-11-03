@@ -160,7 +160,7 @@ void SymmetryAxisNormal::draw_opaque_by_OpenGL(bool UNUSED(selection)) const
 {
   Vector3 norm = get_normal();
   norm *= p_radius.length;
-  OpenGLUtil::set_color(0xff1000);
+  OpenGLUtil::set_color(0x001810);
   OpenGLUtil::draw_cylinder(0.1, get_center_location() - norm,
                             get_center_location() + norm);
 }
