@@ -1,7 +1,7 @@
 # FullereneViewer(フラーレンビューア)
 ## リリースノート
 
-### 2014/??/?? Version 1.4.1
+### 2014/11/03 Version 1.4.1
 　ca-server ca-parallel 実装。  
 　ca-generator をパラレル実行させることができる。  
 　assert() に副作用のあるコードを書かないようにした。  
