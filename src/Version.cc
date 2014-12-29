@@ -23,7 +23,7 @@ void print_version(const char* program_name, FILE* output)
   if (output == stderr)
     {
       fprintf(output, "%sThanks to all contributors:\n", comment);
-      fprintf(output, "%s    KAWAMOTO,Takuto       Kunihiro AIHARA\n", comment);
+      fprintf(output, "%s    KAWAMOTO,Takuto       Kunihiro AIHARA       Yuji Nomura\n", comment);
     }
 }
 
