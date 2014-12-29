@@ -4,9 +4,12 @@
  * Copyright: (C) 2011-14 Dr.Sc.KAWAMOTO,Takuji (Ext)
  */
 
-#include <QtWidgets>
-#include <QtWebKitWidgets>
 #include "HelpBrowser.h"
+#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+#include <QtWebKitWidgets>
+#else
+#include <Qt/QtWebKit>
+#endif
 
 static HelpBrowser *helpBrowser = NULL;
 

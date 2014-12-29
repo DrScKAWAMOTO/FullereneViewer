@@ -5,7 +5,13 @@
 # Create: 2012/03/14 15:36:05 JST
 #
 
-QT       += core gui opengl webkitwidgets
+QT       += core gui opengl
+contains(QT_VERSION, ^4.*) {
+    QT       += webkit
+}
+contains(QT_VERSION, ^5.*) {
+    QT       += webkitwidgets
+}
 TEMPLATE = app
 TARGET = FullereneViewer
 DEPENDPATH += . ..

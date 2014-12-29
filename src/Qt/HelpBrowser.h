@@ -7,7 +7,12 @@
 #ifndef __HELPBROWSER_H__
 #define __HELPBROWSER_H__
 
+#include <QtGlobal>
+#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
 #include <QtWidgets>
+#else
+#include <QtGui>
+#endif
 
 class QWebView;
 QT_BEGIN_NAMESPACE
