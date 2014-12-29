@@ -1,17 +1,17 @@
 /*
  * Project: FullereneViewer
  * Version: 1.0
- * Copyright: (C) 2011-14 Dr.Sc.KAWAMOTO,Takuji (Ext)
+ * Copyright: (C) 2011-15 Dr.Sc.KAWAMOTO,Takuji (Ext)
  */
 
 #ifndef __HELPBROWSER_H__
 #define __HELPBROWSER_H__
 
 #include <QtGlobal>
-#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
-#include <QtWidgets>
-#else
+#if QT_VERSION < QT_VERSION_CHECK(5,0,0)
 #include <QtGui>
+#else
+#include <QtWidgets>
 #endif
 
 class QWebView;

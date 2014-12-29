@@ -1,7 +1,7 @@
 /*
  * Project: FullereneViewer
  * Version: 1.0
- * Copyright: (C) 2011-14 Dr.Sc.KAWAMOTO,Takuji (Ext)
+ * Copyright: (C) 2011-15 Dr.Sc.KAWAMOTO,Takuji (Ext)
  */
 
 #define _CRT_SECURE_NO_WARNINGS

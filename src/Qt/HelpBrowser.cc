@@ -1,14 +1,14 @@
 /*
  * Project: FullereneViewer
  * Version: 1.0
- * Copyright: (C) 2011-14 Dr.Sc.KAWAMOTO,Takuji (Ext)
+ * Copyright: (C) 2011-15 Dr.Sc.KAWAMOTO,Takuji (Ext)
  */
 
 #include "HelpBrowser.h"
-#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
-#include <QtWebKitWidgets>
-#else
+#if QT_VERSION < QT_VERSION_CHECK(5,0,0)
 #include <Qt/QtWebKit>
+#else
+#include <QtWebKitWidgets>
 #endif
 
 static HelpBrowser *helpBrowser = NULL;

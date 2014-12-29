@@ -1,7 +1,7 @@
 /*
  * Project: FullereneViewer
  * Version: 1.0
- * Copyright: (C) 2011-14 Dr.Sc.KAWAMOTO,Takuji (Ext)
+ * Copyright: (C) 2011-15 Dr.Sc.KAWAMOTO,Takuji (Ext)
  */
 
 #ifndef __VERSION_H__
@@ -9,7 +9,7 @@
 
 #include <stdio.h>
 
-#define FULLERENE_VIEWER_VERSION "1.4.1"
+#define FULLERENE_VIEWER_VERSION "1.4.2"
 
 extern void print_version(const char* program_name, FILE* output = 0);
 

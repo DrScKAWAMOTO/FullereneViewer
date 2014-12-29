@@ -129,7 +129,7 @@
 ## 7) カーボン・ナノ・チューブ (Carbon Nano Tube)
 　メニューに、 [カーボン・ナノ・チューブ](media/screenshot-5.png) の典型パターンを生成する項目(extras - Carbon Nano Tube)があります。これもぐるぐる回せます。
 
-## 8) 七員環を６個使ったY-分岐フラーレン (Y-branch fullerene)
+## 8) 七員環を６個使ったY-分岐フラーレン (Y-branched fullerene)
 　メニューに、 [七員環を６個使ったY-分岐フラーレン](media/screenshot-6.png) を生成する項目(extras - Fullerene Y)があります。これもぐるぐる回せます。  
 　炭素数があまりにも多いので、拡大表示のままでは動作が遅いです。ウィンドウを通常サイズに戻して見て下さい。  
 　これは感動ものです。  
@@ -138,7 +138,7 @@
 　もし導電性が無いのなら、導電性の有るカーボン・ナノ・チューブを使ってY-分岐フラーレンを構成しなおさなければなりません。
 
 ## 9) ライセンス (License)
-　Copyright (C) 2011-14 Dr.Sc.KAWAMOTO,Takuji (Ext)  
+　Copyright (C) 2011-15 Dr.Sc.KAWAMOTO,Takuji (Ext)  
 　Apache License に基づき公開します。
 
 ## 10) リリースノート (Release Note)

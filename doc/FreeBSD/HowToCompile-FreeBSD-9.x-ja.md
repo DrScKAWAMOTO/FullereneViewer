@@ -1,5 +1,5 @@
 # FullereneViewer(フラーレンビューア)
-## コンパイル方法 (FreeBSD 9.1)
+## コンパイル方法 (FreeBSD 9.x)
 ### 1) ポートのインストール
     home> su
     # cd /usr/ports
@@ -8,11 +8,12 @@
         devel/sdl12 は OPENGL X11 を ON
         graphics/aalib は X11 を ON
 
-#### 1-2) 参考
+#### 1-1) 参考
 　devel/qt5 のかわりに devel/qt4 でもできます。下記の 4-3) 参考を読んで下さい。  
+　ポートからインストールしたのではなく pkg を使ってバイナリパッケージをインストールした場合は、パスの通し方が少し違うようです。下記の 2-1) 参考を読んで下さい。  
 　graphics/povray37 のかわりに graphics/povray36 でもできます。下記の 4-4) 参考を読んで下さい。
 
-#### 1-3) 参考
+#### 1-2) 参考
 　X11 サーバーに OpenGL が要求するフレームバッファのサポートがあるかを調べるには、glxinfo を起動します。
 　glxinfo で大量にログが出ればフレームバッファのサポートが有るということです。
 
@@ -31,6 +32,11 @@
 
 ### 2) パスを通す
     export PATH=/usr/local/lib/qt5:$PATH
+
+#### 2-1) 参考
+　ポートからインストールしたのではなく pkg を使ってバイナリパッケージをインストールした場合は、以下のようにパスを通してください。
+
+    export PATH=/usr/local/lib/qt5/bin:$PATH
 
 ### 3) github からソースファイル取得
     home> git clone https://github.com/DrScKAWAMOTO/FullereneViewer

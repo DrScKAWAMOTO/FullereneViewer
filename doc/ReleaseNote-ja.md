@@ -1,6 +1,11 @@
 # FullereneViewer(フラーレンビューア)
 ## リリースノート
 
+### 2015/01/01 Version 1.4.2
+　FreeBSD 9.3 で pkg を使った場合のドキュメント訂正。(Yuji Nomura)  
+　FreeBSD 9.2 で qt4 を使った場合のコンパイルエラーを修正。(Yuji Nomura)  
+　copyright 修正。
+
 ### 2014/11/03 Version 1.4.1
 　ca-server ca-parallel 実装。  
 　ca-generator をパラレル実行させることができる。  
