@@ -49,7 +49,7 @@
 /src/Qt/Info.plist
 /src/Qt/build
 /src/Qt/FullereneViewer.xcodeproj
-/src/Qt/FullereneViewer.pro.user
+/src/Qt/FullereneViewer.pro.user*
 /src/build-*
 /src/Depend.mk
 *.gen
