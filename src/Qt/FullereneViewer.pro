@@ -22,7 +22,8 @@ macx {
     ICON = icons/FullereneViewer.icns
 }
 !macx:unix {
-    LIBS += -lGLU
+    INCLUDEPATH += /usr/local/include
+    LIBS += -L/usr/local/lib -lGLU
 }
 win32 {
     RC_FILE = FullereneViewer.rc
