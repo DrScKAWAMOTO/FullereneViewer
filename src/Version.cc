@@ -16,9 +16,9 @@ void print_version(const char* program_name, FILE* output)
   else
     output = stderr;
 
+  fprintf(output, "%s%s Ver " FULLERENE_VIEWER_VERSION "\n", comment, program_name);
   fprintf(output, "%sCopyright (C) 2011-15 Dr.Sc.KAWAMOTO,Takuji (Ext)"
           " All Rights Reserved.\n", comment);
-  fprintf(output, "%s%s Ver " FULLERENE_VIEWER_VERSION "\n", comment, program_name);
   fprintf(output, "%s\n", comment);
   if (output == stderr)
     {
