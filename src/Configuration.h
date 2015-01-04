@@ -45,6 +45,11 @@ enum DrawPentagonCellophanes {
   DRAW_PENTAGON_TRANSPARENT
 };
 
+enum ArrangeOpenFullerene {
+  ARRANGE_OPEN_FULLERENE_AS_TSUZUMI,
+  ARRANGE_OPEN_FULLERENE_AS_SPHERE
+};
+
 class Configuration {
   // friend classes & functions
 
@@ -58,6 +63,7 @@ private:
   DisplaySymmetryAxes p_display_symmetry_axes;
   DisplayPrincipalComponentAxes p_display_principal_component_axes;
   DrawPentagonCellophanes p_draw_pentagon_cellophanes;
+  ArrangeOpenFullerene p_arrange_open_fullerene;
 
   // private tools
 
@@ -91,6 +97,10 @@ public:
   { return p_draw_pentagon_cellophanes; }
   void set_draw_pentagon_cellophanes(DrawPentagonCellophanes draw_pentagon_cellophanes)
   { p_draw_pentagon_cellophanes = draw_pentagon_cellophanes; }
+  ArrangeOpenFullerene get_arrange_open_fullerene() const
+  { return p_arrange_open_fullerene; }
+  void set_arrange_open_fullerene(ArrangeOpenFullerene arrange_open_fullerene)
+  { p_arrange_open_fullerene = arrange_open_fullerene; }
   const char* get_working_folder_name() const { return p_working_folder_name; }
   void set_working_folder_name(const char* path);
   const char* get_povray_command_line() const { return p_povray_command_line; }

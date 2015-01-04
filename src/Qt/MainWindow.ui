@@ -30,19 +30,21 @@
     <addaction name="action_C"/>
     <addaction name="action_Q"/>
    </widget>
-   <widget class="QMenu" name="menu_C">
+   <widget class="QMenu" name="menu_G">
     <property name="title">
-     <string>フラーレン指定(&amp;C)</string>
+     <string>フラーレン生成(&amp;G)</string>
     </property>
     <addaction name="action_S"/>
-    <addaction name="action_F"/>
+    <addaction name="action_G"/>
    </widget>
    <widget class="QMenu" name="menu_M">
     <property name="title">
-     <string>モード(&amp;M)</string>
+     <string>操作(&amp;M)</string>
     </property>
     <addaction name="action_Z"/>
     <addaction name="action_X"/>
+    <addaction name="action_T"/>
+    <addaction name="action_D"/>
    </widget>
    <widget class="QMenu" name="menu_O">
     <property name="title">
@@ -51,7 +53,7 @@
     <addaction name="action_M"/>
     <addaction name="action_R"/>
     <addaction name="action_6"/>
-    <addaction name="action_O"/>
+    <addaction name="action_1"/>
    </widget>
    <widget class="QMenu" name="menu_H">
     <property name="title">
@@ -61,7 +63,7 @@
     <addaction name="action_A"/>
    </widget>
    <addaction name="menu_F"/>
-   <addaction name="menu_C"/>
+   <addaction name="menu_G"/>
    <addaction name="menu_M"/>
    <addaction name="menu_O"/>
    <addaction name="menu_H"/>
@@ -126,12 +128,12 @@
     <string>6</string>
    </property>
   </action>
-  <action name="action_O">
+  <action name="action_1">
    <property name="text">
-    <string>スナップショット出力(&amp;O)</string>
+    <string>スナップショット出力(&amp;1)</string>
    </property>
    <property name="toolTip">
-    <string>スナップショット出力(O)</string>
+    <string>スナップショット出力(1)</string>
    </property>
    <property name="shortcut">
     <string>O</string>
@@ -167,12 +169,12 @@
     <string>A</string>
    </property>
   </action>
-  <action name="action_F">
+  <action name="action_G">
    <property name="text">
-    <string>生成式指定...(&amp;F)</string>
+    <string>生成式指定...(&amp;G)</string>
    </property>
    <property name="toolTip">
-    <string>生成式指定(F)</string>
+    <string>生成式指定(G)</string>
    </property>
    <property name="shortcut">
     <string>F</string>
@@ -187,6 +189,28 @@
    </property>
    <property name="shortcut">
     <string>S</string>
+   </property>
+  </action>
+  <action name="action_T">
+   <property name="text">
+    <string>裏返す(&amp;T)</string>
+   </property>
+   <property name="toolTip">
+    <string>裏返す(T)</string>
+   </property>
+   <property name="shortcut">
+    <string>T</string>
+   </property>
+  </action>
+  <action name="action_D">
+   <property name="text">
+    <string>最も遠いリング除去(&amp;D)</string>
+   </property>
+   <property name="toolTip">
+    <string>最も遠いリング除去(D)</string>
+   </property>
+   <property name="shortcut">
+    <string>D</string>
    </property>
   </action>
  </widget>

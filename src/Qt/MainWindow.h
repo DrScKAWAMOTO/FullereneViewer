@@ -22,15 +22,17 @@ public:
   ~MainWindow();
     
 private slots:
+  void setupDialog();
+  void selectFullereneDialog();
+  void formulaDialog();
   void setGuruguruMode();
   void setPickingMode();
+  void turnInsideOut();
+  void deleteTheFarMostRing();
   void memoryShape();
   void recallShape();
   void drawSixViews();
   void drawSnapshot();
-  void setupDialog();
-  void formulaDialog();
-  void selectFullereneDialog();
   void showHelp();
   void showAbout();
 

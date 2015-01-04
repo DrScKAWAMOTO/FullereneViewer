@@ -37,6 +37,7 @@ bool CarbonAllotrope::s_need_representations_reflection = false;
 bool CarbonAllotrope::s_need_all_axes = false;
 bool CarbonAllotrope::s_need_major_axes = false;
 bool CarbonAllotrope::s_need_principal_component_axes = false;
+bool CarbonAllotrope::s_need_tsuzumi_expansion = false;
 
 void CarbonAllotrope::p_make_n_polygon(int n_members)
 {
@@ -1986,9 +1987,7 @@ void CarbonAllotrope::execute_POVRay(const MyString& pov_name)
     }
 }
 
-void CarbonAllotrope::
-draw_force_to_circle_by_POVRay(const MyString& file_name_base, List<Carbon>& cutend_list,
-                               double delta, int steps, int divisions)
+void CarbonAllotrope::force_to_circle(List<Carbon>& cutend_list)
 {
   int count = cutend_list.length();
   if (count > 0)
@@ -2011,7 +2010,9 @@ draw_force_to_circle_by_POVRay(const MyString& file_name_base, List<Carbon>& cut
       }
       /* 周辺(cutend_list) の Carbon を、中心からの距離に応じて配置する。*/
       int cutend_max = p_maximum_distance_to_set();
-      double radius = print_out_sequence_no ? 11.0 : 11.5;
+      double radius = sqrt(number_of_carbons()) * 1.42;
+      if (print_out_sequence_no)
+        radius *= 1.05;
       double radius_delta = 0.8 / (cutend_max + 1);
       for (int i = 0; i < count; ++i)
         {
@@ -2022,19 +2023,14 @@ draw_force_to_circle_by_POVRay(const MyString& file_name_base, List<Carbon>& cut
           double y = each_radius * cos(i * PAI * 2.0 / count);
           each->fix_center_location(Vector3(x, y, 0.0));
         }
-      /* 全Carbon は、XY平面内に配置する。*/
-      int len = number_of_carbons();
-      InteractivePlane* plane = new InteractivePlane(this, 1);
-      plane->fix_posture(Matrix3());
-      plane->fix_center_location(Vector3(0.0, 0.0, 0.0));
-      for (int i = 0; i < len; ++i)
-        {
-          Carbon* carbon = get_carbon(i);
-          p_register_interaction(LOCATION_FORCE_TYPE_ATTRACTIVE,
-                                 carbon, ACTION_LOCATION_CENTER,
-                                 plane, ACTION_LOCATION_NEAREST);
-        }
     }
+}
+
+void CarbonAllotrope::
+draw_force_to_circle_by_POVRay(const MyString& file_name_base, List<Carbon>& cutend_list,
+                               double delta, int steps, int divisions)
+{
+  force_to_circle(cutend_list);
   draw_by_POVRay(file_name_base, delta, steps, divisions);
 }
 
@@ -2044,7 +2040,8 @@ draw_force_to_circle_by_POVRay(const MyString& file_name_base,
 {
   List<Carbon> cutend_list;
   list_oldest_connected_boundary(cutend_list);
-  draw_force_to_circle_by_POVRay(file_name_base, cutend_list, delta, steps, divisions);
+  force_to_circle(cutend_list);
+  draw_by_POVRay(file_name_base, delta, steps, divisions);
 }
 
 void CarbonAllotrope::
@@ -2056,7 +2053,8 @@ draw_development_view_by_POVRay(const MyString& file_name_base, Ring* cutend_rin
   for (int i = 0; i < count; ++i)
     cutend_list.add(cutend_ring->get_carbon(i));
   remove_ring(cutend_ring);
-  draw_force_to_circle_by_POVRay(file_name_base, cutend_list, delta, steps, divisions);
+  force_to_circle(cutend_list);
+  draw_by_POVRay(file_name_base, delta, steps, divisions);
 }
 
 void CarbonAllotrope::print_POVRay_scene_description(FILE* fptr) const
@@ -2142,6 +2140,7 @@ void CarbonAllotrope::register_ring(Ring* ring)
 void CarbonAllotrope::remove_ring(Ring* ring)
 {
   p_rings.remove(ring);
+  unregister_interactive(ring);
 }
 
 Ring* CarbonAllotrope::get_ring(int index) const
@@ -2160,6 +2159,36 @@ Ring* CarbonAllotrope::get_ring_by_sequence_no(int sequence_no) const
         return ring;
     }
   return 0;
+}
+
+void CarbonAllotrope::remove_the_far_most_ring(const Quaternion& rotation)
+{
+  Matrix3 rotmat = rotation;
+  int len = number_of_rings();
+  int the_far_most_ring = -1;
+  double the_far_most_center = 0.0;
+  int i = -1;
+  for (i = 0; i < len; ++i)
+    {
+      Vector3 center = p_rings[i]->get_center_location();
+      center *= rotmat;
+      if (center.z() < the_far_most_center)
+        {
+          the_far_most_ring = i;
+          the_far_most_center = center.z();
+        }
+    }
+  if (the_far_most_ring != -1)
+    {
+      List<Carbon> cutend_list;
+      Ring* ring = p_rings[the_far_most_ring];
+      int count = ring->number_of_carbons();
+      for (int i = 0; i < count; ++i)
+        cutend_list.add(ring->get_carbon(i));
+      remove_ring(ring);
+      force_to_circle(cutend_list);
+      resume_simulation();
+    }
 }
 
 void CarbonAllotrope::register_carbon(Carbon* carbon)

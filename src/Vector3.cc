@@ -106,6 +106,11 @@ Vector3 operator / (const Vector3& a, double b)
   return Vector3(a.p_x / b, a.p_y / b, a.p_z / b);
 }
 
+Vector3 operator - (const Vector3& a)
+{
+  return Vector3(-a.p_x, -a.p_y, -a.p_z);
+}
+
 Vector3 exterior_product(const Vector3& a, const Vector3& b)
 {
   return Vector3(a.p_y * b.p_z - a.p_z * b.p_y,

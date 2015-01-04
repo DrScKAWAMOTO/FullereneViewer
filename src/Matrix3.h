@@ -47,6 +47,7 @@ public:
   friend Vector3 operator * (const Matrix3& a, const Vector3& b);
   friend Matrix3 operator * (const Matrix3& a, const Matrix3& b);
   friend Matrix3 operator - (const Matrix3& a, const Matrix3& b);
+  friend Matrix3 operator - (const Matrix3& a);
   void operator *= (const Matrix3& b);
   void operator *= (double b);
   double det() const;

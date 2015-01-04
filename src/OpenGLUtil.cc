@@ -249,6 +249,12 @@ void OpenGLUtil::initialize_post()
     }
   ca = fullerene->get_carbon_allotrope();
   fullerene->set_fullerene_name((char*)fullerene_name);
+  if (CarbonAllotrope::s_need_tsuzumi_expansion)
+    {
+      List<Carbon> cutend_list;
+      ca->list_oldest_connected_boundary(cutend_list);
+      ca->force_to_circle(cutend_list);
+    }
   ca->register_interactions();
   resume_drawing();
 }
@@ -782,6 +788,12 @@ OpenGLUtil::change_fullerene(const char* fullerene_name, const char* generator_f
   window_title.append_string(fullerene->get_generator_formula());
 
   ca = fullerene->get_carbon_allotrope();
+  if (CarbonAllotrope::s_need_tsuzumi_expansion)
+    {
+      List<Carbon> cutend_list;
+      ca->list_oldest_connected_boundary(cutend_list);
+      ca->force_to_circle(cutend_list);
+    }
   ca->register_interactions();
   rotation = Quaternion(1.0, 0.0, 0.0, 0.0);
   rotation_sub = Quaternion(1.0, 0.0, 0.0, 0.0);

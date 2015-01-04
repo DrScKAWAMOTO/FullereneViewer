@@ -99,6 +99,12 @@ void Interactives::register_interactive(Interactive* interactive)
     p_interactives.add(interactive);
 }
 
+void Interactives::unregister_interactive(Interactive* interactive)
+{
+  if (s_need_simulation)
+    p_interactives.remove(interactive);
+}
+
 bool Interactives::operate_interactions(double delta)
 {
   if (p_simulation_active == 0)
@@ -167,6 +173,13 @@ void Interactives::randomized_force(double width)
   int len = p_interactives.length();
   for (int i = 0; i < len; ++i)
     p_interactives[i]->randomized_force(width);
+}
+
+void Interactives::turn_inside_out()
+{
+  int len = p_interactives.length();
+  for (int i = 0; i < len; ++i)
+    p_interactives[i]->turn_inside_out();
 }
 
 void Interactives::draw_by_OpenGL(bool selection) const

@@ -85,7 +85,8 @@ public:
   void operate_interactions(int &stability, const Vector3& center);
   void randomized_force(double width = 1.0);
   void move_by(const Vector3& a);
-
+  void turn_inside_out();
+  
   // determining normal vector
 public:
   void reset_clockwise() { p_normal.clockwise = 0; }

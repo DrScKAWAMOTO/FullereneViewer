@@ -170,6 +170,13 @@ Matrix3 operator - (const Matrix3& a, const Matrix3& b)
                  a.p_zx - b.p_zx, a.p_zy - b.p_zy, a.p_zz - b.p_zz);
 }
 
+Matrix3 operator - (const Matrix3& a)
+{
+  return Matrix3(- a.p_xx, - a.p_xy, - a.p_xz,
+                 - a.p_yx, - a.p_yy, - a.p_yz,
+                 - a.p_zx, - a.p_zy, - a.p_zz);
+}
+
 void Matrix3::operator *= (const Matrix3& b)
 {
   operator = (*this * b);

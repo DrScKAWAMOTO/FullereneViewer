@@ -31,6 +31,7 @@ public:
   static bool s_need_all_axes;
   static bool s_need_major_axes;
   static bool s_need_principal_component_axes;
+  static bool s_need_tsuzumi_expansion;
 
 private:
   List<Ring> p_rings;
@@ -170,6 +171,7 @@ public:
                         const Quaternion& rotation);
   void draw_six_views_by_POVRay(const MyString& file_name_base);
   static void execute_POVRay(const MyString& pov_name);
+  void force_to_circle(List<Carbon>& cutend_list);
   void draw_force_to_circle_by_POVRay(const MyString& file_name_base,
                                       List<Carbon>& cutend_list,
                                       double delta, int steps, int divisions);
@@ -192,6 +194,7 @@ public:
   void remove_ring(Ring* ring);
   Ring* get_ring(int index) const;
   Ring* get_ring_by_sequence_no(int sequence_no) const;
+  void remove_the_far_most_ring(const Quaternion& rotation);
 
   // carbons
   int number_of_carbons() const { return p_carbons.length(); }

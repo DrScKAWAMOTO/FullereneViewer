@@ -82,6 +82,9 @@ Configuration::Configuration(const char* home, const char* desktop)
   p_motion_quality = QUALITY_HIGH;
   p_display_symmetry_axes = DISPLAY_NO_SYMMETRY_AXES;
   p_display_principal_component_axes = DISPLAY_NO_PRINCIPAL_COMPONENT_AXES;
+  p_draw_pentagon_cellophanes = DRAW_PENTAGON_STRONG_CELLOPHANES;
+  p_arrange_open_fullerene = ARRANGE_OPEN_FULLERENE_AS_SPHERE;
+
 }
 
 Configuration::~Configuration()
@@ -205,6 +208,27 @@ static bool name_to_dpc(Word& word, DrawPentagonCellophanes& result)
   return false;
 }
 
+static bool name_to_aof(Word& word, ArrangeOpenFullerene& result)
+{
+  if (word.next() == false)
+    return false;
+  if (word.equals_to("=") == false)
+    return false;
+  if (word.next())
+    return false;
+  if (word.equals_to("tsuzumi"))
+    {
+      result = ARRANGE_OPEN_FULLERENE_AS_TSUZUMI;
+      return true;
+    }
+  else if (word.equals_to("sphere"))
+    {
+      result = ARRANGE_OPEN_FULLERENE_AS_SPHERE;
+      return true;
+    }
+  return false;
+}
+
 void Configuration::load()
 {
   FILE* fptr = fopen(p_configuration_file_name, "r");
@@ -259,6 +283,13 @@ void Configuration::load()
           if (name_to_dpc(word, dpc) == false)
             continue;
           p_draw_pentagon_cellophanes = dpc;
+        }
+      else if (word.equals_to("arrange_open_fullerene"))
+        {
+          ArrangeOpenFullerene aof;
+          if (name_to_aof(word, aof) == false)
+            continue;
+          p_arrange_open_fullerene = aof;
         }
     }
   fclose(fptr);
@@ -320,6 +351,18 @@ static const char* dpc_to_name(DrawPentagonCellophanes dpc)
     }
 }
 
+static const char* aof_to_name(ArrangeOpenFullerene aof)
+{
+  switch (aof)
+    {
+    case ARRANGE_OPEN_FULLERENE_AS_TSUZUMI:
+      return "tsuzumi";
+    case ARRANGE_OPEN_FULLERENE_AS_SPHERE:
+    default:
+      return "sphere";
+    }
+}
+
 void Configuration::save() const
 {
   FILE* fptr = fopen(p_configuration_file_name, "w");
@@ -330,6 +373,7 @@ void Configuration::save() const
           dpca_to_name(p_display_principal_component_axes));
   fprintf(fptr, "draw_pentagon_cellophanes = %s\n",
           dpc_to_name(p_draw_pentagon_cellophanes));
+  fprintf(fptr, "arrange_open_fullerene = %s\n", aof_to_name(p_arrange_open_fullerene));
   fprintf(fptr, "working_folder = %s\n", (char*)p_working_folder_name);
   fprintf(fptr, "povray_command_line = %s\n", (char*)p_povray_command_line);
   fclose(fptr);
@@ -428,6 +472,16 @@ void Configuration::reflect() const
     default:
       Interactives::s_need_draw_pentagon_cellophanes = false;
       pentagon_cellophane_colors = pentagon_mono_chrome_cellophane_colors;
+      break;
+    }
+  switch (p_arrange_open_fullerene)
+    {
+    case ARRANGE_OPEN_FULLERENE_AS_TSUZUMI:
+      CarbonAllotrope::s_need_tsuzumi_expansion = true;
+      break;
+    case ARRANGE_OPEN_FULLERENE_AS_SPHERE:
+    default:
+      CarbonAllotrope::s_need_tsuzumi_expansion = false;
       break;
     }
   if (OpenGLUtil::interval_timer_setup_callback)

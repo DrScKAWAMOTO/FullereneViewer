@@ -30,15 +30,17 @@ MainWindow::MainWindow(QWidget *parent)
   ui->setupUi(this);
   setCentralWidget(new Guruguru(this));
   setWindowTitle((char*)OpenGLUtil::window_title);
+  connect(ui->action_C, SIGNAL(triggered()), this, SLOT(setupDialog()));
+  connect(ui->action_S, SIGNAL(triggered()), this, SLOT(selectFullereneDialog()));
+  connect(ui->action_G, SIGNAL(triggered()), this, SLOT(formulaDialog()));
   connect(ui->action_Z, SIGNAL(triggered()), this, SLOT(setGuruguruMode()));
   connect(ui->action_X, SIGNAL(triggered()), this, SLOT(setPickingMode()));
+  connect(ui->action_T, SIGNAL(triggered()), this, SLOT(turnInsideOut()));
+  connect(ui->action_D, SIGNAL(triggered()), this, SLOT(deleteTheFarMostRing()));
   connect(ui->action_M, SIGNAL(triggered()), this, SLOT(memoryShape()));
   connect(ui->action_R, SIGNAL(triggered()), this, SLOT(recallShape()));
   connect(ui->action_6, SIGNAL(triggered()), this, SLOT(drawSixViews()));
-  connect(ui->action_O, SIGNAL(triggered()), this, SLOT(drawSnapshot()));
-  connect(ui->action_C, SIGNAL(triggered()), this, SLOT(setupDialog()));
-  connect(ui->action_F, SIGNAL(triggered()), this, SLOT(formulaDialog()));
-  connect(ui->action_S, SIGNAL(triggered()), this, SLOT(selectFullereneDialog()));
+  connect(ui->action_1, SIGNAL(triggered()), this, SLOT(drawSnapshot()));
   connect(ui->action_H, SIGNAL(triggered()), this, SLOT(showHelp()));
   connect(ui->action_A, SIGNAL(triggered()), this, SLOT(showAbout()));
   OpenGLUtil::alert_dialog_callback = alert_dialog;
@@ -49,6 +51,27 @@ MainWindow::~MainWindow()
   delete ui;
 }
 
+void MainWindow::setupDialog()
+{
+  ConfigurationDialog *config = new ConfigurationDialog(this);
+  config->exec();
+  delete config;
+}
+
+void MainWindow::selectFullereneDialog()
+{
+  SelectFullereneDialog *select = new SelectFullereneDialog(this);
+  select->exec();
+  delete select;
+}
+
+void MainWindow::formulaDialog()
+{
+  GeneratorFormulaDialog *formula = new GeneratorFormulaDialog(this);
+  formula->exec();
+  delete formula;
+}
+
 void MainWindow::setGuruguruMode()
 {
   OpenGLUtil::set_guruguru_mode();
@@ -57,6 +80,20 @@ void MainWindow::setGuruguruMode()
 void MainWindow::setPickingMode()
 {
   OpenGLUtil::set_carbon_picking_mode();
+}
+
+void MainWindow::turnInsideOut()
+{
+  OpenGLUtil::ca->turn_inside_out();
+  OpenGLUtil::ca->resume_simulation();
+}
+
+void MainWindow::deleteTheFarMostRing()
+{
+  List<Carbon> cutend_list;
+  OpenGLUtil::ca->list_oldest_connected_boundary(cutend_list);
+  if (cutend_list.length() == 0)
+    OpenGLUtil::ca->remove_the_far_most_ring(OpenGLUtil::rotation);
 }
 
 void MainWindow::memoryShape()
@@ -107,27 +144,6 @@ void MainWindow::drawSnapshot()
   char work[1000];
   make_file_name(work);
   OpenGLUtil::ca->OpenGL_to_POVRay(work, OpenGLUtil::view, OpenGLUtil::rotation);
-}
-
-void MainWindow::setupDialog()
-{
-  ConfigurationDialog *config = new ConfigurationDialog(this);
-  config->exec();
-  delete config;
-}
-
-void MainWindow::formulaDialog()
-{
-  GeneratorFormulaDialog *formula = new GeneratorFormulaDialog(this);
-  formula->exec();
-  delete formula;
-}
-
-void MainWindow::selectFullereneDialog()
-{
-  SelectFullereneDialog *select = new SelectFullereneDialog(this);
-  select->exec();
-  delete select;
 }
 
 void MainWindow::showHelp()

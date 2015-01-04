@@ -464,10 +464,7 @@ void Ring::print_POVRay_scene_description(const CarbonAllotrope* UNUSED(ca), FIL
           if (i == num)
             return;
         }
-      Vector3 center = Vector3();
-      for (int i = 0; i < num; ++i)
-        center += get_carbon(i)->carbon_location();
-      center /= (double)num;
+      Vector3 center = get_center_location();
       center *= rot;
       center += move;
       for (int i = 0; i < num; ++i)

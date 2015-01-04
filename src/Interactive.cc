@@ -241,6 +241,12 @@ void Interactive::move_by(const Vector3& a)
   p_center.location += a;
 }
 
+void Interactive::turn_inside_out()
+{
+  if (!p_center.fixed)
+    p_center.location = -p_center.location;
+}
+
 void Interactive::draw_opaque_by_OpenGL(bool UNUSED(selection)) const
 {
 }

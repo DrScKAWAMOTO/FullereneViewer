@@ -71,6 +71,16 @@ ConfigurationDialog::ConfigurationDialog(QWidget *parent)
       ui->drawPentagonTransparentButton->setChecked(true);
       break;
     }
+  switch (configuration->get_arrange_open_fullerene())
+    {
+    case ARRANGE_OPEN_FULLERENE_AS_TSUZUMI:
+      ui->arrangeOpenFullereneAsTsuzumiButton->setChecked(true);
+      break;
+    case ARRANGE_OPEN_FULLERENE_AS_SPHERE:
+      ui->arrangeOpenFullereneAsSphereButton->setChecked(true);
+      break;
+    }
+
   ui->workingFolderLineEdit->setText(QString(configuration->get_working_folder_name()));
   ui->povrayCommandLineLineEdit->setText(QString(configuration->get_povray_command_line()));
 
@@ -113,6 +123,10 @@ void ConfigurationDialog::slot_accept()
     configuration->set_draw_pentagon_cellophanes(DRAW_PENTAGON_MONO_CHROME_CELLOPHANES);
   else
     configuration->set_draw_pentagon_cellophanes(DRAW_PENTAGON_TRANSPARENT);
+  if (ui->arrangeOpenFullereneAsTsuzumiButton->isChecked())
+    configuration->set_arrange_open_fullerene(ARRANGE_OPEN_FULLERENE_AS_TSUZUMI);
+  else
+    configuration->set_arrange_open_fullerene(ARRANGE_OPEN_FULLERENE_AS_SPHERE);
   configuration->set_working_folder_name(qPrintable(ui->workingFolderLineEdit->text()));
   configuration->set_povray_command_line(qPrintable(ui->povrayCommandLineLineEdit->text()));
 

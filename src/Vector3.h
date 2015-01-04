@@ -48,6 +48,7 @@ public:
   friend Vector3 operator * (const Matrix3& a, const Vector3& b);
   friend Vector3 operator * (const Vector3& a, double b);
   friend Vector3 operator / (const Vector3& a, double b);
+  friend Vector3 operator - (const Vector3& a);
   friend Vector3 exterior_product(const Vector3& a, const Vector3& b);
   friend double inner_product(const Vector3& a, const Vector3& b);
   void operator += (const Vector3& a);

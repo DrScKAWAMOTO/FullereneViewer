@@ -59,9 +59,11 @@ protected:
 public:
   virtual const Vector3& get_center_location() const = 0;
   void register_interactive(Interactive* interactive);
+  void unregister_interactive(Interactive* interactive);
   bool operate_interactions(double delta);
   void randomized_force(double width = 1.0);
-
+  void turn_inside_out();
+  
   // I/O
 public:
   void draw_by_OpenGL(bool selection) const;
