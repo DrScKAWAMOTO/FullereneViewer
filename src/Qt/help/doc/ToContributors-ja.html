@@ -13,6 +13,17 @@
 <h3>ソースファイルを追加する場合</h3>
 <h4>1) 追加作業</h4>
 <p>　<code>src</code> か <code>src/Qt</code> に <em>.cc か </em>.h を追加する。<br />　何らかまとまりのあるソースファイル群の場合は、 <code>src</code> 内にディレクトリを作って、その中に追加してください。</p>
+<h5>1-1) 設定メニューの追加作業</h5>
+<p>　次のステップに従う。</p>
+<ul>
+<li>QtDesigner を起動する。<br /></li>
+<li>ConfigurationDialog.ui を開く。<br /></li>
+<li>ラベルやボタンをコピー＆ペーストする。<br /></li>
+<li>グループ化が必要な場合は、複数個のボタンを選択して、右クリックする。<br /></li>
+<li>[ボタングループに割り当て] - [新しいボタングループ] を選択する。<br /></li>
+<li>一度 QtDesigner を終了する。<br /></li>
+<li>エディタで src/Qt/ConfigurationDialog.ui の数値を調整する。</li>
+</ul>
 <h4>2) メイク作業</h4>
 <p>　<code>FullereneViewer</code> に対して追加したのなら、<code>src/Qt/FullereneViewer.pro</code> に追加したファイル名を書き足して下さい。<br />　<code>ca-*.cc</code> シリーズに対して追加し、かつ、ディレクトリを作成した場合は、<code>src/Makefile</code> を書き換えて下さい。</p>
 </body>
