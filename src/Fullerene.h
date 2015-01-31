@@ -14,7 +14,7 @@
 class CarbonAllotrope;
 class Representations;
 class Characteristic;
-class DistanceMatrix;
+class Clustering;
 
 class Fullerene : public Object {
   // friend classes & functions
@@ -23,7 +23,7 @@ class Fullerene : public Object {
   // members
 public:
   static bool s_need_fullerene_characteristic;
-  static bool s_need_distance_matrix;
+  static bool s_need_clustering;
 
 private:
   CarbonAllotrope* p_carbon_allotrope;
@@ -33,7 +33,7 @@ private:
   int p_n, p_m, p_h;
   Representations* p_representations;
   Characteristic* p_characteristic;
-  DistanceMatrix* p_distance_matrix;
+  Clustering* p_clustering;
 
   // private tools
 
@@ -68,7 +68,7 @@ public:
   Representations* get_representations() { return p_representations; }
   const Representations* get_representations() const { return p_representations; }
   Characteristic* get_characteristic() { return p_characteristic; }
-  DistanceMatrix* get_distance_matrix() { return p_distance_matrix; }
+  Clustering* get_clustering() { return p_clustering; }
   int get_n() const { return p_n; }
   int get_m() const { return p_m; }
   int get_h() const { return p_h; }

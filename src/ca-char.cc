@@ -17,7 +17,7 @@
 #include "Characteristic.h"
 #include "Representations.h"
 #include "Interactives.h"
-#include "DistanceMatrix.h"
+#include "Clustering.h"
 #include "ReflectionPair.h"
 #include "StringPair.h"
 #include "Random.h"
@@ -25,12 +25,12 @@
 
 static void usage(const char* arg0)
 {
-  fprintf(stderr, "usage: %s [options] [file-name.gf]\n", arg0);
-  fprintf(stderr, "    file-name.gf ................. gf file name,\n");
+  fprintf(stderr, "usage: %s [options] [file-name.pddgf]\n", arg0);
+  fprintf(stderr, "    file-name.pddgf .............. pddgf file name,\n");
   fprintf(stderr, "options:\n");
   fprintf(stderr, "    --axes-summary ............... show axes summary (default),\n");
   fprintf(stderr, "    --pentagon-distances ......... show distances between pentagons,\n");
-  fprintf(stderr, "    --pentagon-matrix ............ show distance matrix between pentagons,\n");
+  fprintf(stderr, "    --pentagon-clustering ........ show clustering between pentagons,\n");
   fprintf(stderr, "    -v (--version) ............... show version,\n");
   fprintf(stderr, "    -h (--help) .................. show this message.\n");
   exit(0);
@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
   MyString name;
   bool axes_summary = true;
   bool pentagon_distances = false;
-  bool pentagon_matrix = false;
+  bool pentagon_clustering = false;
   bool no_header = false;
   MyString extension;
   const char* arg0 = argv[0];
@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
         {
           axes_summary = true;
           pentagon_distances = false;
-          pentagon_matrix = false;
+          pentagon_clustering = false;
           extension = "axes";
           argc--;
           argv++;
@@ -73,16 +73,16 @@ int main(int argc, char *argv[])
         {
           axes_summary = false;
           pentagon_distances = true;
-          pentagon_matrix = false;
+          pentagon_clustering = false;
           argc--;
           argv++;
         }
-      else if (strcmp(argv[0], "--pentagon-matrix") == 0)
+      else if (strcmp(argv[0], "--pentagon-clustering") == 0)
         {
           axes_summary = false;
           pentagon_distances = false;
-          pentagon_matrix = true;
-          extension = "dmat";
+          pentagon_clustering = true;
+          extension = "clustering";
           argc--;
           argv++;
         }
@@ -125,8 +125,8 @@ int main(int argc, char *argv[])
       CarbonAllotrope::s_need_representations = true;
       CarbonAllotrope::s_need_representations_reflection = true;
     }
-  else if (pentagon_matrix)
-    Fullerene::s_need_distance_matrix = true;
+  else if (pentagon_clustering)
+    Fullerene::s_need_clustering = true;
   else
     {
       CarbonAllotrope::s_need_representations = true;
@@ -188,10 +188,10 @@ int main(int argc, char *argv[])
               exit(1);
             }
         }
-      else if (pentagon_matrix)
+      else if (pentagon_clustering)
         {
           fullerene = new Fullerene(ptr);
-          fullerene->get_distance_matrix()->print_as_table(fout);
+          fullerene->get_clustering()->print_as_table(fout);
           delete fullerene;
         }
       else if (axes_summary)

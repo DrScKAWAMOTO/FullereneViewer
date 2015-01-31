@@ -11,7 +11,7 @@
 #include "CarbonAllotrope.h"
 #include "Fullerene.h"
 #include "Characteristic.h"
-#include "DistanceMatrix.h"
+#include "Clustering.h"
 #include "Random.h"
 #include "DebugMemory.h"
 

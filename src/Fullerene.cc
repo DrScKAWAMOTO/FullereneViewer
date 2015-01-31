@@ -17,24 +17,24 @@
 #include "Automorphisms.h"
 #include "Characteristic.h"
 #include "Generator.h"
-#include "DistanceMatrix.h"
+#include "Clustering.h"
 #include "Pattern.h"
 #include "Utils.h"
 #include "Debug.h"
 #include "DebugMemory.h"
 
 bool Fullerene::s_need_fullerene_characteristic = false;
-bool Fullerene::s_need_distance_matrix = false;
+bool Fullerene::s_need_clustering = false;
 
 Fullerene::Fullerene()
   : p_carbon_allotrope(0), p_error_code(ERROR_CODE_OK), p_n(0), p_m(0), p_h(0),
-    p_representations(0), p_characteristic(0), p_distance_matrix(0)
+    p_representations(0), p_characteristic(0), p_clustering(0)
 {
 }
 
 Fullerene::Fullerene(const char* generator_formula)
   : p_carbon_allotrope(0), p_error_code(ERROR_CODE_OK), p_n(0), p_m(0), p_h(0),
-    p_representations(0), p_characteristic(0), p_distance_matrix(0)
+    p_representations(0), p_characteristic(0), p_clustering(0)
 {
   if (generator_formula[0] == 'C')
     {
@@ -246,8 +246,8 @@ Fullerene::~Fullerene()
     delete p_representations;
   if (p_characteristic)
     delete p_characteristic;
-  if (p_distance_matrix)
-    delete p_distance_matrix;
+  if (p_clustering)
+    delete p_clustering;
 }
 
 int Fullerene::compare(const Fullerene* you) const
@@ -394,8 +394,8 @@ void Fullerene::set_carbon_allotrope(CarbonAllotrope* carbon_allotrope)
     }
   if (p_carbon_allotrope && s_need_fullerene_characteristic)
     p_characteristic = new Characteristic(p_carbon_allotrope);
-  if (p_carbon_allotrope && s_need_distance_matrix)
-    p_distance_matrix = new DistanceMatrix(p_carbon_allotrope);
+  if (p_carbon_allotrope && s_need_clustering)
+    p_clustering = new Clustering(p_carbon_allotrope);
 }
 
 void Fullerene::set_fullerene_name(const char* fullerene_name)

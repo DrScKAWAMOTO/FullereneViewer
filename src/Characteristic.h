@@ -13,6 +13,7 @@
 #include "Object.h"
 
 class CarbonAllotrope;
+class Ring;
 
 class Characteristic : public Object {
   // friend classes & functions
@@ -22,6 +23,8 @@ private:
   Set<DistanceVector> p_dvs;
 
   // private tools
+private:
+  void p_calculate_distances_to_a_ring(CarbonAllotrope* ca, Ring* target);
 
   // constructors & the destructor
 public:

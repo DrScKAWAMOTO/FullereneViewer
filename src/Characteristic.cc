@@ -18,36 +18,55 @@ Characteristic::Characteristic(CarbonAllotrope* ca)
   int len = ca->number_of_rings();
   for (int i = 0; i < len; ++i)
     {
-      Ring* ring = ca->get_ring(i);
-      if (ring->number_of_carbons() != 5)
+      Ring* target = ca->get_ring(i);
+      if (target->number_of_carbons() != 5)
         continue;
-      DistanceVector* dv = new DistanceVector();
-      dv->append(0);
-      List<Carbon> set;
-      for (int j = 0; j < 5; ++j)
-        set.add(ring->get_carbon(j));
-      ca->calculate_distances_to_set(set);
-      for (int j = 0; j < len; ++j)
+      p_calculate_distances_to_a_ring(ca, target);
+    }
+}
+
+void Characteristic::p_calculate_distances_to_a_ring(CarbonAllotrope* ca, Ring* target)
+{
+  int len = ca->number_of_rings();
+  int target_seq_no = target->sequence_no();
+  int distances[len];
+  for (int i = 0; i < len; ++i)
+    distances[i] = INT_MAX;
+  Queue<Ring> operations;
+  DistanceVector* dv = new DistanceVector();
+  distances[target_seq_no - 1] = 0;
+  dv->append(0);
+  operations.enqueue(target);
+  while (1)
+    {
+      Ring* next = operations.dequeue();
+      if (next == 0)
         {
-          Ring* ring2 = ca->get_ring(j);
-          if (i == j)
-            continue;
-          if (ring2->number_of_carbons() != 5)
-            continue;
-          int min_dist = INT_MAX;
-          for (int k = 0; k < 5; ++k)
-            {
-              Carbon* carbon = ring2->get_carbon(k);
-              int dist = carbon->distance_to_set();
-              if (dist == 0)
-                continue;
-              if (dist < min_dist)
-                min_dist = dist;
-            }
-          dv->append(min_dist);
+          DistanceVector* result = p_dvs.search_else_add(dv);
+          assert(result == 0);
+          return;
         }
-      DistanceVector* result = p_dvs.search_else_add(dv);
-      assert(result == 0);
+      int next_seq_no = next->sequence_no();
+      int next_distance = distances[next_seq_no - 1];
+      int num_c = next->number_of_carbons();
+      for (int j = 0; j < num_c; ++j)
+        {
+          Carbon* carbon = next->get_carbon(j);
+          int num_r = carbon->number_of_rings();
+          for (int k = 0; k < num_r; ++k)
+            {
+              Ring* ring = carbon->get_ring(k);
+              int ring_seq_no = ring->sequence_no();
+              if (distances[ring_seq_no - 1] == INT_MAX)
+                {
+                  int distance = next_distance + 1;
+                  distances[ring_seq_no - 1] = distance;
+                  if (ring->number_of_carbons() == 5)
+                    dv->append(distance);
+                  operations.enqueue(ring);
+                }
+            }
+        }
     }
 }
 

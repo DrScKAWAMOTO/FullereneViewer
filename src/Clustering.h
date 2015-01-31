@@ -4,15 +4,16 @@
  * Copyright: (C) 2011-15 Dr.Sc.KAWAMOTO,Takuji (Ext)
  */
 
-#ifndef __DISTANCEMATRIX_H__
-#define __DISTANCEMATRIX_H__
+#ifndef __CLUSTERING_H__
+#define __CLUSTERING_H__
 
 #include <stdio.h>
 #include "Object.h"
 
 class CarbonAllotrope;
+class Ring;
 
-class DistanceMatrix : public Object {
+class Clustering : public Object {
   // friend classes & functions
 
   // members
@@ -30,15 +31,16 @@ private:
   void p_sort(int i, int j);
   int p_select_minimum(int top);
   void p_swap(int i1, int i2);
+  void p_calculate_distances_to_a_ring(CarbonAllotrope* ca, Ring* target);
 
   // constructors & the destructor
 public:
-  DistanceMatrix();
-  DistanceMatrix(CarbonAllotrope* ca);
-  DistanceMatrix(const DistanceMatrix& you);
-  DistanceMatrix(const DistanceMatrix& you, int* group, int no);
-  ~DistanceMatrix();
-  DistanceMatrix& operator = (const DistanceMatrix& you);
+  Clustering();
+  Clustering(CarbonAllotrope* ca);
+  Clustering(const Clustering& you);
+  Clustering(const Clustering& you, int* group, int no);
+  ~Clustering();
+  Clustering& operator = (const Clustering& you);
 
   // type converters
 public:
@@ -55,11 +57,11 @@ public:
 public:
   void set_distance(int seq_no1, int seq_no2, int distance);
   int get_distance(int seq_no1, int seq_no2);
-  int grouping(int max_distance, int* group) const;
+  int clustering(int threshold, int* group) const;
 
 };
 
-#endif /* __DISTANCEMATRIX_H__ */
+#endif /* __CLUSTERING_H__ */
 
 /* Local Variables:	*/
 /* mode: c++		*/
