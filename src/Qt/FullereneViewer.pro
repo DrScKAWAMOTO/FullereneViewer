@@ -30,40 +30,67 @@ win32 {
 }
 
 # Input
-HEADERS += ../Automorphism.h ../Automorphisms.h ../AvoidBugs.h ../Bond.h \
-           ../BoundaryCarbons.h ../Carbon.h ../CarbonAllotrope.h ../Center.h \
-           ../Configuration.h ../Config.h ../Debug.h ../DebugMemory.h \
-           ../DistanceMatrix.h ../ConnectedBoundary.h ../DistanceVector.h ../ErrorCode.h \
-           ../Fullerene.h ../Characteristic.h ../Generator.h \
+HEADERS += ../Automorphism.h ../Automorphisms.h ../AvoidBugs.h \
+           ../Bond.h ../BoundaryCarbons.h \
+           ../Carbon.h ../CarbonAllotrope.h ../Center.h ../Characteristic.h \
+           ../Clustering.h ../Configuration.h ../Config.h ../ConnectedBoundary.h \
+           ../Debug.h ../DebugMemory.h ../DistanceVector.h \
+           ../ErrorCode.h \
+           ../Fullerene.h \
+           ../Generator.h \
            ../Interactive.h ../InteractiveLine.h ../InteractiveOperation.h \
            ../InteractivePlane.h ../InteractivePoint.h ../InteractiveRegularPolygon.h \
-           ../Interactives.h ../List.h ../Set.h ../Matrix3.h \
-           ../MyString.h ../Normal.h ../Object.h ../OpenGLUtil.h ../Pattern.h \
-           ../Posture.h ../Quaternion.h ../Radius.h ../Random.h ../Representation.h \
-           ../RepresentationInfo.h ../Representations.h ../Ring.h ../Statistics.h \
-           ../SymmetryAxis.h ../SymmetryAxisNormal.h ../ThreeViewNormal.h ../Utils.h \
+           ../Interactives.h \
+           ../List.h \
+           ../Matrix3.h ../MyString.h \
+           ../Normal.h \
+           ../Object.h ../OpenGLUtil.h \
+           ../Pattern.h ../Posture.h \
+           ../Quaternion.h \
+           ../Radius.h ../Random.h ../Representation.h ../RepresentationInfo.h \
+           ../Representations.h ../Ring.h \
+           ../Set.h ../Statistics.h ../SymmetryAxis.h ../SymmetryAxisNormal.h \
+           ../ThreeViewNormal.h \
+           ../Utils.h \
            ../Vector3.h ../Version.h \
-           ConfigurationDialog.h MainWindow.h Guruguru.h \
-           HelpBrowser.h AboutWindow.h GeneratorFormulaDialog.h \
-           TreeItem.h TreeModel.h SelectFullereneDialog.h
+           AboutWindow.h ConfigurationDialog.h \
+           GeneratorFormulaDialog.h Guruguru.h \
+           HelpBrowser.h \
+           MainWindow.h \
+           SelectFullereneDialog.h \
+           TreeItem.h TreeModel.h
 FORMS += MainWindow.ui ConfigurationDialog.ui AboutWindow.ui GeneratorFormulaDialog.ui \
     SelectFullereneDialog.ui
-SOURCES += ../Automorphism.cc ../Automorphisms.cc ../Bond.cc ../BoundaryCarbons.cc \
-           ../Carbon.cc ../CarbonAllotrope.cc ../Configuration.cc \
-           ../ConnectedBoundary.cc ../DebugMemory.cc ../DistanceVector.cc \
-           ../DistanceMatrix.cc ../ErrorCode.cc ../Fullerene.cc \
-           ../Characteristic.cc ../Generator.cc ../Interactive.cc \
-           ../InteractiveLine.cc ../InteractiveOperation.cc ../InteractivePlane.cc \
-           ../InteractivePoint.cc ../InteractiveRegularPolygon.cc ../Interactives.cc \
-           ../Matrix3.cc ../MyString.cc ../Object.cc ../OpenGLUtil.cc ../Pattern.cc \
-           ../Quaternion.cc ../Random.cc ../Representation.cc ../RepresentationInfo.cc \
-           ../Representations.cc ../Ring.cc ../Statistics.cc ../SymmetryAxis.cc \
-           ../SymmetryAxisNormal.cc ../ThreeViewNormal.cc ../Utils.cc ../Vector3.cc \
-           ../Version.cc \
-           ConfigurationDialog.cc main.cc MainWindow.cc Guruguru.cc \
-           HelpBrowser.cc AboutWindow.cc GeneratorFormulaDialog.cc \
-           TreeItem.cc RingItem.cc CarbonItem.cc BondItem.cc TubeItem.cc MergedItem.cc \
-           TreeModel.cc SelectFullereneDialog.cc
+SOURCES += ../Automorphism.cc ../Automorphisms.cc \
+           ../Bond.cc ../BoundaryCarbons.cc \
+           ../Carbon.cc ../CarbonAllotrope.cc ../Characteristic.cc ../Clustering.cc \
+           ../Configuration.cc ../ConnectedBoundary.cc \
+           ../DebugMemory.cc ../DistanceVector.cc \
+           ../ErrorCode.cc \
+           ../Fullerene.cc \
+           ../Generator.cc \
+           ../Interactive.cc ../InteractiveLine.cc ../InteractiveOperation.cc \
+           ../InteractivePlane.cc ../InteractivePoint.cc \
+           ../InteractiveRegularPolygon.cc ../Interactives.cc \
+           ../Matrix3.cc ../MyString.cc \
+           ../Object.cc ../OpenGLUtil.cc \
+           ../Pattern.cc \
+           ../Quaternion.cc \
+           ../Random.cc ../Representation.cc ../RepresentationInfo.cc \
+           ../Representations.cc ../Ring.cc \
+           ../Statistics.cc ../SymmetryAxis.cc ../SymmetryAxisNormal.cc \
+           ../ThreeViewNormal.cc \
+           ../Utils.cc \
+           ../Vector3.cc ../Version.cc \
+           AboutWindow.cc \
+           BondItem.cc \
+           CarbonItem.cc ConfigurationDialog.cc \
+           GeneratorFormulaDialog.cc Guruguru.cc \
+           HelpBrowser.cc \
+           main.cc MainWindow.cc MergedItem.cc \
+           RingItem.cc \
+           SelectFullereneDialog.cc \
+           TreeItem.cc TreeModel.cc TubeItem.cc
 
 OTHER_FILES +=
 

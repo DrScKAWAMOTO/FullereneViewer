@@ -136,7 +136,7 @@
     <string>スナップショット出力(1)</string>
    </property>
    <property name="shortcut">
-    <string>O</string>
+    <string>1</string>
    </property>
   </action>
   <action name="action_C">
@@ -177,7 +177,7 @@
     <string>生成式指定(G)</string>
    </property>
    <property name="shortcut">
-    <string>F</string>
+    <string>G</string>
    </property>
   </action>
   <action name="action_S">

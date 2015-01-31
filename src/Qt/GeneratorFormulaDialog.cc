@@ -14,7 +14,7 @@ GeneratorFormulaDialog::GeneratorFormulaDialog(QWidget *parent)
   : QDialog(parent), ui(new Ui::GeneratorFormulaDialog)
 {
   ui->setupUi(this);
-  ui->generatorFormulaLineEdit->setText(QString(""));
+  ui->generatorFormulaLineEdit->setText(QString((char*)OpenGLUtil::generator_formula));
 
   connect(ui->buttonBox, SIGNAL(accepted()), this, SLOT(slot_accept()));
   connect(ui->buttonBox, SIGNAL(rejected()), this, SLOT(slot_reject()));
