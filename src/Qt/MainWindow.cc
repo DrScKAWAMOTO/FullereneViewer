@@ -37,6 +37,7 @@ MainWindow::MainWindow(QWidget *parent)
   connect(ui->action_X, SIGNAL(triggered()), this, SLOT(setPickingMode()));
   connect(ui->action_T, SIGNAL(triggered()), this, SLOT(turnInsideOut()));
   connect(ui->action_D, SIGNAL(triggered()), this, SLOT(deleteTheFarMostRing()));
+  connect(ui->action_V, SIGNAL(triggered()), this, SLOT(switchDisplayingObjects()));
   connect(ui->action_M, SIGNAL(triggered()), this, SLOT(memoryShape()));
   connect(ui->action_R, SIGNAL(triggered()), this, SLOT(recallShape()));
   connect(ui->action_6, SIGNAL(triggered()), this, SLOT(drawSixViews()));
@@ -94,6 +95,15 @@ void MainWindow::deleteTheFarMostRing()
   OpenGLUtil::ca->list_oldest_connected_boundary(cutend_list);
   if (cutend_list.length() == 0)
     OpenGLUtil::ca->remove_the_far_most_ring(OpenGLUtil::rotation);
+}
+
+void MainWindow::switchDisplayingObjects()
+{
+  if (--CarbonAllotrope::s_flags_displaying_objects < 0)
+    CarbonAllotrope::s_flags_displaying_objects = (S_FLAGS_MASK_RINGS |
+                                                   S_FLAGS_MASK_BONDS |
+                                                   S_FLAGS_MASK_CARBONS);
+  OpenGLUtil::resume_drawing();
 }
 
 void MainWindow::memoryShape()

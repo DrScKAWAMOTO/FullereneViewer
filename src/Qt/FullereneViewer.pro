@@ -33,7 +33,8 @@ win32 {
 HEADERS += ../Automorphism.h ../Automorphisms.h ../AvoidBugs.h \
            ../Bond.h ../BoundaryCarbons.h \
            ../Carbon.h ../CarbonAllotrope.h ../Center.h ../Characteristic.h \
-           ../Clustering.h ../Configuration.h ../Config.h ../ConnectedBoundary.h \
+           ../Clustering.h ../Clusters.h ../Configuration.h ../Config.h \
+           ../ConnectedBoundary.h \
            ../Debug.h ../DebugMemory.h ../DistanceVector.h \
            ../ErrorCode.h \
            ../Fullerene.h \
@@ -49,7 +50,8 @@ HEADERS += ../Automorphism.h ../Automorphisms.h ../AvoidBugs.h \
            ../Quaternion.h \
            ../Radius.h ../Random.h ../Representation.h ../RepresentationInfo.h \
            ../Representations.h ../Ring.h \
-           ../Set.h ../Statistics.h ../SymmetryAxis.h ../SymmetryAxisNormal.h \
+           ../SortByZ.h ../Set.h ../Statistics.h ../SymmetryAxis.h \
+           ../SymmetryAxisNormal.h \
            ../ThreeViewNormal.h \
            ../Utils.h \
            ../Vector3.h ../Version.h \
@@ -64,7 +66,7 @@ FORMS += MainWindow.ui ConfigurationDialog.ui AboutWindow.ui GeneratorFormulaDia
 SOURCES += ../Automorphism.cc ../Automorphisms.cc \
            ../Bond.cc ../BoundaryCarbons.cc \
            ../Carbon.cc ../CarbonAllotrope.cc ../Characteristic.cc ../Clustering.cc \
-           ../Configuration.cc ../ConnectedBoundary.cc \
+           ../Clusters.cc ../Configuration.cc ../ConnectedBoundary.cc \
            ../DebugMemory.cc ../DistanceVector.cc \
            ../ErrorCode.cc \
            ../Fullerene.cc \
@@ -78,7 +80,7 @@ SOURCES += ../Automorphism.cc ../Automorphisms.cc \
            ../Quaternion.cc \
            ../Random.cc ../Representation.cc ../RepresentationInfo.cc \
            ../Representations.cc ../Ring.cc \
-           ../Statistics.cc ../SymmetryAxis.cc ../SymmetryAxisNormal.cc \
+           ../SortByZ.cc ../Statistics.cc ../SymmetryAxis.cc ../SymmetryAxisNormal.cc \
            ../ThreeViewNormal.cc \
            ../Utils.cc \
            ../Vector3.cc ../Version.cc \

@@ -251,7 +251,12 @@ void Interactive::draw_opaque_by_OpenGL(bool UNUSED(selection)) const
 {
 }
 
-void Interactive::draw_semitransparent_by_OpenGL(bool UNUSED(selection), bool UNUSED(frontface)) const
+bool Interactive::is_semitransparent() const
+{
+  return false;
+}
+
+void Interactive::draw_semitransparent_by_OpenGL(bool UNUSED(selection)) const
 {
 }
 

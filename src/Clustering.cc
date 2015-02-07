@@ -37,25 +37,47 @@ int Clustering::p_seq_no_to_index(int seq_no)
 
 void Clustering::p_print_as_table(FILE* fptr) const
 {
-  for (int i = 0; i < p_number; ++i)
+  for (int i = 0; i < p_number + 1; ++i)
     fprintf(fptr, "+---");
   fprintf(fptr, "+---+\n|   ");
   for (int i = 0; i < p_number; ++i)
     fprintf(fptr, "|%3d", p_sequence_nos[i]);
-  fprintf(fptr, "|\n");
-  for (int i = 0; i < p_number; ++i)
+  fprintf(fptr, "|SUM|\n");
+  for (int i = 0; i < p_number + 1; ++i)
     fprintf(fptr, "+---");
   fprintf(fptr, "+---+\n");
   for (int i = 0; i < p_number; ++i)
     {
       fprintf(fptr, "|%3d", p_sequence_nos[i]);
+      int sum = 0;
       for (int j = 0; j < p_number; ++j)
-        fprintf(fptr, "|%3d", p_distances[i][j]);
-      fprintf(fptr, "|\n");
+        {
+          fprintf(fptr, "|%3d", p_distances[i][j]);
+          sum += p_distances[i][j];
+        }
+      fprintf(fptr, "|%3d|\n", sum);
     }
-  for (int i = 0; i < p_number; ++i)
+  for (int i = 0; i < p_number + 1; ++i)
     fprintf(fptr, "+---");
   fprintf(fptr, "+---+\n");
+}
+
+void Clustering::p_print_as_pdd(FILE* fptr) const
+{
+  int max_distance = 0;
+  for (int i = 0; i < p_number; ++i)
+    for (int j = 0; j < p_number; ++j)
+      if (max_distance < p_distances[i][j])
+        max_distance = p_distances[i][j];
+  int distances[max_distance + 1];
+  for (int i = 0; i <= max_distance; ++i)
+    distances[i] = 0;
+  for (int i = 0; i < p_number; ++i)
+    for (int j = 0; j < p_number; ++j)
+      distances[p_distances[i][j]]++;
+  for (int i = 0; i < max_distance; ++i)
+    fprintf(fptr, "%d;", distances[i]);
+  fprintf(fptr, "%d\n", distances[max_distance]);
 }
 
 void Clustering::p_print_as_line(FILE* fptr) const
@@ -147,46 +169,24 @@ Clustering::Clustering(CarbonAllotrope* ca)
       Ring* target = ca->get_ring(i);
       if (target->number_of_carbons() != 5)
         continue;
-      p_calculate_distances_to_a_ring(ca, target);
-    }
-}
-
-void Clustering::p_calculate_distances_to_a_ring(CarbonAllotrope* ca, Ring* target)
-{
-  int len = ca->number_of_rings();
-  int target_seq_no = target->sequence_no();
-  int distances[len];
-  for (int i = 0; i < len; ++i)
-    distances[i] = INT_MAX;
-  Queue<Ring> operations;
-  distances[target_seq_no - 1] = 0;
-  set_distance(target_seq_no, target_seq_no, 0);
-  operations.enqueue(target);
-  while (1)
-    {
-      Ring* next = operations.dequeue();
-      if (next == 0)
-        return;
-      int next_seq_no = next->sequence_no();
-      int next_distance = distances[next_seq_no - 1];
-      int num_c = next->number_of_carbons();
-      for (int j = 0; j < num_c; ++j)
+      List<Carbon> set;
+      for (int j = 0; j < 5; ++j)
+        set.add(target->get_carbon(j));
+      ca->calculate_distances_to_set(set);
+      for (int j = 0; j < len; ++j)
         {
-          Carbon* carbon = next->get_carbon(j);
-          int num_r = carbon->number_of_rings();
-          for (int k = 0; k < num_r; ++k)
+          Ring* ring2 = ca->get_ring(j);
+          if (ring2->number_of_carbons() != 5)
+            continue;
+          int min_dist = INT_MAX;
+          for (int k = 0; k < 5; ++k)
             {
-              Ring* ring = carbon->get_ring(k);
-              int ring_seq_no = ring->sequence_no();
-              if (distances[ring_seq_no - 1] == INT_MAX)
-                {
-                  int distance = next_distance + 1;
-                  distances[ring_seq_no - 1] = distance;
-                  if (ring->number_of_carbons() == 5)
-                    set_distance(target_seq_no, ring_seq_no, distance);
-                  operations.enqueue(ring);
-                }
+              Carbon* carbon = ring2->get_carbon(k);
+              int dist = carbon->distance_to_set();
+              if (dist < min_dist)
+                min_dist = dist;
             }
+          set_distance(target->sequence_no(), ring2->sequence_no(), min_dist);
         }
     }
 }
@@ -251,7 +251,7 @@ void Clustering::normalize()
 void Clustering::print_as_table(FILE* fptr) const
 {
   int count_down = 12;
-  fprintf(fptr, "Clustering to 12 clusters (threshold=0) is trivial, so omitted.\n");
+  fprintf(fptr, "Clustering (threshold=0) to 12 clusters is trivial, so omitted.\n");
   for (int md = 1; 1; ++md)
     {
       int clusters[12];
@@ -259,13 +259,23 @@ void Clustering::print_as_table(FILE* fptr) const
       if (count < count_down)
         {
           if (count == 1)
-            fprintf(fptr, "Clustering to one cluster (threshold=%d),\n", md);
+            fprintf(fptr, "Clustering (threshold=%d) to one cluster (", md);
           else
-            fprintf(fptr, "Clustering to %d clusters (threshold=%d),\n", count, md);
+            fprintf(fptr, "Clustering (threshold=%d) to %d clusters (", md, count);
+          for (int i = 0; i < count; ++i)
+            {
+              Clustering dm = Clustering(*this, clusters, i);
+              fprintf(fptr, "%d", dm.p_number);
+              if (i == count - 1)
+                fprintf(fptr, ")\n");
+              else
+                fprintf(fptr, ",");
+            }
           for (int i = 0; i < count; ++i)
             {
               Clustering dm = Clustering(*this, clusters, i);
               dm.normalize();
+              dm.p_print_as_pdd(fptr);
               dm.p_print_as_table(fptr);
             }
           count_down = count;
@@ -312,10 +322,11 @@ void Clustering::set_distance(int seq_no1, int seq_no2, int distance)
       index1 = index2;
       index2 = tmp;
     }
-  if (p_distances[index1][index2] != -1)
-    assert(p_distances[index1][index2] == distance);
-  p_distances[index1][index2] = distance;
-  p_distances[index2][index1] = distance;
+  if (p_distances[index1][index2] == -1)
+    {
+      p_distances[index1][index2] = distance;
+      p_distances[index2][index1] = distance;
+    }
 }
 
 int Clustering::get_distance(int seq_no1, int seq_no2)

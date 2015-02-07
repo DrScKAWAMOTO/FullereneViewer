@@ -29,6 +29,7 @@ private slots:
   void setPickingMode();
   void turnInsideOut();
   void deleteTheFarMostRing();
+  void switchDisplayingObjects();
   void memoryShape();
   void recallShape();
   void drawSixViews();

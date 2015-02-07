@@ -21,6 +21,10 @@ class Representations;
 class Pattern;
 class BoundaryCarbons;
 
+#define S_FLAGS_MASK_CARBONS 1
+#define S_FLAGS_MASK_BONDS 2
+#define S_FLAGS_MASK_RINGS 4
+
 class CarbonAllotrope : public Interactives {
   // friend classes & functions
 
@@ -32,6 +36,7 @@ public:
   static bool s_need_major_axes;
   static bool s_need_principal_component_axes;
   static bool s_need_tsuzumi_expansion;
+  static int s_flags_displaying_objects;
 
 private:
   List<Ring> p_rings;

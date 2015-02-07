@@ -18,13 +18,13 @@
 
 static int index = 0;
 int pentagon_strong_cellophane_colors[12] = {
-  0xff0000, 0xc04000, 0x808000, 0x40c000, 0x00ff00, 0x00c040,
-  0x008080, 0x0040c0, 0x0000ff, 0x4000c0, 0x800080, 0xc00040
+  0xff0000, 0x00ff00, 0x0000ff, 0x808000, 0x008080, 0x800080,
+  0xc04000, 0x40c000, 0x00c040, 0x0040c0, 0x4000c0, 0xc00040
 };
 
 int pentagon_tint_cellophane_colors[12] = {
-  0xff8080, 0xffc080, 0xffff80, 0xc0ff80, 0x80ff80, 0x80ffc0,
-  0x80ffff, 0x80c0ff, 0x8080ff, 0xc080ff, 0xff80ff, 0xff80c0
+  0xff4040, 0x40ff40, 0x4040ff, 0xc0c040, 0x40c0c0, 0xc040c0,
+  0xff8040, 0x80ff40, 0x40ff80, 0x4080ff, 0x8040ff, 0xff4080
 };
 
 int pentagon_mono_chrome_cellophane_colors[12] = {
@@ -480,13 +480,26 @@ void Ring::print_POVRay_scene_description(const CarbonAllotrope* UNUSED(ca), FIL
     }
 }
 
-void Ring::draw_semitransparent_by_OpenGL(bool UNUSED(selection), bool frontface) const
+bool Ring::is_semitransparent() const
 {
-  int num = number_of_carbons();
-  if (num != 6)
+  if (CarbonAllotrope::s_flags_displaying_objects & S_FLAGS_MASK_RINGS)
     {
-      OpenGLUtil::set_color(p_ring_color, 0.9);
-      OpenGLUtil::draw_ring(frontface, this);
+      int num = number_of_carbons();
+      return (num != 6) ? true : false;
+    }
+  return false;
+}
+
+void Ring::draw_semitransparent_by_OpenGL(bool UNUSED(selection)) const
+{
+  if (CarbonAllotrope::s_flags_displaying_objects & S_FLAGS_MASK_RINGS)
+    {
+      int num = number_of_carbons();
+      if (num != 6)
+        {
+          OpenGLUtil::set_color(p_ring_color, 0.9);
+          OpenGLUtil::draw_ring(this);
+        }
     }
 }
 
@@ -539,6 +552,12 @@ void Ring::set_color(int color)
 {
   for (int i = 0; i < p_number_of_carbons; ++i)
     p_carbons[i]->set_color(color);
+}
+
+void Ring::set_pentagon_cellophane_color_by_index(int index)
+{
+  index %= 12;
+  p_ring_color = pentagon_cellophane_colors[index];
 }
 
 /* Local Variables:	*/

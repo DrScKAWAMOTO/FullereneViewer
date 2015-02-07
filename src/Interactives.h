@@ -66,7 +66,7 @@ public:
   
   // I/O
 public:
-  void draw_by_OpenGL(bool selection) const;
+  void draw_by_OpenGL(const Matrix3& rotation, bool selection) const;
 
   // stability
   void resume_simulation() { p_simulation_active = STABILITY_THRESHOLD; }

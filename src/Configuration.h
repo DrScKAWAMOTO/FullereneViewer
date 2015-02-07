@@ -50,6 +50,11 @@ enum ArrangeOpenFullerene {
   ARRANGE_OPEN_FULLERENE_AS_SPHERE
 };
 
+enum DisplayClustering {
+  DISPLAY_CLUSTERING_BY_CELLOPHANES,
+  DISPLAY_NO_CLUSTERING
+};
+
 class Configuration {
   // friend classes & functions
 
@@ -64,6 +69,7 @@ private:
   DisplayPrincipalComponentAxes p_display_principal_component_axes;
   DrawPentagonCellophanes p_draw_pentagon_cellophanes;
   ArrangeOpenFullerene p_arrange_open_fullerene;
+  DisplayClustering p_display_clustering;
 
   // private tools
 
@@ -101,6 +107,10 @@ public:
   { return p_arrange_open_fullerene; }
   void set_arrange_open_fullerene(ArrangeOpenFullerene arrange_open_fullerene)
   { p_arrange_open_fullerene = arrange_open_fullerene; }
+  DisplayClustering get_display_clustering() const
+  { return p_display_clustering; }
+  void set_display_clustering(DisplayClustering display_clustering)
+  { p_display_clustering = display_clustering; }
   const char* get_working_folder_name() const { return p_working_folder_name; }
   void set_working_folder_name(const char* path);
   const char* get_povray_command_line() const { return p_povray_command_line; }

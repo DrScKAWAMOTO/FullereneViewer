@@ -24,6 +24,7 @@ class Fullerene : public Object {
 public:
   static bool s_need_fullerene_characteristic;
   static bool s_need_clustering;
+  static bool s_need_display_clustering;
 
 private:
   CarbonAllotrope* p_carbon_allotrope;

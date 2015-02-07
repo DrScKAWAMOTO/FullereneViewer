@@ -73,7 +73,8 @@ public:
   void print_POVRay_scene_description(const CarbonAllotrope* ca, FILE* fptr,
                                       const Matrix3& rot, const Vector3& move,
                                       bool clipped_by_Z_non_negative) const;
-  virtual void draw_semitransparent_by_OpenGL(bool selection, bool frontface) const;
+  virtual bool is_semitransparent() const;
+  virtual void draw_semitransparent_by_OpenGL(bool selection) const;
 
   // member accessing methods
   // attributes
@@ -86,6 +87,7 @@ public:
   Bond* get_bond_after(int index);
   Bond* get_bond_before(int index);
   void set_color(int color);
+  void set_pentagon_cellophane_color_by_index(int index);
 
 };
 

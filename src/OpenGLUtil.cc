@@ -95,6 +95,7 @@ void (*OpenGLUtil::interval_timer_setup_callback)() = NULL;
 
 int OpenGLUtil::view = INITIAL_FARNESS_OF_VIEW_PORT;
 static GLfloat lightpos[] = { 0.0, 40.0, 100.0, 1.0 };
+static GLfloat white_light[] = { 1.0, 1.0, 1.0, 1.0 };
 #define BUFMAX 100
 
 static void select_hits(int*& selectBuf, int& min, int& sequence_no)
@@ -276,7 +277,10 @@ void OpenGLUtil::display()
   drawing_done = false;
   glLoadIdentity();
   gluLookAt(0.0, 0.0, (double)view, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0); //視点の設定
-  glLightfv(GL_LIGHT0, GL_POSITION, lightpos); //ライトの設定
+  glLightfv(GL_LIGHT0, GL_POSITION, lightpos); //ライトの設定(場所)
+  glLightfv(GL_LIGHT0, GL_AMBIENT, white_light); //ライトの設定(環境光色)
+  glLightfv(GL_LIGHT0, GL_DIFFUSE, white_light); //ライトの設定(拡散光色)
+  glLightfv(GL_LIGHT0, GL_SPECULAR, white_light); //ライトの設定(鏡面光色)
   if (OpenGLUtil::rotate())
     {
       float current_aspect = 0.0;
@@ -295,7 +299,7 @@ void OpenGLUtil::display()
       current_aspect = (float)viewport[2] / (float)viewport[3];
       gluPerspective(30.0, current_aspect, 1.0, 100.0);
       glMatrixMode(GL_MODELVIEW);
-      OpenGLUtil::ca->draw_by_OpenGL(true);
+      OpenGLUtil::ca->draw_by_OpenGL(rotation_sub, true);
       glMatrixMode(GL_PROJECTION);
       glPopMatrix();
       hits = glRenderMode(GL_RENDER);
@@ -321,7 +325,7 @@ void OpenGLUtil::display()
       printf("draw by OpenGL %d\n", time++);
 #endif
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-      OpenGLUtil::ca->draw_by_OpenGL(false);
+      OpenGLUtil::ca->draw_by_OpenGL(rotation_sub, false);
       drawing_done = true;
       p_need_drawing--;
     }
@@ -483,7 +487,7 @@ void OpenGLUtil::draw_cylinder(double radius, const Vector3& from, const Vector3
   glPopMatrix();
 }
 
-void OpenGLUtil::draw_ring(bool UNUSED(frontface), const Ring* ring)
+void OpenGLUtil::draw_ring(const Ring* ring)
 {
   int num = ring->number_of_carbons();
   Vector3 center = Vector3();
@@ -781,6 +785,7 @@ OpenGLUtil::change_fullerene(const char* fullerene_name, const char* generator_f
     }
   fullerene->set_fullerene_name(fullerene_name);
 
+  OpenGLUtil::generator_formula = generator_formula;
   window_title = WINDOW_TITLE;
   window_title.append_char(' ');
   window_title.append_string(fullerene->get_fullerene_name());

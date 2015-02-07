@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>328</height>
+    <height>351</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,7 @@
    <property name="geometry">
     <rect>
      <x>30</x>
-     <y>280</y>
+     <y>310</y>
      <width>340</width>
      <height>32</height>
     </rect>
@@ -145,7 +145,7 @@
    <property name="geometry">
     <rect>
      <x>130</x>
-     <y>210</y>
+     <y>240</y>
      <width>240</width>
      <height>20</height>
     </rect>
@@ -155,7 +155,7 @@
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>212</y>
+     <y>242</y>
      <width>100</width>
      <height>16</height>
     </rect>
@@ -168,7 +168,7 @@
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>242</y>
+     <y>272</y>
      <width>120</width>
      <height>16</height>
     </rect>
@@ -181,7 +181,7 @@
    <property name="geometry">
     <rect>
      <x>130</x>
-     <y>240</y>
+     <y>270</y>
      <width>240</width>
      <height>20</height>
     </rect>
@@ -327,6 +327,9 @@
    <property name="checked">
     <bool>false</bool>
    </property>
+   <attribute name="buttonGroup">
+    <string notr="true">drawPentagonCellophanesButtonGroup</string>
+   </attribute>
   </widget>
   <widget class="QRadioButton" name="drawPentagonTintCellophanesButton">
    <property name="geometry">
@@ -340,6 +343,9 @@
    <property name="text">
     <string>薄</string>
    </property>
+   <attribute name="buttonGroup">
+    <string notr="true">drawPentagonCellophanesButtonGroup</string>
+   </attribute>
   </widget>
   <widget class="QRadioButton" name="drawPentagonMonoChromeCellophanesButton">
    <property name="geometry">
@@ -353,6 +359,9 @@
    <property name="text">
     <string>ピンク</string>
    </property>
+   <attribute name="buttonGroup">
+    <string notr="true">drawPentagonCellophanesButtonGroup</string>
+   </attribute>
   </widget>
   <widget class="QRadioButton" name="drawPentagonTransparentButton">
    <property name="geometry">
@@ -366,12 +375,15 @@
    <property name="text">
     <string>非表示</string>
    </property>
+   <attribute name="buttonGroup">
+    <string notr="true">drawPentagonCellophanesButtonGroup</string>
+   </attribute>
   </widget>
   <widget class="QLabel" name="arrangeOpenFullereneLabel">
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>180</y>
+     <y>210</y>
      <width>120</width>
      <height>16</height>
     </rect>
@@ -384,7 +396,7 @@
    <property name="geometry">
     <rect>
      <x>140</x>
-     <y>180</y>
+     <y>210</y>
      <width>80</width>
      <height>18</height>
     </rect>
@@ -403,7 +415,7 @@
    <property name="geometry">
     <rect>
      <x>310</x>
-     <y>180</y>
+     <y>210</y>
      <width>80</width>
      <height>18</height>
     </rect>
@@ -415,14 +427,64 @@
     <string notr="true">arrangeOpenFullereneButtonGroup</string>
    </attribute>
   </widget>
+  <widget class="QRadioButton" name="displayClustersByCellophanesButton">
+   <property name="geometry">
+    <rect>
+     <x>140</x>
+     <y>180</y>
+     <width>80</width>
+     <height>18</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>セロファン</string>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <attribute name="buttonGroup">
+    <string notr="true">displayClusteringButtonGroup</string>
+   </attribute>
+  </widget>
+  <widget class="QRadioButton" name="displayNoClustersButton">
+   <property name="geometry">
+    <rect>
+     <x>310</x>
+     <y>180</y>
+     <width>80</width>
+     <height>18</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>表示しない</string>
+   </property>
+   <attribute name="buttonGroup">
+    <string notr="true">displayClusteringButtonGroup</string>
+   </attribute>
+  </widget>
+  <widget class="QLabel" name="displayClustersLabel">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>180</y>
+     <width>120</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>クラスタリング表示方法：</string>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections/>
  <buttongroups>
-  <buttongroup name="motionButtonGroup"/>
+  <buttongroup name="displayClusteringButtonGroup"/>
   <buttongroup name="pictureButtonGroup"/>
-  <buttongroup name="principalComponentAxesButtonGroup"/>
+  <buttongroup name="motionButtonGroup"/>
   <buttongroup name="symmetryAxesButtonGroup"/>
+  <buttongroup name="principalComponentAxesButtonGroup"/>
   <buttongroup name="arrangeOpenFullereneButtonGroup"/>
+  <buttongroup name="drawPentagonCellophanesButtonGroup"/>
  </buttongroups>
 </ui>

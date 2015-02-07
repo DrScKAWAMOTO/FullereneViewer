@@ -142,10 +142,13 @@ void Bond::print_POVRay_scene_description(const CarbonAllotrope* UNUSED(ca), FIL
 
 void Bond::draw_opaque_by_OpenGL(bool UNUSED(selection)) const
 {
-  Vector3 loc0 = get_left_carbon()->carbon_location();
-  Vector3 loc1 = get_right_carbon()->carbon_location();
-  OpenGLUtil::set_color(p_bond_color);
-  OpenGLUtil::draw_cylinder(p_bond_radius, loc0, loc1);
+  if (CarbonAllotrope::s_flags_displaying_objects & S_FLAGS_MASK_BONDS)
+    {
+      Vector3 loc0 = get_left_carbon()->carbon_location();
+      Vector3 loc1 = get_right_carbon()->carbon_location();
+      OpenGLUtil::set_color(p_bond_color);
+      OpenGLUtil::draw_cylinder(p_bond_radius, loc0, loc1);
+    }
 }
 
 Vector3 Bond::get_center_location() const

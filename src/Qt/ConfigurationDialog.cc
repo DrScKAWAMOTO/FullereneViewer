@@ -80,6 +80,15 @@ ConfigurationDialog::ConfigurationDialog(QWidget *parent)
       ui->arrangeOpenFullereneAsSphereButton->setChecked(true);
       break;
     }
+  switch (configuration->get_display_clustering())
+    {
+    case DISPLAY_CLUSTERING_BY_CELLOPHANES:
+      ui->displayClustersByCellophanesButton->setChecked(true);
+      break;
+    case DISPLAY_NO_CLUSTERING:
+      ui->displayNoClustersButton->setChecked(true);
+      break;
+    }
 
   ui->workingFolderLineEdit->setText(QString(configuration->get_working_folder_name()));
   ui->povrayCommandLineLineEdit->setText(QString(configuration->get_povray_command_line()));
@@ -127,6 +136,10 @@ void ConfigurationDialog::slot_accept()
     configuration->set_arrange_open_fullerene(ARRANGE_OPEN_FULLERENE_AS_TSUZUMI);
   else
     configuration->set_arrange_open_fullerene(ARRANGE_OPEN_FULLERENE_AS_SPHERE);
+  if (ui->displayClustersByCellophanesButton->isChecked())
+    configuration->set_display_clustering(DISPLAY_CLUSTERING_BY_CELLOPHANES);
+  else
+    configuration->set_display_clustering(DISPLAY_NO_CLUSTERING);
   configuration->set_working_folder_name(qPrintable(ui->workingFolderLineEdit->text()));
   configuration->set_povray_command_line(qPrintable(ui->povrayCommandLineLineEdit->text()));
 

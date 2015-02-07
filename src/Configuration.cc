@@ -12,6 +12,7 @@
 #include "Configuration.h"
 #include "OpenGLUtil.h"
 #include "CarbonAllotrope.h"
+#include "Fullerene.h"
 
 #define LINE_LENGTH 1024
 
@@ -84,6 +85,7 @@ Configuration::Configuration(const char* home, const char* desktop)
   p_display_principal_component_axes = DISPLAY_NO_PRINCIPAL_COMPONENT_AXES;
   p_draw_pentagon_cellophanes = DRAW_PENTAGON_STRONG_CELLOPHANES;
   p_arrange_open_fullerene = ARRANGE_OPEN_FULLERENE_AS_SPHERE;
+  p_display_clustering = DISPLAY_NO_CLUSTERING;
 
 }
 
@@ -229,6 +231,27 @@ static bool name_to_aof(Word& word, ArrangeOpenFullerene& result)
   return false;
 }
 
+static bool name_to_dc(Word& word, DisplayClustering& result)
+{
+  if (word.next() == false)
+    return false;
+  if (word.equals_to("=") == false)
+    return false;
+  if (word.next())
+    return false;
+  if (word.equals_to("cellophane"))
+    {
+      result = DISPLAY_CLUSTERING_BY_CELLOPHANES;
+      return true;
+    }
+  else if (word.equals_to("no"))
+    {
+      result = DISPLAY_NO_CLUSTERING;
+      return true;
+    }
+  return false;
+}
+
 void Configuration::load()
 {
   FILE* fptr = fopen(p_configuration_file_name, "r");
@@ -290,6 +313,13 @@ void Configuration::load()
           if (name_to_aof(word, aof) == false)
             continue;
           p_arrange_open_fullerene = aof;
+        }
+      else if (word.equals_to("display_clustering"))
+        {
+          DisplayClustering dc;
+          if (name_to_dc(word, dc) == false)
+            continue;
+          p_display_clustering = dc;
         }
     }
   fclose(fptr);
@@ -363,6 +393,18 @@ static const char* aof_to_name(ArrangeOpenFullerene aof)
     }
 }
 
+static const char* dc_to_name(DisplayClustering dc)
+{
+  switch (dc)
+    {
+    case DISPLAY_CLUSTERING_BY_CELLOPHANES:
+      return "cellophane";
+    case DISPLAY_NO_CLUSTERING:
+    default:
+      return "no";
+    }
+}
+
 void Configuration::save() const
 {
   FILE* fptr = fopen(p_configuration_file_name, "w");
@@ -374,6 +416,7 @@ void Configuration::save() const
   fprintf(fptr, "draw_pentagon_cellophanes = %s\n",
           dpc_to_name(p_draw_pentagon_cellophanes));
   fprintf(fptr, "arrange_open_fullerene = %s\n", aof_to_name(p_arrange_open_fullerene));
+  fprintf(fptr, "display_clustering = %s\n", dc_to_name(p_display_clustering));
   fprintf(fptr, "working_folder = %s\n", (char*)p_working_folder_name);
   fprintf(fptr, "povray_command_line = %s\n", (char*)p_povray_command_line);
   fclose(fptr);
@@ -482,6 +525,16 @@ void Configuration::reflect() const
     case ARRANGE_OPEN_FULLERENE_AS_SPHERE:
     default:
       CarbonAllotrope::s_need_tsuzumi_expansion = false;
+      break;
+    }
+  switch (p_display_clustering)
+    {
+    case DISPLAY_CLUSTERING_BY_CELLOPHANES:
+      Fullerene::s_need_display_clustering = true;
+      break;
+    case DISPLAY_NO_CLUSTERING:
+    default:
+      Fullerene::s_need_display_clustering = false;
       break;
     }
   if (OpenGLUtil::interval_timer_setup_callback)

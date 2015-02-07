@@ -18,6 +18,7 @@
 #include "Characteristic.h"
 #include "Generator.h"
 #include "Clustering.h"
+#include "Clusters.h"
 #include "Pattern.h"
 #include "Utils.h"
 #include "Debug.h"
@@ -25,6 +26,7 @@
 
 bool Fullerene::s_need_fullerene_characteristic = false;
 bool Fullerene::s_need_clustering = false;
+bool Fullerene::s_need_display_clustering = false;
 
 Fullerene::Fullerene()
   : p_carbon_allotrope(0), p_error_code(ERROR_CODE_OK), p_n(0), p_m(0), p_h(0),
@@ -396,6 +398,10 @@ void Fullerene::set_carbon_allotrope(CarbonAllotrope* carbon_allotrope)
     p_characteristic = new Characteristic(p_carbon_allotrope);
   if (p_carbon_allotrope && s_need_clustering)
     p_clustering = new Clustering(p_carbon_allotrope);
+  if (p_carbon_allotrope && s_need_display_clustering)
+    {
+      Clusters cl(p_carbon_allotrope);
+    }
 }
 
 void Fullerene::set_fullerene_name(const char* fullerene_name)

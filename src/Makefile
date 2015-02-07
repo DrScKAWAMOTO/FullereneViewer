@@ -13,7 +13,7 @@ TARGETS= $(subst .cc,,$(MAINS))
 QMAKE= qmake
 
 INCLUDES= -I/usr/local/include -I/usr/local/include/drm
-CXXFLAGS= -g -Wall -Wno-unused-parameter -D_THREAD_SAFE $(INCLUDES)
+CXXFLAGS= -g -Wall -Wno-unused-parameter -D_THREAD_SAFE $(INCLUDES) -pthread
 LDFLAGS= -L/usr/local/lib -L/usr/X11/lib
 LOADLIBES= -lGLU -lGL
 INSTALL= install

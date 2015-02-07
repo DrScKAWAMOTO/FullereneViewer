@@ -38,6 +38,9 @@ bool CarbonAllotrope::s_need_all_axes = false;
 bool CarbonAllotrope::s_need_major_axes = false;
 bool CarbonAllotrope::s_need_principal_component_axes = false;
 bool CarbonAllotrope::s_need_tsuzumi_expansion = false;
+int CarbonAllotrope::s_flags_displaying_objects = (S_FLAGS_MASK_RINGS |
+                                                   S_FLAGS_MASK_BONDS |
+                                                   S_FLAGS_MASK_CARBONS);
 
 void CarbonAllotrope::p_make_n_polygon(int n_members)
 {

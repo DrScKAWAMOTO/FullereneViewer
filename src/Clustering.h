@@ -15,6 +15,7 @@ class Ring;
 
 class Clustering : public Object {
   // friend classes & functions
+  friend class Clusters;
 
   // members
 private:
@@ -27,6 +28,7 @@ private:
   void p_initialize();
   int p_seq_no_to_index(int seq_no);
   void p_print_as_table(FILE* fptr = stdout) const;
+  void p_print_as_pdd(FILE* fptr = stdout) const;
   void p_print_as_line(FILE* fptr = stdout) const;
   void p_sort(int i, int j);
   int p_select_minimum(int top);

@@ -100,7 +100,7 @@ public:
   static void set_color(int color, double alpha);
   static void draw_sphere(double radius, const Vector3& center);
   static void draw_cylinder(double radius, const Vector3& from, const Vector3& to);
-  static void draw_ring(bool frontface, const Ring* ring);
+  static void draw_ring(const Ring* ring);
   static void draw_XYZ(int light);
   static void semitransparent_mode();
   static void backface_mode();

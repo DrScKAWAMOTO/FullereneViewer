@@ -98,7 +98,8 @@ public:
   // I/O
 public:
   virtual void draw_opaque_by_OpenGL(bool selection) const;
-  virtual void draw_semitransparent_by_OpenGL(bool selection, bool frontface) const;
+  virtual bool is_semitransparent() const;
+  virtual void draw_semitransparent_by_OpenGL(bool selection) const;
   void memory_shape(FILE* archive) const;
   void recall_shape(FILE* archive);
 

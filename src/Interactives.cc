@@ -10,6 +10,8 @@
 #include "OpenGLUtil.h"
 #include "DebugMemory.h"
 #include "Debug.h"
+#include "SortByZ.h"
+#include "Set.h"
 
 bool Interactives::s_need_simulation = true;
 bool Interactives::s_need_draw_pentagon_cellophanes = false;
@@ -182,7 +184,7 @@ void Interactives::turn_inside_out()
     p_interactives[i]->turn_inside_out();
 }
 
-void Interactives::draw_by_OpenGL(bool selection) const
+void Interactives::draw_by_OpenGL(const Matrix3& rotation, bool selection) const
 {
   int len = p_interactives.length();
   for (int i = 0; i < len; ++i)
@@ -193,17 +195,19 @@ void Interactives::draw_by_OpenGL(bool selection) const
   if (s_need_draw_pentagon_cellophanes)
     {
       OpenGLUtil::semitransparent_mode();
-      OpenGLUtil::backface_mode();
+      Set<SortByZ> semitransparents;
       for (int i = 0; i < len; ++i)
         {
           Interactive* interactive = p_interactives[i];
-          interactive->draw_semitransparent_by_OpenGL(selection, false);
+          if (interactive->is_semitransparent())
+            semitransparents.search_else_add(new SortByZ(interactive, rotation));
         }
-      OpenGLUtil::frontface_mode();
+      len = semitransparents.length();
       for (int i = 0; i < len; ++i)
         {
-          Interactive* interactive = p_interactives[i];
-          interactive->draw_semitransparent_by_OpenGL(selection, true);
+          SortByZ* sortbyz = semitransparents[i];
+          Interactive* interactive = sortbyz->get_target();
+          interactive->draw_semitransparent_by_OpenGL(selection);
         }
       OpenGLUtil::opaque_mode();
     }

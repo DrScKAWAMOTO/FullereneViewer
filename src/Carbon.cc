@@ -653,18 +653,21 @@ void Carbon::print_POVRay_scene_description(const CarbonAllotrope* UNUSED(ca), F
 
 void Carbon::draw_opaque_by_OpenGL(bool selection) const
 {
-  Vector3 loc = carbon_location();
-  if (selection)
-    OpenGLUtil::naming_start(sequence_no());
-  OpenGLUtil::set_color(p_color);
-  OpenGLUtil::draw_sphere(p_radius, loc);
-  if (selection)
-    OpenGLUtil::naming_end();
+  if (CarbonAllotrope::s_flags_displaying_objects & S_FLAGS_MASK_CARBONS)
+    {
+      Vector3 loc = carbon_location();
+      if (selection)
+        OpenGLUtil::naming_start(sequence_no());
+      OpenGLUtil::set_color(p_color);
+      OpenGLUtil::draw_sphere(p_radius, loc);
+      if (selection)
+        OpenGLUtil::naming_end();
 #if defined(CONFIG_DRAW_NORMAL_VECTOR_IN_GURUGURU_MODE)
-  Vector3 loc1 = get_normal() * 2.0 + loc;
-  OpenGLUtil::set_color(0x19ff19);
-  OpenGLUtil::draw_cylinder(0.1, loc, loc1);
+      Vector3 loc1 = get_normal() * 2.0 + loc;
+      OpenGLUtil::set_color(0x19ff19);
+      OpenGLUtil::draw_cylinder(0.1, loc, loc1);
 #endif
+    }
 }
 
 Vector3 Carbon::carbon_location() const
