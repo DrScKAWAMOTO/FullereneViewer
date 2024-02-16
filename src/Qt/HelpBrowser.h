@@ -12,6 +12,10 @@
 #include <QtGui>
 #else
 #include <QtWidgets>
+#if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
+#define QWebView QWebEngineView
+#define QWebPage QWebEnginePage
+#endif
 #endif
 
 class QWebView;

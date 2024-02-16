@@ -44,6 +44,7 @@
 # Project Specific temporary files
 /src/Qt/Makefile
 /src/Qt/moc_*.cpp
+/src/Qt/moc_*.h
 /src/Qt/qrc_*.cpp
 /src/Qt/ui_*.h
 /src/Qt/Info.plist

@@ -10,7 +10,11 @@ contains(QT_VERSION, ^4.*) {
     QT       += webkit
 }
 contains(QT_VERSION, ^5.*) {
-    QT       += webkitwidgets
+    greaterThan(QT_MINOR_VERSION, 14) {
+        QT   += webenginewidgets
+    } else {
+        QT   += webkitwidgets
+    }
 }
 TEMPLATE = app
 TARGET = FullereneViewer

@@ -8,14 +8,19 @@
 #if QT_VERSION < QT_VERSION_CHECK(5,0,0)
 #include <Qt/QtWebKit>
 #else
+#if QT_VERSION < QT_VERSION_CHECK(5,15,0)
 #include <QtWebKitWidgets>
+#else
+#include <QtWebEngineWidgets>
+#define QWebView QWebEngineView
+#endif
 #endif
 
 static HelpBrowser *helpBrowser = NULL;
 
 HelpBrowser::HelpBrowser(const QUrl& url)
 {
-  view = new QWebView(this);
+  view = new QWebEngineView(this);
   view->load(url);
   QToolBar *toolBar = addToolBar(tr("Navigation"));
   toolBar->addAction(view->pageAction(QWebPage::Back));
