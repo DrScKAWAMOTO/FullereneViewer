@@ -1,6 +1,7 @@
 # FullereneViewer(フラーレンビューア)
 ## コンパイル方法 (macOS 14.3.x 編)
-### 1) XQuartz 2.8.5 と Xcode 15.2 と Xcode コマンドラインツール(command_line_tools_for_osx_10.9_september_2014)をインストールする。(要修正)
+### 1) XQuartz 2.8.5 と Xcode 15.2 のコマンドラインツールをインストールする。
+
 ### 2) homebrew をインストールする。
 　<http://brew.sh/index_ja.html> の「Install Homebrew」項目を参考に homebrew をインストールする。そしてターミナルで引き続き `brew update` と `brew doctor` を実行する。
 
