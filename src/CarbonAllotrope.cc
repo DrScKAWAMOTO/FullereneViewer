@@ -1973,7 +1973,7 @@ void CarbonAllotrope::execute_POVRay(const MyString& pov_name)
 {
   const char* format = configuration->get_povray_command_line();
   char command_line[1024];
-  sprintf(command_line, format, (char*)pov_name);
+  snprintf(command_line, 1024, format, (char*)pov_name);
   int result = system(command_line);
   if (result != 0)
     {

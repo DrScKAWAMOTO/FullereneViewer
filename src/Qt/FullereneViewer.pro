@@ -16,6 +16,10 @@ contains(QT_VERSION, ^5.*) {
         QT   += webkitwidgets
     }
 }
+contains(QT_VERSION, ^6.*) {
+    QT       += webenginewidgets openglwidgets core5compat
+}
+
 TEMPLATE = app
 TARGET = FullereneViewer
 DEPENDPATH += . ..

@@ -35,18 +35,18 @@ void SelectFullereneDialog::slot_accept()
   const TreeItem *item = static_cast<const TreeItem*>(index.internalPointer());
   QString formula = item->data_as_string();
   formula.remove("(鏡像)");
-  formula.remove(QRegExp("\\(NoA=\\d+M?\\)"));
-  formula.remove(QRegExp("[ \n\r\t]"));
+  formula.remove(QRegularExpression("\\(NoA=\\d+M?\\)"));
+  formula.remove(QRegularExpression("[ \n\r\t]"));
   QString noa = item->data_as_string();
   if (!noa.contains("(NoA="))
     {
       item = item->parent();
       noa = item->data_as_string();
     }
-  noa.remove(QRegExp(" .+$"));
+  noa.remove(QRegularExpression(" .+$"));
   const TreeItem *cnitem = item->parent();
   QString cn = cnitem->data_as_string();
-  cn.remove(QRegExp(" .+$"));
+  cn.remove(QRegularExpression(" .+$"));
   QString name = cn + " " + noa;
   if (OpenGLUtil::change_fullerene(qPrintable(name), qPrintable(formula)))
     setWindowTitle((char*)OpenGLUtil::window_title);

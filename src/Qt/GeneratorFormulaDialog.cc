@@ -5,7 +5,7 @@
  */
 
 #include <QString>
-#include <QRegExp>
+#include <QRegularExpression>
 #include "GeneratorFormulaDialog.h"
 #include "ui_GeneratorFormulaDialog.h"
 #include "OpenGLUtil.h"
@@ -27,7 +27,7 @@ GeneratorFormulaDialog::~GeneratorFormulaDialog()
 void GeneratorFormulaDialog::slot_accept()
 {
   QString formula = ui->generatorFormulaLineEdit->text();
-  formula.remove(QRegExp("[\n\r\t]"));
+  formula.remove(QRegularExpression("[\n\r\t]"));
   if (OpenGLUtil::change_fullerene(0, qPrintable(formula)))
     setWindowTitle((char*)OpenGLUtil::window_title);
   accept();

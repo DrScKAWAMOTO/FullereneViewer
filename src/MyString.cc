@@ -155,7 +155,7 @@ void MyString::append_string(const char* appendant)
 void MyString::append_int(int appendant)
 {
   char work[20];
-  sprintf(work, "%d", appendant);
+  snprintf(work, 20, "%d", appendant);
   append_string(work);
 }
 

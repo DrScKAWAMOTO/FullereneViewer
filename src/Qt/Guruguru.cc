@@ -13,6 +13,14 @@
 #include "OpenGLUtil.h"
 #include "Guruguru.h"
 
+#if QT_VERSION >= QT_VERSION_CHECK(6,0,0)
+#define pos_x() position().x()
+#define pos_y() position().y()
+#else
+#define pos_x() x()
+#define pos_y() y()
+#endif
+
 static Guruguru *my_guruguru = NULL;
 
 static void static_interval_timer_setup()
@@ -22,14 +30,14 @@ static void static_interval_timer_setup()
 }
 
 Guruguru::Guruguru(QWidget *parent)
-  : QGLWidget(parent), timer(new QBasicTimer), etimer(new QElapsedTimer)
+  : QOpenGLWidget(parent), timer(new QBasicTimer), etimer(new QElapsedTimer)
 {
   my_guruguru = this;
   OpenGLUtil::interval_timer_setup_callback = static_interval_timer_setup;
 }
 
 Guruguru::~Guruguru()
-{   
+{
   delete timer;
   timer = 0;
 }
@@ -41,13 +49,13 @@ void Guruguru::update_window_status()
   int cpu_usage_rate = 0;
   if (OpenGLUtil::flame_rate_updateGL <= 0)
     {
-      sprintf(title_status, "--f--%%---");
+      snprintf(title_status, WINDOW_TITLE_STATUS_SIZE + 1, "--f--%%---");
     }
   else if (OpenGLUtil::flame_rate_updateGL <= OpenGLUtil::config_viewer_target_fps)
     {
       flame_rate = OpenGLUtil::flame_rate_updateGL;
       cpu_usage_rate = 99;
-      sprintf(title_status, "%2df%2d%%---", flame_rate, cpu_usage_rate);
+      snprintf(title_status, WINDOW_TITLE_STATUS_SIZE + 1, "%2df%2d%%---", flame_rate, cpu_usage_rate);
     }
   else
     {
@@ -58,7 +66,7 @@ void Guruguru::update_window_status()
         cpu_usage_rate = 0;
       else if (cpu_usage_rate >= 100)
         cpu_usage_rate = 99;
-      sprintf(title_status, "%2df%2d%%---", flame_rate, cpu_usage_rate);
+      snprintf(title_status, WINDOW_TITLE_STATUS_SIZE + 1, "%2df%2d%%---", flame_rate, cpu_usage_rate);
     }
   if (OpenGLUtil::picking_done)
     title_status[WINDOW_TITLE_STATUS_SIMULATION] = 'P';
@@ -91,7 +99,7 @@ void Guruguru::timerEvent(QTimerEvent *e)
     qint64 start_nsecs_etimer;
     qint64 end_nsecs_etimer;
     start_nsecs_etimer = etimer->nsecsElapsed();
-    updateGL();
+    update();
     update_window_status();
     end_nsecs_etimer = etimer->nsecsElapsed();
     qint64 diff_nsecs_etimer;
@@ -104,23 +112,23 @@ void Guruguru::timerEvent(QTimerEvent *e)
 void Guruguru::mousePressEvent(QMouseEvent* e)
 {
   if (e->button() == Qt::LeftButton)
-    OpenGLUtil::left_click(e->x(), e->y());
+    OpenGLUtil::left_click(e->pos_x(), e->pos_y());
 }
 
 void Guruguru::mouseReleaseEvent(QMouseEvent* e)
 {
   if (e->button() == Qt::LeftButton)
-    OpenGLUtil::left_release(e->x(), e->y());
+    OpenGLUtil::left_release(e->pos_x(), e->pos_y());
 }
 
 void Guruguru::mouseMoveEvent(QMouseEvent* e)
 {
-  OpenGLUtil::drag(e->x(), e->y());
+  OpenGLUtil::drag(e->pos_x(), e->pos_y());
 }
 
 void Guruguru::wheelEvent(QWheelEvent* e)
 {
-  OpenGLUtil::wheel(e->delta() > 0);
+  OpenGLUtil::wheel(e->angleDelta().y() > 0);
 }
 
 void Guruguru::initializeGL()

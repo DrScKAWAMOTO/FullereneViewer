@@ -7,12 +7,12 @@
 #ifndef __GURUGURU_H__
 #define __GURUGURU_H__
 
-#include <QGLWidget>
+#include <QOpenGLWidget>
 
 class QBasicTimer;
 class QElapsedTimer;
 
-class Guruguru : public QGLWidget
+class Guruguru : public QOpenGLWidget
 {
   Q_OBJECT
     
