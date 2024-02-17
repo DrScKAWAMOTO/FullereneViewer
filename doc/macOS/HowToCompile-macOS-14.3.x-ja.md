@@ -5,10 +5,10 @@
 ### 2) homebrew をインストールする。
 　<http://brew.sh/index_ja.html> の「Install Homebrew」項目を参考に homebrew をインストールする。そしてターミナルで引き続き `brew update` と `brew doctor` を実行する。
 
-### 2) Qt@5 をインストールする。
+### 2) Qt をインストールする。
 　一般ユーザーで `brew install qt` を実行する。
 
-### 3) Qt@5 を使えるようにする。
+### 3) Qt を使えるようにする。
 　一般ユーザーで `brew unlink qt@5` と `brew link qt` を実行する。
 
 ### 4) povray をインストールする。
