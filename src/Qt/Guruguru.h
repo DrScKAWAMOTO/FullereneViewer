@@ -7,15 +7,26 @@
 #ifndef __GURUGURU_H__
 #define __GURUGURU_H__
 
+#include <QtCore/QtGlobal>
+#if QT_VERSION >= QT_VERSION_CHECK(6,0,0)
 #include <QOpenGLWidget>
+#else
+#include <QGLWidget>
+#endif
+
 
 class QBasicTimer;
 class QElapsedTimer;
 
-class Guruguru : public QOpenGLWidget
+class Guruguru :
+#if QT_VERSION >= QT_VERSION_CHECK(6,0,0)
+ public QOpenGLWidget
+#else
+ public QGLWidget
+#endif
 {
   Q_OBJECT
-    
+
 public:
   Guruguru(QWidget *parent = 0);
   ~Guruguru();

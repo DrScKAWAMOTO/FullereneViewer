@@ -30,7 +30,12 @@ static void static_interval_timer_setup()
 }
 
 Guruguru::Guruguru(QWidget *parent)
-  : QOpenGLWidget(parent), timer(new QBasicTimer), etimer(new QElapsedTimer)
+#if QT_VERSION >= QT_VERSION_CHECK(6,0,0)
+  : QOpenGLWidget(parent),
+#else
+  : QGLWidget(parent),
+#endif
+    timer(new QBasicTimer), etimer(new QElapsedTimer)
 {
   my_guruguru = this;
   OpenGLUtil::interval_timer_setup_callback = static_interval_timer_setup;
