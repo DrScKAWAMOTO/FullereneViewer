@@ -159,6 +159,9 @@ void Guruguru::resizeGL(int w, int h)
 
 void Guruguru::paintGL()
 {
+#if QT_VERSION >= QT_VERSION_CHECK(6,0,0)
+  OpenGLUtil::resume_drawing();
+#endif
   OpenGLUtil::display();
 }
 
