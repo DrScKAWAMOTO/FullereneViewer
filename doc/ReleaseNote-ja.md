@@ -1,6 +1,39 @@
 # FullereneViewer(フラーレンビューア)
 ## リリースノート
 
+### 2024/03/11 Version 1.4.7
+
+Qt6 で発生していた「フラーレンの形状シミュレーションが止まる(形が変わらなくなる)と、
+描画をやめてしまうバグ」に対処。
+
+症状：
+タイトルバーの D が消えると同時に描画も止まる。
+Qt5 では問題は発生しない。（タイトルバーの D が消えても描画されたまま）
+
+対策：
+Qt6.6 のドキュメントには QOpenGLWidget::paintGL() では
+
+```c
+Before invoking this function, the context and the framebuffer are bound,
+and the viewport is set up by a call to glViewport().
+No other state is set and no clearing or drawing is performed by the framework.
+```
+
+と書いてあったが、paintGL() 呼び出し直前では glClear() が呼び出され済みのような
+状態になっている。描画実施直前の自前の glClear() を呼ぶのを止めても、フレームの
+描画が重なることはなかった！！
+
+対策として、Qt5 およびそれ以前で実施していた以下の実装を Qt6 では廃止することに
+した。タイトルバーの D は永久的に表示されたままとなり、その結果、上記問題は起こ
+らなくなった。
+
+Qt5 およびそれ以前で実施していた実装とは、以下の条件を全て満たした時は描画しない
+というものである。
+
+1. シミュレーションが止まった。
+2. ぐるぐる回していない。
+3. ピッキングを実施していない。
+
 ### 2024/02/17 Version 1.4.6
 　macOS で Qt 6.6.1 を使ってビルドできるようにした。
 
