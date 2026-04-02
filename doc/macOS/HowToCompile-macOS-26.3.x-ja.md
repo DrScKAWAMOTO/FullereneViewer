@@ -20,15 +20,12 @@
     home> cd FullereneViewer
     FullereneViewer> 
 
-### 7) ビルドの注意点（AGL フレームワーク問題への対応）
-　最新の macOS SDK (SDK 26.2 / macOS 15.x 以降) では、古い `AGL.framework` が完全に削除されています。
-　しかし、Qt 6 (特に qmake 3.1) が生成する `Makefile` は、依然として `-framework AGL` をリンクしようとする不具合があります。
-　本プロジェクトでは、この問題を回避するために以下の対応を行っています。
+### 7) ビルドの注意点（AGL フレームワーク問題の解消）
+　以前のバージョンの Qt 6 (6.9.1 まで) では、最新の macOS SDK (SDK 26.2 / macOS 15.x 以降) で削除された古い `AGL.framework` を誤ってリンクしようとする不具合がありました。
+　しかし、**最新の Qt 6.11.0 以降ではこの問題は解消されています**。
 
-*   `src/Makefile` 内で、`qmake` 実行直後に `sed` コマンドを使用して `Makefile` から `-framework AGL` を自動的に除去するようにしました。
-*   `src/Qt/FullereneViewer.pro` 内で、`QMAKE_LIBS_OPENGL` を直接指定し、可能な限りリンクエラーを防ぐようにしました。
-
-　したがって、以下の手順通り `make` を実行するだけで、この問題を意識することなくビルドが完了します。
+　もし古い Qt 6 環境でビルドが通らない場合は、`brew upgrade qt` を実行して最新の Qt 6.11.0 以上にアップデートしてください。
+　本プロジェクトの `Makefile` および `FullereneViewer.pro` は、最新の Qt 6 環境に最適化されており、特別な修正なしでビルドが可能です。
 
 ### 8) FullereneViewer をビルドする。
 　トップディレクトリ、または `src/` ディレクトリに移動し、`make` を実行してください。

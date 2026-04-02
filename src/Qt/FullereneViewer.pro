@@ -29,7 +29,6 @@ macx {
     DEPENDPATH += /usr/X11/include
     INCLUDEPATH += /usr/X11/include
     ICON = icons/FullereneViewer.icns
-    QMAKE_LIBS_OPENGL = -framework OpenGL
 }
 !macx:unix {
     INCLUDEPATH += /usr/local/include

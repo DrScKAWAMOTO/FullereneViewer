@@ -46,9 +46,6 @@ $(TARGETS): %: %.o $(OBJECTS)
 
 Qtmakefile:
 	cd Qt; $(QMAKE) FullereneViewer.pro
-ifeq ($(SYSTEM),Darwin)
-	sed -i '' 's/-framework AGL//g' Qt/Makefile
-endif
 
 Qt: Qtmakefile
 	cd Qt; $(MAKE)
