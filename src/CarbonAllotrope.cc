@@ -653,18 +653,24 @@ ErrorCode CarbonAllotrope::make_symmetric_scrap(int scrap_no)
   ErrorCode result;
   switch (scrap_no)
     {
-    case 1: /* only one pentagon */
+    case 1:
       p_scrap_order = 5;
+      /* 五員環を一つ作って */
       p_make_n_polygon(5);
+      /* そこを中心にして */
       p_set_center();
+      /* まわりを六員環で埋める */
       result = fill_hexagons_around_n_polygons(5);
       if (result != ERROR_CODE_OK)
         return result;
       break;
     case 2: /* only three pentagons */
       p_scrap_order = 3;
+      /* 六員環を一つ作って */
       p_make_n_polygon(6);
+      /* そこを中心にして */
       p_set_center();
+      /* まわりに３つの五員環を配置して */
       result = append_n_polygon_at_bond(5, 1);
       if (result != ERROR_CODE_OK)
         return result;
@@ -674,6 +680,7 @@ ErrorCode CarbonAllotrope::make_symmetric_scrap(int scrap_no)
       result = append_n_polygon_at_bond(5, 5);
       if (result != ERROR_CODE_OK)
         return result;
+      /* 更にそのまわりを六員環で埋める */
       result = fill_hexagons_around_n_polygons(5);
       if (result != ERROR_CODE_OK)
         return result;
@@ -681,8 +688,11 @@ ErrorCode CarbonAllotrope::make_symmetric_scrap(int scrap_no)
     case 3: /* only one hexagon, order = 6 */
       p_scrap_order = 6;
     only_one_hexagon:
+      /* 六員環を一つ作って */
       p_make_n_polygon(6);
+      /* そこを中心にして */
       p_set_center();
+      /* まわりに６つの六員環を配置する */
       result = append_n_polygon_at_bond(6, 1);
       if (result != ERROR_CODE_OK)
         return result;
@@ -710,6 +720,7 @@ ErrorCode CarbonAllotrope::make_symmetric_scrap(int scrap_no)
       goto only_one_hexagon;
     case 6: /* only three hexagons */
       p_scrap_order = 3;
+      /* 六員環を三つ作って */
       p_make_n_polygon(6);
       result = append_n_polygon_at_bond(6, 1);
       if (result != ERROR_CODE_OK)
@@ -717,7 +728,9 @@ ErrorCode CarbonAllotrope::make_symmetric_scrap(int scrap_no)
       result = append_n_polygon_at_carbon(6, 2);
       if (result != ERROR_CODE_OK)
         return result;
+      /* そこを中心にして */
       p_set_center();
+      /* まわりのへこんだ所に五員環を三つ配置して */
       result = append_n_polygon_at_carbon(5, 1);
       if (result != ERROR_CODE_OK)
         return result;
@@ -727,12 +740,14 @@ ErrorCode CarbonAllotrope::make_symmetric_scrap(int scrap_no)
       result = append_n_polygon_at_carbon(5, 7);
       if (result != ERROR_CODE_OK)
         return result;
+      /* 更にそのまわりを六員環で埋める */
       result = fill_hexagons_around_n_polygons(5);
       if (result != ERROR_CODE_OK)
         return result;
       break;
-    case 7: /* only six hexagons */
+    case 7:
       p_scrap_order = 3;
+      /* 六員環を三つ作って */
       p_make_n_polygon(6);
       result = append_n_polygon_at_bond(6, 1);
       if (result != ERROR_CODE_OK)
@@ -740,7 +755,9 @@ ErrorCode CarbonAllotrope::make_symmetric_scrap(int scrap_no)
       result = append_n_polygon_at_carbon(6, 2);
       if (result != ERROR_CODE_OK)
         return result;
+      /* そこを中心にして */
       p_set_center();
+      /* まわりのへこんだ所に六員環を三つ配置する */
       result = append_n_polygon_at_carbon(6, 1);
       if (result != ERROR_CODE_OK)
         return result;
@@ -753,28 +770,35 @@ ErrorCode CarbonAllotrope::make_symmetric_scrap(int scrap_no)
       break;
     case 8: /* only two hexagons */
       p_scrap_order = 2;
+      /* 六員環を二つ作って */
       p_make_n_polygon(6);
       result = append_n_polygon_at_bond(6, 1);
       if (result != ERROR_CODE_OK)
         return result;
+      /* そこを中心にして */
       p_set_center();
+      /* まわりのへこんだ所に五員環を二つ配置して */
       result = append_n_polygon_at_carbon(5, 1);
       if (result != ERROR_CODE_OK)
         return result;
       result = append_n_polygon_at_carbon(5, 2);
       if (result != ERROR_CODE_OK)
         return result;
+      /* 更にそのまわりを六員環で埋める */
       result = fill_hexagons_around_n_polygons(5);
       if (result != ERROR_CODE_OK)
         return result;
       break;
     case 9: /* only four hexagons */
       p_scrap_order = 2;
+      /* 六員環を二つ作って */
       p_make_n_polygon(6);
       result = append_n_polygon_at_bond(6, 1);
       if (result != ERROR_CODE_OK)
         return result;
+      /* そこを中心にして */
       p_set_center();
+      /* まわりのへこんだ所に六員環を二つ配置する */
       result = append_n_polygon_at_carbon(6, 1);
       if (result != ERROR_CODE_OK)
         return result;

@@ -74,3 +74,4 @@ ID
 
 # Qt Tools oriented files
 .qmake.stash
+/.ccls-cache/
