@@ -5,11 +5,12 @@
 # Create: 2012/03/14 15:36:05 JST
 #
 
-QT       += core gui opengl
+QT       += core gui
 contains(QT_VERSION, ^4.*) {
-    QT       += webkit
+    QT       += opengl webkit
 }
 contains(QT_VERSION, ^5.*) {
+    QT       += opengl
     greaterThan(QT_MINOR_VERSION, 14) {
         QT   += webenginewidgets
     } else {
@@ -28,6 +29,7 @@ macx {
     DEPENDPATH += /usr/X11/include
     INCLUDEPATH += /usr/X11/include
     ICON = icons/FullereneViewer.icns
+    QMAKE_LIBS_OPENGL = -framework OpenGL
 }
 !macx:unix {
     INCLUDEPATH += /usr/local/include

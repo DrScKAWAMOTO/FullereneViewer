@@ -10,16 +10,24 @@ MAINS= $(wildcard [a-z]*-*.cc)
 MBJECTS= $(subst .cc,.o,$(MAINS))
 TARGETS= $(subst .cc,,$(MAINS))
 
+SYSTEM= $(shell uname)
+
 QMAKE= qmake
 
-INCLUDES= -I/usr/local/include -I/usr/local/include/drm
+ifeq ($(SYSTEM),Darwin)
+  INCLUDES= -I/usr/local/include
+  LOADLIBES= -framework OpenGL
+  LDFLAGS= -L/usr/local/lib
+else
+  INCLUDES= -I/usr/local/include -I/usr/local/include/drm
+  LOADLIBES= -lGLU -lGL
+  LDFLAGS= -L/usr/local/lib -L/usr/X11/lib
+endif
+
 CXXFLAGS= -g -Wall -Wno-unused-parameter -D_THREAD_SAFE $(INCLUDES) -pthread
-LDFLAGS= -L/usr/local/lib -L/usr/X11/lib
-LOADLIBES= -lGLU -lGL
 INSTALL= install
 INSTALLDIR= ~/bin/$(shell uname -s).$(shell uname -m)
 
-SYSTEM= $(shell uname)
 CLANGTEST= $(shell which clang)
 ifeq ($(CLANGTEST),)
   CC= gcc
@@ -31,20 +39,19 @@ endif
 
 .PHONY:	all Qtmakefile Qt install depend tags dist clean Qtclean distclean
 
-all: depend $(TARGETS)
+all: depend $(TARGETS) Qt
 
 $(TARGETS): %: %.o $(OBJECTS)
 	$(LINK.cc) $^ $(LOADLIBES) $(LDLIBS) -o $@
 
 Qtmakefile:
 	cd Qt; $(QMAKE) FullereneViewer.pro
+ifeq ($(SYSTEM),Darwin)
+	sed -i '' 's/-framework AGL//g' Qt/Makefile
+endif
 
 Qt: Qtmakefile
-ifeq ($(SYSTEM),Darwin)
-	echo "Click folder FullereneViewer.xcodeproj by finder."
-else
 	cd Qt; $(MAKE)
-endif
 
 install: all
 	$(INSTALL) -cp $(TARGETS) $(INSTALLDIR)
